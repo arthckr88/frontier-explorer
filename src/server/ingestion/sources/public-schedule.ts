@@ -58,6 +58,7 @@ export async function fetchPublicSchedule(options: PublicScheduleOptions = {}): 
 
   const observations: Observation[] = [];
   const emptyPairs: string[] = [];
+  const skippedPairs: string[] = [];
   let failedDates = 0;
   let flightCount = 0;
   let cursor = 0;
@@ -72,6 +73,7 @@ export async function fetchPublicSchedule(options: PublicScheduleOptions = {}): 
       const outcome = await pullPair(session, pair.origin, pair.destination, dates);
       session = outcome.session;
       failedDates += outcome.failedDates;
+      if (outcome.skipped) skippedPairs.push(`${pair.origin}-${pair.destination}`);
       if (outcome.flights.length === 0) {
         if (outcome.checkedDates.length > 0) emptyPairs.push(`${pair.origin}-${pair.destination}`);
         continue;
@@ -104,6 +106,7 @@ export async function fetchPublicSchedule(options: PublicScheduleOptions = {}): 
       `Window ${dates[0]} through ${dates[dates.length - 1]} (${dates.length} dates).`,
       `Stored ${observations.length} directional routes and ${flightCount} dated flights.`,
       `${emptyPairs.length} market pairs returned no nonstop F9 flight in the checked days.`,
+      skippedPairs.length > 0 ? `Skipped after HTTP 406: ${skippedPairs.join(", ")}.` : "",
       priorityGaps.length > 0
         ? `Priority routes with no schedule observation: ${priorityGaps.join(", ")}.`
         : "Every priority-to-priority market in this pull had at least one nonstop.",
@@ -183,6 +186,7 @@ async function pullPair(session: CookieJar | null, origin: string, destination: 
   const flights: PublicFlight[] = [];
   const checkedDates: string[] = [];
   let failedDates = 0;
+  let skipped = false;
   for (const date of dates) {
     const cached = await readCache(origin, destination, date);
     if (cached) {
@@ -195,19 +199,23 @@ async function pullPair(session: CookieJar | null, origin: string, destination: 
       if (!session) session = await openSession();
       if (!session) {
         loaded = { ok: false, error: "Booking homepage did not open a session." };
-        await pause(30_000);
-        continue;
+        break;
       }
       loaded = await loadDay(session, origin, destination, date);
       if (loaded.ok) break;
       console.error(`public schedule fail ${origin}-${destination} ${date} ${loaded.error}`);
-      if (!loaded.retryable) break;
-      session = null;
       const blocked = loaded.error.includes("406");
-      await pause(blocked ? 45_000 : 8_000);
+      if (!loaded.retryable || !blocked || attempt === 1) break;
+      session = null;
+      await pause(8_000);
     }
     if (!loaded.ok) {
       failedDates += 1;
+      if (loaded.error.includes("406")) {
+        skipped = true;
+        console.error(`public schedule skip ${origin}-${destination} after 406`);
+        break;
+      }
       continue;
     }
     const matched = loaded.flights.filter((flight) => flight.origin === origin && flight.destination === destination);
@@ -215,7 +223,7 @@ async function pullPair(session: CookieJar | null, origin: string, destination: 
     flights.push(...matched);
     checkedDates.push(date);
   }
-  return { flights, checkedDates, failedDates, session };
+  return { flights, checkedDates, failedDates, session, skipped };
 }
 
 async function openSession() {
