@@ -109,8 +109,15 @@ export const sourceSeeds = [
     baseUrl: "https://flights.flyfrontier.com/en/sitemap/flights-from-city/page-1",
   },
   {
+    id: "frontier-public-schedule",
+    name: "Frontier public booking search",
+    tier: 1,
+    kind: "frontier_schedule",
+    baseUrl: "https://booking.flyfrontier.com/Flight/Select",
+  },
+  {
     id: "frontier-schedule",
-    name: "Frontier schedule / timetable API",
+    name: "Optional timetable API",
     tier: 3,
     kind: "timetable_api",
     baseUrl: null,

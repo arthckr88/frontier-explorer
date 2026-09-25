@@ -284,6 +284,31 @@ describe("route reconciliation", () => {
     expect(result.changes.map((change) => change.type)).toContain("SOURCE_DISAGREEMENT");
   });
 
+  it("does not confirm an end when a public schedule window simply stops", () => {
+    const result = run(
+      [
+        schedule({
+          sourceId: "frontier-public-schedule",
+          retrievedAt: "2026-09-25T18:00:00.000Z",
+          origin: "LAS",
+          destination: "BUR",
+          frequencyPerWeek: 2,
+          windowStart: "2026-09-25",
+          windowEnd: "2026-10-01",
+          flights: [
+            { date: "2026-09-26", departureLocal: "2026-09-26T09:00:00", arrivalLocal: "2026-09-26T10:05:00", flightNumber: "100" },
+            { date: "2026-10-01", departureLocal: "2026-10-01T09:00:00", arrivalLocal: "2026-10-01T10:05:00", flightNumber: "200" },
+          ],
+        }),
+      ],
+      "2026-09-25T18:00:00.000Z",
+    );
+    expect(result.projections[0]?.status).toBe("ACTIVE");
+    expect(result.projections[0]?.endConfirmed).toBe(false);
+    expect(result.projections[0]?.suspectedEndDate).toBeNull();
+    expect(result.projections[0]?.currentFrequencyPerWeek).toBe(2);
+  });
+
   it("does not mark a twice-weekly route stale just because nothing flies tomorrow", () => {
     const result = run(
       [

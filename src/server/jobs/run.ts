@@ -5,6 +5,7 @@ import { fetchNewsroom } from "@/server/ingestion/sources/newsroom";
 import { fetchAirportPress } from "@/server/ingestion/sources/press";
 import { fetchPrograms } from "@/server/ingestion/sources/programs";
 import { fetchRoutePages } from "@/server/ingestion/sources/route-pages";
+import { fetchPublicSchedule } from "@/server/ingestion/sources/public-schedule";
 import { fetchSchedule } from "@/server/ingestion/sources/schedule";
 import { PRIORITY_AIRPORTS } from "@/server/preferences/defaults";
 import { recordSyncRun, reconcileStored, storeSourceResult } from "@/server/jobs/persist";
@@ -91,6 +92,20 @@ export async function runJob(job: JobName) {
     await note(await runSource("priority", () => fetchRoutePages(targets)));
   }
   if (job === "schedules" || job === "all") {
+    await note(
+      await runSource("schedules", () =>
+        fetchPublicSchedule({
+          onObservation: (observation) =>
+            storeSourceResult({
+              sourceId: "frontier-public-schedule",
+              status: "success",
+              observations: [observation],
+              latencyMs: 0,
+              recordsObserved: observation.flights?.length ?? 0,
+            }),
+        }),
+      ),
+    );
     await note(await runSource("schedules", fetchSchedule));
   }
   if (job === "announcements" || job === "all") {

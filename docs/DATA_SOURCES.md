@@ -34,11 +34,25 @@ A marketed sample is an IATA-coded “Departing” snippet. City-name “more fl
 
 ## Schedule
 
-`src/server/ingestion/sources/schedule.ts` requests `TIMETABLE_API_URL` and expects a JSON array of `{ origin, destination, date, departureLocal?, arrivalLocal?, flightNumber?, windowStart?, windowEnd? }`. Rows are grouped into one schedule snapshot per direction. The snapshot’s external id includes the retrieval date, so a later payload with different flights is a new observation. An identical hash only bumps `last_retrieved_at`.
+### Public booking search (tier 1)
 
-There is no built-in Frontier schedule URL. Leaving the variable empty records `skipped` on `/system/data` and leaves existing observations in place.
+The schedule adapter opens the same pages as the public booking form on `https://booking.flyfrontier.com/`. It does not call `/Flight/RetrieveSchedule`, `Resource/GetMarkets`, or any other JSON endpoint.
 
-Confidence treats `sourceKind: "frontier_schedule"` as a first-party schedule and `timetable_api` as a secondary timetable. The configured adapter uses `timetable_api`, so a key-backed feed alone is low confidence until an official announcement agrees. High confidence requires a first-party schedule kind plus an official announcement. This repository does not invent that first-party feed.
+What a browser does, and what the adapter does:
+
+1. `GET https://booking.flyfrontier.com/` returns the search page and the session cookies a browser gets before searching. The HTML includes each station’s `markets` list inside the public search config. Priority origins are OAK, SFO, LAS, LAX, BUR, JFK, LGA, MCO, FLL, and MIA. Destinations are only the markets that page lists for those origins.
+2. `GET https://booking.flyfrontier.com/Flight/InternalSelect?o1={origin}&d1={destination}&dd1={date}&ADT=1&umnr=false&mon=true` is the search URL the public form builds (`searchUrl` in that page). It responds `302` to `/Flight/Select`. The request sends the homepage session cookie and ordinary document-navigation headers.
+3. `GET https://booking.flyfrontier.com/Flight/Select` is the results document, requested with that same cookie and the InternalSelect URL as the referrer. A checked page contains a `FlightData = '...'` assignment. After HTML entities are decoded, `journeys[].flights[].legs[]` has `carrierCode`, `flightNumber`, `departureStation`, `arrivalStation`, `departureDate`, and `arrivalDate`. A response of HTTP 406 has an empty body and no flight times. The adapter discards that session, opens the homepage again, and retries. It does not store the 406 as an empty day.
+
+A page checked on 2026-09-28 for OAK→LAS contained two nonstops in that assignment: F9 2046 departing 10:17 and arriving 11:58, and F9 3838 departing 18:51 and arriving 20:32, both local on that date. A connection (more than one leg) is not stored as a nonstop. A leg whose carrier is not `F9` is not stored. A page with no `FlightData` assignment is a failed check, not an empty schedule.
+
+The first pull asks for seven Denver-local dates starting today, so each weekday occurs once. A route that operates twice in that week shows two departures. Flights-from fare blurbs stay `marketed_sample` rows and are not promoted. Requests are spaced (`PUBLIC_SCHEDULE_DELAY_MS`, default 700) on one homepage session (`PUBLIC_SCHEDULE_CONCURRENCY`, default 1, capped at 2). The results document is read in full. Truncating it has produced HTTP 406 responses with no flight times. Parsed days are cached for 12 hours in `source_cache`. A failed day is recorded on the sync run and is not treated as “no flight.”
+
+`/system/data` shows this source as `frontier-public-schedule`. The optional timetable source stays separate.
+
+### Optional timetable API (tier 3)
+
+`src/server/ingestion/sources/schedule.ts` requests `TIMETABLE_API_URL` only when that variable is set. The payload is a JSON array of `{ origin, destination, date, departureLocal?, arrivalLocal?, flightNumber?, windowStart?, windowEnd? }`. Leaving the variable empty records `skipped` and does not delete observations. That feed is `timetable_api` and stays low confidence. The public booking HTML is the first-party schedule (`frontier_schedule`).
 
 ## Airport press
 

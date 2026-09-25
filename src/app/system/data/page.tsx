@@ -42,7 +42,7 @@ export default async function DataPage() {
 
 function intervalHours(sourceId: string, env: { SYNC_PRIORITY_HOURS: number; SYNC_SCHEDULE_HOURS: number; SYNC_ANNOUNCEMENTS_HOURS: number; SYNC_PROGRAMS_HOURS: number; SYNC_POPULARITY_DAYS: number; SYNC_RECONCILE_HOURS: number }) {
   if (sourceId === "frontier-route-pages") return env.SYNC_PRIORITY_HOURS;
-  if (sourceId === "frontier-schedule") return env.SYNC_SCHEDULE_HOURS;
+  if (sourceId === "frontier-schedule" || sourceId === "frontier-public-schedule") return env.SYNC_SCHEDULE_HOURS;
   if (sourceId === "frontier-newsroom" || sourceId === "airport-press") return env.SYNC_ANNOUNCEMENTS_HOURS;
   if (sourceId === "frontier-programs") return env.SYNC_PROGRAMS_HOURS;
   if (sourceId === "bts-popularity") return env.SYNC_POPULARITY_DAYS * 24;

@@ -12,6 +12,7 @@ Adapters only keep what a public source returned.
 | --- | --- | --- |
 | Frontier Newsroom tag feeds | Directional announcement rows parsed from “New service from” tables, plus a looser from/to sentence when a table is absent | A cartesian product of every IATA code mentioned in an article |
 | `flights.flyfrontier.com` flights-from pages | IATA-coded marketed samples (`Oakland (OAK) … Las Vegas (LAS) … Departing …`) | SEO city lists or sitemap pairs as confirmed nonstops |
+| Public booking search (`booking.flyfrontier.com` results HTML) | Nonstop F9 flights with number, local departure, and local arrival, for priority origins over a 7-day window | Connections, other carriers, or a network guessed from fare blurbs |
 | Timetable API | Schedule snapshots, only when `TIMETABLE_API_URL` is set | Anything, when the variable is empty. The run is recorded as skipped |
 | Airport press URLs | Announcements, only for URLs in `AIRPORT_PRESS_URLS` | A guessed press corpus |
 | GoWild and Discount Den public pages | Sentences that match a booking window, the $0.01 base fare, a dated blackout, or an explicit do-not-stack line | Seat inventory, blackout dates that were not printed, or stacked fares |
@@ -144,7 +145,7 @@ This app does not call a GoWild inventory feed. If availability was not retrieve
 
 ## Known limitations
 
-- No public Frontier timetable is called. Without `TIMETABLE_API_URL`, there are no timed itineraries, no departures-per-week rankings, and no green “active” arcs. Announced newsroom rows can still appear as announced, and marketed samples stay in the database with status unknown. The map hides unknown and ended routes until you toggle them.
+- The public booking search covers flights that depart the priority airports. A connection whose second flight departs some other airport is not in this pull. `TIMETABLE_API_URL` remains an optional extra feed. Marketed fare blurbs stay unknown and are hidden on the map until you toggle them.
 - Domestic BTS popularity is unavailable unless you set a public domestic resource. International counts are historical and labeled with the reporting period. They are not current demand and they are not drawn as the route network.
 - Booking is a “Search on Frontier” link. Query parameters may be ignored by Frontier. The app does not purchase tickets.
 - Preference edits are open in this personal version. Sync and other administrative actions require a secret.
