@@ -191,11 +191,11 @@ async function pullPair(session: CookieJar | null, origin: string, destination: 
       continue;
     }
     let loaded: DayResult = { ok: false, error: "Booking session was not opened." };
-    for (let attempt = 0; attempt < 4; attempt += 1) {
+    for (let attempt = 0; attempt < 2; attempt += 1) {
       if (!session) session = await openSession();
       if (!session) {
         loaded = { ok: false, error: "Booking homepage did not open a session." };
-        await pause(8_000 * (attempt + 1));
+        await pause(30_000);
         continue;
       }
       loaded = await loadDay(session, origin, destination, date);
@@ -204,7 +204,7 @@ async function pullPair(session: CookieJar | null, origin: string, destination: 
       if (!loaded.retryable) break;
       session = null;
       const blocked = loaded.error.includes("406");
-      await pause(blocked ? 20_000 : 5_000 * 2 ** attempt);
+      await pause(blocked ? 180_000 : 8_000);
     }
     if (!loaded.ok) {
       failedDates += 1;
