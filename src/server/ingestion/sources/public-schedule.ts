@@ -204,7 +204,7 @@ async function pullPair(session: CookieJar | null, origin: string, destination: 
       if (!loaded.retryable) break;
       session = null;
       const blocked = loaded.error.includes("406");
-      await pause(blocked ? 180_000 : 8_000);
+      await pause(blocked ? 45_000 : 8_000);
     }
     if (!loaded.ok) {
       failedDates += 1;
