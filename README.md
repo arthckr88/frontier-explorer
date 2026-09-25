@@ -77,7 +77,7 @@ npm run sync:programs
 npm run reconcile
 ```
 
-`npm run sync` runs priority pages, schedules, announcements, programs, popularity, then reconciliation.
+`npm run dev` and `npm start` serve routes already stored in Postgres. They do not call Frontier. `npm run sync:schedules` is the background booking updater: a pool of `PUBLIC_SCHEDULE_CONCURRENCY` date searches (default 4), limited to the priority origins. `POST /api/cron?job=schedules` runs that same updater. `npm run sync` also runs priority pages, announcements, programs, popularity, then reconciliation.
 
 ## Environment
 

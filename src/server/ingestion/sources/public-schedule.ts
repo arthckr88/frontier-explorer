@@ -25,7 +25,7 @@ export async function fetchPublicSchedule(options: PublicScheduleOptions = {}): 
   const started = Date.now();
   const env = getEnv();
   const days = clamp(env.PUBLIC_SCHEDULE_DAYS, 7, 14);
-  const concurrency = clamp(env.PUBLIC_SCHEDULE_CONCURRENCY, 1, 2);
+  const concurrency = clamp(env.PUBLIC_SCHEDULE_CONCURRENCY, 1, 8);
   const now = options.now ?? new Date();
   const dates = rollingDates(now, days);
   const homepage = await requestText(`${ORIGIN}/`, new CookieJar(), "follow", `${ORIGIN}/`);
@@ -56,41 +56,59 @@ export async function fetchPublicSchedule(options: PublicScheduleOptions = {}): 
     };
   }
 
-  const observations: Observation[] = [];
+  const byPair = new Map<string, Observation>();
   const emptyPairs: string[] = [];
-  const skippedPairs: string[] = [];
+  const skippedPairs = new Set<string>();
+  const accums = new Map<string, PairAccum>();
   let failedDates = 0;
-  let flightCount = 0;
   let cursor = 0;
+  const tasks = pairs.flatMap((pair) => dates.map((date) => ({ ...pair, date })));
 
   async function worker() {
-    let session = await openSession();
-    while (cursor < pairs.length) {
+    let session: CookieJar | null = null;
+    while (cursor < tasks.length) {
       const index = cursor;
       cursor += 1;
-      const pair = pairs[index];
-      if (!pair) return;
-      const outcome = await pullPair(session, pair.origin, pair.destination, dates);
-      session = outcome.session;
-      failedDates += outcome.failedDates;
-      if (outcome.skipped) skippedPairs.push(`${pair.origin}-${pair.destination}`);
-      if (outcome.flights.length === 0) {
-        if (outcome.checkedDates.length > 0) emptyPairs.push(`${pair.origin}-${pair.destination}`);
+      const task = tasks[index];
+      if (!task) return;
+      const pairKey = `${task.origin}-${task.destination}`;
+      if (skippedPairs.has(pairKey)) continue;
+      const cached = await readCache(task.origin, task.destination, task.date);
+      if (cached) {
+        await remember(task.origin, task.destination, task.date, cached, dates, byPair, accums, options.onObservation);
         continue;
       }
-      const observation = snapshot(pair.origin, pair.destination, outcome, dates, new Date());
-      observations.push(observation);
-      flightCount += outcome.flights.length;
-      if (options.onObservation) await options.onObservation(observation);
-      if ((index + 1) % 10 === 0 || outcome.flights.length > 0) {
-        console.error(
-          `public schedule ${index + 1}/${pairs.length} ${pair.origin}-${pair.destination} flights=${outcome.flights.length} totalRoutes=${observations.length} totalFlights=${flightCount} failedDates=${failedDates}`,
-        );
+      if (!session) session = await openSession();
+      if (!session) {
+        failedDates += 1;
+        continue;
       }
+      const loaded = await loadDay(session, task.origin, task.destination, task.date);
+      if (!loaded.ok) {
+        failedDates += 1;
+        console.error(`public schedule fail ${pairKey} ${task.date} ${loaded.error}`);
+        session = null;
+        if (loaded.error.includes("406")) {
+          skippedPairs.add(pairKey);
+          console.error(`public schedule skip ${pairKey} after 406`);
+        }
+        continue;
+      }
+      const matched = loaded.flights.filter((flight) => flight.origin === task.origin && flight.destination === task.destination);
+      await writeCache(task.origin, task.destination, task.date, matched);
+      await remember(task.origin, task.destination, task.date, matched, dates, byPair, accums, options.onObservation);
     }
   }
 
-  await Promise.all(Array.from({ length: Math.min(concurrency, pairs.length) }, () => worker()));
+  await Promise.all(Array.from({ length: Math.min(concurrency, Math.max(tasks.length, 1)) }, () => worker()));
+  const observations = [...byPair.values()];
+  const flightCount = observations.reduce((sum, item) => sum + (item.flights?.length ?? 0), 0);
+  for (const pair of pairs) {
+    const key = `${pair.origin}-${pair.destination}`;
+    if (skippedPairs.has(key) || byPair.has(key)) continue;
+    const accum = accums.get(key);
+    if (accum && accum.checkedDates.length > 0) emptyPairs.push(key);
+  }
 
   const stored = new Set(observations.map((item) => `${item.origin}-${item.destination}`));
   const priorityGaps = priorityRouteGaps(markets, stored);
@@ -102,11 +120,11 @@ export async function fetchPublicSchedule(options: PublicScheduleOptions = {}): 
     error: failedDates > 0 ? `${failedDates} booking result pages failed and were not treated as empty days.` : undefined,
     detail: [
       `Public booking results at ${ORIGIN}/Flight/Select after GET ${ORIGIN}/Flight/InternalSelect.`,
-      `Priority origins ${PRIORITY_AIRPORTS.join(", ")} to published markets.`,
+      `Priority origins ${scheduleOrigins().join(", ")} to their published markets. Concurrency ${concurrency}.`,
       `Window ${dates[0]} through ${dates[dates.length - 1]} (${dates.length} dates).`,
       `Stored ${observations.length} directional routes and ${flightCount} dated flights.`,
       `${emptyPairs.length} market pairs returned no nonstop F9 flight in the checked days.`,
-      skippedPairs.length > 0 ? `Skipped after HTTP 406: ${skippedPairs.join(", ")}.` : "",
+      skippedPairs.size > 0 ? `Skipped after HTTP 406: ${[...skippedPairs].join(", ")}.` : "",
       priorityGaps.length > 0
         ? `Priority routes with no schedule observation: ${priorityGaps.join(", ")}.`
         : "Every priority-to-priority market in this pull had at least one nonstop.",
@@ -190,48 +208,38 @@ function snapshot(
   };
 }
 
-async function pullPair(session: CookieJar | null, origin: string, destination: string, dates: string[]) {
-  const flights: PublicFlight[] = [];
-  const checkedDates: string[] = [];
-  let failedDates = 0;
-  let skipped = false;
-  for (const date of dates) {
-    const cached = await readCache(origin, destination, date);
-    if (cached) {
-      flights.push(...cached);
-      checkedDates.push(date);
-      continue;
-    }
-    let loaded: DayResult = { ok: false, error: "Booking session was not opened." };
-    for (let attempt = 0; attempt < 2; attempt += 1) {
-      if (!session) session = await openSession();
-      if (!session) {
-        loaded = { ok: false, error: "Booking homepage did not open a session." };
-        break;
-      }
-      loaded = await loadDay(session, origin, destination, date);
-      if (loaded.ok) break;
-      console.error(`public schedule fail ${origin}-${destination} ${date} ${loaded.error}`);
-      const blocked = loaded.error.includes("406");
-      if (!loaded.retryable || !blocked || attempt === 1) break;
-      session = null;
-      await pause(8_000);
-    }
-    if (!loaded.ok) {
-      failedDates += 1;
-      if (loaded.error.includes("406")) {
-        skipped = true;
-        console.error(`public schedule skip ${origin}-${destination} after 406`);
-        break;
-      }
-      continue;
-    }
-    const matched = loaded.flights.filter((flight) => flight.origin === origin && flight.destination === destination);
-    await writeCache(origin, destination, date, matched);
-    flights.push(...matched);
-    checkedDates.push(date);
+type PairAccum = {
+  flights: PublicFlight[];
+  checkedDates: string[];
+  write: Promise<void>;
+};
+
+async function remember(
+  origin: string,
+  destination: string,
+  date: string,
+  flights: PublicFlight[],
+  dates: string[],
+  byPair: Map<string, Observation>,
+  accums: Map<string, PairAccum>,
+  onObservation: ((observation: Observation) => Promise<void>) | undefined,
+) {
+  const key = `${origin}-${destination}`;
+  let accum = accums.get(key);
+  if (!accum) {
+    accum = { flights: [], checkedDates: [], write: Promise.resolve() };
+    accums.set(key, accum);
   }
-  return { flights, checkedDates, failedDates, session, skipped };
+  const current = accum;
+  current.write = current.write.then(async () => {
+    current.flights.push(...flights);
+    current.checkedDates.push(date);
+    if (current.flights.length === 0) return;
+    const observation = snapshot(origin, destination, { flights: current.flights, checkedDates: current.checkedDates }, dates, new Date());
+    byPair.set(key, observation);
+    if (onObservation) await onObservation(observation);
+  });
+  await current.write;
 }
 
 async function openSession() {
@@ -292,14 +300,6 @@ class CookieJar {
   }
 }
 
-let nextSlot = Promise.resolve();
-
-function throttle(ms: number) {
-  const run = nextSlot.then(() => new Promise<void>((resolve) => setTimeout(resolve, ms)));
-  nextSlot = run.catch(() => undefined);
-  return run;
-}
-
 const BROWSER_HEADERS = {
   accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
   "accept-language": "en-US,en;q=0.9",
@@ -316,44 +316,31 @@ const BROWSER_HEADERS = {
 };
 
 async function requestText(url: string, jar: CookieJar, redirect: "manual" | "follow", referer: string) {
-  const attempts = 2;
-  const delayMs = clamp(getEnv().PUBLIC_SCHEDULE_DELAY_MS, 250, 5_000);
-  let lastError = "Request failed";
-  let status = 0;
-  for (let attempt = 0; attempt <= attempts; attempt += 1) {
-    await throttle(attempt === 0 ? delayMs : Math.min(8_000, delayMs * 2 ** attempt));
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 25_000);
-    try {
-      const cookie = jar.header();
-      const response = await fetch(url, {
-        method: "GET",
-        redirect,
-        signal: controller.signal,
-        headers: {
-          ...BROWSER_HEADERS,
-          referer,
-          ...(cookie ? { cookie } : {}),
-        },
-      });
-      jar.absorb(response.headers);
-      status = response.status;
-      const body = await response.text();
-      const redirectOk = redirect === "manual" && status >= 300 && status < 400;
-      if (response.ok || redirectOk) return { ok: response.ok, status, body, error: undefined as string | undefined };
-      lastError = `HTTP ${status}`;
-      if (status === 406 || (status !== 429 && status < 500)) break;
-    } catch (error) {
-      lastError = error instanceof Error ? error.message : "Network error";
-    } finally {
-      clearTimeout(timer);
-    }
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 25_000);
+  try {
+    const cookie = jar.header();
+    const response = await fetch(url, {
+      method: "GET",
+      redirect,
+      signal: controller.signal,
+      headers: {
+        ...BROWSER_HEADERS,
+        referer,
+        ...(cookie ? { cookie } : {}),
+      },
+    });
+    jar.absorb(response.headers);
+    const status = response.status;
+    const body = await response.text();
+    const redirectOk = redirect === "manual" && status >= 300 && status < 400;
+    if (response.ok || redirectOk) return { ok: response.ok, status, body, error: undefined as string | undefined };
+    return { ok: false, status, body: "", error: `HTTP ${status}` };
+  } catch (error) {
+    return { ok: false, status: 0, body: "", error: error instanceof Error ? error.message : "Network error" };
+  } finally {
+    clearTimeout(timer);
   }
-  return { ok: false, status, body: "", error: lastError };
-}
-
-function pause(ms: number) {
-  return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
 
 function cacheKey(origin: string, destination: string, date: string) {

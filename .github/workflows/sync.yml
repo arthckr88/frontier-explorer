@@ -9,7 +9,7 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Run due jobs on the deployed app
+      - name: Run the schedule updater on the deployed app
         env:
           CRON_URL: ${{ secrets.CRON_URL }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
@@ -18,7 +18,8 @@ jobs:
             echo "CRON_URL or CRON_SECRET is unset. Skipping."
             exit 0
           fi
+          echo "Public booking updates run here, off the page request path."
           curl --fail-with-body --silent --show-error \
             --request POST \
             --header "Authorization: Bearer ${CRON_SECRET}" \
-            "${CRON_URL%/}/api/cron"
+            "${CRON_URL%/}/api/cron?job=schedules"
