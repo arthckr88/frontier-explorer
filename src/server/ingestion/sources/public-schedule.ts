@@ -119,10 +119,18 @@ export async function fetchPublicSchedule(options: PublicScheduleOptions = {}): 
   };
 }
 
+function scheduleOrigins() {
+  const requested = getEnv()
+    .PUBLIC_SCHEDULE_ORIGINS?.split(",")
+    .map((code) => code.trim().toUpperCase())
+    .filter((code) => (PRIORITY_AIRPORTS as readonly string[]).includes(code));
+  return requested && requested.length > 0 ? requested : [...PRIORITY_AIRPORTS];
+}
+
 function priorityPairs(markets: Map<string, string[]>) {
   const priority = new Set<string>(PRIORITY_AIRPORTS);
   const pairs: { origin: string; destination: string }[] = [];
-  for (const origin of PRIORITY_AIRPORTS) {
+  for (const origin of scheduleOrigins()) {
     const destinations = markets.get(origin) ?? [];
     const ordered = [
       ...destinations.filter((destination) => priority.has(destination)),
