@@ -8,7 +8,7 @@ export type PublicFlight = {
 };
 
 export type ScheduleParseResult =
-  | { ok: true; flights: PublicFlight[] }
+  | { ok: true; flights: PublicFlight[]; query: { origin: string; destination: string; date: string } }
   | { ok: false; reason: string };
 
 type Leg = {
@@ -27,6 +27,10 @@ type Itinerary = {
 
 type FlightData = {
   journeys?: { flights?: Itinerary[] }[];
+  originOne?: string;
+  destinationOne?: string;
+  departureDateOne?: string;
+  isSessionNull?: boolean;
 };
 
 export function parsePublicScheduleHtml(html: string): ScheduleParseResult {
@@ -52,6 +56,10 @@ export function parsePublicScheduleHtml(html: string): ScheduleParseResult {
   } catch {
     return { ok: false, reason: "FlightData JSON in the booking results HTML did not parse." };
   }
+  const query = searchedPair(data);
+  if (!query) {
+    return { ok: false, reason: "FlightData did not name the searched city pair and date." };
+  }
 
   const flights: PublicFlight[] = [];
   for (const journey of data.journeys ?? []) {
@@ -63,7 +71,16 @@ export function parsePublicScheduleHtml(html: string): ScheduleParseResult {
       if (flight) flights.push(flight);
     }
   }
-  return { ok: true, flights };
+  return { ok: true, flights, query };
+}
+
+function searchedPair(data: FlightData): { origin: string; destination: string; date: string } | null {
+  const origin = data.originOne?.toUpperCase();
+  const destination = data.destinationOne?.toUpperCase();
+  const date = localTimestamp(data.departureDateOne)?.slice(0, 10);
+  if (!origin || !destination || !date) return null;
+  if (!/^[A-Z]{3}$/.test(origin) || !/^[A-Z]{3}$/.test(destination)) return null;
+  return { origin, destination, date };
 }
 
 function nonstopLeg(leg: Leg | undefined): PublicFlight | null {

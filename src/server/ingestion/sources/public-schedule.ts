@@ -203,7 +203,8 @@ async function pullPair(session: CookieJar | null, origin: string, destination: 
       console.error(`public schedule fail ${origin}-${destination} ${date} ${loaded.error}`);
       if (!loaded.retryable) break;
       session = null;
-      await pause(5_000 * 2 ** attempt);
+      const blocked = loaded.error.includes("406");
+      await pause(blocked ? 20_000 : 5_000 * 2 ** attempt);
     }
     if (!loaded.ok) {
       failedDates += 1;
@@ -247,6 +248,13 @@ async function loadDay(jar: CookieJar, origin: string, destination: string, date
   }
   const parsed = parsePublicScheduleHtml(html.body);
   if (!parsed.ok) return { ok: false, error: parsed.reason, retryable: true };
+  if (parsed.query.origin !== origin || parsed.query.destination !== destination || parsed.query.date !== date) {
+    return {
+      ok: false,
+      error: `Results page was ${parsed.query.origin}-${parsed.query.destination} on ${parsed.query.date}`,
+      retryable: true,
+    };
+  }
   return { ok: true, flights: parsed.flights };
 }
 

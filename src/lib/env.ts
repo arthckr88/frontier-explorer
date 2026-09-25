@@ -38,7 +38,7 @@ const envSchema = z.object({
   SYNC_POPULARITY_DAYS: z.coerce.number().default(30),
   PUBLIC_SCHEDULE_DAYS: z.coerce.number().default(7),
   PUBLIC_SCHEDULE_CONCURRENCY: z.coerce.number().default(1),
-  PUBLIC_SCHEDULE_DELAY_MS: z.coerce.number().default(700),
+  PUBLIC_SCHEDULE_DELAY_MS: z.coerce.number().default(1200),
 });
 
 export type AppEnv = z.infer<typeof envSchema>;

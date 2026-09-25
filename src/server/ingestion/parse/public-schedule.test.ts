@@ -9,6 +9,9 @@ function resultsPage(data: unknown) {
 describe("public booking schedule parser", () => {
   it("reads nonstop Frontier flights and ignores connections and other carriers", () => {
     const html = resultsPage({
+      originOne: "OAK",
+      destinationOne: "LAS",
+      departureDateOne: "2026-09-28T00:00:00",
       journeys: [
         {
           flights: [
@@ -79,6 +82,7 @@ describe("public booking schedule parser", () => {
     const parsed = parsePublicScheduleHtml(html);
     expect(parsed.ok).toBe(true);
     if (!parsed.ok) return;
+    expect(parsed.query).toEqual({ origin: "OAK", destination: "LAS", date: "2026-09-28" });
     expect(parsed.flights).toEqual([
       {
         origin: "OAK",
@@ -97,6 +101,31 @@ describe("public booking schedule parser", () => {
         arrivalLocal: "2026-09-28T20:32:00",
       },
     ]);
+  });
+
+  it("rejects FlightData that does not name the searched pair", () => {
+    const html = resultsPage({
+      journeys: [
+        {
+          flights: [
+            {
+              stopCount: 0,
+              legs: [
+                {
+                  carrierCode: "F9",
+                  flightNumber: 2046,
+                  departureStation: "OAK",
+                  arrivalStation: "LAS",
+                  departureDate: "2026-09-28T10:17:00",
+                  arrivalDate: "2026-09-28T11:58:00",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    expect(parsePublicScheduleHtml(html).ok).toBe(false);
   });
 
   it("does not treat a page without FlightData as an empty schedule", () => {
