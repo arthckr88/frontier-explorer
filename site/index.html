@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Frontier search</title>
+    <meta name="description" content="Search a Frontier route and date from the published schedule." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="mark">Frontier</p>
+        <h1>Search</h1>
+        <p class="lede">From, to, and a date. Results come from the schedule published with this page.</p>
+      </header>
+      <form id="search">
+        <label>
+          From
+          <input name="from" required minlength="3" maxlength="3" pattern="[A-Za-z]{3}" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="OAK" aria-label="From" />
+        </label>
+        <label>
+          To
+          <input name="to" required minlength="3" maxlength="3" pattern="[A-Za-z]{3}" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="LAS" aria-label="To" />
+        </label>
+        <label>
+          Date
+          <input name="date" type="date" required aria-label="Date" />
+        </label>
+        <button type="submit">Search</button>
+      </form>
+      <p id="status" role="status"></p>
+      <div id="results"></div>
+    </main>
+    <script type="module" src="app.js"></script>
+    <noscript>Search needs JavaScript to read the published schedule in this page.</noscript>
+  </body>
+</html>
