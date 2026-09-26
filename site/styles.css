@@ -60,6 +60,68 @@ h1 {
   letter-spacing: -0.02em;
 }
 
+.network {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.starts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.starts button,
+#show-overnight {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--text);
+  font-weight: 600;
+  padding: 8px 12px;
+  min-height: 36px;
+}
+
+.starts button[aria-pressed="true"] {
+  background: var(--accent);
+  color: #090b0d;
+  border-color: transparent;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  grid-column: 1 / -1;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 10px;
+  color: var(--muted);
+  letter-spacing: 0;
+  text-transform: none;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 0.82rem;
+}
+
+.chip:has(input:checked) {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.chip input { accent-color: var(--accent); }
+
+#show-overnight { margin-top: 8px; }
+
 form {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -112,6 +174,7 @@ button {
 }
 
 .card {
+  display: block;
   width: 100%;
   margin-top: 8px;
   padding: 10px;
@@ -188,9 +251,11 @@ button {
 .swatch {
   width: 18px;
   height: 2px;
-  background: var(--accent);
+  background: #245c40;
   flex: none;
 }
+
+.swatch.scheduled { background: var(--accent); height: 3px; }
 
 .swatch.selected { background: var(--selected); height: 3px; }
 

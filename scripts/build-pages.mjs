@@ -29,6 +29,10 @@ function publishedAirports() {
     codes.add(flight.origin);
     codes.add(flight.destination);
   }
+  for (const route of flights.routes ?? []) {
+    codes.add(route.origin);
+    codes.add(route.destination);
+  }
   const airports = JSON.parse(readFileSync(new URL("../data/airports.json", import.meta.url), "utf8"));
   return airports
     .filter((airport) => codes.has(airport.iata) && Number.isFinite(airport.lat) && Number.isFinite(airport.lon))
@@ -36,6 +40,7 @@ function publishedAirports() {
       iata: airport.iata,
       name: airport.name,
       city: airport.city,
+      country: airport.country,
       lat: airport.lat,
       lon: airport.lon,
     }));

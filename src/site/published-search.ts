@@ -9,10 +9,26 @@ export type PublishedFlight = {
   arrivalUtc: string;
 };
 
+export type RouteProvenance = "listed" | "scheduled";
+
+export type PublishedRoute = {
+  origin: string;
+  destination: string;
+  provenance: RouteProvenance;
+};
+
 export type PublishedSchedule = {
   flights: PublishedFlight[];
+  routes?: PublishedRoute[];
   checked: string[];
   blocked: string[];
+};
+
+export type PublishedConnection = {
+  airport: string;
+  minutes: number;
+  label: string;
+  vegasOvernight: boolean;
 };
 
 export type PublishedItinerary = {
@@ -20,7 +36,14 @@ export type PublishedItinerary = {
   elapsedMinutes: number;
   vegasOvernight: boolean;
   connectionLabel: string | null;
+  connections: PublishedConnection[];
+  hasRedEye: boolean;
   segments: PublishedFlight[];
+};
+
+export type PublishedSearchResult = {
+  itineraries: PublishedItinerary[];
+  hiddenRedEyes: number;
 };
 
 const MIN_CONNECTION = 60;
@@ -30,47 +53,83 @@ const STOPOVER_MAX = 24 * 60;
 
 export function searchPublished(
   flights: PublishedFlight[],
-  query: { from: string; to: string; date: string },
-): PublishedItinerary[] {
+  query: {
+    from: string;
+    to: string | string[];
+    date: string;
+    stops?: { nonstop?: boolean; one?: boolean; two?: boolean };
+    excludeRedEyes?: boolean;
+  },
+): PublishedSearchResult {
   const from = query.from.trim().toUpperCase();
-  const to = query.to.trim().toUpperCase();
+  const destinations = new Set(
+    (Array.isArray(query.to) ? query.to : [query.to]).map((code) => code.trim().toUpperCase()).filter((code) => /^[A-Z]{3}$/.test(code)),
+  );
+  destinations.delete(from);
   const date = query.date;
+  const allowNonstop = query.stops?.nonstop !== false;
+  const allowOne = query.stops?.one !== false;
+  const allowTwo = query.stops?.two !== false;
+  const excludeRedEyes = query.excludeRedEyes !== false;
+  const byOrigin = new Map<string, PublishedFlight[]>();
+  for (const flight of flights) {
+    const bucket = byOrigin.get(flight.origin);
+    if (bucket) bucket.push(flight);
+    else byOrigin.set(flight.origin, [flight]);
+  }
+
   const results: PublishedItinerary[] = [];
   const seen = new Set<string>();
+  let hiddenRedEyes = 0;
 
-  const add = (segments: PublishedFlight[], vegasOvernight: boolean, connectionLabel: string | null) => {
-    if (segments.some(isRedEye)) return;
+  const add = (segments: PublishedFlight[], connections: PublishedConnection[]) => {
+    const hasRedEye = segments.some(isRedEye);
+    if (hasRedEye && excludeRedEyes) {
+      hiddenRedEyes += 1;
+      return;
+    }
     const key = segments.map((segment) => `${segment.flightNumber}|${segment.departureUtc}|${segment.origin}|${segment.destination}`).join(">");
     if (seen.has(key)) return;
     seen.add(key);
     const first = segments[0];
     const last = segments[segments.length - 1];
     if (!first || !last) return;
+    const vegasOvernight = connections.some((connection) => connection.vegasOvernight);
     results.push({
       stops: segments.length - 1,
       elapsedMinutes: minutesBetween(first.departureUtc, last.arrivalUtc),
       vegasOvernight,
-      connectionLabel,
+      connectionLabel: vegasOvernight ? "Overnight in Las Vegas" : connections.map((connection) => connection.label).join(" · ") || null,
+      connections,
+      hasRedEye,
       segments,
     });
   };
 
-  for (const flight of flights) {
-    if (flight.origin === from && flight.destination === to && flight.date === date) add([flight], false, null);
+  if (allowNonstop) {
+    for (const flight of byOrigin.get(from) ?? []) {
+      if (flight.date === date && destinations.has(flight.destination)) add([flight], []);
+    }
   }
 
-  const nextDate = addDays(date, 1);
-  const firstLegs = flights.filter((flight) => flight.origin === from && flight.date === date && flight.destination !== to);
-  for (const first of firstLegs) {
-    const secondLegs = flights.filter((flight) => {
-      if (flight.origin !== first.destination || flight.destination !== to) return false;
-      if (flight.date === date) return true;
-      return first.destination === "LAS" && nextDate !== null && flight.date === nextDate;
-    });
-    for (const second of secondLegs) {
-      const connection = connect(first, second);
-      if (!connection) continue;
-      add([first, second], connection.vegasOvernight, connection.label);
+  if (allowOne || allowTwo) {
+    for (const first of departing(byOrigin, from, date)) {
+      if (destinations.has(first.destination)) continue;
+      for (const second of byOrigin.get(first.destination) ?? []) {
+        if (second.origin === from || second.destination === from || second.destination === first.destination) continue;
+        const firstConnection = connect(first, second);
+        if (!firstConnection) continue;
+        if (allowOne && destinations.has(second.destination)) add([first, second], [firstConnection]);
+        if (!allowTwo || destinations.has(second.destination)) continue;
+        for (const third of byOrigin.get(second.destination) ?? []) {
+          if (!destinations.has(third.destination)) continue;
+          if (third.destination === from || third.destination === first.destination || third.destination === second.destination) continue;
+          if (third.origin === from || third.origin === first.origin) continue;
+          const secondConnection = connect(second, third);
+          if (!secondConnection) continue;
+          add([first, second, third], [firstConnection, secondConnection]);
+        }
+      }
     }
   }
 
@@ -80,18 +139,25 @@ export function searchPublished(
     if (depart !== 0) return depart;
     return left.elapsedMinutes - right.elapsedMinutes;
   });
-  return results;
+  return { itineraries: results, hiddenRedEyes };
 }
 
-function connect(first: PublishedFlight, second: PublishedFlight): { vegasOvernight: boolean; label: string } | null {
+function departing(byOrigin: Map<string, PublishedFlight[]>, origin: string, date: string) {
+  return (byOrigin.get(origin) ?? []).filter((flight) => flight.date === date);
+}
+
+function connect(first: PublishedFlight, second: PublishedFlight): PublishedConnection | null {
   const gap = minutesBetween(first.arrivalUtc, second.departureUtc);
   if (!Number.isFinite(gap) || gap < MIN_CONNECTION || gap > STOPOVER_MAX) return null;
   const overnightGround = gap >= LONG_MAX && second.departureLocal.slice(0, 10) > first.arrivalLocal.slice(0, 10);
   const vegasOvernight = first.destination === "LAS" && overnightGround;
-  if (gap <= NORMAL_MAX) return { vegasOvernight: false, label: `${Math.round(gap)} min in ${first.destination}` };
-  if (gap <= LONG_MAX) return { vegasOvernight: false, label: `${Math.round(gap)} min in ${first.destination}` };
+  if (gap <= NORMAL_MAX || gap <= LONG_MAX) {
+    return { airport: first.destination, minutes: Math.round(gap), label: `${Math.round(gap)} min in ${first.destination}`, vegasOvernight: false };
+  }
   if (!overnightGround) return null;
   return {
+    airport: first.destination,
+    minutes: Math.round(gap),
     vegasOvernight,
     label: vegasOvernight ? "Overnight in Las Vegas" : `Overnight ground stop in ${first.destination}`,
   };
@@ -118,12 +184,4 @@ function clockMinutes(local: string): number | null {
   const match = /T(\d{2}):(\d{2})/.exec(local);
   if (!match) return null;
   return Number(match[1]) * 60 + Number(match[2]);
-}
-
-function addDays(iso: string, days: number): string | null {
-  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
-  if (!match) return null;
-  const date = new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
-  date.setUTCDate(date.getUTCDate() + days);
-  return date.toISOString().slice(0, 10);
 }

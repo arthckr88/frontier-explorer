@@ -14,30 +14,45 @@
       <header class="sheet-head">
         <p class="mark">Frontier</p>
         <h1>Route Explorer</h1>
+        <p id="network" class="network"></p>
       </header>
+      <div class="starts" role="group" aria-label="Starting airport">
+        <button type="button" data-origin="SFO">SFO</button>
+        <button type="button" data-origin="OAK">OAK</button>
+        <button type="button" data-origin="LAS">LAS</button>
+        <button type="button" id="new-york">New York</button>
+      </div>
       <form id="search">
         <label>
           From
-          <input name="from" required minlength="3" maxlength="3" pattern="[A-Za-z]{3}" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="OAK" aria-label="From" enterkeyhint="next" />
+          <input name="from" required minlength="3" maxlength="3" pattern="[A-Za-z]{3}" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="SFO" aria-label="From" enterkeyhint="next" />
         </label>
         <label>
           To
-          <input name="to" required minlength="3" maxlength="3" pattern="[A-Za-z]{3}" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="LAS" aria-label="To" enterkeyhint="next" />
+          <input name="to" required minlength="3" maxlength="3" pattern="[A-Za-z]{3}" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="JFK" aria-label="To" enterkeyhint="next" />
         </label>
         <label>
           Date
           <input name="date" type="date" required aria-label="Date" />
         </label>
+        <div class="filters" role="group" aria-label="Filters">
+          <label class="chip"><input name="nonstop" type="checkbox" checked /> Nonstop</label>
+          <label class="chip"><input name="one" type="checkbox" checked /> 1 stop</label>
+          <label class="chip"><input name="two" type="checkbox" checked /> 2 stops</label>
+          <label class="chip"><input name="redeye" type="checkbox" checked /> Exclude red-eyes</label>
+        </div>
         <button type="submit">Search</button>
       </form>
       <p id="status" role="status"></p>
+      <button id="show-overnight" type="button" hidden>Show overnight flights</button>
       <div id="results"></div>
     </section>
     <div class="dock">
       <aside id="airport" class="airport" hidden></aside>
       <aside class="legend" aria-label="Legend">
-        <div><span class="swatch route"></span> Published route</div>
-        <div><span class="swatch selected"></span> This search</div>
+        <div><span class="swatch route"></span> Listed route</div>
+        <div><span class="swatch scheduled"></span> Saved times</div>
+        <div><span class="swatch selected"></span> Selected path</div>
         <div><span class="swatch node"></span> Airport</div>
       </aside>
     </div>

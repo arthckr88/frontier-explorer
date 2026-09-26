@@ -48,6 +48,7 @@ async function main() {
         continue;
       }
       if (!schedule.flights.some((existing) => sameFlight(existing, published))) schedule.flights.push(published);
+      markScheduled(schedule, published.origin, published.destination);
     }
     console.log(`${key}: ${result.flights.length} flight${result.flights.length === 1 ? "" : "s"}`);
   });
@@ -63,6 +64,13 @@ function readSchedule(): PublishedSchedule {
   parsed.checked ??= [];
   parsed.blocked ??= [];
   return parsed;
+}
+
+function markScheduled(schedule: PublishedSchedule, origin: string, destination: string) {
+  schedule.routes ??= [];
+  const route = schedule.routes.find((item) => item.origin === origin && item.destination === destination);
+  if (route) route.provenance = "scheduled";
+  else schedule.routes.push({ origin, destination, provenance: "scheduled" });
 }
 
 function uniquePairs(flights: PublishedFlight[]) {
