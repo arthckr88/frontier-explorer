@@ -1,11 +1,12 @@
 import Link from "next/link";
+import { TripSearch } from "@/components/trip-search";
 import { parseTripQuery } from "@/lib/airports/places";
 import { searchAirports } from "@/server/queries/read";
 
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; from?: string; to?: string; date?: string }>;
 }) {
   const params = await searchParams;
   const query = params.q?.trim() ?? "";
@@ -15,6 +16,7 @@ export default async function SearchPage({
 
   return (
     <section className="mx-auto max-w-3xl space-y-4">
+      <TripSearch action="/search" from={params.from} to={params.to} date={params.date} />
       <header>
         <h1 className="text-2xl font-medium">Search</h1>
         <p className="text-sm text-[#8b9790]">

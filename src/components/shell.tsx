@@ -2,7 +2,7 @@ import Link from "next/link";
 import { readFreshness } from "@/server/queries/read";
 
 const LINKS = [
-  ["/", "Map"],
+  ["/", "Search"],
   ["/discover", "Discover"],
   ["/planner", "Planner"],
   ["/search", "Search"],

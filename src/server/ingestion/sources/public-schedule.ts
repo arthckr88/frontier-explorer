@@ -282,6 +282,35 @@ async function loadDay(jar: CookieJar, origin: string, destination: string, date
   return { ok: true, flights: parsed.flights };
 }
 
+export type PublicDayResult =
+  | { ok: true; flights: PublicFlight[]; cached: boolean }
+  | { ok: false; blocked: boolean; detail: string };
+
+/** One city pair and one date. Used by search. The rolling crawl does not call this. */
+export async function fetchPublicScheduleDay(origin: string, destination: string, date: string): Promise<PublicDayResult> {
+  const cached = await readCache(origin, destination, date);
+  if (cached) return { ok: true, flights: cached, cached: true };
+  const first = await loadDayWithSession(origin, destination, date);
+  const day =
+    !first.ok && first.retryable && /406/.test(first.error)
+      ? await retryAfterBlock(origin, destination, date)
+      : first;
+  if (!day.ok) return { ok: false, blocked: /406/.test(day.error), detail: day.error };
+  await writeCache(origin, destination, date, day.flights);
+  return { ok: true, flights: day.flights, cached: false };
+}
+
+async function loadDayWithSession(origin: string, destination: string, date: string): Promise<DayResult> {
+  const jar = await openSession();
+  if (!jar) return { ok: false, error: "Frontier booking page did not load.", retryable: true };
+  return loadDay(jar, origin, destination, date);
+}
+
+async function retryAfterBlock(origin: string, destination: string, date: string): Promise<DayResult> {
+  await new Promise((resolve) => setTimeout(resolve, 2_000));
+  return loadDayWithSession(origin, destination, date);
+}
+
 class CookieJar {
   private values = new Map<string, string>();
 

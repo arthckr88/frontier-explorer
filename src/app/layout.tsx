@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Shell } from "@/components/shell";
 import "./globals.css";
@@ -15,7 +15,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Frontier Route Explorer",
-  description: "Map, history, and planning for the Frontier Airlines route network.",
+  description: "Search a Frontier route and date. Nonstop, one stop, and overnight Las Vegas.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export const dynamic = "force-dynamic";

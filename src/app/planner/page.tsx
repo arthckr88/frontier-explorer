@@ -41,7 +41,7 @@ export default async function PlannerPage({
     <section className="space-y-4">
       <header>
         <h1 className="text-2xl font-medium">Planner</h1>
-        <p className="max-w-2xl text-sm text-[#8b9790]">Timed itineraries use stored flight instances only. Overnight Las Vegas ground time stays visible when intentional stopovers are on. Red-eyes are excluded by default.</p>
+        <p className="max-w-2xl text-sm text-[#8b9790]">This page reads flights already saved in the database. To check a date that has not been saved, use the search on the home page. Overnight Las Vegas ground time stays visible when intentional stopovers are on. Red-eyes are excluded by default.</p>
       </header>
       <form className="grid gap-2 rounded-md border border-[#24302a] bg-[#12161b] p-3 md:grid-cols-[1fr_180px_auto]" action="/planner">
         <input name="q" defaultValue={params.q || selected?.query || "OAK → LAX"} className="rounded border border-[#24302a] bg-[#090b0d] px-3 py-2 text-sm" aria-label="Trip" />

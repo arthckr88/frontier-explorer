@@ -1,10 +1,24 @@
 import Link from "next/link";
 import { ExplorerMap } from "@/components/explorer-map";
 import { StatusBadge } from "@/components/status-badge";
+import { TripSearch } from "@/components/trip-search";
 import { moduleOptions, readDashboard, readFreshness, readNetwork, tileStyle } from "@/server/queries/read";
 import { timingCopy } from "@/lib/time/copy";
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ from?: string; to?: string; date?: string }>;
+}) {
+  const params = await searchParams;
+  const searching = Boolean(params.from || params.to || params.date);
+  if (searching) {
+    return (
+      <div className="space-y-4">
+        <TripSearch action="/" from={params.from} to={params.to} date={params.date} />
+      </div>
+    );
+  }
   const [network, dashboard, freshness] = await Promise.all([
     readNetwork().catch((error: Error) => ({ dbError: error.message, routes: [], airports: [] })),
     readDashboard().catch(() => null),
@@ -24,6 +38,7 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-4">
+      <TripSearch action="/" from={params.from} to={params.to} date={params.date} />
       {network.dbError ? (
         <p className="rounded-md border border-[#e2a84a]/40 bg-[#181e24] px-3 py-2 text-sm text-[#e2a84a]">{network.dbError}</p>
       ) : null}
