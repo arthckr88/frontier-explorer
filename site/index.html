@@ -2,26 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Frontier search</title>
-    <meta name="description" content="Search a Frontier route and date from the published schedule." />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Frontier Route Explorer</title>
+    <meta name="description" content="Published Frontier routes on a map. Search an origin, destination, and date." />
+    <link rel="stylesheet" href="maplibre-gl.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main>
-      <header>
+    <div id="map" role="application" aria-label="Published Frontier route map"></div>
+    <section class="sheet" aria-label="Search">
+      <header class="sheet-head">
         <p class="mark">Frontier</p>
-        <h1>Search</h1>
-        <p class="lede">From, to, and a date. Results come from the schedule published with this page.</p>
+        <h1>Route Explorer</h1>
       </header>
       <form id="search">
         <label>
           From
-          <input name="from" required minlength="3" maxlength="3" pattern="[A-Za-z]{3}" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="OAK" aria-label="From" />
+          <input name="from" required minlength="3" maxlength="3" pattern="[A-Za-z]{3}" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="OAK" aria-label="From" enterkeyhint="next" />
         </label>
         <label>
           To
-          <input name="to" required minlength="3" maxlength="3" pattern="[A-Za-z]{3}" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="LAS" aria-label="To" />
+          <input name="to" required minlength="3" maxlength="3" pattern="[A-Za-z]{3}" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="LAS" aria-label="To" enterkeyhint="next" />
         </label>
         <label>
           Date
@@ -31,8 +32,22 @@
       </form>
       <p id="status" role="status"></p>
       <div id="results"></div>
-    </main>
+    </section>
+    <div class="dock">
+      <aside id="airport" class="airport" hidden></aside>
+      <aside class="legend" aria-label="Legend">
+        <div><span class="swatch route"></span> Published route</div>
+        <div><span class="swatch selected"></span> This search</div>
+        <div><span class="swatch node"></span> Airport</div>
+      </aside>
+    </div>
+    <script>
+      window.addEventListener("error", (event) => {
+        const note = document.querySelector("#status");
+        if (note && !note.textContent) note.textContent = event.message || "The page script failed.";
+      });
+    </script>
     <script type="module" src="app.js"></script>
-    <noscript>Search needs JavaScript to read the published schedule in this page.</noscript>
+    <noscript>The map and search need JavaScript to read the published schedule.</noscript>
   </body>
 </html>

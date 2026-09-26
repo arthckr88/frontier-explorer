@@ -14,5 +14,29 @@ copyFileSync(new URL("../site/index.html", import.meta.url), new URL("../dist/in
 copyFileSync(new URL("../site/app.js", import.meta.url), new URL("../dist/app.js", import.meta.url));
 copyFileSync(new URL("../site/styles.css", import.meta.url), new URL("../dist/styles.css", import.meta.url));
 copyFileSync(new URL("../data/flights.json", import.meta.url), new URL("../dist/flights.json", import.meta.url));
+writeFileSync(new URL("../dist/airports.json", import.meta.url), JSON.stringify(publishedAirports()));
+copyFileSync(new URL("../node_modules/maplibre-gl/dist/maplibre-gl.mjs", import.meta.url), new URL("../dist/maplibre-gl.mjs", import.meta.url));
+copyFileSync(new URL("../node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs", import.meta.url), new URL("../dist/maplibre-gl-shared.mjs", import.meta.url));
+copyFileSync(new URL("../node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs", import.meta.url), new URL("../dist/maplibre-gl-worker.mjs", import.meta.url));
+copyFileSync(new URL("../node_modules/maplibre-gl/dist/maplibre-gl.css", import.meta.url), new URL("../dist/maplibre-gl.css", import.meta.url));
 copyFileSync(new URL("../dist/index.html", import.meta.url), new URL("../dist/404.html", import.meta.url));
 console.log("Wrote dist/ for GitHub Pages.");
+
+function publishedAirports() {
+  const flights = JSON.parse(readFileSync(new URL("../data/flights.json", import.meta.url), "utf8"));
+  const codes = new Set();
+  for (const flight of flights.flights ?? []) {
+    codes.add(flight.origin);
+    codes.add(flight.destination);
+  }
+  const airports = JSON.parse(readFileSync(new URL("../data/airports.json", import.meta.url), "utf8"));
+  return airports
+    .filter((airport) => codes.has(airport.iata) && Number.isFinite(airport.lat) && Number.isFinite(airport.lon))
+    .map((airport) => ({
+      iata: airport.iata,
+      name: airport.name,
+      city: airport.city,
+      lat: airport.lat,
+      lon: airport.lon,
+    }));
+}
