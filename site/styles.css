@@ -93,32 +93,58 @@ h1 {
 
 .filters {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: stretch;
   gap: 6px;
   grid-column: 1 / -1;
 }
 
-.chip {
+label.chip {
   display: flex;
+  flex-flow: row nowrap;
   align-items: center;
-  gap: 6px;
-  min-height: 36px;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  min-height: 40px;
+  margin: 0;
   border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 4px 10px;
+  border-radius: 8px;
+  padding: 8px 12px;
   color: var(--muted);
   letter-spacing: 0;
   text-transform: none;
   font-family: "Segoe UI", system-ui, sans-serif;
-  font-size: 0.82rem;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
-.chip:has(input:checked) {
+label.chip span {
+  flex: 1 1 auto;
+  min-width: 0;
+  letter-spacing: 0;
+  text-transform: none;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+label.chip input[type="checkbox"] {
+  width: 1.125rem;
+  height: 1.125rem;
+  min-width: 1.125rem;
+  flex: 0 0 1.125rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  accent-color: var(--accent);
+}
+
+label.chip:has(input:checked) {
   color: var(--text);
   border-color: var(--accent);
 }
-
-.chip input { accent-color: var(--accent); }
 
 #show-overnight { margin-top: 8px; }
 
@@ -128,7 +154,7 @@ form {
   gap: 8px;
 }
 
-label {
+.field {
   display: grid;
   gap: 4px;
   font-family: ui-monospace, monospace;
@@ -138,8 +164,8 @@ label {
   color: var(--muted);
 }
 
-label:nth-child(3),
-button { grid-column: 1 / -1; }
+.field:nth-child(3),
+form > button { grid-column: 1 / -1; }
 
 input, button {
   font-family: "Segoe UI", system-ui, sans-serif;
@@ -149,7 +175,7 @@ input, button {
   color: var(--text);
 }
 
-input {
+input:not([type="checkbox"]) {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -313,10 +339,13 @@ button {
     bottom: 0;
     left: 0;
     width: auto;
-    max-height: min(46vh, 24rem);
+    height: auto;
+    max-height: min(52dvh, 46vh, 22rem);
     border-radius: 16px 16px 0 0;
     padding-bottom: calc(12px + env(safe-area-inset-bottom));
   }
+
+  .network { display: none; }
 
   .dock {
     top: 12px;
@@ -332,6 +361,6 @@ button {
 
   .maplibregl-ctrl-bottom-right,
   .maplibregl-ctrl-bottom-left {
-    bottom: calc(min(46vh, 24rem) + 8px);
+    bottom: calc(min(52dvh, 46vh, 22rem) + 8px);
   }
 }
