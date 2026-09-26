@@ -193,13 +193,15 @@ form {
 
 form > button { grid-column: 1 / -1; }
 
-#clear {
+#clear,
+#network-toggle {
   border: 1px solid var(--line);
   background: transparent;
   color: var(--text);
 }
 
-#clear[hidden] { display: none; }
+#clear[hidden],
+#network-toggle[hidden] { display: none; }
 
 input, button {
   font-family: "Segoe UI", system-ui, sans-serif;

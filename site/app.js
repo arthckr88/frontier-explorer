@@ -43,6 +43,8 @@ let originPick = "";
 let pathPairs = new Set();
 let focusPairs = new Set();
 let applyingField = false;
+let isolatePath = false;
+let showNetwork = false;
 
 load().catch((error) => {
   status.textContent = error instanceof Error ? error.message : "The published schedule did not load.";
@@ -104,6 +106,12 @@ showOvernight.addEventListener("click", () => {
 
 document.querySelector("#clear").addEventListener("click", () => clearSearch());
 
+document.querySelector("#network-toggle").addEventListener("click", () => {
+  showNetwork = !showNetwork;
+  syncNetworkToggle();
+  paintRoutes();
+});
+
 for (const button of document.querySelectorAll("[data-origin]")) {
   button.addEventListener("click", () => chooseOrigin(button.dataset.origin ?? ""));
 }
@@ -160,6 +168,8 @@ function chooseOrigin(code) {
   }
   clearEndpoint("to");
   pathPairs = new Set();
+  isolatePath = false;
+  showNetwork = false;
   const saved = savedDestinations(code);
   focusPairs = new Set(saved.map((destination) => `${code}|${destination}`));
   results.replaceChildren();
@@ -180,6 +190,7 @@ function search() {
   showOvernight.hidden = true;
   pathPairs = new Set();
   focusPairs = new Set();
+  isolatePath = false;
   closeSuggest("from");
   closeSuggest("to");
   commitField("from");
@@ -215,8 +226,10 @@ function search() {
     return;
   }
   const title = `${endTitle(from)} → ${destinations.length === 1 ? cityName(destinations[0]) : endTitle(to)}`;
-  const listed = listedDirects(from.codes, destinations).length > 0;
+  const listedPairs = listedDirects(from.codes, destinations);
   const maxStops = Number(form.elements.stops.value);
+  isolatePath = true;
+  showNetwork = false;
   let hidden = 0;
   let itineraries = [];
   for (const origin of from.codes) {
@@ -234,20 +247,22 @@ function search() {
   for (const itinerary of itineraries) {
     for (const segment of itinerary.segments) pathPairs.add(`${segment.origin}|${segment.destination}`);
   }
+  for (const [origin, destination] of listedPairs) pathPairs.add(`${origin}|${destination}`);
   if (itineraries.length === 0) {
-    if (!publishedDates().includes(date)) {
-      status.textContent = `No published flights for ${date} yet. Dates are added by the schedule update, not by this search.`;
-      if (listed) status.textContent += ` ${title}. Frontier lists this route. No departure time is saved.`;
-    } else if (hidden > 0) {
+    if (hidden > 0) {
       status.textContent = `No daytime itinerary for ${title} on ${date}. ${hiddenCopy(hidden)}`;
       showOvernight.hidden = false;
-    } else if (listed) {
-      status.textContent = `${title}. Frontier lists this route. No departure time is saved.`;
     } else {
-      status.textContent = `${title}. No saved itinerary on ${date}.`;
+      const alternatives = savedTripDates(from.codes, destinations, maxStops).filter((hit) => hit.date !== date);
+      if (alternatives.length) {
+        status.textContent = `${title}. No saved flight on ${date}.`;
+        showDateChoices(alternatives);
+      } else {
+        status.textContent = `${title}. No saved flight for this route.`;
+      }
     }
     paintRoutes();
-    fit([...from.codes, ...destinations], paddingForSheet());
+    fit([...from.codes, ...destinations, ...listedPairs.flatMap(([origin, destination]) => [origin, destination])], paddingForSheet());
     return;
   }
   status.textContent = `${itineraries.length} itinerar${itineraries.length === 1 ? "y" : "ies"} for ${title} on ${date}.`;
@@ -464,26 +479,49 @@ function scheduledRoutes() {
   return routes;
 }
 
+function pathKeys() {
+  const keys = new Set(pathPairs);
+  if (!isolatePath) return keys;
+  const from = readEndpoint("from");
+  const destinations = readEndpoint("to").codes.filter((code) => !from.codes.includes(code));
+  for (const [origin, destination] of listedDirects(from.codes, destinations)) keys.add(`${origin}|${destination}`);
+  return keys;
+}
+
 function routeCollection() {
-  const dim = pathPairs.size > 0 || focusPairs.size > 0;
-  const features = arcs.map((arc) => {
+  const pathOnly = isolatePath && !showNetwork;
+  const selected = pathKeys();
+  const dim = !pathOnly && (selected.size > 0 || focusPairs.size > 0);
+  const features = [];
+  for (const arc of arcs) {
     const key = `${arc.origin}|${arc.destination}`;
-    const active = pathPairs.has(key) ? 2 : focusPairs.has(key) ? 1 : 0;
-    return {
+    const active = selected.has(key) ? 2 : focusPairs.has(key) ? 1 : 0;
+    if (pathOnly && !selected.has(key)) continue;
+    features.push({
       type: "Feature",
       properties: { origin: arc.origin, destination: arc.destination, provenance: arc.provenance, active, dim: dim && active === 0 },
       geometry: { type: "LineString", coordinates: arc.coordinates },
-    };
-  });
+    });
+  }
   features.sort((left, right) => left.properties.active - right.properties.active);
   return { type: "FeatureCollection", features };
 }
 
 function airportCollection() {
   const selected = new Set([...readEndpoint("from").codes, ...readEndpoint("to").codes]);
+  let records = [...airports.values()];
+  if (isolatePath && !showNetwork) {
+    const keep = new Set(selected);
+    for (const key of pathPairs) {
+      const [origin, destination] = key.split("|");
+      keep.add(origin);
+      keep.add(destination);
+    }
+    records = records.filter((airport) => keep.has(airport.iata));
+  }
   return {
     type: "FeatureCollection",
-    features: [...airports.values()].map((airport) => ({
+    features: records.map((airport) => ({
       type: "Feature",
       properties: { iata: airport.iata, home: HOME.has(airport.iata), nyc: ["JFK", "LGA", "EWR"].includes(airport.iata), selected: selected.has(airport.iata) },
       geometry: { type: "Point", coordinates: [airport.lon, airport.lat] },
@@ -492,15 +530,19 @@ function airportCollection() {
 }
 
 function paintRoutes() {
+  const collection = routeCollection();
   const routes = map?.getSource("routes");
-  if (routes) routes.setData(routeCollection());
+  if (routes) routes.setData(collection);
   const dots = map?.getSource("airports");
   if (dots) dots.setData(airportCollection());
   const canvas = document.querySelector("#map");
   if (canvas) {
-    canvas.dataset.selected = [...pathPairs].join(",");
+    canvas.dataset.selected = [...pathKeys()].join(",");
     canvas.dataset.focus = [...focusPairs].join(",");
+    canvas.dataset.mode = isolatePath && !showNetwork ? "path" : "network";
+    canvas.dataset.visible = String(collection.features.length);
   }
+  syncNetworkToggle();
 }
 
 function outboundPairs(code) {
@@ -794,6 +836,43 @@ function pressStarts() {
   syncClear();
 }
 
+function savedTripDates(origins, destinations, maxStops) {
+  const hits = [];
+  for (const date of publishedDates()) {
+    let count = 0;
+    let hidden = 0;
+    for (const origin of origins) {
+      const found = searchPublished(schedule.flights, {
+        from: origin,
+        to: destinations,
+        date,
+        stops: { nonstop: true, one: maxStops >= 1, two: maxStops >= 2 },
+        excludeRedEyes: form.elements.redeye.checked,
+      });
+      count += found.itineraries.length;
+      hidden += found.hiddenRedEyes;
+    }
+    if (count > 0 || hidden > 0) hits.push({ date, count, hidden });
+  }
+  return hits;
+}
+
+function showDateChoices(dates) {
+  for (const hit of dates) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "card";
+    button.textContent = hit.count > 0
+      ? `${hit.date} · ${hit.count} itinerar${hit.count === 1 ? "y" : "ies"}`
+      : `${hit.date} · overnight flights`;
+    button.addEventListener("click", () => {
+      form.elements.date.value = hit.date;
+      search();
+    });
+    results.append(button);
+  }
+}
+
 function clearSearch() {
   const date = form.elements.date.value;
   const stops = form.elements.stops.value;
@@ -804,6 +883,8 @@ function clearSearch() {
   originPick = "";
   pathPairs = new Set();
   focusPairs = new Set();
+  isolatePath = false;
+  showNetwork = false;
   results.replaceChildren();
   showOvernight.hidden = true;
   airportCard.hidden = true;
@@ -826,6 +907,16 @@ function syncClear() {
   const from = form.elements.from;
   const to = form.elements.to;
   document.querySelector("#clear").hidden = !from.value.trim() && !to.value.trim();
+}
+
+function syncNetworkToggle() {
+  const button = document.querySelector("#network-toggle");
+  const from = readEndpoint("from");
+  const to = readEndpoint("to");
+  const searching = from.codes.length > 0 && to.codes.some((code) => !from.codes.includes(code));
+  button.hidden = !searching;
+  button.textContent = showNetwork ? "Hide network" : "Show network";
+  button.setAttribute("aria-pressed", showNetwork ? "true" : "false");
 }
 
 function badge(text, kind) {
