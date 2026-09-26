@@ -68,12 +68,22 @@ form.addEventListener("submit", (event) => {
 form.addEventListener("change", (event) => {
   const target = event.target;
   if (!(target instanceof HTMLInputElement || target instanceof HTMLSelectElement)) return;
+  syncFiltersToggle();
   if (target.name === "redeye" || target.name === "stops" || target.name === "sort" || target.name === "date" || target.name === "duration" || target.name === "depart" || target.name === "arrive" || target.name === "layover") search();
 });
+
+const filtersPanel = document.querySelector("#filters");
+const filtersToggle = document.querySelector("#filters-toggle");
+filtersToggle.addEventListener("click", () => setFiltersOpen(filtersPanel.hidden));
+for (const button of document.querySelectorAll(".filters-close")) {
+  button.addEventListener("click", () => setFiltersOpen(false));
+}
+syncFiltersToggle();
 
 const hubInput = form.elements.hub;
 hubInput.addEventListener("input", () => {
   renderHubSuggest();
+  syncFiltersToggle();
   const raw = hubInput.value.trim();
   if (!raw || resolveHub(raw)) search();
 });
@@ -1041,6 +1051,7 @@ function clearSearch() {
   form.elements.layover.value = layover;
   form.elements.hub.value = hub;
   connectionHubs = [];
+  syncFiltersToggle();
   pressStarts();
   paintRoutes();
   fit([...airports.keys()], window.innerWidth <= 800 ? paddingForSheet() : { left: 420, bottom: 48, right: 40, top: 40 });
@@ -1048,6 +1059,32 @@ function clearSearch() {
   status.textContent = dates.length
     ? `Saved flights run ${dates[0]} through ${dates[dates.length - 1]}. Listed routes stay on the map without a departure time.`
     : "Listed routes are on the map. No timed flights are saved in this file.";
+}
+
+function activeFilterCount() {
+  let count = 0;
+  if (form.elements.stops.value !== "2") count += 1;
+  if (form.elements.duration.value) count += 1;
+  if (form.elements.depart.value) count += 1;
+  if (form.elements.arrive.value) count += 1;
+  if (form.elements.layover.value) count += 1;
+  const hub = form.elements.hub.value.trim();
+  if (hub && hub.toLowerCase() !== "any") count += 1;
+  return count;
+}
+
+function syncFiltersToggle() {
+  const count = activeFilterCount();
+  filtersToggle.textContent = count ? `Filters · ${count}` : "Filters";
+  filtersToggle.setAttribute("aria-expanded", filtersPanel.hidden ? "false" : "true");
+}
+
+function setFiltersOpen(open) {
+  filtersPanel.hidden = !open;
+  if (!open) document.querySelector("#hub-list").hidden = true;
+  syncFiltersToggle();
+  if (open) filtersPanel.querySelector(".filters-bar")?.scrollIntoView({ block: "nearest" });
+  else filtersToggle.scrollIntoView({ block: "nearest" });
 }
 
 function syncClear() {

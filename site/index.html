@@ -49,8 +49,12 @@
           <input name="redeye" type="checkbox" checked role="switch" />
           <span>Exclude red-eyes</span>
         </label>
-        <fieldset class="filters">
-          <legend>Filters</legend>
+        <button id="filters-toggle" type="button" aria-expanded="false" aria-controls="filters">Filters</button>
+        <fieldset id="filters" class="filters" hidden>
+          <div class="filters-bar">
+            <span>Filters</span>
+            <button class="filters-close" type="button">Close</button>
+          </div>
           <label class="field">
             Stops
             <select name="stops" aria-label="Stops">
@@ -100,6 +104,7 @@
             <input name="hub" type="text" autocomplete="off" spellcheck="false" placeholder="Any" aria-label="Connecting airport" aria-autocomplete="list" aria-controls="hub-list" />
             <ul id="hub-list" class="suggest" role="listbox" hidden></ul>
           </label>
+          <button class="filters-close" type="button">Close</button>
         </fieldset>
         <button type="submit">Search</button>
         <button id="network-toggle" type="button" hidden aria-pressed="false">Show network</button>
