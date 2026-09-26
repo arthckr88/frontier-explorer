@@ -46,6 +46,24 @@ export type PublishedSearchResult = {
   hiddenRedEyes: number;
 };
 
+export type TimeWindow = "morning" | "afternoon" | "evening";
+
+export type ItineraryFilter = {
+  maxElapsedMinutes?: number | null;
+  departureWindow?: TimeWindow | "" | null;
+  arrivalWindow?: TimeWindow | "" | null;
+  connectingAirport?: string | null;
+  maxLayoverMinutes?: number | null;
+};
+
+export type ItineraryFilterHidden = {
+  duration: number;
+  departure: number;
+  arrival: number;
+  connecting: number;
+  layover: number;
+};
+
 const MIN_CONNECTION = 60;
 const NORMAL_MAX = 4 * 60;
 const LONG_MAX = 8 * 60;
@@ -142,6 +160,42 @@ export function searchPublished(
   return { itineraries: results, hiddenRedEyes };
 }
 
+export function filterItineraries(itineraries: PublishedItinerary[], filters: ItineraryFilter = {}) {
+  const hidden: ItineraryFilterHidden = { duration: 0, departure: 0, arrival: 0, connecting: 0, layover: 0 };
+  const kept: PublishedItinerary[] = [];
+  const maxElapsed = positiveMinutes(filters.maxElapsedMinutes);
+  const maxLayover = positiveMinutes(filters.maxLayoverMinutes);
+  const hub = filters.connectingAirport?.trim().toUpperCase() ?? "";
+  const depart = filters.departureWindow || "";
+  const arrive = filters.arrivalWindow || "";
+  for (const itinerary of itineraries) {
+    if (maxElapsed !== null && itinerary.elapsedMinutes >= maxElapsed) {
+      hidden.duration += 1;
+      continue;
+    }
+    const first = itinerary.segments[0];
+    const last = itinerary.segments[itinerary.segments.length - 1];
+    if (depart && !inTimeWindow(first?.departureLocal ?? "", depart)) {
+      hidden.departure += 1;
+      continue;
+    }
+    if (arrive && !inTimeWindow(last?.arrivalLocal ?? "", arrive)) {
+      hidden.arrival += 1;
+      continue;
+    }
+    if (hub && !itinerary.connections.some((connection) => connection.airport === hub)) {
+      hidden.connecting += 1;
+      continue;
+    }
+    if (maxLayover !== null && itinerary.connections.some((connection) => connection.minutes > maxLayover)) {
+      hidden.layover += 1;
+      continue;
+    }
+    kept.push(itinerary);
+  }
+  return { itineraries: kept, hidden };
+}
+
 function departing(byOrigin: Map<string, PublishedFlight[]>, origin: string, date: string) {
   return (byOrigin.get(origin) ?? []).filter((flight) => flight.date === date);
 }
@@ -178,6 +232,19 @@ function minutesBetween(startUtc: string, endUtc: string): number {
   const end = Date.parse(endUtc);
   if (!Number.isFinite(start) || !Number.isFinite(end)) return Number.NaN;
   return (end - start) / 60_000;
+}
+
+function positiveMinutes(value: number | null | undefined) {
+  return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : null;
+}
+
+function inTimeWindow(local: string, windowName: string) {
+  const minutes = clockMinutes(local);
+  if (minutes === null) return false;
+  if (windowName === "morning") return minutes >= 5 * 60 && minutes < 12 * 60;
+  if (windowName === "afternoon") return minutes >= 12 * 60 && minutes < 17 * 60;
+  if (windowName === "evening") return minutes >= 17 * 60 && minutes < 22 * 60;
+  return true;
 }
 
 function clockMinutes(local: string): number | null {

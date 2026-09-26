@@ -1,5 +1,5 @@
 import { Map as RouteMap, NavigationControl } from "./maplibre-gl.mjs";
-import { searchPublished } from "./search.js";
+import { filterItineraries, searchPublished } from "./search.js";
 
 const TILE_STYLE = "https://tiles.openfreemap.org/styles/dark";
 const HOME = new Set(["OAK", "SFO", "LAS"]);
@@ -41,6 +41,7 @@ let map = null;
 let arcs = [];
 let originPick = "";
 let pathPairs = new Set();
+let connectionHubs = [];
 let focusPairs = new Set();
 let applyingField = false;
 let isolatePath = false;
@@ -67,7 +68,23 @@ form.addEventListener("submit", (event) => {
 form.addEventListener("change", (event) => {
   const target = event.target;
   if (!(target instanceof HTMLInputElement || target instanceof HTMLSelectElement)) return;
-  if (target.name === "redeye" || target.name === "stops" || target.name === "sort" || target.name === "date") search();
+  if (target.name === "redeye" || target.name === "stops" || target.name === "sort" || target.name === "date" || target.name === "duration" || target.name === "depart" || target.name === "arrive" || target.name === "layover") search();
+});
+
+const hubInput = form.elements.hub;
+hubInput.addEventListener("input", () => {
+  renderHubSuggest();
+  const raw = hubInput.value.trim();
+  if (!raw || resolveHub(raw)) search();
+});
+hubInput.addEventListener("focus", () => renderHubSuggest());
+hubInput.addEventListener("blur", () => {
+  window.setTimeout(() => {
+    document.querySelector("#hub-list").hidden = true;
+    if (document.activeElement === hubInput) return;
+    const raw = hubInput.value.trim();
+    if (!raw || resolveHub(raw)) search();
+  }, 160);
 });
 
 for (const name of ["from", "to"]) {
@@ -244,13 +261,22 @@ function search() {
     itineraries.push(...found.itineraries);
   }
   itineraries = sortItineraries(itineraries, form.elements.sort.value);
-  if (itineraries.length > 0) {
-    for (const segment of itineraries[0].segments) pathPairs.add(`${segment.origin}|${segment.destination}`);
-  } else if (hidden === 0) {
+  connectionHubs = hubsIn(itineraries);
+  const filtered = filterItineraries(itineraries, readFilterQuery());
+  const visible = filtered.itineraries;
+  if (visible.length > 0) {
+    for (const segment of visible[0].segments) pathPairs.add(`${segment.origin}|${segment.destination}`);
+  } else if (itineraries.length === 0 && hidden === 0) {
     for (const [origin, destination] of listedPairs) pathPairs.add(`${origin}|${destination}`);
   }
-  if (itineraries.length === 0) {
-    if (hidden > 0) {
+  if (visible.length === 0) {
+    if (itineraries.length > 0) {
+      status.textContent = filterEmptyMessage(filtered.hidden, title, date);
+      if (hidden > 0) {
+        status.textContent += ` ${hiddenCopy(hidden)}`;
+        showOvernight.hidden = false;
+      }
+    } else if (hidden > 0) {
       status.textContent = `No daytime itinerary for ${title} on ${date}. ${hiddenCopy(hidden)}`;
       showOvernight.hidden = false;
     } else {
@@ -266,14 +292,16 @@ function search() {
     fit([...from.codes, ...destinations, ...listedPairs.flatMap(([origin, destination]) => [origin, destination])], paddingForSheet());
     return;
   }
-  status.textContent = `${itineraries.length} itinerar${itineraries.length === 1 ? "y" : "ies"} for ${title} on ${date}.`;
+  status.textContent = `${visible.length} itinerar${visible.length === 1 ? "y" : "ies"} for ${title} on ${date}.`;
+  const filterNote = filterHideNote(filtered.hidden);
+  if (filterNote) status.textContent += ` ${filterNote}`;
   if (hidden > 0) {
     status.textContent += ` ${hiddenCopy(hidden)}`;
     showOvernight.hidden = false;
   }
-  itineraries.forEach((itinerary, index) => results.append(card(itinerary, date, index === 0, to.notes)));
+  visible.forEach((itinerary, index) => results.append(card(itinerary, date, index === 0, to.notes)));
   paintRoutes();
-  fit(itineraries[0].segments.flatMap((segment) => [segment.origin, segment.destination]), paddingForSheet());
+  fit(visible[0].segments.flatMap((segment) => [segment.origin, segment.destination]), paddingForSheet());
 }
 
 function card(itinerary, date, selected, notes = {}) {
@@ -643,6 +671,99 @@ function hiddenCopy(count) {
   return `${count} overnight flight${count === 1 ? " is" : "s are"} hidden.`;
 }
 
+function hubsIn(itineraries) {
+  const found = new Set();
+  for (const itinerary of itineraries) {
+    for (const connection of itinerary.connections) found.add(connection.airport);
+  }
+  return [...found].sort();
+}
+
+function readFilterQuery() {
+  const duration = Number(form.elements.duration.value);
+  const layover = Number(form.elements.layover.value);
+  return {
+    maxElapsedMinutes: duration > 0 ? duration : null,
+    departureWindow: form.elements.depart.value || null,
+    arrivalWindow: form.elements.arrive.value || null,
+    connectingAirport: resolveHub(form.elements.hub.value) || null,
+    maxLayoverMinutes: layover > 0 ? layover : null,
+  };
+}
+
+function resolveHub(value) {
+  const trimmed = value.trim();
+  if (!trimmed || trimmed.toLowerCase() === "any") return "";
+  const code = trimmed.toUpperCase();
+  if (/^[A-Z]{3}$/.test(code)) return code;
+  const query = trimmed.toLowerCase();
+  const hits = connectionHubs.filter((hub) => {
+    const airport = airports.get(hub);
+    return airport?.city.toLowerCase() === query || airportPlace(hub).toLowerCase() === query;
+  });
+  return hits.length === 1 ? hits[0] : "";
+}
+
+function renderHubSuggest() {
+  const list = document.querySelector("#hub-list");
+  const query = form.elements.hub.value.trim().toLowerCase();
+  const items = connectionHubs.filter((code) => {
+    if (!query) return true;
+    const airport = airports.get(code);
+    return code.toLowerCase().startsWith(query) || (airport?.city.toLowerCase().startsWith(query) ?? false);
+  });
+  list.replaceChildren();
+  if (!items.length || document.activeElement !== form.elements.hub) {
+    list.hidden = true;
+    return;
+  }
+  for (const code of items) {
+    const entry = document.createElement("li");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = airportPlace(code);
+    button.addEventListener("mousedown", (event) => {
+      event.preventDefault();
+      form.elements.hub.value = code;
+      list.hidden = true;
+      search();
+    });
+    entry.append(button);
+    list.append(entry);
+  }
+  list.hidden = false;
+}
+
+function durationPhrase() {
+  const value = form.elements.duration.value;
+  if (value === "300") return "Under 5 hours";
+  if (value === "480") return "Under 8 hours";
+  if (value === "720") return "Under 12 hours";
+  return "Duration";
+}
+
+function filterEmptyMessage(hidden, title, date) {
+  const names = [];
+  if (hidden.duration) names.push(durationPhrase());
+  if (hidden.departure) names.push("Departure time");
+  if (hidden.arrival) names.push("Arrival time");
+  if (hidden.connecting) names.push("Connecting airport");
+  if (hidden.layover) names.push("Layover");
+  const who = names.length ? names.join(" and ") : "Filters";
+  const count = hidden.duration ? ` ${hidden.duration} hidden by the duration cap.` : "";
+  return `${who} hid every saved itinerary for ${title} on ${date}.${count}`;
+}
+
+function filterHideNote(hidden) {
+  const notes = [];
+  if (hidden.duration) notes.push(`${hidden.duration} hidden by the duration cap`);
+  if (hidden.departure) notes.push(`${hidden.departure} hidden by the departure window`);
+  if (hidden.arrival) notes.push(`${hidden.arrival} hidden by the arrival window`);
+  if (hidden.connecting) notes.push(`${hidden.connecting} hidden by the connecting airport`);
+  if (hidden.layover) notes.push(`${hidden.layover} hidden by the layover cap`);
+  return notes.length ? `${notes.join(". ")}.` : "";
+}
+
 function applySuggestion(name, item, runSearch = true) {
   if (item.kind === "group") setEndpoint(name, groupSelection(item.group));
   else {
@@ -864,7 +985,7 @@ function savedTripDates(origins, destinations, maxStops) {
         stops: { nonstop: true, one: maxStops >= 1, two: maxStops >= 2 },
         excludeRedEyes: form.elements.redeye.checked,
       });
-      count += found.itineraries.length;
+      count += filterItineraries(found.itineraries, readFilterQuery()).itineraries.length;
       hidden += found.hiddenRedEyes;
     }
     if (count > 0 || hidden > 0) hits.push({ date, count, hidden });
@@ -893,6 +1014,11 @@ function clearSearch() {
   const stops = form.elements.stops.value;
   const sort = form.elements.sort.value;
   const redeye = form.elements.redeye.checked;
+  const duration = form.elements.duration.value;
+  const depart = form.elements.depart.value;
+  const arrive = form.elements.arrive.value;
+  const layover = form.elements.layover.value;
+  const hub = form.elements.hub.value;
   clearEndpoint("from");
   clearEndpoint("to");
   originPick = "";
@@ -909,6 +1035,12 @@ function clearSearch() {
   form.elements.stops.value = stops;
   form.elements.sort.value = sort;
   form.elements.redeye.checked = redeye;
+  form.elements.duration.value = duration;
+  form.elements.depart.value = depart;
+  form.elements.arrive.value = arrive;
+  form.elements.layover.value = layover;
+  form.elements.hub.value = hub;
+  connectionHubs = [];
   pressStarts();
   paintRoutes();
   fit([...airports.keys()], window.innerWidth <= 800 ? paddingForSheet() : { left: 420, bottom: 48, right: 40, top: 40 });

@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { searchPublished, type PublishedSchedule } from "@/site/published-search";
+import { filterItineraries, searchPublished, type PublishedSchedule } from "@/site/published-search";
 
 const published = JSON.parse(readFileSync(new URL("../../data/flights.json", import.meta.url), "utf8")) as PublishedSchedule;
 
@@ -65,6 +65,50 @@ describe("published schedule search", () => {
     expect(result.itineraries[0]?.vegasOvernight).toBe(true);
     expect(result.itineraries[0]?.connectionLabel).toBe("Overnight in Las Vegas");
     expect(result.itineraries[0]?.segments[1]?.destination).toBe("LGA");
+  });
+
+  it("hides the San Francisco to New York trip that runs past 8 hours", () => {
+    const found = find({
+      from: "SFO",
+      to: ["JFK", "LGA", "EWR"],
+      date: "2026-09-26",
+      stops: { nonstop: true, one: true, two: true },
+      excludeRedEyes: false,
+    });
+    const longTrip = found.itineraries.find((itinerary) => itinerary.segments.some((segment) => segment.flightNumber === "1448"));
+    expect(longTrip?.elapsedMinutes).toBeGreaterThanOrEqual(10 * 60);
+    const capped = filterItineraries(found.itineraries, { maxElapsedMinutes: 8 * 60 });
+    expect(capped.itineraries.some((itinerary) => itinerary.segments.some((segment) => segment.flightNumber === "1448"))).toBe(false);
+    expect(capped.hidden.duration).toBe(found.itineraries.length);
+    const restored = filterItineraries(found.itineraries, {});
+    expect(restored.itineraries.some((itinerary) => itinerary.segments.some((segment) => segment.flightNumber === "1448"))).toBe(true);
+    expect(restored.hidden.duration).toBe(0);
+  });
+
+  it("filters local departure, arrival, hub, and layover without dropping an open Las Vegas overnight", () => {
+    const found = find({
+      from: "SFO",
+      to: ["JFK", "LGA", "EWR"],
+      date: "2026-09-26",
+      stops: { nonstop: true, one: true, two: true },
+      excludeRedEyes: false,
+    });
+    const morningArrival = filterItineraries(found.itineraries, { arrivalWindow: "morning" });
+    expect(morningArrival.itineraries.length).toBeGreaterThan(0);
+    expect(morningArrival.itineraries.every((itinerary) => itinerary.segments.at(-1)?.arrivalLocal.includes("T11:50:00"))).toBe(true);
+    const eveningDeparture = filterItineraries(found.itineraries, { departureWindow: "evening" });
+    expect(eveningDeparture.itineraries.some((itinerary) => itinerary.segments[0]?.flightNumber === "1448")).toBe(false);
+    const atlanta = filterItineraries(found.itineraries, { connectingAirport: "ATL" });
+    expect(atlanta.itineraries.length).toBeGreaterThan(0);
+    expect(atlanta.itineraries.every((itinerary) => itinerary.connections.some((connection) => connection.airport === "ATL"))).toBe(true);
+    const lasVegas = filterItineraries(found.itineraries, { connectingAirport: "LAS" });
+    expect(lasVegas.itineraries.every((itinerary) => itinerary.connections.some((connection) => connection.airport === "LAS"))).toBe(true);
+    expect(lasVegas.itineraries.some((itinerary) => itinerary.segments[0]?.flightNumber === "1448")).toBe(false);
+
+    const overnight = find({ from: "OAK", to: "LAX", date: "2026-10-15" }).itineraries.find((itinerary) => itinerary.vegasOvernight);
+    expect(overnight).toBeTruthy();
+    expect(filterItineraries(overnight ? [overnight] : [], {}).itineraries).toHaveLength(1);
+    expect(filterItineraries(overnight ? [overnight] : [], { maxLayoverMinutes: 8 * 60 }).itineraries).toHaveLength(0);
   });
 });
 

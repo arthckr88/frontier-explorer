@@ -193,6 +193,26 @@ form {
 
 form > button { grid-column: 1 / -1; }
 
+.filters {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 4px 10px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgb(18 22 27 / 72%);
+}
+
+.filters legend {
+  padding: 0 6px;
+  color: var(--selected);
+  font-family: ui-monospace, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
 #clear,
 #network-toggle {
   border: 1px solid var(--line);
@@ -409,7 +429,7 @@ article.card { cursor: default; }
     left: 0;
     width: auto;
     height: auto;
-    max-height: min(52dvh, 46vh, 22rem);
+    max-height: min(78dvh, 40rem);
     border-radius: 16px 16px 0 0;
     padding-bottom: calc(12px + env(safe-area-inset-bottom));
   }
@@ -430,6 +450,6 @@ article.card { cursor: default; }
 
   .maplibregl-ctrl-bottom-right,
   .maplibregl-ctrl-bottom-left {
-    bottom: calc(min(52dvh, 46vh, 22rem) + 8px);
+    bottom: calc(min(78dvh, 40rem) + 8px);
   }
 }
