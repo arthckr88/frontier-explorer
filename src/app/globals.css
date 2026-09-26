@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+  --bg: #090b0d;
+  --panel: #12161b;
+  --panel-2: #181e24;
+  --line: #24302a;
+  --text: #e7ece8;
+  --muted: #8b9790;
+  --accent: #3dbe7a;
+  --active: #3dbe7a;
+  --upcoming: #3ec6d4;
+  --ending: #e2a84a;
+  --stale: #e07a3d;
+  --ended: #8b939c;
+  --selected: #e8ffb0;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-geist-sans), "Segoe UI", sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: #1d4d36;
+}
+
+.maplibregl-popup-content {
+  background: #12161b;
+  color: #e7ece8;
+  border: 1px solid #24302a;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.maplibregl-ctrl-group {
+  background: #12161b !important;
+  border: 1px solid #24302a !important;
+}
+
+.maplibregl-ctrl-group button {
+  filter: invert(1) hue-rotate(180deg);
+}
