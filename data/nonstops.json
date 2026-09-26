@@ -1,0 +1,4247 @@
+{
+  "carrier": "F9",
+  "sourceName": "US DOT T-100 Segment (All Carriers)",
+  "sourceUrl": "https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FMG",
+  "periodStart": "2025-07",
+  "periodEnd": "2026-06",
+  "rule": "UNIQUE_CARRIER F9, CLASS F, DEPARTURES_PERFORMED > 0, and PASSENGERS > 0",
+  "sentence": "This map shows 1,059 Frontier nonstop city pairs from US DOT T-100 Segment reports for July 2025 through June 2026, which does not include flights between two foreign airports.",
+  "pairs": [
+    {
+      "origin": "ANU",
+      "destination": "SJU"
+    },
+    {
+      "origin": "ATL",
+      "destination": "AUA"
+    },
+    {
+      "origin": "ATL",
+      "destination": "AUS"
+    },
+    {
+      "origin": "ATL",
+      "destination": "BDL"
+    },
+    {
+      "origin": "ATL",
+      "destination": "BOS"
+    },
+    {
+      "origin": "ATL",
+      "destination": "BUF"
+    },
+    {
+      "origin": "ATL",
+      "destination": "BWI"
+    },
+    {
+      "origin": "ATL",
+      "destination": "CLE"
+    },
+    {
+      "origin": "ATL",
+      "destination": "CMH"
+    },
+    {
+      "origin": "ATL",
+      "destination": "CUN"
+    },
+    {
+      "origin": "ATL",
+      "destination": "CVG"
+    },
+    {
+      "origin": "ATL",
+      "destination": "DEN"
+    },
+    {
+      "origin": "ATL",
+      "destination": "DFW"
+    },
+    {
+      "origin": "ATL",
+      "destination": "DTW"
+    },
+    {
+      "origin": "ATL",
+      "destination": "EWR"
+    },
+    {
+      "origin": "ATL",
+      "destination": "FLL"
+    },
+    {
+      "origin": "ATL",
+      "destination": "GRR"
+    },
+    {
+      "origin": "ATL",
+      "destination": "GUA"
+    },
+    {
+      "origin": "ATL",
+      "destination": "IAD"
+    },
+    {
+      "origin": "ATL",
+      "destination": "IAH"
+    },
+    {
+      "origin": "ATL",
+      "destination": "IND"
+    },
+    {
+      "origin": "ATL",
+      "destination": "JAX"
+    },
+    {
+      "origin": "ATL",
+      "destination": "JFK"
+    },
+    {
+      "origin": "ATL",
+      "destination": "LAS"
+    },
+    {
+      "origin": "ATL",
+      "destination": "LAX"
+    },
+    {
+      "origin": "ATL",
+      "destination": "LGA"
+    },
+    {
+      "origin": "ATL",
+      "destination": "MBJ"
+    },
+    {
+      "origin": "ATL",
+      "destination": "MCI"
+    },
+    {
+      "origin": "ATL",
+      "destination": "MCO"
+    },
+    {
+      "origin": "ATL",
+      "destination": "MDW"
+    },
+    {
+      "origin": "ATL",
+      "destination": "MEM"
+    },
+    {
+      "origin": "ATL",
+      "destination": "MIA"
+    },
+    {
+      "origin": "ATL",
+      "destination": "MKE"
+    },
+    {
+      "origin": "ATL",
+      "destination": "MSP"
+    },
+    {
+      "origin": "ATL",
+      "destination": "MSY"
+    },
+    {
+      "origin": "ATL",
+      "destination": "NAS"
+    },
+    {
+      "origin": "ATL",
+      "destination": "OKC"
+    },
+    {
+      "origin": "ATL",
+      "destination": "OMA"
+    },
+    {
+      "origin": "ATL",
+      "destination": "ORD"
+    },
+    {
+      "origin": "ATL",
+      "destination": "ORF"
+    },
+    {
+      "origin": "ATL",
+      "destination": "PBI"
+    },
+    {
+      "origin": "ATL",
+      "destination": "PHL"
+    },
+    {
+      "origin": "ATL",
+      "destination": "PHX"
+    },
+    {
+      "origin": "ATL",
+      "destination": "PLS"
+    },
+    {
+      "origin": "ATL",
+      "destination": "PUJ"
+    },
+    {
+      "origin": "ATL",
+      "destination": "PVR"
+    },
+    {
+      "origin": "ATL",
+      "destination": "RDU"
+    },
+    {
+      "origin": "ATL",
+      "destination": "RIC"
+    },
+    {
+      "origin": "ATL",
+      "destination": "RSW"
+    },
+    {
+      "origin": "ATL",
+      "destination": "SAL"
+    },
+    {
+      "origin": "ATL",
+      "destination": "SAP"
+    },
+    {
+      "origin": "ATL",
+      "destination": "SAT"
+    },
+    {
+      "origin": "ATL",
+      "destination": "SDQ"
+    },
+    {
+      "origin": "ATL",
+      "destination": "SFO"
+    },
+    {
+      "origin": "ATL",
+      "destination": "SJD"
+    },
+    {
+      "origin": "ATL",
+      "destination": "SJO"
+    },
+    {
+      "origin": "ATL",
+      "destination": "SJU"
+    },
+    {
+      "origin": "ATL",
+      "destination": "SLC"
+    },
+    {
+      "origin": "ATL",
+      "destination": "STL"
+    },
+    {
+      "origin": "ATL",
+      "destination": "SXM"
+    },
+    {
+      "origin": "ATL",
+      "destination": "SYR"
+    },
+    {
+      "origin": "ATL",
+      "destination": "TPA"
+    },
+    {
+      "origin": "ATL",
+      "destination": "TTN"
+    },
+    {
+      "origin": "AUA",
+      "destination": "ATL"
+    },
+    {
+      "origin": "AUS",
+      "destination": "ATL"
+    },
+    {
+      "origin": "AUS",
+      "destination": "CLE"
+    },
+    {
+      "origin": "AUS",
+      "destination": "CVG"
+    },
+    {
+      "origin": "AUS",
+      "destination": "DEN"
+    },
+    {
+      "origin": "AUS",
+      "destination": "LAS"
+    },
+    {
+      "origin": "AUS",
+      "destination": "MCO"
+    },
+    {
+      "origin": "AUS",
+      "destination": "MIA"
+    },
+    {
+      "origin": "AUS",
+      "destination": "MSY"
+    },
+    {
+      "origin": "AUS",
+      "destination": "ORD"
+    },
+    {
+      "origin": "AUS",
+      "destination": "PHL"
+    },
+    {
+      "origin": "AUS",
+      "destination": "PHX"
+    },
+    {
+      "origin": "AUS",
+      "destination": "SAN"
+    },
+    {
+      "origin": "BDL",
+      "destination": "ATL"
+    },
+    {
+      "origin": "BDL",
+      "destination": "MCO"
+    },
+    {
+      "origin": "BDL",
+      "destination": "MIA"
+    },
+    {
+      "origin": "BDL",
+      "destination": "SJU"
+    },
+    {
+      "origin": "BNA",
+      "destination": "CLE"
+    },
+    {
+      "origin": "BNA",
+      "destination": "DEN"
+    },
+    {
+      "origin": "BNA",
+      "destination": "DFW"
+    },
+    {
+      "origin": "BNA",
+      "destination": "LAS"
+    },
+    {
+      "origin": "BNA",
+      "destination": "LAX"
+    },
+    {
+      "origin": "BNA",
+      "destination": "MCO"
+    },
+    {
+      "origin": "BNA",
+      "destination": "ORD"
+    },
+    {
+      "origin": "BNA",
+      "destination": "PHL"
+    },
+    {
+      "origin": "BNA",
+      "destination": "PHX"
+    },
+    {
+      "origin": "BOI",
+      "destination": "DEN"
+    },
+    {
+      "origin": "BOS",
+      "destination": "ATL"
+    },
+    {
+      "origin": "BOS",
+      "destination": "CLE"
+    },
+    {
+      "origin": "BOS",
+      "destination": "MCO"
+    },
+    {
+      "origin": "BOS",
+      "destination": "PHL"
+    },
+    {
+      "origin": "BOS",
+      "destination": "RDU"
+    },
+    {
+      "origin": "BOS",
+      "destination": "SJU"
+    },
+    {
+      "origin": "BOS",
+      "destination": "TPA"
+    },
+    {
+      "origin": "BQN",
+      "destination": "MCO"
+    },
+    {
+      "origin": "BQN",
+      "destination": "MIA"
+    },
+    {
+      "origin": "BTV",
+      "destination": "MCO"
+    },
+    {
+      "origin": "BUF",
+      "destination": "ATL"
+    },
+    {
+      "origin": "BUF",
+      "destination": "DEN"
+    },
+    {
+      "origin": "BUF",
+      "destination": "MCO"
+    },
+    {
+      "origin": "BUF",
+      "destination": "RDU"
+    },
+    {
+      "origin": "BUF",
+      "destination": "RSW"
+    },
+    {
+      "origin": "BUF",
+      "destination": "TPA"
+    },
+    {
+      "origin": "BUR",
+      "destination": "DEN"
+    },
+    {
+      "origin": "BUR",
+      "destination": "LAS"
+    },
+    {
+      "origin": "BUR",
+      "destination": "SFO"
+    },
+    {
+      "origin": "BWI",
+      "destination": "ATL"
+    },
+    {
+      "origin": "BWI",
+      "destination": "CLT"
+    },
+    {
+      "origin": "BWI",
+      "destination": "CUN"
+    },
+    {
+      "origin": "BWI",
+      "destination": "DEN"
+    },
+    {
+      "origin": "BWI",
+      "destination": "DFW"
+    },
+    {
+      "origin": "BWI",
+      "destination": "DTW"
+    },
+    {
+      "origin": "BWI",
+      "destination": "FLL"
+    },
+    {
+      "origin": "BWI",
+      "destination": "IAH"
+    },
+    {
+      "origin": "BWI",
+      "destination": "MCO"
+    },
+    {
+      "origin": "BWI",
+      "destination": "MDW"
+    },
+    {
+      "origin": "BWI",
+      "destination": "MIA"
+    },
+    {
+      "origin": "BWI",
+      "destination": "MSY"
+    },
+    {
+      "origin": "BWI",
+      "destination": "ORD"
+    },
+    {
+      "origin": "BWI",
+      "destination": "SJU"
+    },
+    {
+      "origin": "BWI",
+      "destination": "TPA"
+    },
+    {
+      "origin": "CHS",
+      "destination": "DFW"
+    },
+    {
+      "origin": "CHS",
+      "destination": "PHL"
+    },
+    {
+      "origin": "CID",
+      "destination": "DEN"
+    },
+    {
+      "origin": "CLE",
+      "destination": "ATL"
+    },
+    {
+      "origin": "CLE",
+      "destination": "AUS"
+    },
+    {
+      "origin": "CLE",
+      "destination": "BNA"
+    },
+    {
+      "origin": "CLE",
+      "destination": "BOS"
+    },
+    {
+      "origin": "CLE",
+      "destination": "CLT"
+    },
+    {
+      "origin": "CLE",
+      "destination": "CUN"
+    },
+    {
+      "origin": "CLE",
+      "destination": "DEN"
+    },
+    {
+      "origin": "CLE",
+      "destination": "DFW"
+    },
+    {
+      "origin": "CLE",
+      "destination": "FLL"
+    },
+    {
+      "origin": "CLE",
+      "destination": "LAS"
+    },
+    {
+      "origin": "CLE",
+      "destination": "LGA"
+    },
+    {
+      "origin": "CLE",
+      "destination": "MCO"
+    },
+    {
+      "origin": "CLE",
+      "destination": "MIA"
+    },
+    {
+      "origin": "CLE",
+      "destination": "MSY"
+    },
+    {
+      "origin": "CLE",
+      "destination": "MYR"
+    },
+    {
+      "origin": "CLE",
+      "destination": "PBI"
+    },
+    {
+      "origin": "CLE",
+      "destination": "PHL"
+    },
+    {
+      "origin": "CLE",
+      "destination": "PHX"
+    },
+    {
+      "origin": "CLE",
+      "destination": "PUJ"
+    },
+    {
+      "origin": "CLE",
+      "destination": "RDU"
+    },
+    {
+      "origin": "CLE",
+      "destination": "RSW"
+    },
+    {
+      "origin": "CLE",
+      "destination": "SJU"
+    },
+    {
+      "origin": "CLE",
+      "destination": "SRQ"
+    },
+    {
+      "origin": "CLE",
+      "destination": "TPA"
+    },
+    {
+      "origin": "CLT",
+      "destination": "BWI"
+    },
+    {
+      "origin": "CLT",
+      "destination": "CLE"
+    },
+    {
+      "origin": "CLT",
+      "destination": "CUN"
+    },
+    {
+      "origin": "CLT",
+      "destination": "DEN"
+    },
+    {
+      "origin": "CLT",
+      "destination": "DFW"
+    },
+    {
+      "origin": "CLT",
+      "destination": "DTW"
+    },
+    {
+      "origin": "CLT",
+      "destination": "FLL"
+    },
+    {
+      "origin": "CLT",
+      "destination": "IAH"
+    },
+    {
+      "origin": "CLT",
+      "destination": "LAS"
+    },
+    {
+      "origin": "CLT",
+      "destination": "LGA"
+    },
+    {
+      "origin": "CLT",
+      "destination": "MCO"
+    },
+    {
+      "origin": "CLT",
+      "destination": "MIA"
+    },
+    {
+      "origin": "CLT",
+      "destination": "MSY"
+    },
+    {
+      "origin": "CLT",
+      "destination": "ORD"
+    },
+    {
+      "origin": "CLT",
+      "destination": "PHL"
+    },
+    {
+      "origin": "CLT",
+      "destination": "SJU"
+    },
+    {
+      "origin": "CLT",
+      "destination": "TPA"
+    },
+    {
+      "origin": "CMH",
+      "destination": "ATL"
+    },
+    {
+      "origin": "CMH",
+      "destination": "DEN"
+    },
+    {
+      "origin": "CMH",
+      "destination": "FLL"
+    },
+    {
+      "origin": "CMH",
+      "destination": "MCO"
+    },
+    {
+      "origin": "CRP",
+      "destination": "DEN"
+    },
+    {
+      "origin": "CUN",
+      "destination": "ATL"
+    },
+    {
+      "origin": "CUN",
+      "destination": "BWI"
+    },
+    {
+      "origin": "CUN",
+      "destination": "CLE"
+    },
+    {
+      "origin": "CUN",
+      "destination": "CLT"
+    },
+    {
+      "origin": "CUN",
+      "destination": "CVG"
+    },
+    {
+      "origin": "CUN",
+      "destination": "DEN"
+    },
+    {
+      "origin": "CUN",
+      "destination": "DFW"
+    },
+    {
+      "origin": "CUN",
+      "destination": "DTW"
+    },
+    {
+      "origin": "CUN",
+      "destination": "EWR"
+    },
+    {
+      "origin": "CUN",
+      "destination": "IAH"
+    },
+    {
+      "origin": "CUN",
+      "destination": "MCO"
+    },
+    {
+      "origin": "CUN",
+      "destination": "MDW"
+    },
+    {
+      "origin": "CUN",
+      "destination": "MIA"
+    },
+    {
+      "origin": "CUN",
+      "destination": "ORD"
+    },
+    {
+      "origin": "CUN",
+      "destination": "PHL"
+    },
+    {
+      "origin": "CUN",
+      "destination": "RDU"
+    },
+    {
+      "origin": "CUN",
+      "destination": "STL"
+    },
+    {
+      "origin": "CUN",
+      "destination": "TPA"
+    },
+    {
+      "origin": "CVG",
+      "destination": "ATL"
+    },
+    {
+      "origin": "CVG",
+      "destination": "AUS"
+    },
+    {
+      "origin": "CVG",
+      "destination": "CUN"
+    },
+    {
+      "origin": "CVG",
+      "destination": "DEN"
+    },
+    {
+      "origin": "CVG",
+      "destination": "DFW"
+    },
+    {
+      "origin": "CVG",
+      "destination": "FLL"
+    },
+    {
+      "origin": "CVG",
+      "destination": "IAH"
+    },
+    {
+      "origin": "CVG",
+      "destination": "LAS"
+    },
+    {
+      "origin": "CVG",
+      "destination": "LGA"
+    },
+    {
+      "origin": "CVG",
+      "destination": "MCO"
+    },
+    {
+      "origin": "CVG",
+      "destination": "MIA"
+    },
+    {
+      "origin": "CVG",
+      "destination": "MSY"
+    },
+    {
+      "origin": "CVG",
+      "destination": "PBI"
+    },
+    {
+      "origin": "CVG",
+      "destination": "PHX"
+    },
+    {
+      "origin": "CVG",
+      "destination": "PUJ"
+    },
+    {
+      "origin": "CVG",
+      "destination": "RSW"
+    },
+    {
+      "origin": "CVG",
+      "destination": "SLC"
+    },
+    {
+      "origin": "CVG",
+      "destination": "TPA"
+    },
+    {
+      "origin": "DCA",
+      "destination": "DEN"
+    },
+    {
+      "origin": "DEN",
+      "destination": "ATL"
+    },
+    {
+      "origin": "DEN",
+      "destination": "AUS"
+    },
+    {
+      "origin": "DEN",
+      "destination": "BNA"
+    },
+    {
+      "origin": "DEN",
+      "destination": "BOI"
+    },
+    {
+      "origin": "DEN",
+      "destination": "BUF"
+    },
+    {
+      "origin": "DEN",
+      "destination": "BUR"
+    },
+    {
+      "origin": "DEN",
+      "destination": "BWI"
+    },
+    {
+      "origin": "DEN",
+      "destination": "CID"
+    },
+    {
+      "origin": "DEN",
+      "destination": "CLE"
+    },
+    {
+      "origin": "DEN",
+      "destination": "CLT"
+    },
+    {
+      "origin": "DEN",
+      "destination": "CMH"
+    },
+    {
+      "origin": "DEN",
+      "destination": "CRP"
+    },
+    {
+      "origin": "DEN",
+      "destination": "CUN"
+    },
+    {
+      "origin": "DEN",
+      "destination": "CVG"
+    },
+    {
+      "origin": "DEN",
+      "destination": "DCA"
+    },
+    {
+      "origin": "DEN",
+      "destination": "DFW"
+    },
+    {
+      "origin": "DEN",
+      "destination": "DSM"
+    },
+    {
+      "origin": "DEN",
+      "destination": "DTW"
+    },
+    {
+      "origin": "DEN",
+      "destination": "ELP"
+    },
+    {
+      "origin": "DEN",
+      "destination": "FAR"
+    },
+    {
+      "origin": "DEN",
+      "destination": "FSD"
+    },
+    {
+      "origin": "DEN",
+      "destination": "GEG"
+    },
+    {
+      "origin": "DEN",
+      "destination": "GRB"
+    },
+    {
+      "origin": "DEN",
+      "destination": "GRR"
+    },
+    {
+      "origin": "DEN",
+      "destination": "IAH"
+    },
+    {
+      "origin": "DEN",
+      "destination": "IND"
+    },
+    {
+      "origin": "DEN",
+      "destination": "JFK"
+    },
+    {
+      "origin": "DEN",
+      "destination": "LAS"
+    },
+    {
+      "origin": "DEN",
+      "destination": "LAX"
+    },
+    {
+      "origin": "DEN",
+      "destination": "LGA"
+    },
+    {
+      "origin": "DEN",
+      "destination": "LIT"
+    },
+    {
+      "origin": "DEN",
+      "destination": "MCI"
+    },
+    {
+      "origin": "DEN",
+      "destination": "MCO"
+    },
+    {
+      "origin": "DEN",
+      "destination": "MDW"
+    },
+    {
+      "origin": "DEN",
+      "destination": "MEM"
+    },
+    {
+      "origin": "DEN",
+      "destination": "MIA"
+    },
+    {
+      "origin": "DEN",
+      "destination": "MKE"
+    },
+    {
+      "origin": "DEN",
+      "destination": "MSN"
+    },
+    {
+      "origin": "DEN",
+      "destination": "MSO"
+    },
+    {
+      "origin": "DEN",
+      "destination": "MSP"
+    },
+    {
+      "origin": "DEN",
+      "destination": "MSY"
+    },
+    {
+      "origin": "DEN",
+      "destination": "OKC"
+    },
+    {
+      "origin": "DEN",
+      "destination": "OMA"
+    },
+    {
+      "origin": "DEN",
+      "destination": "ONT"
+    },
+    {
+      "origin": "DEN",
+      "destination": "ORD"
+    },
+    {
+      "origin": "DEN",
+      "destination": "PAE"
+    },
+    {
+      "origin": "DEN",
+      "destination": "PDX"
+    },
+    {
+      "origin": "DEN",
+      "destination": "PHL"
+    },
+    {
+      "origin": "DEN",
+      "destination": "PHX"
+    },
+    {
+      "origin": "DEN",
+      "destination": "PIT"
+    },
+    {
+      "origin": "DEN",
+      "destination": "PNS"
+    },
+    {
+      "origin": "DEN",
+      "destination": "PSP"
+    },
+    {
+      "origin": "DEN",
+      "destination": "PVR"
+    },
+    {
+      "origin": "DEN",
+      "destination": "RDU"
+    },
+    {
+      "origin": "DEN",
+      "destination": "RIC"
+    },
+    {
+      "origin": "DEN",
+      "destination": "RNO"
+    },
+    {
+      "origin": "DEN",
+      "destination": "RSW"
+    },
+    {
+      "origin": "DEN",
+      "destination": "SAN"
+    },
+    {
+      "origin": "DEN",
+      "destination": "SAT"
+    },
+    {
+      "origin": "DEN",
+      "destination": "SEA"
+    },
+    {
+      "origin": "DEN",
+      "destination": "SFO"
+    },
+    {
+      "origin": "DEN",
+      "destination": "SJC"
+    },
+    {
+      "origin": "DEN",
+      "destination": "SJD"
+    },
+    {
+      "origin": "DEN",
+      "destination": "SLC"
+    },
+    {
+      "origin": "DEN",
+      "destination": "SMF"
+    },
+    {
+      "origin": "DEN",
+      "destination": "SNA"
+    },
+    {
+      "origin": "DEN",
+      "destination": "STL"
+    },
+    {
+      "origin": "DEN",
+      "destination": "TPA"
+    },
+    {
+      "origin": "DEN",
+      "destination": "TUL"
+    },
+    {
+      "origin": "DEN",
+      "destination": "TUS"
+    },
+    {
+      "origin": "DEN",
+      "destination": "TYS"
+    },
+    {
+      "origin": "DEN",
+      "destination": "XNA"
+    },
+    {
+      "origin": "DFW",
+      "destination": "ATL"
+    },
+    {
+      "origin": "DFW",
+      "destination": "BNA"
+    },
+    {
+      "origin": "DFW",
+      "destination": "BWI"
+    },
+    {
+      "origin": "DFW",
+      "destination": "CHS"
+    },
+    {
+      "origin": "DFW",
+      "destination": "CLE"
+    },
+    {
+      "origin": "DFW",
+      "destination": "CLT"
+    },
+    {
+      "origin": "DFW",
+      "destination": "CUN"
+    },
+    {
+      "origin": "DFW",
+      "destination": "CVG"
+    },
+    {
+      "origin": "DFW",
+      "destination": "DEN"
+    },
+    {
+      "origin": "DFW",
+      "destination": "DTW"
+    },
+    {
+      "origin": "DFW",
+      "destination": "ELP"
+    },
+    {
+      "origin": "DFW",
+      "destination": "EWR"
+    },
+    {
+      "origin": "DFW",
+      "destination": "FLL"
+    },
+    {
+      "origin": "DFW",
+      "destination": "GUA"
+    },
+    {
+      "origin": "DFW",
+      "destination": "IAD"
+    },
+    {
+      "origin": "DFW",
+      "destination": "IND"
+    },
+    {
+      "origin": "DFW",
+      "destination": "JAX"
+    },
+    {
+      "origin": "DFW",
+      "destination": "JFK"
+    },
+    {
+      "origin": "DFW",
+      "destination": "LAS"
+    },
+    {
+      "origin": "DFW",
+      "destination": "LAX"
+    },
+    {
+      "origin": "DFW",
+      "destination": "LGA"
+    },
+    {
+      "origin": "DFW",
+      "destination": "MCO"
+    },
+    {
+      "origin": "DFW",
+      "destination": "MDW"
+    },
+    {
+      "origin": "DFW",
+      "destination": "MIA"
+    },
+    {
+      "origin": "DFW",
+      "destination": "MSP"
+    },
+    {
+      "origin": "DFW",
+      "destination": "MSY"
+    },
+    {
+      "origin": "DFW",
+      "destination": "ONT"
+    },
+    {
+      "origin": "DFW",
+      "destination": "ORD"
+    },
+    {
+      "origin": "DFW",
+      "destination": "ORF"
+    },
+    {
+      "origin": "DFW",
+      "destination": "PHL"
+    },
+    {
+      "origin": "DFW",
+      "destination": "PHX"
+    },
+    {
+      "origin": "DFW",
+      "destination": "RDU"
+    },
+    {
+      "origin": "DFW",
+      "destination": "RSW"
+    },
+    {
+      "origin": "DFW",
+      "destination": "SAL"
+    },
+    {
+      "origin": "DFW",
+      "destination": "SAN"
+    },
+    {
+      "origin": "DFW",
+      "destination": "SEA"
+    },
+    {
+      "origin": "DFW",
+      "destination": "SFO"
+    },
+    {
+      "origin": "DFW",
+      "destination": "SJU"
+    },
+    {
+      "origin": "DFW",
+      "destination": "SLC"
+    },
+    {
+      "origin": "DFW",
+      "destination": "SNA"
+    },
+    {
+      "origin": "DFW",
+      "destination": "STL"
+    },
+    {
+      "origin": "DFW",
+      "destination": "TPA"
+    },
+    {
+      "origin": "DFW",
+      "destination": "TUS"
+    },
+    {
+      "origin": "DSM",
+      "destination": "DEN"
+    },
+    {
+      "origin": "DSM",
+      "destination": "MCO"
+    },
+    {
+      "origin": "DSM",
+      "destination": "PHX"
+    },
+    {
+      "origin": "DTW",
+      "destination": "ATL"
+    },
+    {
+      "origin": "DTW",
+      "destination": "BWI"
+    },
+    {
+      "origin": "DTW",
+      "destination": "CLT"
+    },
+    {
+      "origin": "DTW",
+      "destination": "CUN"
+    },
+    {
+      "origin": "DTW",
+      "destination": "DEN"
+    },
+    {
+      "origin": "DTW",
+      "destination": "DFW"
+    },
+    {
+      "origin": "DTW",
+      "destination": "FLL"
+    },
+    {
+      "origin": "DTW",
+      "destination": "IAH"
+    },
+    {
+      "origin": "DTW",
+      "destination": "LAS"
+    },
+    {
+      "origin": "DTW",
+      "destination": "MCO"
+    },
+    {
+      "origin": "DTW",
+      "destination": "MIA"
+    },
+    {
+      "origin": "DTW",
+      "destination": "MSY"
+    },
+    {
+      "origin": "DTW",
+      "destination": "PHL"
+    },
+    {
+      "origin": "DTW",
+      "destination": "PHX"
+    },
+    {
+      "origin": "DTW",
+      "destination": "RDU"
+    },
+    {
+      "origin": "DTW",
+      "destination": "RSW"
+    },
+    {
+      "origin": "DTW",
+      "destination": "TPA"
+    },
+    {
+      "origin": "ELP",
+      "destination": "DEN"
+    },
+    {
+      "origin": "ELP",
+      "destination": "DFW"
+    },
+    {
+      "origin": "ELP",
+      "destination": "LAS"
+    },
+    {
+      "origin": "EWR",
+      "destination": "ATL"
+    },
+    {
+      "origin": "EWR",
+      "destination": "CUN"
+    },
+    {
+      "origin": "EWR",
+      "destination": "DFW"
+    },
+    {
+      "origin": "EWR",
+      "destination": "MCO"
+    },
+    {
+      "origin": "EWR",
+      "destination": "MDW"
+    },
+    {
+      "origin": "EWR",
+      "destination": "MSY"
+    },
+    {
+      "origin": "EWR",
+      "destination": "SJU"
+    },
+    {
+      "origin": "FAR",
+      "destination": "COS"
+    },
+    {
+      "origin": "FAR",
+      "destination": "DEN"
+    },
+    {
+      "origin": "FLL",
+      "destination": "ATL"
+    },
+    {
+      "origin": "FLL",
+      "destination": "BWI"
+    },
+    {
+      "origin": "FLL",
+      "destination": "CLE"
+    },
+    {
+      "origin": "FLL",
+      "destination": "CLT"
+    },
+    {
+      "origin": "FLL",
+      "destination": "CMH"
+    },
+    {
+      "origin": "FLL",
+      "destination": "CVG"
+    },
+    {
+      "origin": "FLL",
+      "destination": "DFW"
+    },
+    {
+      "origin": "FLL",
+      "destination": "DTW"
+    },
+    {
+      "origin": "FLL",
+      "destination": "IAD"
+    },
+    {
+      "origin": "FLL",
+      "destination": "IAH"
+    },
+    {
+      "origin": "FLL",
+      "destination": "IND"
+    },
+    {
+      "origin": "FLL",
+      "destination": "ISP"
+    },
+    {
+      "origin": "FLL",
+      "destination": "ORD"
+    },
+    {
+      "origin": "FLL",
+      "destination": "PHL"
+    },
+    {
+      "origin": "FLL",
+      "destination": "RDU"
+    },
+    {
+      "origin": "FLL",
+      "destination": "SJU"
+    },
+    {
+      "origin": "FLL",
+      "destination": "STL"
+    },
+    {
+      "origin": "FLL",
+      "destination": "TTN"
+    },
+    {
+      "origin": "FSD",
+      "destination": "DEN"
+    },
+    {
+      "origin": "GEG",
+      "destination": "DEN"
+    },
+    {
+      "origin": "GEG",
+      "destination": "PHX"
+    },
+    {
+      "origin": "GRB",
+      "destination": "DEN"
+    },
+    {
+      "origin": "GRR",
+      "destination": "ATL"
+    },
+    {
+      "origin": "GRR",
+      "destination": "DEN"
+    },
+    {
+      "origin": "GRR",
+      "destination": "MCO"
+    },
+    {
+      "origin": "GRR",
+      "destination": "RSW"
+    },
+    {
+      "origin": "GRR",
+      "destination": "TPA"
+    },
+    {
+      "origin": "GUA",
+      "destination": "ATL"
+    },
+    {
+      "origin": "GUA",
+      "destination": "DFW"
+    },
+    {
+      "origin": "GUA",
+      "destination": "IAH"
+    },
+    {
+      "origin": "GUA",
+      "destination": "MCO"
+    },
+    {
+      "origin": "GUA",
+      "destination": "MIA"
+    },
+    {
+      "origin": "IAD",
+      "destination": "ATL"
+    },
+    {
+      "origin": "IAD",
+      "destination": "DFW"
+    },
+    {
+      "origin": "IAD",
+      "destination": "FLL"
+    },
+    {
+      "origin": "IAD",
+      "destination": "LAS"
+    },
+    {
+      "origin": "IAD",
+      "destination": "MCO"
+    },
+    {
+      "origin": "IAD",
+      "destination": "MIA"
+    },
+    {
+      "origin": "IAD",
+      "destination": "MSY"
+    },
+    {
+      "origin": "IAD",
+      "destination": "SAL"
+    },
+    {
+      "origin": "IAD",
+      "destination": "SJU"
+    },
+    {
+      "origin": "IAD",
+      "destination": "TPA"
+    },
+    {
+      "origin": "IAH",
+      "destination": "ATL"
+    },
+    {
+      "origin": "IAH",
+      "destination": "BWI"
+    },
+    {
+      "origin": "IAH",
+      "destination": "CLT"
+    },
+    {
+      "origin": "IAH",
+      "destination": "CUN"
+    },
+    {
+      "origin": "IAH",
+      "destination": "CVG"
+    },
+    {
+      "origin": "IAH",
+      "destination": "DEN"
+    },
+    {
+      "origin": "IAH",
+      "destination": "DTW"
+    },
+    {
+      "origin": "IAH",
+      "destination": "FLL"
+    },
+    {
+      "origin": "IAH",
+      "destination": "GUA"
+    },
+    {
+      "origin": "IAH",
+      "destination": "LAS"
+    },
+    {
+      "origin": "IAH",
+      "destination": "LAX"
+    },
+    {
+      "origin": "IAH",
+      "destination": "MCO"
+    },
+    {
+      "origin": "IAH",
+      "destination": "MDW"
+    },
+    {
+      "origin": "IAH",
+      "destination": "MIA"
+    },
+    {
+      "origin": "IAH",
+      "destination": "MSY"
+    },
+    {
+      "origin": "IAH",
+      "destination": "ONT"
+    },
+    {
+      "origin": "IAH",
+      "destination": "ORD"
+    },
+    {
+      "origin": "IAH",
+      "destination": "PHL"
+    },
+    {
+      "origin": "IAH",
+      "destination": "PHX"
+    },
+    {
+      "origin": "IAH",
+      "destination": "RDU"
+    },
+    {
+      "origin": "IAH",
+      "destination": "SAL"
+    },
+    {
+      "origin": "IAH",
+      "destination": "SAP"
+    },
+    {
+      "origin": "IAH",
+      "destination": "TPA"
+    },
+    {
+      "origin": "IND",
+      "destination": "ATL"
+    },
+    {
+      "origin": "IND",
+      "destination": "DEN"
+    },
+    {
+      "origin": "IND",
+      "destination": "DFW"
+    },
+    {
+      "origin": "IND",
+      "destination": "FLL"
+    },
+    {
+      "origin": "IND",
+      "destination": "LAS"
+    },
+    {
+      "origin": "IND",
+      "destination": "MCO"
+    },
+    {
+      "origin": "IND",
+      "destination": "MIA"
+    },
+    {
+      "origin": "IND",
+      "destination": "PHX"
+    },
+    {
+      "origin": "IND",
+      "destination": "RDU"
+    },
+    {
+      "origin": "IND",
+      "destination": "RSW"
+    },
+    {
+      "origin": "IND",
+      "destination": "TPA"
+    },
+    {
+      "origin": "ISP",
+      "destination": "FLL"
+    },
+    {
+      "origin": "ISP",
+      "destination": "MCO"
+    },
+    {
+      "origin": "ISP",
+      "destination": "MYR"
+    },
+    {
+      "origin": "ISP",
+      "destination": "PBI"
+    },
+    {
+      "origin": "ISP",
+      "destination": "RSW"
+    },
+    {
+      "origin": "ISP",
+      "destination": "TPA"
+    },
+    {
+      "origin": "JAX",
+      "destination": "ATL"
+    },
+    {
+      "origin": "JAX",
+      "destination": "DFW"
+    },
+    {
+      "origin": "JAX",
+      "destination": "PHL"
+    },
+    {
+      "origin": "JAX",
+      "destination": "SJU"
+    },
+    {
+      "origin": "JFK",
+      "destination": "ATL"
+    },
+    {
+      "origin": "JFK",
+      "destination": "DEN"
+    },
+    {
+      "origin": "JFK",
+      "destination": "DFW"
+    },
+    {
+      "origin": "JFK",
+      "destination": "LAS"
+    },
+    {
+      "origin": "JFK",
+      "destination": "LAX"
+    },
+    {
+      "origin": "JFK",
+      "destination": "MCO"
+    },
+    {
+      "origin": "JFK",
+      "destination": "MIA"
+    },
+    {
+      "origin": "JFK",
+      "destination": "MSY"
+    },
+    {
+      "origin": "JFK",
+      "destination": "ORD"
+    },
+    {
+      "origin": "JFK",
+      "destination": "SJU"
+    },
+    {
+      "origin": "JFK",
+      "destination": "TPA"
+    },
+    {
+      "origin": "LAS",
+      "destination": "ATL"
+    },
+    {
+      "origin": "LAS",
+      "destination": "AUS"
+    },
+    {
+      "origin": "LAS",
+      "destination": "BNA"
+    },
+    {
+      "origin": "LAS",
+      "destination": "BUR"
+    },
+    {
+      "origin": "LAS",
+      "destination": "CLE"
+    },
+    {
+      "origin": "LAS",
+      "destination": "CLT"
+    },
+    {
+      "origin": "LAS",
+      "destination": "CVG"
+    },
+    {
+      "origin": "LAS",
+      "destination": "DEN"
+    },
+    {
+      "origin": "LAS",
+      "destination": "DFW"
+    },
+    {
+      "origin": "LAS",
+      "destination": "DTW"
+    },
+    {
+      "origin": "LAS",
+      "destination": "ELP"
+    },
+    {
+      "origin": "LAS",
+      "destination": "IAD"
+    },
+    {
+      "origin": "LAS",
+      "destination": "IAH"
+    },
+    {
+      "origin": "LAS",
+      "destination": "IND"
+    },
+    {
+      "origin": "LAS",
+      "destination": "JFK"
+    },
+    {
+      "origin": "LAS",
+      "destination": "LAX"
+    },
+    {
+      "origin": "LAS",
+      "destination": "MCO"
+    },
+    {
+      "origin": "LAS",
+      "destination": "MDW"
+    },
+    {
+      "origin": "LAS",
+      "destination": "MEM"
+    },
+    {
+      "origin": "LAS",
+      "destination": "MIA"
+    },
+    {
+      "origin": "LAS",
+      "destination": "MKE"
+    },
+    {
+      "origin": "LAS",
+      "destination": "MSP"
+    },
+    {
+      "origin": "LAS",
+      "destination": "MSY"
+    },
+    {
+      "origin": "LAS",
+      "destination": "OKC"
+    },
+    {
+      "origin": "LAS",
+      "destination": "ONT"
+    },
+    {
+      "origin": "LAS",
+      "destination": "ORD"
+    },
+    {
+      "origin": "LAS",
+      "destination": "PAE"
+    },
+    {
+      "origin": "LAS",
+      "destination": "PDX"
+    },
+    {
+      "origin": "LAS",
+      "destination": "PHL"
+    },
+    {
+      "origin": "LAS",
+      "destination": "PHX"
+    },
+    {
+      "origin": "LAS",
+      "destination": "RDU"
+    },
+    {
+      "origin": "LAS",
+      "destination": "RNO"
+    },
+    {
+      "origin": "LAS",
+      "destination": "SAN"
+    },
+    {
+      "origin": "LAS",
+      "destination": "SAT"
+    },
+    {
+      "origin": "LAS",
+      "destination": "SEA"
+    },
+    {
+      "origin": "LAS",
+      "destination": "SFO"
+    },
+    {
+      "origin": "LAS",
+      "destination": "SJC"
+    },
+    {
+      "origin": "LAS",
+      "destination": "SJD"
+    },
+    {
+      "origin": "LAS",
+      "destination": "SLC"
+    },
+    {
+      "origin": "LAS",
+      "destination": "SMF"
+    },
+    {
+      "origin": "LAS",
+      "destination": "SNA"
+    },
+    {
+      "origin": "LAS",
+      "destination": "STL"
+    },
+    {
+      "origin": "LAS",
+      "destination": "TPA"
+    },
+    {
+      "origin": "LAS",
+      "destination": "TUS"
+    },
+    {
+      "origin": "LAX",
+      "destination": "ATL"
+    },
+    {
+      "origin": "LAX",
+      "destination": "BNA"
+    },
+    {
+      "origin": "LAX",
+      "destination": "DEN"
+    },
+    {
+      "origin": "LAX",
+      "destination": "DFW"
+    },
+    {
+      "origin": "LAX",
+      "destination": "IAH"
+    },
+    {
+      "origin": "LAX",
+      "destination": "JFK"
+    },
+    {
+      "origin": "LAX",
+      "destination": "LAS"
+    },
+    {
+      "origin": "LAX",
+      "destination": "MCO"
+    },
+    {
+      "origin": "LAX",
+      "destination": "ORD"
+    },
+    {
+      "origin": "LAX",
+      "destination": "PDX"
+    },
+    {
+      "origin": "LAX",
+      "destination": "PHL"
+    },
+    {
+      "origin": "LAX",
+      "destination": "PHX"
+    },
+    {
+      "origin": "LAX",
+      "destination": "SEA"
+    },
+    {
+      "origin": "LAX",
+      "destination": "SFO"
+    },
+    {
+      "origin": "LAX",
+      "destination": "SJC"
+    },
+    {
+      "origin": "LAX",
+      "destination": "SLC"
+    },
+    {
+      "origin": "LAX",
+      "destination": "SMF"
+    },
+    {
+      "origin": "LGA",
+      "destination": "ATL"
+    },
+    {
+      "origin": "LGA",
+      "destination": "CLE"
+    },
+    {
+      "origin": "LGA",
+      "destination": "CLT"
+    },
+    {
+      "origin": "LGA",
+      "destination": "CVG"
+    },
+    {
+      "origin": "LGA",
+      "destination": "DEN"
+    },
+    {
+      "origin": "LGA",
+      "destination": "DFW"
+    },
+    {
+      "origin": "LGA",
+      "destination": "MCO"
+    },
+    {
+      "origin": "LGA",
+      "destination": "MIA"
+    },
+    {
+      "origin": "LGA",
+      "destination": "MSY"
+    },
+    {
+      "origin": "LGA",
+      "destination": "RDU"
+    },
+    {
+      "origin": "LGA",
+      "destination": "SJU"
+    },
+    {
+      "origin": "LIT",
+      "destination": "DEN"
+    },
+    {
+      "origin": "LIT",
+      "destination": "MCO"
+    },
+    {
+      "origin": "MBJ",
+      "destination": "ATL"
+    },
+    {
+      "origin": "MBJ",
+      "destination": "PHL"
+    },
+    {
+      "origin": "MCI",
+      "destination": "ATL"
+    },
+    {
+      "origin": "MCI",
+      "destination": "DEN"
+    },
+    {
+      "origin": "MCI",
+      "destination": "PHX"
+    },
+    {
+      "origin": "MCI",
+      "destination": "TPA"
+    },
+    {
+      "origin": "MCO",
+      "destination": "ATL"
+    },
+    {
+      "origin": "MCO",
+      "destination": "AUS"
+    },
+    {
+      "origin": "MCO",
+      "destination": "BDL"
+    },
+    {
+      "origin": "MCO",
+      "destination": "BNA"
+    },
+    {
+      "origin": "MCO",
+      "destination": "BOS"
+    },
+    {
+      "origin": "MCO",
+      "destination": "BQN"
+    },
+    {
+      "origin": "MCO",
+      "destination": "BTV"
+    },
+    {
+      "origin": "MCO",
+      "destination": "BUF"
+    },
+    {
+      "origin": "MCO",
+      "destination": "BWI"
+    },
+    {
+      "origin": "MCO",
+      "destination": "CLE"
+    },
+    {
+      "origin": "MCO",
+      "destination": "CLT"
+    },
+    {
+      "origin": "MCO",
+      "destination": "CMH"
+    },
+    {
+      "origin": "MCO",
+      "destination": "CUN"
+    },
+    {
+      "origin": "MCO",
+      "destination": "CVG"
+    },
+    {
+      "origin": "MCO",
+      "destination": "DEN"
+    },
+    {
+      "origin": "MCO",
+      "destination": "DFW"
+    },
+    {
+      "origin": "MCO",
+      "destination": "DSM"
+    },
+    {
+      "origin": "MCO",
+      "destination": "DTW"
+    },
+    {
+      "origin": "MCO",
+      "destination": "EWR"
+    },
+    {
+      "origin": "MCO",
+      "destination": "GRR"
+    },
+    {
+      "origin": "MCO",
+      "destination": "GUA"
+    },
+    {
+      "origin": "MCO",
+      "destination": "IAD"
+    },
+    {
+      "origin": "MCO",
+      "destination": "IAH"
+    },
+    {
+      "origin": "MCO",
+      "destination": "IND"
+    },
+    {
+      "origin": "MCO",
+      "destination": "ISP"
+    },
+    {
+      "origin": "MCO",
+      "destination": "JFK"
+    },
+    {
+      "origin": "MCO",
+      "destination": "LAS"
+    },
+    {
+      "origin": "MCO",
+      "destination": "LAX"
+    },
+    {
+      "origin": "MCO",
+      "destination": "LGA"
+    },
+    {
+      "origin": "MCO",
+      "destination": "LIT"
+    },
+    {
+      "origin": "MCO",
+      "destination": "MDT"
+    },
+    {
+      "origin": "MCO",
+      "destination": "MDW"
+    },
+    {
+      "origin": "MCO",
+      "destination": "MKE"
+    },
+    {
+      "origin": "MCO",
+      "destination": "MSN"
+    },
+    {
+      "origin": "MCO",
+      "destination": "MSP"
+    },
+    {
+      "origin": "MCO",
+      "destination": "MSY"
+    },
+    {
+      "origin": "MCO",
+      "destination": "OKC"
+    },
+    {
+      "origin": "MCO",
+      "destination": "OMA"
+    },
+    {
+      "origin": "MCO",
+      "destination": "ORD"
+    },
+    {
+      "origin": "MCO",
+      "destination": "ORF"
+    },
+    {
+      "origin": "MCO",
+      "destination": "PHL"
+    },
+    {
+      "origin": "MCO",
+      "destination": "PHX"
+    },
+    {
+      "origin": "MCO",
+      "destination": "PIT"
+    },
+    {
+      "origin": "MCO",
+      "destination": "PNS"
+    },
+    {
+      "origin": "MCO",
+      "destination": "PSE"
+    },
+    {
+      "origin": "MCO",
+      "destination": "PUJ"
+    },
+    {
+      "origin": "MCO",
+      "destination": "PWM"
+    },
+    {
+      "origin": "MCO",
+      "destination": "RDU"
+    },
+    {
+      "origin": "MCO",
+      "destination": "RIC"
+    },
+    {
+      "origin": "MCO",
+      "destination": "SAL"
+    },
+    {
+      "origin": "MCO",
+      "destination": "SAP"
+    },
+    {
+      "origin": "MCO",
+      "destination": "SAT"
+    },
+    {
+      "origin": "MCO",
+      "destination": "SDQ"
+    },
+    {
+      "origin": "MCO",
+      "destination": "SFO"
+    },
+    {
+      "origin": "MCO",
+      "destination": "SJO"
+    },
+    {
+      "origin": "MCO",
+      "destination": "SJU"
+    },
+    {
+      "origin": "MCO",
+      "destination": "SLC"
+    },
+    {
+      "origin": "MCO",
+      "destination": "STL"
+    },
+    {
+      "origin": "MCO",
+      "destination": "SXM"
+    },
+    {
+      "origin": "MCO",
+      "destination": "SYR"
+    },
+    {
+      "origin": "MCO",
+      "destination": "TTN"
+    },
+    {
+      "origin": "MCO",
+      "destination": "TUL"
+    },
+    {
+      "origin": "MDT",
+      "destination": "MCO"
+    },
+    {
+      "origin": "MDW",
+      "destination": "ATL"
+    },
+    {
+      "origin": "MDW",
+      "destination": "BWI"
+    },
+    {
+      "origin": "MDW",
+      "destination": "CUN"
+    },
+    {
+      "origin": "MDW",
+      "destination": "DEN"
+    },
+    {
+      "origin": "MDW",
+      "destination": "DFW"
+    },
+    {
+      "origin": "MDW",
+      "destination": "EWR"
+    },
+    {
+      "origin": "MDW",
+      "destination": "IAH"
+    },
+    {
+      "origin": "MDW",
+      "destination": "LAS"
+    },
+    {
+      "origin": "MDW",
+      "destination": "MCO"
+    },
+    {
+      "origin": "MDW",
+      "destination": "MIA"
+    },
+    {
+      "origin": "MDW",
+      "destination": "PHL"
+    },
+    {
+      "origin": "MDW",
+      "destination": "PHX"
+    },
+    {
+      "origin": "MDW",
+      "destination": "TPA"
+    },
+    {
+      "origin": "MEM",
+      "destination": "ATL"
+    },
+    {
+      "origin": "MEM",
+      "destination": "DEN"
+    },
+    {
+      "origin": "MEM",
+      "destination": "LAS"
+    },
+    {
+      "origin": "MEM",
+      "destination": "PHX"
+    },
+    {
+      "origin": "MIA",
+      "destination": "ATL"
+    },
+    {
+      "origin": "MIA",
+      "destination": "AUS"
+    },
+    {
+      "origin": "MIA",
+      "destination": "BDL"
+    },
+    {
+      "origin": "MIA",
+      "destination": "BQN"
+    },
+    {
+      "origin": "MIA",
+      "destination": "BWI"
+    },
+    {
+      "origin": "MIA",
+      "destination": "CLE"
+    },
+    {
+      "origin": "MIA",
+      "destination": "CLT"
+    },
+    {
+      "origin": "MIA",
+      "destination": "CUN"
+    },
+    {
+      "origin": "MIA",
+      "destination": "CVG"
+    },
+    {
+      "origin": "MIA",
+      "destination": "DEN"
+    },
+    {
+      "origin": "MIA",
+      "destination": "DFW"
+    },
+    {
+      "origin": "MIA",
+      "destination": "DTW"
+    },
+    {
+      "origin": "MIA",
+      "destination": "GUA"
+    },
+    {
+      "origin": "MIA",
+      "destination": "IAD"
+    },
+    {
+      "origin": "MIA",
+      "destination": "IAH"
+    },
+    {
+      "origin": "MIA",
+      "destination": "IND"
+    },
+    {
+      "origin": "MIA",
+      "destination": "JFK"
+    },
+    {
+      "origin": "MIA",
+      "destination": "LAS"
+    },
+    {
+      "origin": "MIA",
+      "destination": "LGA"
+    },
+    {
+      "origin": "MIA",
+      "destination": "MDW"
+    },
+    {
+      "origin": "MIA",
+      "destination": "MSY"
+    },
+    {
+      "origin": "MIA",
+      "destination": "ORD"
+    },
+    {
+      "origin": "MIA",
+      "destination": "PHL"
+    },
+    {
+      "origin": "MIA",
+      "destination": "PUJ"
+    },
+    {
+      "origin": "MIA",
+      "destination": "RDU"
+    },
+    {
+      "origin": "MIA",
+      "destination": "SAL"
+    },
+    {
+      "origin": "MIA",
+      "destination": "SAP"
+    },
+    {
+      "origin": "MIA",
+      "destination": "SDQ"
+    },
+    {
+      "origin": "MIA",
+      "destination": "SJU"
+    },
+    {
+      "origin": "MKE",
+      "destination": "ATL"
+    },
+    {
+      "origin": "MKE",
+      "destination": "DEN"
+    },
+    {
+      "origin": "MKE",
+      "destination": "LAS"
+    },
+    {
+      "origin": "MKE",
+      "destination": "MCO"
+    },
+    {
+      "origin": "MKE",
+      "destination": "PHX"
+    },
+    {
+      "origin": "MKE",
+      "destination": "TPA"
+    },
+    {
+      "origin": "MSN",
+      "destination": "DEN"
+    },
+    {
+      "origin": "MSN",
+      "destination": "MCO"
+    },
+    {
+      "origin": "MSO",
+      "destination": "DEN"
+    },
+    {
+      "origin": "MSP",
+      "destination": "ATL"
+    },
+    {
+      "origin": "MSP",
+      "destination": "DEN"
+    },
+    {
+      "origin": "MSP",
+      "destination": "DFW"
+    },
+    {
+      "origin": "MSP",
+      "destination": "LAS"
+    },
+    {
+      "origin": "MSP",
+      "destination": "MCO"
+    },
+    {
+      "origin": "MSP",
+      "destination": "ORD"
+    },
+    {
+      "origin": "MSP",
+      "destination": "PHX"
+    },
+    {
+      "origin": "MSY",
+      "destination": "ATL"
+    },
+    {
+      "origin": "MSY",
+      "destination": "AUS"
+    },
+    {
+      "origin": "MSY",
+      "destination": "BWI"
+    },
+    {
+      "origin": "MSY",
+      "destination": "CLE"
+    },
+    {
+      "origin": "MSY",
+      "destination": "CLT"
+    },
+    {
+      "origin": "MSY",
+      "destination": "CVG"
+    },
+    {
+      "origin": "MSY",
+      "destination": "DEN"
+    },
+    {
+      "origin": "MSY",
+      "destination": "DFW"
+    },
+    {
+      "origin": "MSY",
+      "destination": "DTW"
+    },
+    {
+      "origin": "MSY",
+      "destination": "EWR"
+    },
+    {
+      "origin": "MSY",
+      "destination": "IAD"
+    },
+    {
+      "origin": "MSY",
+      "destination": "IAH"
+    },
+    {
+      "origin": "MSY",
+      "destination": "JFK"
+    },
+    {
+      "origin": "MSY",
+      "destination": "LAS"
+    },
+    {
+      "origin": "MSY",
+      "destination": "LGA"
+    },
+    {
+      "origin": "MSY",
+      "destination": "MCO"
+    },
+    {
+      "origin": "MSY",
+      "destination": "MIA"
+    },
+    {
+      "origin": "MSY",
+      "destination": "NAS"
+    },
+    {
+      "origin": "MSY",
+      "destination": "ORD"
+    },
+    {
+      "origin": "MSY",
+      "destination": "PHL"
+    },
+    {
+      "origin": "MSY",
+      "destination": "PHX"
+    },
+    {
+      "origin": "MSY",
+      "destination": "PUJ"
+    },
+    {
+      "origin": "MSY",
+      "destination": "RDU"
+    },
+    {
+      "origin": "MSY",
+      "destination": "TPA"
+    },
+    {
+      "origin": "MYR",
+      "destination": "CLE"
+    },
+    {
+      "origin": "MYR",
+      "destination": "ISP"
+    },
+    {
+      "origin": "MYR",
+      "destination": "PHL"
+    },
+    {
+      "origin": "MYR",
+      "destination": "TTN"
+    },
+    {
+      "origin": "NAS",
+      "destination": "ATL"
+    },
+    {
+      "origin": "NAS",
+      "destination": "MSY"
+    },
+    {
+      "origin": "OKC",
+      "destination": "ATL"
+    },
+    {
+      "origin": "OKC",
+      "destination": "DEN"
+    },
+    {
+      "origin": "OKC",
+      "destination": "LAS"
+    },
+    {
+      "origin": "OKC",
+      "destination": "MCO"
+    },
+    {
+      "origin": "OMA",
+      "destination": "ATL"
+    },
+    {
+      "origin": "OMA",
+      "destination": "DEN"
+    },
+    {
+      "origin": "OMA",
+      "destination": "MCO"
+    },
+    {
+      "origin": "OMA",
+      "destination": "PHX"
+    },
+    {
+      "origin": "ONT",
+      "destination": "DEN"
+    },
+    {
+      "origin": "ONT",
+      "destination": "DFW"
+    },
+    {
+      "origin": "ONT",
+      "destination": "IAH"
+    },
+    {
+      "origin": "ONT",
+      "destination": "LAS"
+    },
+    {
+      "origin": "ONT",
+      "destination": "PDX"
+    },
+    {
+      "origin": "ONT",
+      "destination": "SEA"
+    },
+    {
+      "origin": "ONT",
+      "destination": "SFO"
+    },
+    {
+      "origin": "ONT",
+      "destination": "SLC"
+    },
+    {
+      "origin": "ORD",
+      "destination": "ATL"
+    },
+    {
+      "origin": "ORD",
+      "destination": "AUS"
+    },
+    {
+      "origin": "ORD",
+      "destination": "BNA"
+    },
+    {
+      "origin": "ORD",
+      "destination": "BWI"
+    },
+    {
+      "origin": "ORD",
+      "destination": "CLT"
+    },
+    {
+      "origin": "ORD",
+      "destination": "CUN"
+    },
+    {
+      "origin": "ORD",
+      "destination": "DEN"
+    },
+    {
+      "origin": "ORD",
+      "destination": "DFW"
+    },
+    {
+      "origin": "ORD",
+      "destination": "FLL"
+    },
+    {
+      "origin": "ORD",
+      "destination": "IAH"
+    },
+    {
+      "origin": "ORD",
+      "destination": "JFK"
+    },
+    {
+      "origin": "ORD",
+      "destination": "LAS"
+    },
+    {
+      "origin": "ORD",
+      "destination": "LAX"
+    },
+    {
+      "origin": "ORD",
+      "destination": "MCO"
+    },
+    {
+      "origin": "ORD",
+      "destination": "MIA"
+    },
+    {
+      "origin": "ORD",
+      "destination": "MSP"
+    },
+    {
+      "origin": "ORD",
+      "destination": "MSY"
+    },
+    {
+      "origin": "ORD",
+      "destination": "PHL"
+    },
+    {
+      "origin": "ORD",
+      "destination": "PHX"
+    },
+    {
+      "origin": "ORD",
+      "destination": "PUJ"
+    },
+    {
+      "origin": "ORD",
+      "destination": "RDU"
+    },
+    {
+      "origin": "ORD",
+      "destination": "RSW"
+    },
+    {
+      "origin": "ORD",
+      "destination": "SAN"
+    },
+    {
+      "origin": "ORD",
+      "destination": "SJU"
+    },
+    {
+      "origin": "ORD",
+      "destination": "TPA"
+    },
+    {
+      "origin": "ORF",
+      "destination": "ATL"
+    },
+    {
+      "origin": "ORF",
+      "destination": "DFW"
+    },
+    {
+      "origin": "ORF",
+      "destination": "MCO"
+    },
+    {
+      "origin": "ORF",
+      "destination": "TPA"
+    },
+    {
+      "origin": "PAE",
+      "destination": "DEN"
+    },
+    {
+      "origin": "PAE",
+      "destination": "LAS"
+    },
+    {
+      "origin": "PAE",
+      "destination": "PHX"
+    },
+    {
+      "origin": "PBI",
+      "destination": "ATL"
+    },
+    {
+      "origin": "PBI",
+      "destination": "CLE"
+    },
+    {
+      "origin": "PBI",
+      "destination": "CVG"
+    },
+    {
+      "origin": "PBI",
+      "destination": "ISP"
+    },
+    {
+      "origin": "PBI",
+      "destination": "PHL"
+    },
+    {
+      "origin": "PBI",
+      "destination": "TTN"
+    },
+    {
+      "origin": "PDX",
+      "destination": "DEN"
+    },
+    {
+      "origin": "PDX",
+      "destination": "LAS"
+    },
+    {
+      "origin": "PDX",
+      "destination": "LAX"
+    },
+    {
+      "origin": "PDX",
+      "destination": "ONT"
+    },
+    {
+      "origin": "PDX",
+      "destination": "PHX"
+    },
+    {
+      "origin": "PDX",
+      "destination": "SFO"
+    },
+    {
+      "origin": "PDX",
+      "destination": "SLC"
+    },
+    {
+      "origin": "PHL",
+      "destination": "ATL"
+    },
+    {
+      "origin": "PHL",
+      "destination": "AUS"
+    },
+    {
+      "origin": "PHL",
+      "destination": "BNA"
+    },
+    {
+      "origin": "PHL",
+      "destination": "BOS"
+    },
+    {
+      "origin": "PHL",
+      "destination": "CHS"
+    },
+    {
+      "origin": "PHL",
+      "destination": "CLE"
+    },
+    {
+      "origin": "PHL",
+      "destination": "CLT"
+    },
+    {
+      "origin": "PHL",
+      "destination": "CUN"
+    },
+    {
+      "origin": "PHL",
+      "destination": "DEN"
+    },
+    {
+      "origin": "PHL",
+      "destination": "DFW"
+    },
+    {
+      "origin": "PHL",
+      "destination": "DTW"
+    },
+    {
+      "origin": "PHL",
+      "destination": "FLL"
+    },
+    {
+      "origin": "PHL",
+      "destination": "IAH"
+    },
+    {
+      "origin": "PHL",
+      "destination": "JAX"
+    },
+    {
+      "origin": "PHL",
+      "destination": "LAS"
+    },
+    {
+      "origin": "PHL",
+      "destination": "LAX"
+    },
+    {
+      "origin": "PHL",
+      "destination": "MBJ"
+    },
+    {
+      "origin": "PHL",
+      "destination": "MCO"
+    },
+    {
+      "origin": "PHL",
+      "destination": "MDW"
+    },
+    {
+      "origin": "PHL",
+      "destination": "MIA"
+    },
+    {
+      "origin": "PHL",
+      "destination": "MSY"
+    },
+    {
+      "origin": "PHL",
+      "destination": "MYR"
+    },
+    {
+      "origin": "PHL",
+      "destination": "ORD"
+    },
+    {
+      "origin": "PHL",
+      "destination": "PBI"
+    },
+    {
+      "origin": "PHL",
+      "destination": "PIT"
+    },
+    {
+      "origin": "PHL",
+      "destination": "PUJ"
+    },
+    {
+      "origin": "PHL",
+      "destination": "RDU"
+    },
+    {
+      "origin": "PHL",
+      "destination": "RSW"
+    },
+    {
+      "origin": "PHL",
+      "destination": "SAV"
+    },
+    {
+      "origin": "PHL",
+      "destination": "SDQ"
+    },
+    {
+      "origin": "PHL",
+      "destination": "SJU"
+    },
+    {
+      "origin": "PHL",
+      "destination": "SRQ"
+    },
+    {
+      "origin": "PHL",
+      "destination": "STI"
+    },
+    {
+      "origin": "PHL",
+      "destination": "TPA"
+    },
+    {
+      "origin": "PHX",
+      "destination": "ATL"
+    },
+    {
+      "origin": "PHX",
+      "destination": "AUS"
+    },
+    {
+      "origin": "PHX",
+      "destination": "BNA"
+    },
+    {
+      "origin": "PHX",
+      "destination": "CLE"
+    },
+    {
+      "origin": "PHX",
+      "destination": "CVG"
+    },
+    {
+      "origin": "PHX",
+      "destination": "DEN"
+    },
+    {
+      "origin": "PHX",
+      "destination": "DFW"
+    },
+    {
+      "origin": "PHX",
+      "destination": "DSM"
+    },
+    {
+      "origin": "PHX",
+      "destination": "DTW"
+    },
+    {
+      "origin": "PHX",
+      "destination": "GEG"
+    },
+    {
+      "origin": "PHX",
+      "destination": "IAH"
+    },
+    {
+      "origin": "PHX",
+      "destination": "IND"
+    },
+    {
+      "origin": "PHX",
+      "destination": "LAS"
+    },
+    {
+      "origin": "PHX",
+      "destination": "LAX"
+    },
+    {
+      "origin": "PHX",
+      "destination": "MCI"
+    },
+    {
+      "origin": "PHX",
+      "destination": "MCO"
+    },
+    {
+      "origin": "PHX",
+      "destination": "MDW"
+    },
+    {
+      "origin": "PHX",
+      "destination": "MEM"
+    },
+    {
+      "origin": "PHX",
+      "destination": "MKE"
+    },
+    {
+      "origin": "PHX",
+      "destination": "MSP"
+    },
+    {
+      "origin": "PHX",
+      "destination": "MSY"
+    },
+    {
+      "origin": "PHX",
+      "destination": "OMA"
+    },
+    {
+      "origin": "PHX",
+      "destination": "ORD"
+    },
+    {
+      "origin": "PHX",
+      "destination": "PAE"
+    },
+    {
+      "origin": "PHX",
+      "destination": "PDX"
+    },
+    {
+      "origin": "PHX",
+      "destination": "RNO"
+    },
+    {
+      "origin": "PHX",
+      "destination": "SAN"
+    },
+    {
+      "origin": "PHX",
+      "destination": "SAT"
+    },
+    {
+      "origin": "PHX",
+      "destination": "SEA"
+    },
+    {
+      "origin": "PHX",
+      "destination": "SFO"
+    },
+    {
+      "origin": "PHX",
+      "destination": "SLC"
+    },
+    {
+      "origin": "PHX",
+      "destination": "SNA"
+    },
+    {
+      "origin": "PHX",
+      "destination": "STL"
+    },
+    {
+      "origin": "PIT",
+      "destination": "DEN"
+    },
+    {
+      "origin": "PIT",
+      "destination": "MCO"
+    },
+    {
+      "origin": "PIT",
+      "destination": "PHL"
+    },
+    {
+      "origin": "PLS",
+      "destination": "ATL"
+    },
+    {
+      "origin": "PNS",
+      "destination": "DEN"
+    },
+    {
+      "origin": "PNS",
+      "destination": "MCO"
+    },
+    {
+      "origin": "POP",
+      "destination": "SJU"
+    },
+    {
+      "origin": "PSE",
+      "destination": "MCO"
+    },
+    {
+      "origin": "PSP",
+      "destination": "DEN"
+    },
+    {
+      "origin": "PSP",
+      "destination": "SFO"
+    },
+    {
+      "origin": "PUJ",
+      "destination": "ATL"
+    },
+    {
+      "origin": "PUJ",
+      "destination": "CLE"
+    },
+    {
+      "origin": "PUJ",
+      "destination": "CVG"
+    },
+    {
+      "origin": "PUJ",
+      "destination": "MCO"
+    },
+    {
+      "origin": "PUJ",
+      "destination": "MIA"
+    },
+    {
+      "origin": "PUJ",
+      "destination": "MSY"
+    },
+    {
+      "origin": "PUJ",
+      "destination": "ORD"
+    },
+    {
+      "origin": "PUJ",
+      "destination": "PHL"
+    },
+    {
+      "origin": "PUJ",
+      "destination": "SJU"
+    },
+    {
+      "origin": "PUJ",
+      "destination": "STL"
+    },
+    {
+      "origin": "PUJ",
+      "destination": "TPA"
+    },
+    {
+      "origin": "PVR",
+      "destination": "ATL"
+    },
+    {
+      "origin": "PVR",
+      "destination": "DEN"
+    },
+    {
+      "origin": "PWM",
+      "destination": "MCO"
+    },
+    {
+      "origin": "RDU",
+      "destination": "ATL"
+    },
+    {
+      "origin": "RDU",
+      "destination": "BOS"
+    },
+    {
+      "origin": "RDU",
+      "destination": "BUF"
+    },
+    {
+      "origin": "RDU",
+      "destination": "CLE"
+    },
+    {
+      "origin": "RDU",
+      "destination": "CUN"
+    },
+    {
+      "origin": "RDU",
+      "destination": "DEN"
+    },
+    {
+      "origin": "RDU",
+      "destination": "DFW"
+    },
+    {
+      "origin": "RDU",
+      "destination": "DTW"
+    },
+    {
+      "origin": "RDU",
+      "destination": "FLL"
+    },
+    {
+      "origin": "RDU",
+      "destination": "IAH"
+    },
+    {
+      "origin": "RDU",
+      "destination": "IND"
+    },
+    {
+      "origin": "RDU",
+      "destination": "LAS"
+    },
+    {
+      "origin": "RDU",
+      "destination": "LGA"
+    },
+    {
+      "origin": "RDU",
+      "destination": "MCO"
+    },
+    {
+      "origin": "RDU",
+      "destination": "MIA"
+    },
+    {
+      "origin": "RDU",
+      "destination": "MSY"
+    },
+    {
+      "origin": "RDU",
+      "destination": "ORD"
+    },
+    {
+      "origin": "RDU",
+      "destination": "PHL"
+    },
+    {
+      "origin": "RDU",
+      "destination": "SJU"
+    },
+    {
+      "origin": "RDU",
+      "destination": "SYR"
+    },
+    {
+      "origin": "RDU",
+      "destination": "TPA"
+    },
+    {
+      "origin": "RIC",
+      "destination": "ATL"
+    },
+    {
+      "origin": "RIC",
+      "destination": "DEN"
+    },
+    {
+      "origin": "RIC",
+      "destination": "MCO"
+    },
+    {
+      "origin": "RNO",
+      "destination": "DEN"
+    },
+    {
+      "origin": "RNO",
+      "destination": "LAS"
+    },
+    {
+      "origin": "RNO",
+      "destination": "PHX"
+    },
+    {
+      "origin": "RSW",
+      "destination": "ATL"
+    },
+    {
+      "origin": "RSW",
+      "destination": "BUF"
+    },
+    {
+      "origin": "RSW",
+      "destination": "CLE"
+    },
+    {
+      "origin": "RSW",
+      "destination": "CVG"
+    },
+    {
+      "origin": "RSW",
+      "destination": "DEN"
+    },
+    {
+      "origin": "RSW",
+      "destination": "DFW"
+    },
+    {
+      "origin": "RSW",
+      "destination": "DTW"
+    },
+    {
+      "origin": "RSW",
+      "destination": "GRR"
+    },
+    {
+      "origin": "RSW",
+      "destination": "IND"
+    },
+    {
+      "origin": "RSW",
+      "destination": "ISP"
+    },
+    {
+      "origin": "RSW",
+      "destination": "ORD"
+    },
+    {
+      "origin": "RSW",
+      "destination": "PHL"
+    },
+    {
+      "origin": "RSW",
+      "destination": "TTN"
+    },
+    {
+      "origin": "SAL",
+      "destination": "ATL"
+    },
+    {
+      "origin": "SAL",
+      "destination": "DFW"
+    },
+    {
+      "origin": "SAL",
+      "destination": "IAD"
+    },
+    {
+      "origin": "SAL",
+      "destination": "IAH"
+    },
+    {
+      "origin": "SAL",
+      "destination": "MCO"
+    },
+    {
+      "origin": "SAL",
+      "destination": "MIA"
+    },
+    {
+      "origin": "SAN",
+      "destination": "AUS"
+    },
+    {
+      "origin": "SAN",
+      "destination": "DEN"
+    },
+    {
+      "origin": "SAN",
+      "destination": "DFW"
+    },
+    {
+      "origin": "SAN",
+      "destination": "LAS"
+    },
+    {
+      "origin": "SAN",
+      "destination": "ORD"
+    },
+    {
+      "origin": "SAN",
+      "destination": "PHX"
+    },
+    {
+      "origin": "SAN",
+      "destination": "SFO"
+    },
+    {
+      "origin": "SAN",
+      "destination": "SLC"
+    },
+    {
+      "origin": "SAP",
+      "destination": "ATL"
+    },
+    {
+      "origin": "SAP",
+      "destination": "IAH"
+    },
+    {
+      "origin": "SAP",
+      "destination": "MCO"
+    },
+    {
+      "origin": "SAP",
+      "destination": "MIA"
+    },
+    {
+      "origin": "SAT",
+      "destination": "ATL"
+    },
+    {
+      "origin": "SAT",
+      "destination": "DEN"
+    },
+    {
+      "origin": "SAT",
+      "destination": "LAS"
+    },
+    {
+      "origin": "SAT",
+      "destination": "MCO"
+    },
+    {
+      "origin": "SAT",
+      "destination": "PHX"
+    },
+    {
+      "origin": "SAV",
+      "destination": "PHL"
+    },
+    {
+      "origin": "SDQ",
+      "destination": "ATL"
+    },
+    {
+      "origin": "SDQ",
+      "destination": "MCO"
+    },
+    {
+      "origin": "SDQ",
+      "destination": "MIA"
+    },
+    {
+      "origin": "SDQ",
+      "destination": "PHL"
+    },
+    {
+      "origin": "SDQ",
+      "destination": "SJU"
+    },
+    {
+      "origin": "SDQ",
+      "destination": "TPA"
+    },
+    {
+      "origin": "SEA",
+      "destination": "DEN"
+    },
+    {
+      "origin": "SEA",
+      "destination": "DFW"
+    },
+    {
+      "origin": "SEA",
+      "destination": "LAS"
+    },
+    {
+      "origin": "SEA",
+      "destination": "LAX"
+    },
+    {
+      "origin": "SEA",
+      "destination": "ONT"
+    },
+    {
+      "origin": "SEA",
+      "destination": "PHX"
+    },
+    {
+      "origin": "SEA",
+      "destination": "SLC"
+    },
+    {
+      "origin": "SFO",
+      "destination": "ATL"
+    },
+    {
+      "origin": "SFO",
+      "destination": "DEN"
+    },
+    {
+      "origin": "SFO",
+      "destination": "DFW"
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAS"
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAX"
+    },
+    {
+      "origin": "SFO",
+      "destination": "MCO"
+    },
+    {
+      "origin": "SFO",
+      "destination": "ONT"
+    },
+    {
+      "origin": "SFO",
+      "destination": "PDX"
+    },
+    {
+      "origin": "SFO",
+      "destination": "PHX"
+    },
+    {
+      "origin": "SFO",
+      "destination": "PSP"
+    },
+    {
+      "origin": "SFO",
+      "destination": "SAN"
+    },
+    {
+      "origin": "SFO",
+      "destination": "SLC"
+    },
+    {
+      "origin": "SFO",
+      "destination": "SNA"
+    },
+    {
+      "origin": "SJC",
+      "destination": "DEN"
+    },
+    {
+      "origin": "SJC",
+      "destination": "LAS"
+    },
+    {
+      "origin": "SJC",
+      "destination": "LAX"
+    },
+    {
+      "origin": "SJD",
+      "destination": "ATL"
+    },
+    {
+      "origin": "SJD",
+      "destination": "DEN"
+    },
+    {
+      "origin": "SJD",
+      "destination": "LAS"
+    },
+    {
+      "origin": "SJO",
+      "destination": "ATL"
+    },
+    {
+      "origin": "SJO",
+      "destination": "MCO"
+    },
+    {
+      "origin": "SJU",
+      "destination": "ANU"
+    },
+    {
+      "origin": "SJU",
+      "destination": "ATL"
+    },
+    {
+      "origin": "SJU",
+      "destination": "BDL"
+    },
+    {
+      "origin": "SJU",
+      "destination": "BOS"
+    },
+    {
+      "origin": "SJU",
+      "destination": "BWI"
+    },
+    {
+      "origin": "SJU",
+      "destination": "CLE"
+    },
+    {
+      "origin": "SJU",
+      "destination": "CLT"
+    },
+    {
+      "origin": "SJU",
+      "destination": "DFW"
+    },
+    {
+      "origin": "SJU",
+      "destination": "EWR"
+    },
+    {
+      "origin": "SJU",
+      "destination": "FLL"
+    },
+    {
+      "origin": "SJU",
+      "destination": "IAD"
+    },
+    {
+      "origin": "SJU",
+      "destination": "JAX"
+    },
+    {
+      "origin": "SJU",
+      "destination": "JFK"
+    },
+    {
+      "origin": "SJU",
+      "destination": "LGA"
+    },
+    {
+      "origin": "SJU",
+      "destination": "MCO"
+    },
+    {
+      "origin": "SJU",
+      "destination": "MIA"
+    },
+    {
+      "origin": "SJU",
+      "destination": "ORD"
+    },
+    {
+      "origin": "SJU",
+      "destination": "PHL"
+    },
+    {
+      "origin": "SJU",
+      "destination": "POP"
+    },
+    {
+      "origin": "SJU",
+      "destination": "PUJ"
+    },
+    {
+      "origin": "SJU",
+      "destination": "RDU"
+    },
+    {
+      "origin": "SJU",
+      "destination": "SDQ"
+    },
+    {
+      "origin": "SJU",
+      "destination": "STI"
+    },
+    {
+      "origin": "SJU",
+      "destination": "STT"
+    },
+    {
+      "origin": "SJU",
+      "destination": "STX"
+    },
+    {
+      "origin": "SJU",
+      "destination": "SXM"
+    },
+    {
+      "origin": "SJU",
+      "destination": "TPA"
+    },
+    {
+      "origin": "SLC",
+      "destination": "ATL"
+    },
+    {
+      "origin": "SLC",
+      "destination": "DEN"
+    },
+    {
+      "origin": "SLC",
+      "destination": "DFW"
+    },
+    {
+      "origin": "SLC",
+      "destination": "LAS"
+    },
+    {
+      "origin": "SLC",
+      "destination": "LAX"
+    },
+    {
+      "origin": "SLC",
+      "destination": "MCO"
+    },
+    {
+      "origin": "SLC",
+      "destination": "ONT"
+    },
+    {
+      "origin": "SLC",
+      "destination": "PDX"
+    },
+    {
+      "origin": "SLC",
+      "destination": "PHX"
+    },
+    {
+      "origin": "SLC",
+      "destination": "SAN"
+    },
+    {
+      "origin": "SLC",
+      "destination": "SEA"
+    },
+    {
+      "origin": "SLC",
+      "destination": "SFO"
+    },
+    {
+      "origin": "SLC",
+      "destination": "SNA"
+    },
+    {
+      "origin": "SLC",
+      "destination": "TUS"
+    },
+    {
+      "origin": "SMF",
+      "destination": "DEN"
+    },
+    {
+      "origin": "SMF",
+      "destination": "LAS"
+    },
+    {
+      "origin": "SMF",
+      "destination": "LAX"
+    },
+    {
+      "origin": "SNA",
+      "destination": "DEN"
+    },
+    {
+      "origin": "SNA",
+      "destination": "DFW"
+    },
+    {
+      "origin": "SNA",
+      "destination": "LAS"
+    },
+    {
+      "origin": "SNA",
+      "destination": "PHX"
+    },
+    {
+      "origin": "SNA",
+      "destination": "SFO"
+    },
+    {
+      "origin": "SNA",
+      "destination": "SLC"
+    },
+    {
+      "origin": "SRQ",
+      "destination": "BUR"
+    },
+    {
+      "origin": "SRQ",
+      "destination": "CLE"
+    },
+    {
+      "origin": "SRQ",
+      "destination": "PHL"
+    },
+    {
+      "origin": "STI",
+      "destination": "PHL"
+    },
+    {
+      "origin": "STI",
+      "destination": "SJU"
+    },
+    {
+      "origin": "STL",
+      "destination": "ATL"
+    },
+    {
+      "origin": "STL",
+      "destination": "CLE"
+    },
+    {
+      "origin": "STL",
+      "destination": "CUN"
+    },
+    {
+      "origin": "STL",
+      "destination": "DEN"
+    },
+    {
+      "origin": "STL",
+      "destination": "DFW"
+    },
+    {
+      "origin": "STL",
+      "destination": "FLL"
+    },
+    {
+      "origin": "STL",
+      "destination": "LAS"
+    },
+    {
+      "origin": "STL",
+      "destination": "MCO"
+    },
+    {
+      "origin": "STL",
+      "destination": "PHX"
+    },
+    {
+      "origin": "STL",
+      "destination": "PUJ"
+    },
+    {
+      "origin": "STL",
+      "destination": "TPA"
+    },
+    {
+      "origin": "STT",
+      "destination": "SJU"
+    },
+    {
+      "origin": "STX",
+      "destination": "SJU"
+    },
+    {
+      "origin": "SXM",
+      "destination": "ATL"
+    },
+    {
+      "origin": "SXM",
+      "destination": "MCO"
+    },
+    {
+      "origin": "SXM",
+      "destination": "SJU"
+    },
+    {
+      "origin": "SYR",
+      "destination": "ATL"
+    },
+    {
+      "origin": "SYR",
+      "destination": "MCO"
+    },
+    {
+      "origin": "SYR",
+      "destination": "RDU"
+    },
+    {
+      "origin": "TPA",
+      "destination": "ATL"
+    },
+    {
+      "origin": "TPA",
+      "destination": "BOS"
+    },
+    {
+      "origin": "TPA",
+      "destination": "BUF"
+    },
+    {
+      "origin": "TPA",
+      "destination": "BWI"
+    },
+    {
+      "origin": "TPA",
+      "destination": "CLE"
+    },
+    {
+      "origin": "TPA",
+      "destination": "CLT"
+    },
+    {
+      "origin": "TPA",
+      "destination": "CUN"
+    },
+    {
+      "origin": "TPA",
+      "destination": "CVG"
+    },
+    {
+      "origin": "TPA",
+      "destination": "DEN"
+    },
+    {
+      "origin": "TPA",
+      "destination": "DFW"
+    },
+    {
+      "origin": "TPA",
+      "destination": "DTW"
+    },
+    {
+      "origin": "TPA",
+      "destination": "GRR"
+    },
+    {
+      "origin": "TPA",
+      "destination": "IAD"
+    },
+    {
+      "origin": "TPA",
+      "destination": "IAH"
+    },
+    {
+      "origin": "TPA",
+      "destination": "IND"
+    },
+    {
+      "origin": "TPA",
+      "destination": "ISP"
+    },
+    {
+      "origin": "TPA",
+      "destination": "JFK"
+    },
+    {
+      "origin": "TPA",
+      "destination": "LAS"
+    },
+    {
+      "origin": "TPA",
+      "destination": "MCI"
+    },
+    {
+      "origin": "TPA",
+      "destination": "MDW"
+    },
+    {
+      "origin": "TPA",
+      "destination": "MKE"
+    },
+    {
+      "origin": "TPA",
+      "destination": "MSY"
+    },
+    {
+      "origin": "TPA",
+      "destination": "ORD"
+    },
+    {
+      "origin": "TPA",
+      "destination": "ORF"
+    },
+    {
+      "origin": "TPA",
+      "destination": "PHL"
+    },
+    {
+      "origin": "TPA",
+      "destination": "PUJ"
+    },
+    {
+      "origin": "TPA",
+      "destination": "RDU"
+    },
+    {
+      "origin": "TPA",
+      "destination": "SDQ"
+    },
+    {
+      "origin": "TPA",
+      "destination": "SJU"
+    },
+    {
+      "origin": "TPA",
+      "destination": "STL"
+    },
+    {
+      "origin": "TPA",
+      "destination": "TTN"
+    },
+    {
+      "origin": "TTN",
+      "destination": "ATL"
+    },
+    {
+      "origin": "TTN",
+      "destination": "FLL"
+    },
+    {
+      "origin": "TTN",
+      "destination": "MCO"
+    },
+    {
+      "origin": "TTN",
+      "destination": "MYR"
+    },
+    {
+      "origin": "TTN",
+      "destination": "PBI"
+    },
+    {
+      "origin": "TTN",
+      "destination": "RSW"
+    },
+    {
+      "origin": "TTN",
+      "destination": "TPA"
+    },
+    {
+      "origin": "TUL",
+      "destination": "DEN"
+    },
+    {
+      "origin": "TUL",
+      "destination": "MCO"
+    },
+    {
+      "origin": "TUS",
+      "destination": "DEN"
+    },
+    {
+      "origin": "TUS",
+      "destination": "DFW"
+    },
+    {
+      "origin": "TUS",
+      "destination": "LAS"
+    },
+    {
+      "origin": "TUS",
+      "destination": "SLC"
+    },
+    {
+      "origin": "TYS",
+      "destination": "DEN"
+    },
+    {
+      "origin": "XNA",
+      "destination": "DEN"
+    }
+  ]
+}

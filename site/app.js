@@ -36,6 +36,7 @@ const network = document.querySelector("#network");
 const showOvernight = document.querySelector("#show-overnight");
 
 let schedule = null;
+let networkFile = null;
 let airports = new Map();
 let map = null;
 let arcs = [];
@@ -153,10 +154,16 @@ document.querySelector("#new-york").addEventListener("click", () => {
 });
 
 async function load() {
-  const [flightResponse, airportResponse] = await Promise.all([fetch("flights.json"), fetch("airports.json")]);
+  const [flightResponse, airportResponse, nonstopResponse] = await Promise.all([
+    fetch("flights.json"),
+    fetch("airports.json"),
+    fetch("nonstops.json"),
+  ]);
   if (!flightResponse.ok) throw new Error("The published schedule did not load.");
   if (!airportResponse.ok) throw new Error("The airport map did not load.");
+  if (!nonstopResponse.ok) throw new Error("The nonstop network did not load.");
   schedule = await flightResponse.json();
+  networkFile = await nonstopResponse.json();
   airports = new Map((await airportResponse.json()).map((airport) => [airport.iata, airport]));
   arcs = buildArcs();
   const dates = publishedDates();
@@ -422,8 +429,8 @@ function showAirport(code) {
   placeName.textContent = `${airport.city} · ${airport.name}`;
   const label = document.createElement("p");
   label.textContent = outbound.length
-    ? `${outbound.length} nonstop destination${outbound.length === 1 ? "" : "s"} with saved flights`
-    : "No saved nonstop from this airport.";
+    ? `${outbound.length} nonstop destination${outbound.length === 1 ? "" : "s"}`
+    : "No published nonstop from this airport.";
   airportCard.append(title, placeName, label);
 }
 
@@ -490,52 +497,62 @@ function drawMap() {
 function buildArcs() {
   const seen = new Set();
   const built = [];
-  for (const flight of schedule?.flights ?? []) {
-    const key = `${flight.origin}|${flight.destination}`;
+  for (const pair of networkFile?.pairs ?? []) {
+    const key = `${pair.origin}|${pair.destination}`;
     if (seen.has(key)) continue;
-    const from = airports.get(flight.origin);
-    const to = airports.get(flight.destination);
-    if (!from || !to) continue;
+    const arc = arcFrom(pair.origin, pair.destination);
+    if (!arc) continue;
     seen.add(key);
-    built.push({
-      origin: flight.origin,
-      destination: flight.destination,
-      provenance: "scheduled",
-      coordinates: greatCircleArc([from.lon, from.lat], [to.lon, to.lat], 8),
-    });
+    built.push(arc);
   }
   return built;
 }
 
+function arcFrom(origin, destination) {
+  const from = airports.get(origin);
+  const to = airports.get(destination);
+  if (!from || !to) return null;
+  return {
+    origin,
+    destination,
+    provenance: "scheduled",
+    coordinates: greatCircleArc([from.lon, from.lat], [to.lon, to.lat], 8),
+  };
+}
+
+function savedFlightPair(origin, destination) {
+  return (schedule?.flights ?? []).some((flight) => flight.origin === origin && flight.destination === destination);
+}
+
 function nonstopCodes() {
   const codes = new Set();
-  for (const flight of schedule?.flights ?? []) {
-    codes.add(flight.origin);
-    codes.add(flight.destination);
+  for (const arc of arcs) {
+    codes.add(arc.origin);
+    codes.add(arc.destination);
   }
   return codes;
 }
 
 function nonstopPairCount() {
-  return new Set((schedule?.flights ?? []).map((flight) => `${flight.origin}|${flight.destination}`)).size;
+  return arcs.length;
 }
 
 function describeNetwork() {
+  if (networkFile?.sentence) return networkFile.sentence;
   const pairs = nonstopPairCount();
-  const flights = schedule?.flights?.length ?? 0;
-  if (!pairs) return "No saved nonstop is on the map.";
-  return `${pairs.toLocaleString()} nonstop route${pairs === 1 ? "" : "s"} from ${flights.toLocaleString()} saved flight${flights === 1 ? "" : "s"}.`;
+  if (!pairs) return "No published nonstop is on the map.";
+  return `${pairs.toLocaleString()} published nonstop city pairs.`;
 }
 
 function openingStatus(dates) {
-  if (!dates.length) return describeNetwork();
-  return `${describeNetwork()} Dates run ${dates[0]} through ${dates[dates.length - 1]}.`;
+  if (!dates.length) return "No saved flight times are loaded.";
+  return `Saved flight times run ${dates[0]} through ${dates[dates.length - 1]}.`;
 }
 
 function nonstopDestinations(code) {
   const found = new Set();
-  for (const flight of schedule?.flights ?? []) {
-    if (flight.origin === code) found.add(flight.destination);
+  for (const arc of arcs) {
+    if (arc.origin === code) found.add(arc.destination);
   }
   return [...found].sort();
 }
@@ -544,20 +561,35 @@ function pathKeys() {
   return pathPairs;
 }
 
+function routeFeature(arc, selected, dim) {
+  const key = `${arc.origin}|${arc.destination}`;
+  const active = selected.has(key) ? 2 : focusPairs.has(key) ? 1 : 0;
+  return {
+    type: "Feature",
+    properties: { origin: arc.origin, destination: arc.destination, provenance: arc.provenance, active, dim: dim && active === 0 },
+    geometry: { type: "LineString", coordinates: arc.coordinates },
+  };
+}
+
 function routeCollection() {
   const pathOnly = isolatePath && !showNetwork;
   const selected = pathKeys();
   const dim = !pathOnly && (selected.size > 0 || focusPairs.size > 0);
   const features = [];
-  for (const arc of arcs) {
-    const key = `${arc.origin}|${arc.destination}`;
-    const active = selected.has(key) ? 2 : focusPairs.has(key) ? 1 : 0;
-    if (pathOnly && !selected.has(key)) continue;
-    features.push({
-      type: "Feature",
-      properties: { origin: arc.origin, destination: arc.destination, provenance: arc.provenance, active, dim: dim && active === 0 },
-      geometry: { type: "LineString", coordinates: arc.coordinates },
-    });
+  const seen = new Set();
+  if (!pathOnly) {
+    for (const arc of arcs) {
+      seen.add(`${arc.origin}|${arc.destination}`);
+      features.push(routeFeature(arc, selected, dim));
+    }
+  }
+  for (const key of selected) {
+    if (seen.has(key)) continue;
+    const [origin, destination] = key.split("|");
+    if (!savedFlightPair(origin, destination)) continue;
+    const arc = arcFrom(origin, destination);
+    if (!arc) continue;
+    features.push(routeFeature(arc, selected, dim));
   }
   features.sort((left, right) => left.properties.active - right.properties.active);
   return { type: "FeatureCollection", features };

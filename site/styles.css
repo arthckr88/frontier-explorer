@@ -460,8 +460,6 @@ article.card { cursor: default; }
     padding-bottom: calc(12px + env(safe-area-inset-bottom));
   }
 
-  .network { display: none; }
-
   .dock {
     top: 12px;
     right: 58px;

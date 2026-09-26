@@ -14,6 +14,7 @@ copyFileSync(new URL("../site/index.html", import.meta.url), new URL("../dist/in
 copyFileSync(new URL("../site/app.js", import.meta.url), new URL("../dist/app.js", import.meta.url));
 copyFileSync(new URL("../site/styles.css", import.meta.url), new URL("../dist/styles.css", import.meta.url));
 copyFileSync(new URL("../data/flights.json", import.meta.url), new URL("../dist/flights.json", import.meta.url));
+copyFileSync(new URL("../data/nonstops.json", import.meta.url), new URL("../dist/nonstops.json", import.meta.url));
 writeFileSync(new URL("../dist/airports.json", import.meta.url), JSON.stringify(publishedAirports()));
 copyFileSync(new URL("../node_modules/maplibre-gl/dist/maplibre-gl.mjs", import.meta.url), new URL("../dist/maplibre-gl.mjs", import.meta.url));
 copyFileSync(new URL("../node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs", import.meta.url), new URL("../dist/maplibre-gl-shared.mjs", import.meta.url));
@@ -24,6 +25,7 @@ console.log("Wrote dist/ for GitHub Pages.");
 
 function publishedAirports() {
   const flights = JSON.parse(readFileSync(new URL("../data/flights.json", import.meta.url), "utf8"));
+  const nonstops = JSON.parse(readFileSync(new URL("../data/nonstops.json", import.meta.url), "utf8"));
   const codes = new Set();
   for (const flight of flights.flights ?? []) {
     codes.add(flight.origin);
@@ -32,6 +34,10 @@ function publishedAirports() {
   for (const route of flights.routes ?? []) {
     codes.add(route.origin);
     codes.add(route.destination);
+  }
+  for (const pair of nonstops.pairs ?? []) {
+    codes.add(pair.origin);
+    codes.add(pair.destination);
   }
   const airports = JSON.parse(readFileSync(new URL("../data/airports.json", import.meta.url), "utf8"));
   return airports
