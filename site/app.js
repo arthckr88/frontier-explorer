@@ -42,6 +42,7 @@ let arcs = [];
 let originPick = "";
 let pathPairs = new Set();
 let focusPairs = new Set();
+let applyingField = false;
 
 load().catch((error) => {
   status.textContent = error instanceof Error ? error.message : "The published schedule did not load.";
@@ -51,8 +52,9 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
   for (const name of ["from", "to"]) {
     const list = document.querySelector(`#${name}-list`);
-    if (list && !list.hidden && !readEndpoint(name).codes.length) {
-      const [item] = suggestions(form.elements[name].value);
+    const input = form.elements[name];
+    if (list && !list.hidden && !completionSelection(input.value)) {
+      const [item] = suggestions(input.value);
       if (item) applySuggestion(name, item, false);
     }
   }
@@ -69,15 +71,28 @@ form.addEventListener("change", (event) => {
 for (const name of ["from", "to"]) {
   const input = form.elements[name];
   input.addEventListener("input", () => {
+    if (applyingField) return;
     if (input.value.trim() !== input.dataset.label) {
       input.dataset.codes = "";
       input.dataset.label = "";
+      input.dataset.notes = "";
+    }
+    const selection = completionSelection(input.value);
+    if (selection) {
+      applyResolved(name, selection);
+      return;
     }
     renderSuggest(name);
   });
   input.addEventListener("focus", () => renderSuggest(name));
   input.addEventListener("blur", () => {
-    window.setTimeout(() => closeSuggest(name), 160);
+    window.setTimeout(() => {
+      closeSuggest(name);
+      if (applyingField || document.activeElement === input) return;
+      if (input.value.trim() === input.dataset.label && input.dataset.codes) return;
+      const selection = completionSelection(input.value);
+      if (selection) applyResolved(name, selection);
+    }, 160);
   });
 }
 
@@ -136,6 +151,10 @@ async function load() {
 function chooseOrigin(code) {
   originPick = code;
   setEndpoint("from", airportSelection(code));
+  if (readEndpoint("to").codes.some((item) => item !== code)) {
+    search();
+    return;
+  }
   clearEndpoint("to");
   pathPairs = new Set();
   focusPairs = outboundPairs(code);
@@ -151,12 +170,15 @@ function chooseOrigin(code) {
 }
 
 function search() {
+  if (!schedule) return;
   results.replaceChildren();
   showOvernight.hidden = true;
   pathPairs = new Set();
   focusPairs = new Set();
   closeSuggest("from");
   closeSuggest("to");
+  commitField("from");
+  commitField("to");
   pressStarts();
   const from = readEndpoint("from");
   const to = readEndpoint("to");
@@ -174,7 +196,7 @@ function search() {
       listDestinations(from.codes[0]);
       showAirport(from.codes[0]);
     }
-    status.textContent = `${from.label || place(from.codes[0])} is selected. Choose where you are going.`;
+    status.textContent = `${endTitle(from)} is selected. Choose where you are going.`;
     paintRoutes();
     fit(from.codes.flatMap((code) => [code, ...destinationsFrom(code)]), paddingForSheet());
     return;
@@ -184,13 +206,13 @@ function search() {
     paintRoutes();
     return;
   }
-  const target = to.label || destinations.map(place).join(", ");
+  const title = `${endTitle(from)} → ${destinations.length === 1 ? cityName(destinations[0]) : endTitle(to)}`;
   const listedPairs = listedDirects(from.codes, destinations);
   if (!publishedDates().includes(date)) {
     for (const [origin, destination] of listedPairs) pathPairs.add(`${origin}|${destination}`);
     showListed(listedPairs);
     status.textContent = `No published flights for ${date} yet. Dates are added by the schedule update, not by this search.`;
-    if (listedPairs.length) status.textContent += " Frontier lists this route. Time not saved.";
+    if (listedPairs.length) status.textContent += ` ${title}. Time not saved.`;
     paintRoutes();
     fit(listedPairs.flatMap(([origin, destination]) => [origin, destination]), paddingForSheet());
     return;
@@ -217,20 +239,19 @@ function search() {
   for (const [origin, destination] of untimed) pathPairs.add(`${origin}|${destination}`);
   if (itineraries.length === 0 && untimed.length === 0) {
     if (hidden > 0) {
-      status.textContent = `No daytime itinerary for ${from.label || place(from.codes[0])} → ${target} on ${date}. ${hiddenCopy(hidden)}`;
+      status.textContent = `No daytime itinerary for ${title} on ${date}. ${hiddenCopy(hidden)}`;
       showOvernight.hidden = false;
     } else {
-      status.textContent = `No stored flight for ${from.label || place(from.codes[0])} → ${target} on ${date}.`;
+      status.textContent = `No stored flight for ${title} on ${date}.`;
     }
     paintRoutes();
     fit([...from.codes, ...destinations], paddingForSheet());
     return;
   }
-  const start = from.label || place(from.codes[0]);
   if (itineraries.length === 0) {
-    status.textContent = `Frontier lists ${start} → ${target}. Time not saved.`;
+    status.textContent = `${title}. Time not saved.`;
   } else {
-    status.textContent = `${itineraries.length} itinerar${itineraries.length === 1 ? "y" : "ies"} for ${start} → ${target} on ${date}.`;
+    status.textContent = `${itineraries.length} itinerar${itineraries.length === 1 ? "y" : "ies"} for ${title} on ${date}.`;
   }
   if (hidden > 0) {
     status.textContent += ` ${hiddenCopy(hidden)}`;
@@ -449,6 +470,11 @@ function paintRoutes() {
   if (routes) routes.setData(routeCollection());
   const dots = map?.getSource("airports");
   if (dots) dots.setData(airportCollection());
+  const canvas = document.querySelector("#map");
+  if (canvas) {
+    canvas.dataset.selected = [...pathPairs].join(",");
+    canvas.dataset.focus = [...focusPairs].join(",");
+  }
 }
 
 function outboundPairs(code) {
@@ -633,6 +659,71 @@ function closeSuggest(name) {
   if (list) list.hidden = true;
 }
 
+function applyResolved(name, selection) {
+  applyingField = true;
+  setEndpoint(name, selection);
+  applyingField = false;
+  if (name === "from") originPick = selection.codes[0] ?? "";
+  closeSuggest(name);
+  search();
+}
+
+function commitField(name) {
+  const input = form.elements[name];
+  const stored = (input.dataset.codes ?? "").split(",").filter((code) => /^[A-Z]{3}$/.test(code));
+  if (stored.length && input.value.trim() === input.dataset.label) return;
+  const selection = resolveLoose(input.value);
+  if (!selection) return;
+  applyingField = true;
+  setEndpoint(name, selection);
+  applyingField = false;
+  if (name === "from") originPick = selection.codes[0] ?? originPick;
+}
+
+function completionSelection(value) {
+  const trimmed = value.trim();
+  if (trimmed.length < 2 || airports.size === 0) return null;
+  const query = trimmed.toLowerCase().replaceAll(".", "");
+  const raw = query.toUpperCase();
+  if (/^[A-Z]{3}$/.test(raw)) {
+    if (!airports.has(raw)) return null;
+    const blocked = [...airports.values()].some((airport) => airport.iata !== raw && (airport.iata.toLowerCase().startsWith(query) || airport.city.toLowerCase().startsWith(query)))
+      || GROUPS.some((group) => group.label.toLowerCase().startsWith(query) || group.queries.some((name) => {
+        const normalized = name.replaceAll(".", "");
+        return normalized.startsWith(query) && normalized !== query;
+      }));
+    if (blocked) return null;
+    return airportSelection(raw);
+  }
+  const cityHits = [...airports.values()].filter((airport) => airport.city.toLowerCase() === query);
+  if (cityHits.length === 1) return airportSelection(cityHits[0].iata);
+  const group = GROUPS.find((item) => item.label.toLowerCase() === query || item.queries.some((name) => name.replaceAll(".", "") === query));
+  if (!group) return null;
+  const codePrefix = [...airports.values()].some((airport) => airport.iata.toLowerCase().startsWith(query) && airport.iata.length > query.length);
+  if (codePrefix) return null;
+  return groupSelection(group);
+}
+
+function resolveLoose(value) {
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  const query = trimmed.toLowerCase().replaceAll(".", "");
+  const raw = query.toUpperCase();
+  if (/^[A-Z]{3}$/.test(raw) && airports.has(raw)) return airportSelection(raw);
+  const cityHits = [...airports.values()].filter((airport) => airport.city.toLowerCase() === query);
+  if (cityHits.length === 1) return airportSelection(cityHits[0].iata);
+  const group = GROUPS.find((item) => item.label.toLowerCase() === query || item.queries.some((name) => name.replaceAll(".", "") === query));
+  if (group) return groupSelection(group);
+  if (/^[A-Z]{3}$/.test(raw)) return airportSelection(raw);
+  return null;
+}
+
+function endTitle(selection) {
+  if (selection.codes.length === 1) return cityName(selection.codes[0]);
+  if (selection.label && !selection.label.includes("·")) return selection.label;
+  return selection.codes.map((code) => cityName(code)).join(", ");
+}
+
 function setEndpoint(name, selection) {
   const input = form.elements[name];
   input.value = selection.label;
@@ -657,11 +748,7 @@ function readEndpoint(name) {
     try { notes = JSON.parse(input.dataset.notes || "{}"); } catch { notes = {}; }
     return { label: input.dataset.label, codes: stored, notes };
   }
-  const raw = input.value.trim().toUpperCase();
-  if (/^[A-Z]{3}$/.test(raw)) return airportSelection(raw);
-  const group = GROUPS.find((item) => item.label.toLowerCase() === input.value.trim().toLowerCase());
-  if (group) return groupSelection(group);
-  return { label: input.value.trim(), codes: [], notes: {} };
+  return resolveLoose(input.value) ?? { label: input.value.trim(), codes: [], notes: {} };
 }
 
 function airportSelection(code, note) {
