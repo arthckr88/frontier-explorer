@@ -193,6 +193,14 @@ form {
 
 form > button { grid-column: 1 / -1; }
 
+#clear {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+}
+
+#clear[hidden] { display: none; }
+
 input, button {
   font-family: "Segoe UI", system-ui, sans-serif;
   font-size: 16px;
@@ -238,7 +246,38 @@ button {
   cursor: pointer;
 }
 
+article.card { cursor: default; }
+
 .card.is-on { border-color: var(--accent); }
+
+.card .leg,
+.card .layover,
+.card .path {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 2px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font-weight: 550;
+  text-align: left;
+  cursor: pointer;
+}
+
+.card .path {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.card .layover { color: var(--muted); font-weight: 500; }
+
+.card .leg.is-on,
+.card .layover.is-on,
+.card .path.is-on { color: var(--selected); }
 
 .badges {
   display: flex;
