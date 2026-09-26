@@ -25,22 +25,38 @@
       <form id="search">
         <label class="field">
           From
-          <input name="from" required minlength="3" maxlength="3" pattern="[A-Za-z]{3}" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="SFO" aria-label="From" enterkeyhint="next" />
+          <input name="from" type="text" autocomplete="off" spellcheck="false" placeholder="City or code" aria-label="From" aria-autocomplete="list" aria-controls="from-list" enterkeyhint="next" />
+          <ul id="from-list" class="suggest" role="listbox" hidden></ul>
         </label>
         <label class="field">
           To
-          <input name="to" required minlength="3" maxlength="3" pattern="[A-Za-z]{3}" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="JFK" aria-label="To" enterkeyhint="next" />
+          <input name="to" type="text" autocomplete="off" spellcheck="false" placeholder="City or code" aria-label="To" aria-autocomplete="list" aria-controls="to-list" enterkeyhint="search" />
+          <ul id="to-list" class="suggest" role="listbox" hidden></ul>
         </label>
-        <label class="field">
+        <label class="field span">
           Date
           <input name="date" type="date" required aria-label="Date" />
         </label>
-        <div class="filters" role="group" aria-label="Filters">
-          <label class="chip"><input name="nonstop" type="checkbox" checked /> <span>Nonstop</span></label>
-          <label class="chip"><input name="one" type="checkbox" checked /> <span>1 stop</span></label>
-          <label class="chip"><input name="two" type="checkbox" checked /> <span>2 stops</span></label>
-          <label class="chip"><input name="redeye" type="checkbox" checked /> <span>Exclude red-eyes</span></label>
-        </div>
+        <label class="field">
+          Stops
+          <select name="stops" aria-label="Stops">
+            <option value="0">Nonstop only</option>
+            <option value="1">Up to 1 stop</option>
+            <option value="2" selected>Up to 2 stops</option>
+          </select>
+        </label>
+        <label class="field">
+          Sort
+          <select name="sort" aria-label="Sort">
+            <option value="stops" selected>Fewest stops</option>
+            <option value="duration">Shortest trip</option>
+            <option value="depart">Earliest departure</option>
+          </select>
+        </label>
+        <label class="switch span">
+          <input name="redeye" type="checkbox" checked role="switch" />
+          <span>Exclude red-eyes</span>
+        </label>
         <button type="submit">Search</button>
       </form>
       <p id="status" role="status"></p>

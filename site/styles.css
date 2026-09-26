@@ -91,38 +91,24 @@ h1 {
   border-color: transparent;
 }
 
-.filters {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 6px;
-  grid-column: 1 / -1;
-}
+.span { grid-column: 1 / -1; }
 
-label.chip {
+label.switch {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  justify-content: flex-start;
   gap: 10px;
-  width: 100%;
   min-height: 40px;
   margin: 0;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 8px 12px;
-  color: var(--muted);
   letter-spacing: 0;
   text-transform: none;
   font-family: "Segoe UI", system-ui, sans-serif;
   font-size: 0.95rem;
-  line-height: 1.2;
+  color: var(--text);
   white-space: nowrap;
 }
 
-label.chip span {
-  flex: 1 1 auto;
-  min-width: 0;
+label.switch span {
   letter-spacing: 0;
   text-transform: none;
   font-family: "Segoe UI", system-ui, sans-serif;
@@ -130,7 +116,7 @@ label.chip span {
   white-space: nowrap;
 }
 
-label.chip input[type="checkbox"] {
+label.switch input[type="checkbox"] {
   width: 1.125rem;
   height: 1.125rem;
   min-width: 1.125rem;
@@ -141,9 +127,50 @@ label.chip input[type="checkbox"] {
   accent-color: var(--accent);
 }
 
-label.chip:has(input:checked) {
+select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
   color: var(--text);
-  border-color: var(--accent);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 16px;
+  letter-spacing: 0;
+  text-transform: none;
+  padding: 10px 12px;
+}
+
+.suggest {
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  max-height: 11rem;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #12161b;
+}
+
+.suggest[hidden] { display: none; }
+
+.suggest button {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font-weight: 500;
+  text-align: left;
+  padding: 8px;
+}
+
+.suggest .note {
+  color: var(--muted);
+  font-size: 0.78rem;
+  white-space: nowrap;
 }
 
 #show-overnight { margin-top: 8px; }
@@ -164,7 +191,6 @@ form {
   color: var(--muted);
 }
 
-.field:nth-child(3),
 form > button { grid-column: 1 / -1; }
 
 input, button {
@@ -333,6 +359,8 @@ button {
 .maplibregl-ctrl-attrib a { color: #c5cec8 !important; }
 
 @media (max-width: 800px) {
+  form { grid-template-columns: 1fr; }
+
   .sheet {
     top: auto;
     right: 0;
