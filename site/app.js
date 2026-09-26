@@ -164,9 +164,7 @@ async function load() {
     const today = new Date().toISOString().slice(0, 10);
     form.elements.date.value = dates.find((date) => date >= today) ?? dates[dates.length - 1] ?? today;
   }
-  const listed = (schedule.routes ?? []).filter((route) => route.provenance !== "scheduled").length;
-  const scheduled = (schedule.routes ?? []).filter((route) => route.provenance === "scheduled").length;
-  network.textContent = `${(schedule.routes ?? []).length.toLocaleString()} routes across the Frontier network. ${scheduled.toLocaleString()} have saved times. ${listed.toLocaleString()} are listed only.`;
+  network.textContent = describeNetwork();
   try {
     drawMap();
   } catch {
@@ -181,9 +179,7 @@ async function load() {
     search();
     return;
   }
-  status.textContent = dates.length
-    ? `Saved flights run ${dates[0]} through ${dates[dates.length - 1]}. Listed routes stay on the map without a departure time.`
-    : "Listed routes are on the map. No timed flights are saved in this file.";
+  status.textContent = openingStatus(dates);
 }
 
 function chooseOrigin(code) {
@@ -417,8 +413,7 @@ function showAirport(code) {
     airportCard.hidden = true;
     return;
   }
-  const outbound = destinationsFrom(code);
-  const saved = outbound.filter((destination) => hasScheduled(code, destination)).length;
+  const outbound = nonstopDestinations(code);
   airportCard.hidden = false;
   airportCard.replaceChildren();
   const title = document.createElement("h2");
@@ -427,8 +422,8 @@ function showAirport(code) {
   placeName.textContent = `${airport.city} · ${airport.name}`;
   const label = document.createElement("p");
   label.textContent = outbound.length
-    ? `${outbound.length} listed destination${outbound.length === 1 ? "" : "s"} · ${saved} with saved times`
-    : "No listed departures from this airport.";
+    ? `${outbound.length} nonstop destination${outbound.length === 1 ? "" : "s"} with saved flights`
+    : "No saved nonstop from this airport.";
   airportCard.append(title, placeName, label);
 }
 
@@ -487,7 +482,7 @@ function drawMap() {
       }
     });
     paintRoutes();
-    if (pathPairs.size === 0 && focusPairs.size === 0) fit(airports.keys(), { left: 420, bottom: 48, right: 40, top: 40 });
+    if (pathPairs.size === 0 && focusPairs.size === 0) fit([...nonstopCodes()], { left: 420, bottom: 48, right: 40, top: 40 });
   });
   window.addEventListener("resize", () => map?.resize());
 }
@@ -495,36 +490,54 @@ function drawMap() {
 function buildArcs() {
   const seen = new Set();
   const built = [];
-  const add = (origin, destination, provenance) => {
-    const key = `${origin}|${destination}`;
-    if (seen.has(key)) return;
-    const from = airports.get(origin);
-    const to = airports.get(destination);
-    if (!from || !to) return;
-    seen.add(key);
-    built.push({
-      origin,
-      destination,
-      provenance: provenance === "scheduled" ? "scheduled" : "listed",
-      coordinates: greatCircleArc([from.lon, from.lat], [to.lon, to.lat], 8),
-    });
-  };
-  const routes = schedule?.routes?.length ? schedule.routes : scheduledRoutes();
-  for (const route of routes) add(route.origin, route.destination, route.provenance);
-  for (const flight of schedule?.flights ?? []) add(flight.origin, flight.destination, "scheduled");
-  return built;
-}
-
-function scheduledRoutes() {
-  const seen = new Set();
-  const routes = [];
   for (const flight of schedule?.flights ?? []) {
     const key = `${flight.origin}|${flight.destination}`;
     if (seen.has(key)) continue;
+    const from = airports.get(flight.origin);
+    const to = airports.get(flight.destination);
+    if (!from || !to) continue;
     seen.add(key);
-    routes.push({ origin: flight.origin, destination: flight.destination, provenance: "scheduled" });
+    built.push({
+      origin: flight.origin,
+      destination: flight.destination,
+      provenance: "scheduled",
+      coordinates: greatCircleArc([from.lon, from.lat], [to.lon, to.lat], 8),
+    });
   }
-  return routes;
+  return built;
+}
+
+function nonstopCodes() {
+  const codes = new Set();
+  for (const flight of schedule?.flights ?? []) {
+    codes.add(flight.origin);
+    codes.add(flight.destination);
+  }
+  return codes;
+}
+
+function nonstopPairCount() {
+  return new Set((schedule?.flights ?? []).map((flight) => `${flight.origin}|${flight.destination}`)).size;
+}
+
+function describeNetwork() {
+  const pairs = nonstopPairCount();
+  const flights = schedule?.flights?.length ?? 0;
+  if (!pairs) return "No saved nonstop is on the map.";
+  return `${pairs.toLocaleString()} nonstop route${pairs === 1 ? "" : "s"} from ${flights.toLocaleString()} saved flight${flights === 1 ? "" : "s"}.`;
+}
+
+function openingStatus(dates) {
+  if (!dates.length) return describeNetwork();
+  return `${describeNetwork()} Dates run ${dates[0]} through ${dates[dates.length - 1]}.`;
+}
+
+function nonstopDestinations(code) {
+  const found = new Set();
+  for (const flight of schedule?.flights ?? []) {
+    if (flight.origin === code) found.add(flight.destination);
+  }
+  return [...found].sort();
 }
 
 function pathKeys() {
@@ -552,9 +565,9 @@ function routeCollection() {
 
 function airportCollection() {
   const selected = new Set([...readEndpoint("from").codes, ...readEndpoint("to").codes]);
-  let records = [...airports.values()];
+  const keep = nonstopCodes();
   if (isolatePath && !showNetwork) {
-    const keep = new Set();
+    keep.clear();
     for (const key of pathKeys()) {
       const [origin, destination] = key.split("|");
       keep.add(origin);
@@ -563,8 +576,8 @@ function airportCollection() {
     if (keep.size === 0) {
       for (const code of selected) keep.add(code);
     }
-    records = records.filter((airport) => keep.has(airport.iata));
   }
+  const records = [...airports.values()].filter((airport) => keep.has(airport.iata));
   return {
     type: "FeatureCollection",
     features: records.map((airport) => ({
@@ -588,6 +601,7 @@ function paintRoutes() {
     canvas.dataset.focus = [...focusPairs].join(",");
     canvas.dataset.mode = isolatePath && !showNetwork ? "path" : "network";
     canvas.dataset.visible = String(collection.features.length);
+    canvas.dataset.pairs = collection.features.map((feature) => `${feature.properties.origin}|${feature.properties.destination}`).join(",");
     canvas.dataset.airports = airportsOnMap.features.map((feature) => feature.properties.iata).join(",");
     canvas.dataset.points = airportsOnMap.features.map((feature) => {
       const [lon, lat] = feature.geometry.coordinates;
@@ -1054,11 +1068,9 @@ function clearSearch() {
   syncFiltersToggle();
   pressStarts();
   paintRoutes();
-  fit([...airports.keys()], window.innerWidth <= 800 ? paddingForSheet() : { left: 420, bottom: 48, right: 40, top: 40 });
+  fit([...nonstopCodes()], window.innerWidth <= 800 ? paddingForSheet() : { left: 420, bottom: 48, right: 40, top: 40 });
   const dates = publishedDates();
-  status.textContent = dates.length
-    ? `Saved flights run ${dates[0]} through ${dates[dates.length - 1]}. Listed routes stay on the map without a departure time.`
-    : "Listed routes are on the map. No timed flights are saved in this file.";
+  status.textContent = openingStatus(dates);
 }
 
 function activeFilterCount() {
