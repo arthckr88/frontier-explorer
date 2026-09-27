@@ -13,7 +13,7 @@ Every network fact is an observation. An observation records the source id, disp
 3. A timetable URL you configure. The process skips it when `TIMETABLE_API_URL` is unset. The optional key is sent as a bearer token and is not stored.
 4. U.S. DOT / BTS passenger statistics. Popularity is not frequency.
 
-The adapters do not log into a Frontier account, call an undocumented private booking API, or read Google Flights.
+The production adapters do not log into a Frontier account or read Google Flights. `FrontierAvailabilityProvider` is a separate server-side proof of concept for Frontier's mobile availability endpoint. The unauthenticated OAK→LAS request was rejected with HTTP 406 and an empty body. That rejection is `blocked`. The provider is not on the Pages live path, and it does not use credentials copied from another project.
 
 ## Frontier Newsroom
 

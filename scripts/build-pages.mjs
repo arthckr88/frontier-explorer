@@ -1,5 +1,7 @@
-import { mkdirSync, readFileSync, writeFileSync, copyFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync, copyFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import ts from "typescript";
+import { scanDirectory } from "./pages-secret-scan.mjs";
 
 compile("../src/site/published-search.ts", "search.js");
 compile("../src/site/view.ts", "view.js");
@@ -15,7 +17,16 @@ copyFileSync(new URL("../node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs", 
 copyFileSync(new URL("../node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs", import.meta.url), new URL("../dist/maplibre-gl-worker.mjs", import.meta.url));
 copyFileSync(new URL("../node_modules/maplibre-gl/dist/maplibre-gl.css", import.meta.url), new URL("../dist/maplibre-gl.css", import.meta.url));
 copyFileSync(new URL("../dist/index.html", import.meta.url), new URL("../dist/404.html", import.meta.url));
+assertNoCredentialMarkers();
 console.log("Wrote dist/ for GitHub Pages.");
+
+function assertNoCredentialMarkers() {
+  const roots = ["../dist", "../site", "../public"].map((relative) => fileURLToPath(new URL(relative, import.meta.url)));
+  const hits = roots.filter((root) => existsSync(root)).flatMap((root) => scanDirectory(root));
+  if (hits.length === 0) return;
+  const summary = hits.map((hit) => `${hit.file}: ${hit.markers.join(", ")}`).join("; ");
+  throw new Error(`Pages build refused credential markers. ${summary}`);
+}
 
 function compile(relativePath, outName) {
   const source = readFileSync(new URL(relativePath, import.meta.url), "utf8");
