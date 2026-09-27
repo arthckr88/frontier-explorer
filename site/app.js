@@ -40,13 +40,18 @@ let networkFile = null;
 let airports = new Map();
 let map = null;
 let arcs = [];
+let arcIndex = new Set();
+let outbound = new Map();
 let originPick = "";
 let pathPairs = new Set();
+let airportPairs = new Set();
 let connectionHubs = [];
 let focusPairs = new Set();
 let applyingField = false;
 let isolatePath = false;
+let airportFocus = false;
 let showNetwork = false;
+const routeCache = new Map();
 
 load().catch((error) => {
   status.textContent = error instanceof Error ? error.message : "The published schedule did not load.";
@@ -70,6 +75,10 @@ form.addEventListener("change", (event) => {
   const target = event.target;
   if (!(target instanceof HTMLInputElement || target instanceof HTMLSelectElement)) return;
   syncFiltersToggle();
+  if (target.name === "stops" && !tripSelected()) {
+    if (readEndpoint("from").codes.length) showSelectedAirport();
+    return;
+  }
   if (target.name === "redeye" || target.name === "stops" || target.name === "sort" || target.name === "date" || target.name === "duration" || target.name === "depart" || target.name === "arrive" || target.name === "layover") search();
 });
 
@@ -141,7 +150,7 @@ document.querySelector("#network-toggle").addEventListener("click", () => {
 });
 
 for (const button of document.querySelectorAll("[data-origin]")) {
-  button.addEventListener("click", () => chooseOrigin(button.dataset.origin ?? ""));
+  button.addEventListener("click", () => selectAirport(button.dataset.origin ?? ""));
 }
 
 document.querySelector("#new-york").addEventListener("click", () => {
@@ -189,33 +198,63 @@ async function load() {
   status.textContent = openingStatus(dates);
 }
 
-function chooseOrigin(code) {
+function selectAirport(code) {
+  if (!airports.has(code)) return;
   originPick = code;
   setEndpoint("from", airportSelection(code));
-  if (readEndpoint("to").codes.some((item) => item !== code)) {
-    search();
-    return;
-  }
   clearEndpoint("to");
-  pathPairs = new Set();
-  isolatePath = false;
-  showNetwork = false;
-  const saved = savedDestinations(code);
-  focusPairs = new Set(saved.map((destination) => `${code}|${destination}`));
+  closeSuggest("from");
+  closeSuggest("to");
+  showSelectedAirport();
+}
+
+function tripSelected() {
+  const from = readEndpoint("from");
+  const to = readEndpoint("to");
+  return from.codes.length > 0 && to.codes.some((code) => !from.codes.includes(code));
+}
+
+function showSelectedAirport() {
+  const from = readEndpoint("from");
+  if (!from.codes.length) return;
+  const maxStops = Number(form.elements.stops.value);
   results.replaceChildren();
   showOvernight.hidden = true;
+  pathPairs = new Set();
+  focusPairs = new Set();
+  airportPairs = new Set();
+  airportFocus = true;
+  isolatePath = true;
+  showNetwork = false;
+  const reached = new Map();
+  for (const code of from.codes) {
+    const routes = routesFromAirport(code, Number.isFinite(maxStops) ? maxStops : 0);
+    for (const segment of routes.segments) airportPairs.add(segment);
+    for (const [destination, stops] of routes.reached) {
+      const previous = reached.get(destination);
+      if (previous === undefined || stops < previous) reached.set(destination, stops);
+    }
+  }
+  originPick = from.codes[0] ?? "";
   pressStarts();
-  showAirport(code);
-  listDestinations(code);
+  if (from.codes.length === 1) showAirport(from.codes[0]);
+  else airportCard.hidden = true;
+  listReached(reached);
+  status.textContent = airportStatus(from, reached, maxStops);
   paintRoutes();
-  fit([code, ...saved], paddingForSheet());
-  status.textContent = saved.length
-    ? `${airportPlace(code)}. Saved flights to ${saved.map(airportPlace).join(", ")}.`
-    : `${airportPlace(code)}. No saved departures from this airport.`;
+  const fitCodes = new Set(from.codes);
+  for (const key of airportPairs) {
+    const [origin, destination] = key.split("|");
+    fitCodes.add(origin);
+    fitCodes.add(destination);
+  }
+  fit([...fitCodes], paddingForSheet());
 }
 
 function search() {
   if (!schedule) return;
+  airportFocus = false;
+  airportPairs = new Set();
   results.replaceChildren();
   showOvernight.hidden = true;
   pathPairs = new Set();
@@ -237,17 +276,7 @@ function search() {
   }
   const destinations = to.codes.filter((code) => !from.codes.includes(code));
   if (!destinations.length) {
-    const saved = from.codes.flatMap((code) => savedDestinations(code));
-    focusPairs = new Set(from.codes.flatMap((code) => savedDestinations(code).map((destination) => `${code}|${destination}`)));
-    if (from.codes.length === 1) {
-      listDestinations(from.codes[0]);
-      showAirport(from.codes[0]);
-    }
-    status.textContent = saved.length
-      ? `${endTitle(from)}. Saved flights to ${saved.map(airportPlace).join(", ")}.`
-      : `${endTitle(from)}. No saved departures from this airport.`;
-    paintRoutes();
-    fit([...from.codes, ...saved], paddingForSheet());
+    showSelectedAirport();
     return;
   }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
@@ -394,24 +423,38 @@ function itineraryStatus(itinerary) {
   return `${airportPlace(first.origin)} → ${airportPlace(last.destination)}. Flights ${flights}.`;
 }
 
-function listDestinations(code) {
-  const rows = savedDestinations(code);
+function listReached(reached) {
+  const rows = [...reached.entries()].sort((left, right) => left[1] - right[1] || airportPlace(left[0]).localeCompare(airportPlace(right[0])));
   if (!rows.length) return;
   const list = document.createElement("div");
-  for (const destination of rows) {
+  for (const [code, stops] of rows) {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "card";
-    button.textContent = airportPlace(destination);
-    button.addEventListener("click", () => {
-      setEndpoint("from", airportSelection(code));
-      setEndpoint("to", airportSelection(destination));
-      originPick = code;
-      search();
-    });
+    button.textContent = stops === 0 ? airportPlace(code) : `${airportPlace(code)} · ${stops} stop${stops === 1 ? "" : "s"}`;
+    button.addEventListener("click", () => selectAirport(code));
     list.append(button);
   }
   results.append(list);
+}
+
+function airportStatus(from, reached, maxStops) {
+  const place = from.codes.length === 1 ? airportPlace(from.codes[0]) : endTitle(from);
+  const groups = [[], [], []];
+  for (const [code, stops] of reached) groups[Math.min(stops, 2)].push(code);
+  const saved = [...new Set(from.codes.flatMap((code) => savedDestinations(code)))].sort();
+  const savedNote = saved.length ? ` Saved flight times to ${saved.map(airportPlace).join(", ")}.` : "";
+  if (!reached.size) {
+    return `${place}. No published nonstop from this airport.${savedNote}`;
+  }
+  const nonstopNames = groups[0].map(airportPlace).sort((left, right) => left.localeCompare(right));
+  const nonstopText = nonstopNames.length <= 8 ? nonstopNames.join(", ") : `${nonstopNames.length} airports`;
+  if (maxStops === 0) return `${place}. Nonstop to ${nonstopText}.${savedNote}`;
+  const limit = `Up to ${maxStops} stop${maxStops === 1 ? "" : "s"}`;
+  let text = `${place}. ${limit}. Nonstop to ${nonstopText}.`;
+  if (groups[1].length) text += ` ${groups[1].length} with 1 stop.`;
+  if (maxStops >= 2 && groups[2].length) text += ` ${groups[2].length} with 2 stops.`;
+  return `${text}${savedNote}`;
 }
 
 function showAirport(code) {
@@ -420,7 +463,8 @@ function showAirport(code) {
     airportCard.hidden = true;
     return;
   }
-  const outbound = nonstopDestinations(code);
+  const maxStops = Number(form.elements.stops.value);
+  const reached = routesFromAirport(code, Number.isFinite(maxStops) ? maxStops : 0).reached;
   airportCard.hidden = false;
   airportCard.replaceChildren();
   const title = document.createElement("h2");
@@ -428,9 +472,7 @@ function showAirport(code) {
   const placeName = document.createElement("p");
   placeName.textContent = `${airport.city} · ${airport.name}`;
   const label = document.createElement("p");
-  label.textContent = outbound.length
-    ? `${outbound.length} nonstop destination${outbound.length === 1 ? "" : "s"}`
-    : "No published nonstop from this airport.";
+  label.textContent = reachSummary(reached, maxStops);
   airportCard.append(title, placeName, label);
 }
 
@@ -481,15 +523,11 @@ function drawMap() {
     map.on("click", "airport-dots", (event) => {
       const code = event.features?.[0]?.properties?.iata;
       if (typeof code !== "string") return;
-      const from = readEndpoint("from");
-      if (!from.codes.length || (from.codes.length === 1 && from.codes[0] === code)) chooseOrigin(code);
-      else {
-        setEndpoint("to", airportSelection(code));
-        search();
-      }
+      selectAirport(code);
     });
     paintRoutes();
-    if (pathPairs.size === 0 && focusPairs.size === 0) fit([...nonstopCodes()], { left: 420, bottom: 48, right: 40, top: 40 });
+    map.on("moveend", () => paintRoutes());
+    if (pathPairs.size === 0 && focusPairs.size === 0 && airportPairs.size === 0) fit([...nonstopCodes()], { left: 420, bottom: 48, right: 40, top: 40 });
   });
   window.addEventListener("resize", () => map?.resize());
 }
@@ -497,15 +535,59 @@ function drawMap() {
 function buildArcs() {
   const seen = new Set();
   const built = [];
+  arcIndex = new Set();
+  outbound = new Map();
+  routeCache.clear();
   for (const pair of networkFile?.pairs ?? []) {
     const key = `${pair.origin}|${pair.destination}`;
     if (seen.has(key)) continue;
     const arc = arcFrom(pair.origin, pair.destination);
     if (!arc) continue;
     seen.add(key);
+    arcIndex.add(key);
+    const next = outbound.get(pair.origin) ?? [];
+    next.push(pair.destination);
+    outbound.set(pair.origin, next);
     built.push(arc);
   }
   return built;
+}
+
+function routesFromAirport(code, maxStops) {
+  const cacheKey = `${code}|${maxStops}`;
+  const cached = routeCache.get(cacheKey);
+  if (cached) return cached;
+  const maxHops = maxStops + 1;
+  const segments = new Set();
+  const reached = new Map();
+  const stack = [{ airport: code, hops: 0, seen: new Set([code]) }];
+  while (stack.length) {
+    const current = stack.pop();
+    if (current.hops >= maxHops) continue;
+    for (const next of outbound.get(current.airport) ?? []) {
+      if (current.seen.has(next)) continue;
+      segments.add(`${current.airport}|${next}`);
+      const stops = current.hops;
+      const previous = reached.get(next);
+      if (previous === undefined || stops < previous) reached.set(next, stops);
+      const seen = new Set(current.seen);
+      seen.add(next);
+      stack.push({ airport: next, hops: current.hops + 1, seen });
+    }
+  }
+  const result = { segments, reached };
+  routeCache.set(cacheKey, result);
+  return result;
+}
+
+function reachSummary(reached, maxStops) {
+  if (!reached.size) return "No published nonstop from this airport.";
+  if (maxStops === 0) {
+    const names = [...reached.keys()].map(airportPlace).sort((left, right) => left.localeCompare(right));
+    if (names.length === 1) return `Nonstop to ${names[0]}.`;
+    return `${names.length} nonstop destinations.`;
+  }
+  return `${reached.size} place${reached.size === 1 ? "" : "s"} within ${maxStops} stop${maxStops === 1 ? "" : "s"}.`;
 }
 
 function arcFrom(origin, destination) {
@@ -549,14 +631,6 @@ function openingStatus(dates) {
   return `Saved flight times run ${dates[0]} through ${dates[dates.length - 1]}.`;
 }
 
-function nonstopDestinations(code) {
-  const found = new Set();
-  for (const arc of arcs) {
-    if (arc.origin === code) found.add(arc.destination);
-  }
-  return [...found].sort();
-}
-
 function pathKeys() {
   return pathPairs;
 }
@@ -572,19 +646,33 @@ function routeFeature(arc, selected, dim) {
 }
 
 function routeCollection() {
-  const pathOnly = isolatePath && !showNetwork;
+  const pathOnly = isolatePath && !airportFocus && !showNetwork;
+  const airportOnly = airportFocus && !showNetwork;
   const selected = pathKeys();
-  const dim = !pathOnly && (selected.size > 0 || focusPairs.size > 0);
+  const dim = !pathOnly && !airportOnly && (selected.size > 0 || focusPairs.size > 0);
   const features = [];
   const seen = new Set();
-  if (!pathOnly) {
+  if (!pathOnly && !airportOnly) {
     for (const arc of arcs) {
       seen.add(`${arc.origin}|${arc.destination}`);
       features.push(routeFeature(arc, selected, dim));
     }
   }
+  if (airportOnly) {
+    for (const key of airportPairs) {
+      if (!arcIndex.has(key)) continue;
+      const [origin, destination] = key.split("|");
+      const arc = arcFrom(origin, destination);
+      if (!arc) continue;
+      features.push({
+        type: "Feature",
+        properties: { origin, destination, provenance: arc.provenance, active: 0, dim: false },
+        geometry: { type: "LineString", coordinates: arc.coordinates },
+      });
+    }
+  }
   for (const key of selected) {
-    if (seen.has(key)) continue;
+    if (seen.has(key) || airportOnly) continue;
     const [origin, destination] = key.split("|");
     if (!savedFlightPair(origin, destination)) continue;
     const arc = arcFrom(origin, destination);
@@ -598,9 +686,10 @@ function routeCollection() {
 function airportCollection() {
   const selected = new Set([...readEndpoint("from").codes, ...readEndpoint("to").codes]);
   const keep = nonstopCodes();
-  if (isolatePath && !showNetwork) {
+  if ((isolatePath || airportFocus) && !showNetwork) {
     keep.clear();
-    for (const key of pathKeys()) {
+    const keys = airportFocus ? airportPairs : pathKeys();
+    for (const key of keys) {
       const [origin, destination] = key.split("|");
       keep.add(origin);
       keep.add(destination);
@@ -631,7 +720,8 @@ function paintRoutes() {
   if (canvas) {
     canvas.dataset.selected = [...pathKeys()].join(",");
     canvas.dataset.focus = [...focusPairs].join(",");
-    canvas.dataset.mode = isolatePath && !showNetwork ? "path" : "network";
+    canvas.dataset.mode = airportFocus && !showNetwork ? "airport" : isolatePath && !showNetwork ? "path" : "network";
+    canvas.dataset.airport = airportFocus ? readEndpoint("from").codes.join(",") : "";
     canvas.dataset.visible = String(collection.features.length);
     canvas.dataset.pairs = collection.features.map((feature) => `${feature.properties.origin}|${feature.properties.destination}`).join(",");
     canvas.dataset.airports = airportsOnMap.features.map((feature) => feature.properties.iata).join(",");
@@ -639,6 +729,10 @@ function paintRoutes() {
       const [lon, lat] = feature.geometry.coordinates;
       return `${feature.properties.iata}:${lat.toFixed(5)},${lon.toFixed(5)}`;
     }).join(";");
+    canvas.dataset.screen = map ? airportsOnMap.features.map((feature) => {
+      const point = map.project(feature.geometry.coordinates);
+      return `${feature.properties.iata}:${Math.round(point.x)},${Math.round(point.y)}`;
+    }).join(";") : "";
   }
   syncNetworkToggle();
 }
@@ -1079,8 +1173,10 @@ function clearSearch() {
   clearEndpoint("to");
   originPick = "";
   pathPairs = new Set();
+  airportPairs = new Set();
   focusPairs = new Set();
   isolatePath = false;
+  airportFocus = false;
   showNetwork = false;
   results.replaceChildren();
   showOvernight.hidden = true;
