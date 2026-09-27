@@ -165,16 +165,15 @@ document.querySelector("#new-york").addEventListener("click", () => {
 });
 
 async function load() {
-  const [flightResponse, airportResponse, operatingResponse] = await Promise.all([
-    fetch("flights.json"),
+  const [upcomingResponse, airportResponse] = await Promise.all([
+    fetch("upcoming.json"),
     fetch("airports.json"),
-    fetch("operating-days.json"),
   ]);
-  if (!flightResponse.ok) throw new Error("The published schedule did not load.");
+  if (!upcomingResponse.ok) throw new Error("The upcoming schedule did not load.");
   if (!airportResponse.ok) throw new Error("The airport map did not load.");
-  if (!operatingResponse.ok) throw new Error("The operating calendar did not load.");
-  schedule = await flightResponse.json();
-  operatingDays = await operatingResponse.json();
+  schedule = await upcomingResponse.json();
+  schedule.flights ??= [];
+  operatingDays = indexUpcoming(schedule);
   airports = new Map((await airportResponse.json()).map((airport) => [airport.iata, airport]));
   arcs = buildArcs();
   const dates = publishedDates();
@@ -302,7 +301,7 @@ function search() {
   const published = publishedTripSegments(from.codes, destinations, maxStops);
   for (const segment of published.segments) pathPairs.add(segment);
   renderRouteCalendar();
-  const datedFlights = schedule.flights.concat(operatingFlights(from.codes, destinations, date));
+  const datedFlights = schedule.flights;
   let hidden = 0;
   let itineraries = [];
   for (const origin of from.codes) {
@@ -661,7 +660,42 @@ function primaryArea(code) {
   if (airport.country === "MX") return "mexico";
   if (CENTRAL_AMERICA.has(airport.country)) return "central_america";
   if (CARIBBEAN.has(airport.country)) return "caribbean";
+  if (airport.country === "US") return usAreaFromCoordinates(airport);
   return "";
+}
+
+function usAreaFromCoordinates(airport) {
+  const { lat, lon } = airport;
+  if (lat < 31.1 && lon > -88 && lon < -79.5) return "florida";
+  if (lon <= -104) return "west";
+  if (lat >= 39.5 && lon >= -80.5) return "northeast";
+  if (lat >= 37 && lon <= -84) return "midwest";
+  return "south";
+}
+
+function indexUpcoming(published) {
+  const flights = {};
+  for (const flight of published.flights ?? []) {
+    if (!flight?.origin || !flight?.destination || !flight?.date || flight.date < "2026-09-27") continue;
+    const key = `${flight.origin}|${flight.destination}`;
+    const departure = String(flight.departureLocal ?? "").slice(11, 16).replace(":", "");
+    const arrival = String(flight.arrivalLocal ?? "").slice(11, 16).replace(":", "");
+    const rolled = String(flight.arrivalLocal ?? "").slice(0, 10) > flight.date ? "1" : "0";
+    const record = departure.length === 4 && arrival.length === 4
+      ? `${flight.date}|${flight.flightNumber}|${departure}|${arrival}|${rolled}`
+      : flight.date;
+    (flights[key] ??= []).push(record);
+  }
+  return {
+    daily: {
+      flights,
+      sentence: published.sentence ?? "",
+      sourceName: published.sourceName ?? "Frontier public booking results",
+      sourceUrl: published.sourceUrl ?? "https://booking.flyfrontier.com/",
+      periodStart: published.periodStart,
+      periodEnd: published.periodEnd,
+    },
+  };
 }
 
 function airportAreas(code) {
@@ -716,24 +750,24 @@ function sliceDescription() {
   const { from, to } = regionSelection();
   if (from === "any" && to === "any") return "";
   const count = visibleArcs().length;
-  const noun = `${count.toLocaleString()} dated Frontier nonstop${count === 1 ? "" : "s"}`;
+  const noun = `${count.toLocaleString()} upcoming Frontier nonstop${count === 1 ? "" : "s"}`;
   const source = sourceSpan();
   if (from === "any" || to === "any") {
     const label = regionLabel(from === "any" ? to : from);
     return count
       ? `${label}: ${noun}${source} with at least one end in ${label}.`
-      : `${label}: no dated Frontier nonstop${source} has an end in ${label}.`;
+      : `${label}: no upcoming Frontier nonstop${source} has an end in ${label}.`;
   }
   const left = regionLabel(from);
   const right = regionLabel(to);
   if (from === to) {
     return count
       ? `${left}: ${noun}${source} entirely inside ${left}.`
-      : `${left}: no dated Frontier nonstop${source} is entirely inside ${left}.`;
+      : `${left}: no upcoming Frontier nonstop${source} is entirely inside ${left}.`;
   }
   return count
     ? `${left} → ${right}: ${noun}${source}, with one end in each region.`
-    : `${left} → ${right}: no dated Frontier nonstop${source} has one end in each region.`;
+    : `${left} → ${right}: no upcoming Frontier nonstop${source} has one end in each region.`;
 }
 
 function showRegion() {
@@ -745,22 +779,23 @@ function showRegion() {
 
 function noDatedNonstopSentence() {
   const daily = operatingDays?.daily;
-  if (!daily) return "No dated Frontier nonstop is in the on-time file.";
-  return `No dated Frontier nonstop is in ${daily.sourceName} from ${formatLong(daily.periodStart)} through ${formatLong(daily.periodEnd)}.`;
+  if (!daily?.periodStart) return "No upcoming Frontier nonstop is in the published booking results.";
+  return `No upcoming Frontier nonstop is in ${daily.sourceName} from ${formatLong(daily.periodStart)} through ${formatLong(daily.periodEnd)}.`;
 }
 
 function describeNetwork() {
   const slice = sliceDescription();
   if (slice) return slice;
   const daily = operatingDays?.daily;
+  if (daily?.sentence) return daily.sentence;
   const pairs = nonstopPairCount();
-  if (!daily || !pairs) return "No dated Frontier nonstop is on the map.";
-  return `This map shows ${pairs.toLocaleString()} Frontier nonstop city pairs with at least one departure date in ${daily.sourceName} from ${formatLong(daily.periodStart)} through ${formatLong(daily.periodEnd)}.`;
+  if (!pairs) return "No upcoming Frontier nonstop is on the map.";
+  return `This map shows ${pairs.toLocaleString()} upcoming Frontier nonstop city pairs.`;
 }
 
 function openingStatus(dates) {
-  if (!dates.length) return "No saved flight times are loaded.";
-  return `Saved flight times run ${dates[0]} through ${dates[dates.length - 1]}.`;
+  if (!dates.length) return "No upcoming flight times are loaded.";
+  return `Upcoming flight times run ${dates[0]} through ${dates[dates.length - 1]}.`;
 }
 
 function pathKeys() {
@@ -1482,12 +1517,6 @@ function shiftMonth(month, delta) {
   return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
 }
 
-function shiftIsoDate(iso, days) {
-  const date = new Date(`${iso}T00:00:00Z`);
-  date.setUTCDate(date.getUTCDate() + days);
-  return date.toISOString().slice(0, 10);
-}
-
 function formatMonth(month) {
   const [year, index] = month.split("-");
   return `${MONTH_NAMES[Number(index) - 1]} ${year}`;
@@ -1528,59 +1557,6 @@ function calendarBounds(coverage) {
   const start = coverage.kind === "month" ? monthly.periodStart : daily?.periodStart?.slice(0, 7);
   const end = coverage.kind === "month" ? monthly.periodEnd : daily?.periodEnd?.slice(0, 7);
   return [marks[0] && marks[0] < start ? marks[0] : start, marks.at(-1) && marks.at(-1) > end ? marks.at(-1) : end];
-}
-
-function operatingFlights(origins, destinations, date) {
-  const flights = [];
-  for (const key of pairKeys(origins, destinations)) {
-    for (const record of operatingDays?.daily?.flights?.[key] ?? []) {
-      if (!record.startsWith(date)) continue;
-      const [origin, destination] = key.split("|");
-      flights.push(publishedFromRecord(origin, destination, record));
-    }
-  }
-  return flights;
-}
-
-function publishedFromRecord(origin, destination, record) {
-  const [date, flightNumber, departure, arrival, rolled] = record.split("|");
-  const departureLocal = `${date}T${departure.slice(0, 2)}:${departure.slice(2)}:00`;
-  const arrivalDate = rolled === "1" ? shiftIsoDate(date, 1) : date;
-  const arrivalLocal = `${arrivalDate}T${arrival.slice(0, 2)}:${arrival.slice(2)}:00`;
-  return {
-    origin,
-    destination,
-    flightNumber,
-    date,
-    departureLocal,
-    arrivalLocal,
-    departureUtc: zonedLocalToUtc(departureLocal, airports.get(origin)?.timezone),
-    arrivalUtc: zonedLocalToUtc(arrivalLocal, airports.get(destination)?.timezone),
-  };
-}
-
-function zonedLocalToUtc(localIso, timeZone) {
-  const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(localIso);
-  if (!match || !timeZone) return `${localIso}Z`;
-  const desired = Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]), Number(match[4]), Number(match[5]));
-  let utc = desired;
-  for (let attempt = 0; attempt < 3; attempt += 1) {
-    const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", {
-      timeZone,
-      hourCycle: "h23",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    }).formatToParts(new Date(utc)).map((part) => [part.type, part.value]));
-    const shown = Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day), Number(parts.hour) % 24, Number(parts.minute), Number(parts.second));
-    const next = utc - (shown - desired);
-    if (next === utc) break;
-    utc = next;
-  }
-  return new Date(utc).toISOString().replace(".000Z", "Z");
 }
 
 function renderRouteCalendar() {

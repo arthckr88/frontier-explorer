@@ -16,6 +16,7 @@ copyFileSync(new URL("../site/styles.css", import.meta.url), new URL("../dist/st
 copyFileSync(new URL("../data/flights.json", import.meta.url), new URL("../dist/flights.json", import.meta.url));
 copyFileSync(new URL("../data/nonstops.json", import.meta.url), new URL("../dist/nonstops.json", import.meta.url));
 copyFileSync(new URL("../data/operating-days.json", import.meta.url), new URL("../dist/operating-days.json", import.meta.url));
+copyFileSync(new URL("../data/upcoming.json", import.meta.url), new URL("../dist/upcoming.json", import.meta.url));
 writeFileSync(new URL("../dist/airports.json", import.meta.url), JSON.stringify(publishedAirports()));
 copyFileSync(new URL("../node_modules/maplibre-gl/dist/maplibre-gl.mjs", import.meta.url), new URL("../dist/maplibre-gl.mjs", import.meta.url));
 copyFileSync(new URL("../node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs", import.meta.url), new URL("../dist/maplibre-gl-shared.mjs", import.meta.url));
@@ -41,6 +42,11 @@ function publishedAirports() {
     codes.add(pair.destination);
   }
   const operating = JSON.parse(readFileSync(new URL("../data/operating-days.json", import.meta.url), "utf8"));
+  const upcoming = JSON.parse(readFileSync(new URL("../data/upcoming.json", import.meta.url), "utf8"));
+  for (const flight of upcoming.flights ?? []) {
+    codes.add(flight.origin);
+    codes.add(flight.destination);
+  }
   for (const key of [...Object.keys(operating.daily?.flights ?? {}), ...Object.keys(operating.monthly?.pairs ?? {})]) {
     const [origin, destination] = key.split("|");
     codes.add(origin);
