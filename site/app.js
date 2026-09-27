@@ -200,14 +200,25 @@ async function load() {
   status.textContent = openingStatus(dates);
 }
 
-function selectAirport(code) {
-  if (!airports.has(code)) return;
-  originPick = code;
-  setEndpoint("from", airportSelection(code));
+function toIsDestination(originCodes) {
+  return readEndpoint("to").codes.some((code) => !originCodes.includes(code));
+}
+
+function showOrigin(selection) {
+  originPick = selection.codes[0] ?? "";
+  const previous = applyingField;
+  applyingField = true;
+  setEndpoint("from", selection);
   clearEndpoint("to");
+  applyingField = previous;
   closeSuggest("from");
   closeSuggest("to");
   showSelectedAirport();
+}
+
+function selectAirport(code) {
+  if (!airports.has(code)) return;
+  showOrigin(airportSelection(code));
 }
 
 function tripSelected() {
@@ -249,6 +260,18 @@ function showSelectedAirport() {
 
 function search() {
   if (!schedule) return;
+  closeSuggest("from");
+  closeSuggest("to");
+  commitField("from");
+  commitField("to");
+  const from = readEndpoint("from");
+  const to = readEndpoint("to");
+  const destinations = to.codes.filter((code) => !from.codes.includes(code));
+  if (from.codes.length && !destinations.length) {
+    if (from.codes.length === 1 && airports.has(from.codes[0])) selectAirport(from.codes[0]);
+    else showOrigin(from);
+    return;
+  }
   airportFocus = false;
   airportPairs = new Set();
   results.replaceChildren();
@@ -256,23 +279,12 @@ function search() {
   pathPairs = new Set();
   focusPairs = new Set();
   isolatePath = false;
-  closeSuggest("from");
-  closeSuggest("to");
-  commitField("from");
-  commitField("to");
   pressStarts();
-  const from = readEndpoint("from");
-  const to = readEndpoint("to");
   const date = form.elements.date.value;
   originPick = from.codes[0] ?? "";
   if (!from.codes.length) {
     status.textContent = "Choose a starting airport.";
     paintRoutes();
-    return;
-  }
-  const destinations = to.codes.filter((code) => !from.codes.includes(code));
-  if (!destinations.length) {
-    showSelectedAirport();
     return;
   }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
@@ -997,13 +1009,20 @@ function filterHideNote(hidden) {
 }
 
 function applySuggestion(name, item, runSearch = true) {
-  if (item.kind === "group") setEndpoint(name, groupSelection(item.group));
-  else {
-    setEndpoint(name, airportSelection(item.code, item.note));
-    if (name === "from") originPick = item.code;
+  const selection = item.kind === "group" ? groupSelection(item.group) : airportSelection(item.code, item.note);
+  if (name === "from" && !toIsDestination(selection.codes)) {
+    closeSuggest(name);
+    if (selection.codes.length === 1) selectAirport(selection.codes[0]);
+    else showOrigin(selection);
+    return;
   }
+  const previous = applyingField;
+  applyingField = true;
+  setEndpoint(name, selection);
+  applyingField = previous;
+  if (name === "from") originPick = selection.codes[0] ?? "";
   closeSuggest(name);
-  if (runSearch && readEndpoint("from").codes.length && readEndpoint("to").codes.length) search();
+  if (runSearch && readEndpoint("from").codes.length && toIsDestination(readEndpoint("from").codes)) search();
 }
 
 function renderSuggest(name) {
@@ -1076,9 +1095,16 @@ function closeSuggest(name) {
 }
 
 function applyResolved(name, selection) {
+  if (name === "from" && !toIsDestination(selection.codes)) {
+    closeSuggest(name);
+    if (selection.codes.length === 1) selectAirport(selection.codes[0]);
+    else showOrigin(selection);
+    return;
+  }
+  const previous = applyingField;
   applyingField = true;
   setEndpoint(name, selection);
-  applyingField = false;
+  applyingField = previous;
   if (name === "from") originPick = selection.codes[0] ?? "";
   closeSuggest(name);
   search();
