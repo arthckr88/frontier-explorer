@@ -204,41 +204,6 @@ form > button { grid-column: 1 / -1; }
   background: rgb(18 22 27 / 72%);
 }
 
-.filters[hidden] { display: none !important; }
-
-.filters-bar {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 2px 0 6px;
-  background: #12161b;
-}
-
-.filters-bar span {
-  color: var(--selected);
-  font-family: ui-monospace, monospace;
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-#filters-toggle,
-.filters-close {
-  border: 1px solid var(--line);
-  background: transparent;
-  color: var(--text);
-}
-
-.filters-close {
-  width: auto;
-  min-height: 36px;
-  padding: 6px 12px;
-}
-
 #clear,
 #network-toggle {
   border: 1px solid var(--line);
