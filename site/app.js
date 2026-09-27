@@ -78,7 +78,7 @@ form.addEventListener("submit", (event) => {
   search();
 });
 
-form.addEventListener("change", (event) => {
+function onSearchControlChange(event) {
   const target = event.target;
   if (!(target instanceof HTMLInputElement || target instanceof HTMLSelectElement)) return;
   if (target.name === "from-region" || target.name === "to-region") {
@@ -90,7 +90,10 @@ form.addEventListener("change", (event) => {
     return;
   }
   if (target.name === "redeye" || target.name === "stops" || target.name === "sort" || target.name === "date" || target.name === "duration" || target.name === "depart" || target.name === "arrive" || target.name === "layover") search();
-});
+}
+
+form.addEventListener("change", onSearchControlChange);
+document.querySelector(".map-tools").addEventListener("change", onSearchControlChange);
 
 const hubInput = form.elements.hub;
 hubInput.addEventListener("input", () => {
@@ -181,7 +184,7 @@ async function load() {
     const today = new Date().toISOString().slice(0, 10);
     form.elements.date.value = dates.find((date) => date >= today) ?? dates[dates.length - 1] ?? today;
   }
-  network.textContent = describeNetwork();
+  if (network) network.textContent = describeNetwork();
   try {
     drawMap();
   } catch {
@@ -771,7 +774,7 @@ function sliceDescription() {
 }
 
 function showRegion() {
-  network.textContent = describeNetwork();
+  if (network) network.textContent = describeNetwork();
   if (!map || !networkIsShowing()) return;
   paintRoutes();
   fitCurrentRoutes();
@@ -999,16 +1002,18 @@ function cameraPadding() {
   const dock = document.querySelector(".dock")?.getBoundingClientRect();
   const zoom = document.querySelector(".maplibregl-ctrl-top-right")?.getBoundingClientRect();
   const attrib = document.querySelector(".maplibregl-ctrl-bottom-right")?.getBoundingClientRect();
+  const tools = document.querySelector(".filter-row")?.getBoundingClientRect();
   const narrow = frame.width <= 800;
+  const toolsTop = tools && tools.height > 0 ? tools.bottom - frame.top + 8 : 0;
   const padding = narrow
     ? {
-        top: Math.max(48, dock && dock.height > 0 ? dock.bottom - frame.top + gap : 0, zoom ? zoom.bottom - frame.top + 8 : 0),
+        top: Math.max(48, dock && dock.height > 0 ? dock.bottom - frame.top + gap : 0, zoom ? zoom.bottom - frame.top + 8 : 0, toolsTop),
         right: 20,
         bottom: Math.max(24, sheet && sheet.height > 0 ? frame.bottom - sheet.top + gap : 0),
         left: 16,
       }
     : {
-        top: Math.max(36, zoom && zoom.height > 0 ? zoom.height + 12 : 0),
+        top: Math.max(36, zoom && zoom.height > 0 ? zoom.height + 12 : 0, toolsTop),
         right: Math.max(48, dock && dock.width > 0 ? frame.right - dock.left + gap : 0, zoom && zoom.width > 0 ? frame.right - zoom.left + 12 : 0),
         bottom: Math.max(28, attrib && attrib.height > 0 ? frame.bottom - attrib.top + 8 : 0),
         left: Math.max(48, sheet && sheet.width > 0 ? sheet.right - frame.left + gap : 0),
@@ -1471,7 +1476,7 @@ function clearSearch() {
   connectionHubs = [];
   pressStarts();
   document.querySelector("#route-calendar").hidden = true;
-  network.textContent = describeNetwork();
+  if (network) network.textContent = describeNetwork();
   paintRoutes();
   fitCurrentRoutes();
   const dates = publishedDates();
@@ -1607,7 +1612,8 @@ function renderRouteCalendar() {
   }
   const markedDays = coverage.kind === "day" ? new Set([...coverage.dailyDates, ...coverage.savedDates]) : new Set();
   renderDayGrid(calendarMonth, markedDays);
-  document.querySelector("#cal-source").textContent = coverage.sentence;
+  const sourceLine = document.querySelector("#cal-source");
+  if (sourceLine) sourceLine.textContent = coverage.sentence;
   box.dataset.kind = coverage.kind;
   box.dataset.months = coverage.months.join(",");
   box.dataset.marked = [...markedDays].sort().join(",");

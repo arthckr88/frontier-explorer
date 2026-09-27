@@ -32,14 +32,16 @@ html, body {
   z-index: 2;
   top: 16px;
   left: 16px;
+  display: flex;
+  flex-direction: column;
   width: min(22.5rem, calc(100vw - 32px));
-  max-height: calc(100% - 32px);
-  overflow: auto;
+  height: min(calc(100dvh - 32px), max-content);
+  max-height: calc(100dvh - 32px);
+  overflow: hidden;
   padding: 14px 14px 12px;
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: rgb(9 11 13 / 92%);
-  backdrop-filter: blur(10px);
+  background: rgb(9 11 13 / 94%);
 }
 
 .sheet-head { margin-bottom: 10px; }
@@ -58,13 +60,6 @@ h1 {
   font-size: 1.15rem;
   font-weight: 560;
   letter-spacing: -0.02em;
-}
-
-.network {
-  margin: 4px 0 0;
-  color: var(--muted);
-  font-size: 0.78rem;
-  line-height: 1.35;
 }
 
 .starts {
@@ -91,10 +86,107 @@ h1 {
   border-color: transparent;
 }
 
-.span { grid-column: 1 / -1; }
+.actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 8px;
+}
+
+.actions button {
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: nowrap;
+  padding: 10px 8px;
+  font-size: 0.92rem;
+}
+
+.map-tools {
+  position: fixed;
+  z-index: 2;
+  top: 16px;
+  left: calc(16px + min(22.5rem, 100vw - 32px) + 12px);
+  right: 76px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  pointer-events: none;
+}
+
+.map-tools > * { pointer-events: auto; }
+
+.when {
+  flex: 0 0 13.25rem;
+  width: 13.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgb(9 11 13 / 94%);
+}
+
+.filter-row {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
+  gap: 6px;
+  margin: 0;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgb(9 11 13 / 94%);
+}
+
+.filter-row .field:focus-within { overflow: visible; z-index: 3; }
+
+.filter-row .field {
+  flex: 1 1 0;
+  min-width: 0;
+  width: 0;
+  position: relative;
+  overflow: hidden;
+  gap: 3px;
+  letter-spacing: 0.04em;
+  font-size: 0.58rem;
+  line-height: 1.2;
+}
+
+.filter-row select,
+.filter-row input:not([type="checkbox"]) {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  font-size: 12px;
+  padding: 6px 4px;
+}
+
+.filter-row .switch {
+  flex: 0 0 auto;
+  min-height: 32px;
+  gap: 6px;
+  margin: 0 0 1px;
+  font-size: 0.78rem;
+}
+
+.filter-row .switch span {
+  font-size: 0.78rem;
+}
+
+.filter-row .suggest {
+  position: absolute;
+  z-index: 4;
+  top: calc(100% + 4px);
+  left: 0;
+  width: max(100%, 12rem);
+}
 
 .calendar {
-  grid-column: 1 / -1;
   display: grid;
   gap: 6px;
 }
@@ -158,13 +250,6 @@ h1 {
 }
 
 .cal-dow { color: var(--muted); padding: 2px 0; }
-
-.cal-source {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.82rem;
-  line-height: 1.35;
-}
 
 label.switch {
   display: flex;
@@ -264,19 +349,6 @@ form {
   color: var(--muted);
 }
 
-form > button { grid-column: 1 / -1; }
-
-.filters {
-  grid-column: 1 / -1;
-  display: grid;
-  gap: 8px;
-  margin: 0;
-  padding: 4px 10px 10px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgb(18 22 27 / 72%);
-}
-
 #clear,
 #network-toggle {
   border: 1px solid var(--line);
@@ -312,8 +384,18 @@ button {
   padding: 11px 12px;
 }
 
+.sheet-results {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.sheet-head,
+.starts,
+form { flex: none; }
+
 #status {
-  margin: 10px 0 0;
+  margin: 8px 0 0;
   color: var(--muted);
   font-size: 0.86rem;
   line-height: 1.4;
@@ -465,7 +547,7 @@ article.card { cursor: default; }
 
 .dest { justify-content: space-between; padding: 2px 0; color: var(--text); }
 
-.maplibregl-ctrl-top-right { top: 12px; right: 12px; }
+.maplibregl-ctrl-top-right { top: 12px; right: 12px; z-index: 3; }
 
 .maplibregl-ctrl-group {
   background: #12161b !important;
@@ -486,6 +568,26 @@ article.card { cursor: default; }
 @media (max-width: 800px) {
   form { grid-template-columns: 1fr; }
 
+  .map-tools {
+    top: 8px;
+    left: 8px;
+    right: 76px;
+    overflow: hidden;
+  }
+
+  .filter-row { overflow-x: auto; }
+
+  .filter-row .field {
+    flex: 0 0 6.6rem;
+    width: 6.6rem;
+    min-width: 6.6rem;
+  }
+
+  .when {
+    flex-basis: 9.5rem;
+    width: 9.5rem;
+  }
+
   .sheet {
     top: auto;
     right: 0;
@@ -499,8 +601,8 @@ article.card { cursor: default; }
   }
 
   .dock {
-    top: 12px;
-    right: 58px;
+    top: 76px;
+    right: 12px;
     bottom: auto;
     left: 12px;
     width: auto;

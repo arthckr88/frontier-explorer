@@ -14,7 +14,6 @@
       <header class="sheet-head">
         <p class="mark">Frontier</p>
         <h1>Route Explorer</h1>
-        <p id="network" class="network"></p>
       </header>
       <div class="starts" role="group" aria-label="Starting airport">
         <button type="button" data-origin="SFO">SFO</button>
@@ -65,9 +64,23 @@
             <option value="central_america">Central America</option>
           </select>
         </label>
-        <label class="field span">
+        <div class="actions">
+          <button type="submit">Search</button>
+          <button id="network-toggle" type="button" hidden aria-pressed="false">Show network</button>
+          <button id="clear" type="button" hidden>Clear</button>
+        </div>
+      </form>
+      <div class="sheet-results">
+        <p id="status" role="status"></p>
+        <button id="show-overnight" type="button" hidden>Show overnight flights</button>
+        <div id="results"></div>
+      </div>
+    </section>
+    <div class="map-tools">
+      <div class="when">
+        <label class="field">
           Date
-          <input name="date" type="date" required aria-label="Date" />
+          <input name="date" form="search" type="date" required aria-label="Date" />
         </label>
         <div id="route-calendar" class="calendar" hidden>
           <div class="cal-nav">
@@ -77,79 +90,72 @@
           </div>
           <div id="cal-months" class="cal-months"></div>
           <div id="cal-grid" class="cal-grid"></div>
-          <p id="cal-source"></p>
         </div>
-        <label class="field span">
+      </div>
+      <div id="filters" class="filter-row">
+        <label class="field">
+          Stops
+          <select name="stops" form="search" aria-label="Stops">
+            <option value="0" selected>Nonstop only</option>
+            <option value="1">Up to 1 stop</option>
+            <option value="2">Up to 2 stops</option>
+          </select>
+        </label>
+        <label class="field">
+          Duration
+          <select name="duration" form="search" aria-label="Duration">
+            <option value="" selected>Any</option>
+            <option value="300">Under 5 hours</option>
+            <option value="480">Under 8 hours</option>
+            <option value="720">Under 12 hours</option>
+          </select>
+        </label>
+        <label class="field">
+          Departure
+          <select name="depart" form="search" aria-label="Departure time">
+            <option value="" selected>Any</option>
+            <option value="morning">Morning (5 AM–12 PM)</option>
+            <option value="afternoon">Afternoon (12–5 PM)</option>
+            <option value="evening">Evening (5–10 PM)</option>
+          </select>
+        </label>
+        <label class="field">
+          Arrival
+          <select name="arrive" form="search" aria-label="Arrival time">
+            <option value="" selected>Any</option>
+            <option value="morning">Morning (5 AM–12 PM)</option>
+            <option value="afternoon">Afternoon (12–5 PM)</option>
+            <option value="evening">Evening (5–10 PM)</option>
+          </select>
+        </label>
+        <label class="field">
+          Layover
+          <select name="layover" form="search" aria-label="Layover">
+            <option value="" selected>Any</option>
+            <option value="120">Under 2 hours</option>
+            <option value="240">Under 4 hours</option>
+            <option value="480">Under 8 hours</option>
+          </select>
+        </label>
+        <label class="field">
+          Connecting airport
+          <input name="hub" form="search" type="text" autocomplete="off" spellcheck="false" placeholder="Any" aria-label="Connecting airport" aria-autocomplete="list" aria-controls="hub-list" />
+          <ul id="hub-list" class="suggest" role="listbox" hidden></ul>
+        </label>
+        <label class="field">
           Sort
-          <select name="sort" aria-label="Sort">
+          <select name="sort" form="search" aria-label="Sort">
             <option value="stops" selected>Fewest stops</option>
             <option value="duration">Shortest trip</option>
             <option value="depart">Earliest departure</option>
           </select>
         </label>
-        <label class="switch span">
-          <input name="redeye" type="checkbox" checked role="switch" />
+        <label class="switch">
+          <input name="redeye" form="search" type="checkbox" checked role="switch" />
           <span>Exclude red-eyes</span>
         </label>
-        <fieldset id="filters" class="filters">
-          <label class="field">
-            Stops
-            <select name="stops" aria-label="Stops">
-              <option value="0" selected>Nonstop only</option>
-              <option value="1">Up to 1 stop</option>
-              <option value="2">Up to 2 stops</option>
-            </select>
-          </label>
-          <label class="field">
-            Duration
-            <select name="duration" aria-label="Duration">
-              <option value="" selected>Any</option>
-              <option value="300">Under 5 hours</option>
-              <option value="480">Under 8 hours</option>
-              <option value="720">Under 12 hours</option>
-            </select>
-          </label>
-          <label class="field">
-            Departure
-            <select name="depart" aria-label="Departure time">
-              <option value="" selected>Any</option>
-              <option value="morning">Morning (5 AM–12 PM)</option>
-              <option value="afternoon">Afternoon (12–5 PM)</option>
-              <option value="evening">Evening (5–10 PM)</option>
-            </select>
-          </label>
-          <label class="field">
-            Arrival
-            <select name="arrive" aria-label="Arrival time">
-              <option value="" selected>Any</option>
-              <option value="morning">Morning (5 AM–12 PM)</option>
-              <option value="afternoon">Afternoon (12–5 PM)</option>
-              <option value="evening">Evening (5–10 PM)</option>
-            </select>
-          </label>
-          <label class="field">
-            Layover
-            <select name="layover" aria-label="Layover">
-              <option value="" selected>Any</option>
-              <option value="120">Under 2 hours</option>
-              <option value="240">Under 4 hours</option>
-              <option value="480">Under 8 hours</option>
-            </select>
-          </label>
-          <label class="field">
-            Connecting airport
-            <input name="hub" type="text" autocomplete="off" spellcheck="false" placeholder="Any" aria-label="Connecting airport" aria-autocomplete="list" aria-controls="hub-list" />
-            <ul id="hub-list" class="suggest" role="listbox" hidden></ul>
-          </label>
-        </fieldset>
-        <button type="submit">Search</button>
-        <button id="network-toggle" type="button" hidden aria-pressed="false">Show network</button>
-        <button id="clear" type="button" hidden>Clear</button>
-      </form>
-      <p id="status" role="status"></p>
-      <button id="show-overnight" type="button" hidden>Show overnight flights</button>
-      <div id="results"></div>
-    </section>
+      </div>
+    </div>
     <div class="dock">
       <aside id="airport" class="airport" hidden></aside>
       <aside class="legend" aria-label="Legend">
