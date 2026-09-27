@@ -36,7 +36,6 @@ const network = document.querySelector("#network");
 const showOvernight = document.querySelector("#show-overnight");
 
 let schedule = null;
-let networkFile = null;
 let airports = new Map();
 let map = null;
 let arcs = [];
@@ -162,19 +161,16 @@ document.querySelector("#new-york").addEventListener("click", () => {
 });
 
 async function load() {
-  const [flightResponse, airportResponse, nonstopResponse, operatingResponse] = await Promise.all([
+  const [flightResponse, airportResponse, operatingResponse] = await Promise.all([
     fetch("flights.json"),
     fetch("airports.json"),
-    fetch("nonstops.json"),
     fetch("operating-days.json"),
   ]);
   if (!flightResponse.ok) throw new Error("The published schedule did not load.");
   if (!airportResponse.ok) throw new Error("The airport map did not load.");
-  if (!nonstopResponse.ok) throw new Error("The nonstop network did not load.");
   if (!operatingResponse.ok) throw new Error("The operating calendar did not load.");
   schedule = await flightResponse.json();
   operatingDays = await operatingResponse.json();
-  networkFile = await nonstopResponse.json();
   airports = new Map((await airportResponse.json()).map((airport) => [airport.iata, airport]));
   arcs = buildArcs();
   const dates = publishedDates();
@@ -321,16 +317,19 @@ function search() {
   const filtered = filterItineraries(itineraries, readFilterQuery());
   const visible = filtered.itineraries;
   if (visible.length > 0) {
-    for (const segment of visible[0].segments) pathPairs.add(`${segment.origin}|${segment.destination}`);
+    for (const segment of visible[0].segments) {
+      const key = `${segment.origin}|${segment.destination}`;
+      if (arcIndex.has(key)) pathPairs.add(key);
+    }
   }
   const alternatives = savedTripDates(from.codes, destinations, maxStops).filter((hit) => hit.date !== date);
   if (visible.length === 0) {
-    if (coverage?.kind === "month") status.textContent = `${title}. ${coverage.sentence}`;
-    else if (published.direct.size) status.textContent = `${title}. No departure on ${date}. Operating days are marked on the calendar.`;
-    else if (published.segments.size) status.textContent = `${title}. Published connection, no saved departure on ${date}.`;
-    else if (itineraries.length > 0) status.textContent = filterEmptyMessage(filtered.hidden, title, date);
+    if (!published.direct.size) {
+      status.textContent = `${title}. ${noDatedNonstopSentence()}`;
+      if (published.segments.size) status.textContent += " Dated connections within this stops limit are on the map.";
+    } else if (itineraries.length > 0) status.textContent = filterEmptyMessage(filtered.hidden, title, date);
     else if (hidden > 0) status.textContent = `No daytime itinerary for ${title} on ${date}.`;
-    else status.textContent = `${title}. No saved flight for this route.`;
+    else status.textContent = `${title}. No departure on ${date}. Operating days are marked on the calendar.`;
     if (hidden > 0) {
       status.textContent += ` ${hiddenCopy(hidden)}`;
       showOvernight.hidden = false;
@@ -341,6 +340,7 @@ function search() {
     return;
   }
   status.textContent = `${visible.length} itinerar${visible.length === 1 ? "y" : "ies"} for ${title} on ${date}.`;
+  if (!published.direct.size) status.textContent += ` ${noDatedNonstopSentence()}`;
   const filterNote = filterHideNote(filtered.hidden);
   if (filterNote) status.textContent += ` ${filterNote}`;
   if (hidden > 0) {
@@ -451,7 +451,7 @@ function airportStatus(from, reached, maxStops) {
   const saved = [...new Set(from.codes.flatMap((code) => savedDestinations(code)))].sort();
   const savedNote = saved.length ? ` Saved flight times to ${saved.map(airportPlace).join(", ")}.` : "";
   if (!reached.size) {
-    return `${place}. No published nonstop from this airport.${savedNote}`;
+    return `${place}. No dated Frontier nonstop from this airport is in the on-time file.${savedNote}`;
   }
   const nonstopNames = groups[0].map(airportPlace).sort((left, right) => left.localeCompare(right));
   const nonstopText = nonstopNames.length <= 8 ? nonstopNames.join(", ") : `${nonstopNames.length} airports`;
@@ -548,8 +548,9 @@ function buildArcs() {
   outbound = new Map();
   inbound = new Map();
   routeCache.clear();
-  for (const pair of networkFile?.pairs ?? []) {
-    const key = `${pair.origin}|${pair.destination}`;
+  for (const key of Object.keys(operatingDays?.daily?.flights ?? {})) {
+    const [origin, destination] = key.split("|");
+    const pair = { origin, destination };
     if (seen.has(key)) continue;
     const arc = arcFrom(pair.origin, pair.destination);
     if (!arc) continue;
@@ -594,7 +595,7 @@ function routesFromAirport(code, maxStops) {
 }
 
 function reachSummary(reached, maxStops) {
-  if (!reached.size) return "No published nonstop from this airport.";
+  if (!reached.size) return "No dated Frontier nonstop from this airport.";
   if (maxStops === 0) {
     const names = [...reached.keys()].map(airportPlace).sort((left, right) => left.localeCompare(right));
     if (names.length === 1) return `Nonstop to ${names[0]}.`;
@@ -615,10 +616,6 @@ function arcFrom(origin, destination) {
   };
 }
 
-function savedFlightPair(origin, destination) {
-  return (schedule?.flights ?? []).some((flight) => flight.origin === origin && flight.destination === destination);
-}
-
 function nonstopCodes() {
   const codes = new Set();
   for (const arc of arcs) {
@@ -632,11 +629,17 @@ function nonstopPairCount() {
   return arcs.length;
 }
 
+function noDatedNonstopSentence() {
+  const daily = operatingDays?.daily;
+  if (!daily) return "No dated Frontier nonstop is in the on-time file.";
+  return `No dated Frontier nonstop is in ${daily.sourceName} from ${formatLong(daily.periodStart)} through ${formatLong(daily.periodEnd)}.`;
+}
+
 function describeNetwork() {
-  if (networkFile?.sentence) return networkFile.sentence;
+  const daily = operatingDays?.daily;
   const pairs = nonstopPairCount();
-  if (!pairs) return "No published nonstop is on the map.";
-  return `${pairs.toLocaleString()} published nonstop city pairs.`;
+  if (!daily || !pairs) return "No dated Frontier nonstop is on the map.";
+  return `This map shows ${pairs.toLocaleString()} Frontier nonstop city pairs with at least one departure date in ${daily.sourceName} from ${formatLong(daily.periodStart)} through ${formatLong(daily.periodEnd)}.`;
 }
 
 function openingStatus(dates) {
@@ -687,7 +690,7 @@ function routeCollection() {
   for (const key of selected) {
     if (seen.has(key) || airportOnly) continue;
     const [origin, destination] = key.split("|");
-    if (!arcIndex.has(key) && !savedFlightPair(origin, destination)) continue;
+    if (!arcIndex.has(key)) continue;
     const arc = arcFrom(origin, destination);
     if (!arc) continue;
     features.push(routeFeature(arc, selected, dim));
@@ -1383,40 +1386,14 @@ function pairKeys(origins, destinations) {
 function routeCoverage(origins, destinations) {
   const keys = pairKeys(origins, destinations);
   const daily = operatingDays?.daily;
-  const monthly = operatingDays?.monthly;
   const records = [];
-  const months = new Set();
   for (const key of keys) {
     for (const record of daily?.flights?.[key] ?? []) records.push(record);
-    for (const month of monthly?.pairs?.[key] ?? []) months.add(month);
   }
   const dailyDates = new Set(records.map((record) => record.slice(0, 10)));
-  const savedDates = new Set();
-  for (const flight of schedule?.flights ?? []) {
-    if (origins.includes(flight.origin) && destinations.includes(flight.destination)) savedDates.add(flight.date);
-  }
-  const monthList = [...months].sort();
-  let kind = "none";
-  let sentence = "";
-  if (dailyDates.size || savedDates.size) {
-    kind = "day";
-    sentence = daily?.sentence ?? "";
-    const savedList = [...savedDates].filter((date) => !dailyDates.has(date)).sort();
-    if (savedList.length) sentence = `${sentence} Saved flight times also mark ${savedList[0]} through ${savedList[savedList.length - 1]}.`.trim();
-  } else if (monthList.length) {
-    kind = "month";
-    const named = monthList.length <= 4
-      ? monthList.map(formatMonth).reduce((text, name, index, list) => {
-        if (index === 0) return name;
-        if (index === list.length - 1) return `${text} and ${name}`;
-        return `${text}, ${name}`;
-      }, "")
-      : `${monthList.length} months`;
-    sentence = `${monthly.sourceName} reports for July 2025 through June 2026 show this Frontier nonstop in ${named}, and daily dates are not in that source or in ${daily.sourceName} from ${formatLong(daily.periodStart)} through ${formatLong(daily.periodEnd)}.`;
-  } else if (daily && monthly) {
-    sentence = `No Frontier departure for this pair is in ${daily.sourceName} from ${formatLong(daily.periodStart)} through ${formatLong(daily.periodEnd)}, or in ${monthly.sourceName} for July 2025 through June 2026.`;
-  }
-  return { kind, sentence, records, dailyDates, savedDates, months: monthList };
+  const kind = dailyDates.size ? "day" : "none";
+  const sentence = dailyDates.size ? (daily?.sentence ?? "") : noDatedNonstopSentence();
+  return { kind, sentence, records, dailyDates, savedDates: new Set(), months: [] };
 }
 
 function calendarBounds(coverage) {
