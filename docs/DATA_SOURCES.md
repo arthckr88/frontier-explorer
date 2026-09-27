@@ -1,5 +1,7 @@
 # Data sources
 
+GitHub Pages reads Frontier public booking observations from `data/network.json`. That file is built from `data/flights.json`. Listed markets in the same raw file are candidates for the updater, not confirmed nonstops. `data/upcoming.json` is an old third-party sample and is not the live schedule. DOT history in `data/nonstops.json` and `data/operating-days.json` is not the current schedule. Pages does not ship those files.
+
 Every network fact is an observation. An observation records the source id, display name, tier, kind, URL when one exists, retrieval time, external id, and the directional pair. Reconciliation may disagree with an observation. It does not rewrite it.
 
 ## Tiers

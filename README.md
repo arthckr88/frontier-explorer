@@ -1,8 +1,45 @@
 # Frontier Route Explorer
 
-A map-first viewer for the Frontier Airlines route network. It stores source observations, keeps history, and plans connections from scheduled times when a timetable is actually loaded. It does not sell tickets, store Frontier credentials, or invent routes, frequencies, passenger counts, or GoWild seat availability.
+A map-first viewer for Frontier Airlines routes that were actually returned by Frontier's public booking page. It does not sell tickets, store Frontier credentials, or invent routes, frequencies, passenger counts, or GoWild seat availability.
 
-The interface is dark and technical: a charcoal map, a green accent, and thin route arcs. Personal travel preferences (home airports, red-eye exclusion, Las Vegas stopovers) are settings. They are not treated as facts about the airline.
+The live site is GitHub Pages. It reads `data/network.json`, which is normalized from booking observations in `data/flights.json`. A listed market is a candidate for the updater. It is not a nonstop, and the map does not draw it. A confirmed arc requires a timed, dated nonstop. Future-only service is drawn differently from near-term service. Historical-only flights stay in storage and are not drawn as current routes.
+
+Coverage is per route and date: flight found, checked empty, blocked, or not checked yet. A checked-empty date is negative evidence for that date only. Blocked and unchecked are unknown. A gap after observed flights is a possible gap, not a discontinuation.
+
+The interface is dark and technical: a charcoal map, a green accent, and thin route arcs. It opens on Oakland, San Francisco, Las Vegas, and Southern California. The full confirmed network is still available. Personal watches are a fixed list of priority pairs. There are no accounts.
+
+## Live path
+
+```
+Frontier public booking observations
+  → data/flights.json
+  → data/network.json, data/route-summaries.json, data/route-changes.json
+  → GitHub Pages
+  → map and search
+```
+
+`.github/workflows/sync.yml` runs hourly (`17 * * * *`). It checks out the repo, installs dependencies, updates a bounded set of booking dates, normalizes observations and route changes, checks integrity, runs tests, builds Pages, and commits the data artifacts when they changed. It does not call `POST /api/cron`. Concurrency stays at 4, and each run requests at most 20 dates. HTTP 406 is blocked, which means unknown, and is not stored as an empty check.
+
+Priority corridors (both directions, without assuming they exist) are checked before other confirmed routes: OAK–LAS, SFO–LAS, LAS–LAX, LAS–BUR, SFO–LAX, OAK–LAX, SFO–BUR, OAK–BUR, SFO–ONT, OAK–ONT, SFO–SNA, and SAN–LAS. Priority routes use a 45-day horizon. Other confirmed routes use 21 days. The updater backfills holes between observed dates. See `data/RETENTION.md` before letting `flights.json` grow.
+
+Route changes compare the new snapshot with `data/route-summaries.json`. The event list in `data/route-changes.json` keeps at most 80 events and drops events older than 90 days. An unchanged snapshot does not emit events. Event types are new observation, schedule extended, more flights, fewer flights, possible gap, data blocked, and service reappeared.
+
+`npm run build:pages` fails if `data/network.json` is missing, malformed, or out of date with `data/flights.json`, if a confirmed arc has no observation, if an arc comes only from a listed market, if a summary date has no observation, or if a timestamp is invalid. Partial coverage does not fail the build.
+
+Local commands:
+
+```bash
+npm install
+npm test
+npm run normalize:network
+npm run check:integrity
+npm run build:pages
+npx serve dist
+```
+
+Open the URL `serve` prints. `npm run update:published` asks Frontier's public booking page for the next bounded set of dates and rewrites `data/flights.json`. Run `npm run normalize:network` after it. `npm run dev` starts the Next.js app, which is not the Pages site.
+
+A Next.js and Postgres app remains in this repo for reconciliation experiments. It is not what GitHub Pages runs, and production does not require Postgres.
 
 ## What a sync actually stores
 
@@ -33,7 +70,7 @@ public sources
   → App Router pages
 ```
 
-The browser never syncs the network. Sync runs from the CLI or from `POST /api/cron`.
+That diagram is the Next.js app, not GitHub Pages. The Pages browser only reads the static booking artifact. The Next server syncs from the CLI or from `POST /api/cron` when that app is running.
 
 - `src/app` — pages and the cron/admin endpoints
 - `src/components` — shell, map, status badges
@@ -77,7 +114,7 @@ npm run sync:programs
 npm run reconcile
 ```
 
-`npm run dev` and `npm start` serve routes already stored in Postgres. They do not call Frontier. `npm run sync:schedules` is the background booking updater: a pool of `PUBLIC_SCHEDULE_CONCURRENCY` date searches (default 4), limited to the priority origins. `POST /api/cron?job=schedules` runs that same updater. `npm run sync` also runs priority pages, announcements, programs, popularity, then reconciliation.
+`npm run dev` and `npm start` serve the Next.js app from Postgres. They do not call Frontier and they are not the Pages site. `npm run update:published` is the Pages booking updater. `npm run sync:schedules` is the separate Postgres booking job. `POST /api/cron?job=schedules` runs that Postgres job only. `npm run sync` also runs priority pages, announcements, programs, popularity, then reconciliation for the Next app.
 
 ## Environment
 
@@ -95,28 +132,13 @@ See `.env.example`. The app boots with no paid key.
 
 Do not commit `.env`.
 
-## Cron and deploy
+## Next.js app
 
-`POST /api/cron` with `Authorization: Bearer $CRON_SECRET` runs jobs that are due. Default cadence:
+The Next.js app is not the live site. `POST /api/cron` can run the Postgres jobs when `CRON_SECRET` is set. Nothing in `.github/workflows/sync.yml` calls that endpoint. Unset, the route returns 401.
 
-- Priority airports (OAK, SFO, LAS, LAX, BUR, JFK, LGA, MCO, FLL, MIA, plus saved-route endpoints): every 2 hours
-- Network schedule: every 6 hours
-- Announcements: every 2 hours
-- Programs and full reconciliation: daily
-- BTS popularity: every 30 days
+`.github/workflows/ci.yml` runs typecheck, lint, unit tests, integrity, the Pages build, and `next build` without a database.
 
-`.github/workflows/sync.yml` calls that endpoint hourly and exits cleanly when `CRON_URL` or `CRON_SECRET` is not configured. Point `CRON_URL` at the deployed origin, without a trailing path. The workflow appends `/api/cron`.
-
-A straightforward deploy is:
-
-1. Provision Postgres and set `DATABASE_URL`.
-2. Set `CRON_SECRET` and `ADMIN_SECRET`.
-3. Build with `npm run build` and start with `npm start` (or a Node host that runs the Next.js server).
-4. Run `npm run db:setup` once against that database.
-5. Run `npm run sync` once, or let the GitHub Action call `/api/cron`.
-6. Leave `TILE_STYLE_URL` on the OpenFreeMap default unless you have another legal style.
-
-`.github/workflows/ci.yml` runs typecheck, lint, unit tests, and `next build` without a database. Pages are dynamic, so the production build does not need Postgres.
+Newsroom announcements are parsed for the Next app only. They are not mixed into the Pages map. Showing them as a separate "Announced by Frontier" layer is follow-up work, not a claim that a route operates.
 
 ## Adding a source
 
@@ -149,4 +171,5 @@ This app does not call a GoWild inventory feed. If availability was not retrieve
 - Domestic BTS popularity is unavailable unless you set a public domestic resource. International counts are historical and labeled with the reporting period. They are not current demand and they are not drawn as the route network.
 - Booking is a “Search on Frontier” link. Query parameters may be ignored by Frontier. The app does not purchase tickets.
 - Preference edits are open in this personal version. Sync and other administrative actions require a secret.
-- LAS → BUR is a saved watch note. The note is not an end date and not evidence of service.
+- LAS → BUR is a possible gap when later checked dates returned no nonstop and the dates between were not all checked. That is not an end date.
+- Frontier newsroom posts are not on the live map. A separate "Announced by Frontier" layer is follow-up work.
