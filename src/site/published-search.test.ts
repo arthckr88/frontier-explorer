@@ -110,6 +110,47 @@ describe("published schedule search", () => {
     expect(filterItineraries(overnight ? [overnight] : [], {}).itineraries).toHaveLength(1);
     expect(filterItineraries(overnight ? [overnight] : [], { maxLayoverMinutes: 8 * 60 }).itineraries).toHaveLength(0);
   });
+
+  it("rejects an impossible connection and keeps a normal Las Vegas connection", () => {
+    const legs = [
+      flight("OAK", "LAS", "1", "2026-10-15T10:00:00", "2026-10-15T11:20:00", "2026-10-15T17:00:00Z", "2026-10-15T18:20:00Z"),
+      flight("LAS", "LAX", "2", "2026-10-15T11:50:00", "2026-10-15T13:05:00", "2026-10-15T18:50:00Z", "2026-10-15T20:05:00Z"),
+      flight("LAS", "LAX", "3", "2026-10-15T12:50:00", "2026-10-15T14:05:00", "2026-10-15T19:50:00Z", "2026-10-15T21:05:00Z"),
+    ];
+    const result = searchPublished(legs, { from: "OAK", to: "LAX", date: "2026-10-15", excludeRedEyes: false });
+    expect(result.itineraries).toHaveLength(1);
+    expect(result.itineraries[0]?.segments[1]?.flightNumber).toBe("3");
+    expect(result.itineraries[0]?.connections[0]?.kind).toBe("normal");
+    expect(result.itineraries[0]?.connections[0]?.minutes).toBe(90);
+  });
+
+  it("labels a long layover and an overnight Las Vegas connection differently", () => {
+    const legs = [
+      flight("SFO", "LAS", "10", "2026-10-15T12:00:00", "2026-10-15T13:20:00", "2026-10-15T19:00:00Z", "2026-10-15T20:20:00Z"),
+      flight("LAS", "BUR", "11", "2026-10-15T18:30:00", "2026-10-15T19:40:00", "2026-10-16T01:30:00Z", "2026-10-16T02:40:00Z"),
+      flight("SFO", "LAS", "12", "2026-10-15T15:00:00", "2026-10-15T16:20:00", "2026-10-15T22:00:00Z", "2026-10-15T23:20:00Z"),
+      flight("LAS", "BUR", "13", "2026-10-16T12:20:00", "2026-10-16T13:30:00", "2026-10-16T19:20:00Z", "2026-10-16T20:30:00Z"),
+    ];
+    const result = searchPublished(legs, { from: "SFO", to: "BUR", date: "2026-10-15", excludeRedEyes: false });
+    const long = result.itineraries.find((item) => item.segments[1]?.flightNumber === "11");
+    const overnight = result.itineraries.find((item) => item.segments[1]?.flightNumber === "13");
+    expect(long?.connections[0]?.kind).toBe("long");
+    expect(long?.connections[0]?.label).toMatch(/Long layover/);
+    expect(overnight?.vegasOvernight).toBe(true);
+    expect(overnight?.connections[0]?.kind).toBe("overnight");
+    expect(overnight?.connectionLabel).toBe("Overnight in Las Vegas");
+    expect(overnight?.elapsedMinutes).toBeGreaterThan(18 * 60);
+    expect(overnight?.connections[0]?.label).not.toMatch(/min in LAS/);
+  });
+
+  it("keeps a 22:00 Las Vegas departure discoverable when red-eyes are included", () => {
+    const legs = [
+      flight("SFO", "LAS", "4402", "2026-10-15T22:19:00", "2026-10-15T23:44:00", "2026-10-16T05:19:00Z", "2026-10-16T06:44:00Z"),
+    ];
+    expect(searchPublished(legs, { from: "SFO", to: "LAS", date: "2026-10-15" }).itineraries).toHaveLength(0);
+    expect(searchPublished(legs, { from: "SFO", to: "LAS", date: "2026-10-15" }).hiddenRedEyes).toBe(1);
+    expect(searchPublished(legs, { from: "SFO", to: "LAS", date: "2026-10-15", excludeRedEyes: false }).itineraries).toHaveLength(1);
+  });
 });
 
 function flight(

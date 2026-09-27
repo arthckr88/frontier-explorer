@@ -24,10 +24,13 @@ export type PublishedSchedule = {
   blocked: string[];
 };
 
+export type ConnectionKind = "normal" | "long" | "overnight";
+
 export type PublishedConnection = {
   airport: string;
   minutes: number;
   label: string;
+  kind: ConnectionKind;
   vegasOvernight: boolean;
 };
 
@@ -67,7 +70,7 @@ export type ItineraryFilterHidden = {
 const MIN_CONNECTION = 60;
 const NORMAL_MAX = 4 * 60;
 const LONG_MAX = 8 * 60;
-const STOPOVER_MAX = 24 * 60;
+const OVERNIGHT_MAX = 30 * 60;
 
 export function searchPublished(
   flights: PublishedFlight[],
@@ -202,19 +205,46 @@ function departing(byOrigin: Map<string, PublishedFlight[]>, origin: string, dat
 
 function connect(first: PublishedFlight, second: PublishedFlight): PublishedConnection | null {
   const gap = minutesBetween(first.arrivalUtc, second.departureUtc);
-  if (!Number.isFinite(gap) || gap < MIN_CONNECTION || gap > STOPOVER_MAX) return null;
-  const overnightGround = gap >= LONG_MAX && second.departureLocal.slice(0, 10) > first.arrivalLocal.slice(0, 10);
+  if (!Number.isFinite(gap) || gap < MIN_CONNECTION) return null;
+  const minutes = Math.round(gap);
+  const arrivalDate = first.arrivalLocal.slice(0, 10);
+  const departureDate = second.departureLocal.slice(0, 10);
+  const nextDay = addDays(arrivalDate, 1);
+  const overnightGround = nextDay !== null && departureDate === nextDay && gap > LONG_MAX && gap <= OVERNIGHT_MAX;
   const vegasOvernight = first.destination === "LAS" && overnightGround;
-  if (gap <= NORMAL_MAX || gap <= LONG_MAX) {
-    return { airport: first.destination, minutes: Math.round(gap), label: `${Math.round(gap)} min in ${first.destination}`, vegasOvernight: false };
+  if (vegasOvernight) {
+    return { airport: first.destination, minutes, kind: "overnight", vegasOvernight: true, label: "Overnight in Las Vegas" };
   }
-  if (!overnightGround) return null;
-  return {
-    airport: first.destination,
-    minutes: Math.round(gap),
-    vegasOvernight,
-    label: vegasOvernight ? "Overnight in Las Vegas" : `Overnight ground stop in ${first.destination}`,
-  };
+  if (gap <= NORMAL_MAX) {
+    return { airport: first.destination, minutes, kind: "normal", vegasOvernight: false, label: `${minutes} min in ${first.destination}` };
+  }
+  if (gap <= LONG_MAX) {
+    return {
+      airport: first.destination,
+      minutes,
+      kind: "long",
+      vegasOvernight: false,
+      label: `Long layover · ${minutes} min in ${first.destination}`,
+    };
+  }
+  if (overnightGround && gap <= 24 * 60) {
+    return {
+      airport: first.destination,
+      minutes,
+      kind: "overnight",
+      vegasOvernight: false,
+      label: `Overnight ground stop in ${first.destination}`,
+    };
+  }
+  return null;
+}
+
+function addDays(iso: string, days: number): string | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if (!match) return null;
+  const date = new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
+  date.setUTCDate(date.getUTCDate() + days);
+  return date.toISOString().slice(0, 10);
 }
 
 function isRedEye(flight: PublishedFlight): boolean {
