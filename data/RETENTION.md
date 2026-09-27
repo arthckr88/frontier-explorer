@@ -2,7 +2,7 @@
 
 `data/flights.json` is the raw Frontier public booking store. It keeps timed nonstops, the dates that were actually checked, blocked dates, and listed market candidates. Listed markets are not confirmed nonstops.
 
-Rows are not deleted on a schedule. A later empty check does not remove an earlier observation. Git history keeps prior copies of the file when the sync workflow commits an update.
+Rows are not deleted on a schedule. A later empty check does not remove an earlier observation. Git history keeps prior copies of the file. GitHub Actions does not fetch new rows.
 
 `data/network.json` is derived from `data/flights.json` and can be rebuilt with `npm run normalize:network`. It is the file GitHub Pages reads. Rebuilding it does not delete `flights.json`.
 

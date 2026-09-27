@@ -18,9 +18,7 @@ Frontier public booking observations
   → map and search
 ```
 
-`.github/workflows/sync.yml` runs hourly (`17 * * * *`). It checks out the repo, installs dependencies, verifies a bounded set of Frontier booking dates, normalizes observations and route changes, checks integrity, runs tests, builds Pages, and commits the data artifacts when they changed. It does not call `POST /api/cron` and it does not call FlightAware. Concurrency stays at 4, and each run requests at most 20 dates. HTTP 406 is blocked, which means unknown, and is not stored as an empty check. The full booking.flyfrontier.com crawl is stopped. Booking checks are a secondary verification of the priority corridors only. Observations already collected stay in `data/flights.json`.
-
-The verifier covers OAK, SFO, LAS, LAX, BUR, SNA, ONT, and SAN, both directions of OAK–LAS, SFO–LAS, LAS–LAX, LAS–BUR, SFO–LAX, OAK–LAX, SFO–BUR, OAK–BUR, SFO–ONT, OAK–ONT, SFO–SNA, and SAN–LAS. It does not assume those routes exist. It backfills holes between observed dates on those corridors. See `data/RETENTION.md` before letting `flights.json` grow.
+GitHub Actions does not call Frontier or FlightAware. There is no hourly booking check and no weekly schedule import. Observations already in `data/flights.json` stay there. A new fare check is the local command below, one route and one date. `npm run normalize:network` rebuilds `data/network.json` from those observations. See `data/RETENTION.md` before letting `flights.json` grow. Pages deploys from `main` through `.github/workflows/deploy.yml`.
 
 ## Local Frontier browser fares
 
@@ -28,20 +26,7 @@ The verifier covers OAK, SFO, LAS, LAX, BUR, SNA, ONT, and SAN, both directions 
 
 ## Frontier availability API
 
-`FrontierAvailabilityProvider` can ask Frontier's mobile availability endpoint for one origin, destination, and date. It runs on the server or at build time. It does not run in the browser, and it is not part of the hourly sync. An unauthenticated request for OAK→LAS on 2026-09-28 returned HTTP 406 with an empty body, so that call is `blocked` and supplied no fares. The provider does not copy subscription keys, device ids, or session headers from other projects, and it does not retry a rejection with a new identity. Pages build fails if those credential markers appear in `dist/`, `site/`, or `public/`.
-
-## FlightAware published schedules
-
-FlightAware is a pluggable `ScheduleProvider`. The first implementation is `FlightAwareScheduleProvider`. `FLIGHTAWARE_API_KEY` is read on the server or in a workflow. It is not written into client JS, git, generated Pages files, logs, or reports. There is no key in this repo yet, so the live import has not been run.
-
-The cheap production plan uses AeroAPI `GET /schedules/{date_start}/{date_end}` filtered to airline `FFT`, one priority corridor, and `max_pages`. That endpoint is $0.020 per result set of up to 15 records (AeroAPI fee table, spec 4.17.1). The $0.005 airport and operator scheduled-flight endpoints only accept a start and end about two days ahead, so they cannot fill the 14-day window. `GET /operators/FFT` ($0.015) is the operator check and is expected to return ICAO `FFT` before any schedule query. A published FlightAware row is `flightaware_schedule` evidence. A Frontier booking row is `frontier_booking` verification. Newsroom text would be `frontier_newsroom` and is not a timed nonstop. If the two schedule sources disagree, both rows are kept and the disagreement is recorded. A blocked booking date stays blocked. A date FlightAware did not fully query stays unchecked. Absence from FlightAware is not a checked-empty booking result. A listed market still cannot draw an arc.
-
-```bash
-npm run schedules:frontier -- near
-npm run schedules:frontier:full
-```
-
-Both commands dry-run unless `--import` is present. `--import` without `FLIGHTAWARE_API_KEY` exits before any request. Do not run `schedules:frontier:full` on a schedule. The weekly workflow `.github/workflows/flightaware-schedule.yml` dry-runs only. Defaults are near 14 days, planning 60, extended 180, and a manual full year. `FLIGHTAWARE_MAX_RUN_COST_USD` defaults to 4.00 and `FLIGHTAWARE_MAX_PAGES` defaults to 2. The near plan's maximum estimated cost is $0.975 (one operator lookup plus 24 corridor queries at 2 pages). Four weekly near imports stay under about $5. The hourly Pages sync does not call FlightAware.
+`FrontierAvailabilityProvider` can ask Frontier's mobile availability endpoint for one origin, destination, and date. It runs on the server or at build time. It does not run in the browser, and GitHub Actions does not call it. An unauthenticated request for OAK→LAS on 2026-09-28 returned HTTP 406 with an empty body, so that call is `blocked` and supplied no fares. The provider does not copy subscription keys, device ids, or session headers from other projects, and it does not retry a rejection with a new identity. Pages build fails if those credential markers appear in `dist/`, `site/`, or `public/`.
 
 Route changes compare the new snapshot with `data/route-summaries.json`. The event list in `data/route-changes.json` keeps at most 80 events and drops events older than 90 days. An unchanged snapshot does not emit events. Event types are new observation, schedule extended, more flights, fewer flights, possible gap, data blocked, and service reappeared.
 
@@ -58,7 +43,7 @@ npm run build:pages
 npx serve dist
 ```
 
-Open the URL `serve` prints. `npm run update:published` asks Frontier's public booking page for the next bounded set of dates and rewrites `data/flights.json`. Run `npm run normalize:network` after it. `npm run dev` starts the Next.js app, which is not the Pages site.
+Open the URL `serve` prints. `npm run dev` starts the Next.js app, which is not the Pages site. `npm run update:published` is a local booking check and is not run by GitHub Actions.
 
 A Next.js and Postgres app remains in this repo for reconciliation experiments. It is not what GitHub Pages runs, and production does not require Postgres.
 
@@ -135,7 +120,7 @@ npm run sync:programs
 npm run reconcile
 ```
 
-`npm run dev` and `npm start` serve the Next.js app from Postgres. They do not call Frontier and they are not the Pages site. `npm run update:published` is the Pages booking updater. `npm run sync:schedules` is the separate Postgres booking job. `POST /api/cron?job=schedules` runs that Postgres job only. `npm run sync` also runs priority pages, announcements, programs, popularity, then reconciliation for the Next app.
+`npm run dev` and `npm start` serve the Next.js app from Postgres. They do not call Frontier and they are not the Pages site. `npm run sync:schedules` is the separate Postgres booking job. `POST /api/cron?job=schedules` runs that Postgres job only when called with `CRON_SECRET`. No GitHub workflow calls it. `npm run sync` also runs priority pages, announcements, programs, popularity, then reconciliation for the Next app.
 
 ## Environment
 
@@ -155,7 +140,7 @@ Do not commit `.env`.
 
 ## Next.js app
 
-The Next.js app is not the live site. `POST /api/cron` can run the Postgres jobs when `CRON_SECRET` is set. Nothing in `.github/workflows/sync.yml` calls that endpoint. Unset, the route returns 401.
+The Next.js app is not the live site. `POST /api/cron` can run the Postgres jobs when `CRON_SECRET` is set. No GitHub workflow calls that endpoint. Unset, the route returns 401.
 
 `.github/workflows/ci.yml` runs typecheck, lint, unit tests, integrity, the Pages build, and `next build` without a database.
 

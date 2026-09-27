@@ -9,8 +9,6 @@
     "normalize:network": "tsx src/site/normalize-network.ts",
     "check:integrity": "tsx src/site/check-integrity.ts",
     "update:published": "tsx src/site/update-published.ts",
-    "schedules:frontier": "tsx src/site/schedule/cli.ts",
-    "schedules:frontier:full": "tsx src/site/schedule/cli.ts full",
     "frontier:browser": "tsx src/site/browser/cli.ts",
     "frontier:browser:queue": "tsx src/site/browser/cli.ts --queue",
     "start": "next start",
