@@ -297,7 +297,7 @@ function search() {
   showNetwork = false;
   const published = publishedTripSegments(from.codes, destinations, maxStops);
   for (const segment of published.segments) pathPairs.add(segment);
-  const coverage = renderRouteCalendar();
+  renderRouteCalendar();
   const datedFlights = schedule.flights.concat(operatingFlights(from.codes, destinations, date));
   let hidden = 0;
   let itineraries = [];
