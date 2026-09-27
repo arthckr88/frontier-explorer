@@ -22,6 +22,10 @@ Frontier public booking observations
 
 The verifier covers OAK, SFO, LAS, LAX, BUR, SNA, ONT, and SAN, both directions of OAK–LAS, SFO–LAS, LAS–LAX, LAS–BUR, SFO–LAX, OAK–LAX, SFO–BUR, OAK–BUR, SFO–ONT, OAK–ONT, SFO–SNA, and SAN–LAS. It does not assume those routes exist. It backfills holes between observed dates on those corridors. See `data/RETENTION.md` before letting `flights.json` grow.
 
+## Local Frontier browser fares
+
+`npm run frontier:browser -- --origin OAK --destination LAS --date 2026-09-28` opens headed Chrome on the public booking form, one route and one date. A fresh cache file is printed and Frontier is not opened again until it expires, or until `--force`. The queue command accepts at most five searches, waits 15 seconds between them, and stops if a search is blocked. It is not a crawl, and GitHub Actions does not run it. Pages does not launch a browser.
+
 ## Frontier availability API
 
 `FrontierAvailabilityProvider` can ask Frontier's mobile availability endpoint for one origin, destination, and date. It runs on the server or at build time. It does not run in the browser, and it is not part of the hourly sync. An unauthenticated request for OAK→LAS on 2026-09-28 returned HTTP 406 with an empty body, so that call is `blocked` and supplied no fares. The provider does not copy subscription keys, device ids, or session headers from other projects, and it does not retry a rejection with a new identity. Pages build fails if those credential markers appear in `dist/`, `site/`, or `public/`.

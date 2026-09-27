@@ -12,6 +12,9 @@ export const FORBIDDEN_PAGES_MARKERS = [
   "x-px-device-model",
   "x-px-mobile-sdk-version",
   "NCPAndroid/",
+  "set-cookie",
+  "device-id",
+  "x-px-",
 ];
 
 export function findForbiddenMarkers(text) {

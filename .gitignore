@@ -38,6 +38,11 @@ yarn-error.log*
 # FlightAware response cache. Never commit query bodies.
 /data/flightaware-cache.json
 
+# Local Frontier browser cache, profiles, and cookie jars.
+/data/frontier-browser-cache/
+**/.browser-profile/
+**/cookie-jar*
+
 # vercel
 .vercel
 
