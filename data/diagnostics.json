@@ -1,0 +1,108 @@
+{
+  "confirmedPairs": 20,
+  "listedCandidates": 5874,
+  "futureFlights": 304,
+  "checked": 275,
+  "blocked": 122,
+  "empty": 72,
+  "unchecked": 306,
+  "lastRetrieval": null,
+  "priorityIncomplete": [
+    {
+      "pair": "OAK-LAS",
+      "reason": "unchecked dates inside the observed span"
+    },
+    {
+      "pair": "LAS-OAK",
+      "reason": "unchecked dates inside the observed span"
+    },
+    {
+      "pair": "SFO-LAS",
+      "reason": "unchecked dates inside the observed span"
+    },
+    {
+      "pair": "LAS-SFO",
+      "reason": "unchecked dates inside the observed span"
+    },
+    {
+      "pair": "LAS-LAX",
+      "reason": "unchecked dates inside the observed span"
+    },
+    {
+      "pair": "LAX-LAS",
+      "reason": "not checked yet"
+    },
+    {
+      "pair": "LAS-BUR",
+      "reason": "possible gap"
+    },
+    {
+      "pair": "BUR-LAS",
+      "reason": "not checked yet"
+    },
+    {
+      "pair": "SFO-LAX",
+      "reason": "unchecked dates inside the observed span"
+    },
+    {
+      "pair": "LAX-SFO",
+      "reason": "not checked yet"
+    },
+    {
+      "pair": "OAK-LAX",
+      "reason": "not checked yet"
+    },
+    {
+      "pair": "LAX-OAK",
+      "reason": "not checked yet"
+    },
+    {
+      "pair": "SFO-BUR",
+      "reason": "not checked yet"
+    },
+    {
+      "pair": "BUR-SFO",
+      "reason": "not checked yet"
+    },
+    {
+      "pair": "OAK-BUR",
+      "reason": "not checked yet"
+    },
+    {
+      "pair": "BUR-OAK",
+      "reason": "not checked yet"
+    },
+    {
+      "pair": "SFO-ONT",
+      "reason": "unchecked dates inside the observed span"
+    },
+    {
+      "pair": "ONT-SFO",
+      "reason": "not checked yet"
+    },
+    {
+      "pair": "OAK-ONT",
+      "reason": "not checked yet"
+    },
+    {
+      "pair": "ONT-OAK",
+      "reason": "not checked yet"
+    },
+    {
+      "pair": "SFO-SNA",
+      "reason": "unchecked dates inside the observed span"
+    },
+    {
+      "pair": "SNA-SFO",
+      "reason": "not checked yet"
+    },
+    {
+      "pair": "SAN-LAS",
+      "reason": "not checked yet"
+    },
+    {
+      "pair": "LAS-SAN",
+      "reason": "not checked yet"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 
-const START = "2026-09-27";
+// Not used by GitHub Pages. The live map reads data/network.json.
+const START = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Los_Angeles", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
 const INDEX = "https://2lnr.com/routes/airlines/f9";
 const OUT = new URL("../data/upcoming.json", import.meta.url);
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36";

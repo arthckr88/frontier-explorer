@@ -1,8 +1,24 @@
 import { Map as RouteMap, NavigationControl } from "./maplibre-gl.mjs";
 import { filterItineraries, searchPublished } from "./search.js";
+import {
+  BAY_ORIGINS,
+  HOME_AIRPORTS,
+  SOCAL_DESTINATIONS,
+  calendarMarks,
+  classifyArc,
+  dateVerdict,
+  describePair,
+  homeRows,
+  lineWeight,
+  priorityRank,
+  provenanceModel,
+  provenanceText,
+  scheduleToday,
+} from "./view.js";
 
 const TILE_STYLE = "https://tiles.openfreemap.org/styles/dark";
 const HOME = new Set(["OAK", "SFO", "LAS"]);
+const HOME_FOCUS = new Set(HOME_AIRPORTS);
 const GROUPS = [
   {
     id: "new-york",
@@ -32,10 +48,13 @@ const form = document.querySelector("#search");
 const status = document.querySelector("#status");
 const results = document.querySelector("#results");
 const airportCard = document.querySelector("#airport");
-const network = document.querySelector("#network");
+const provenance = document.querySelector("#provenance");
 const showOvernight = document.querySelector("#show-overnight");
 
 let schedule = null;
+let booking = null;
+let changes = { events: [] };
+let viewMode = "home";
 let airports = new Map();
 let map = null;
 let arcs = [];
@@ -51,7 +70,6 @@ let applyingField = false;
 let isolatePath = false;
 let airportFocus = false;
 let showNetwork = false;
-let operatingDays = null;
 let calendarMonth = "";
 let calendarRoute = "";
 const routeCache = new Map();
@@ -160,6 +178,26 @@ document.querySelector("#network-toggle").addEventListener("click", () => {
   fitCurrentRoutes();
 });
 
+document.querySelector("#home-view").addEventListener("click", () => {
+  clearEndpoint("from");
+  clearEndpoint("to");
+  showHome();
+});
+
+document.querySelector("#full-network").addEventListener("click", () => {
+  clearEndpoint("from");
+  clearEndpoint("to");
+  showEntireNetwork();
+});
+
+document.querySelector("#changes-view").addEventListener("click", () => {
+  clearEndpoint("from");
+  clearEndpoint("to");
+  showChanges();
+});
+
+document.querySelector("#socal-view").addEventListener("click", () => showBayToSocal());
+
 for (const button of document.querySelectorAll("[data-origin]")) {
   button.addEventListener("click", () => selectAirport(button.dataset.origin ?? ""));
 }
@@ -174,23 +212,23 @@ document.querySelector("#new-york").addEventListener("click", () => {
 });
 
 async function load() {
-  const [upcomingResponse, airportResponse] = await Promise.all([
-    fetch("upcoming.json"),
+  const [networkResponse, airportResponse, changeResponse] = await Promise.all([
+    fetch("network.json"),
     fetch("airports.json"),
+    fetch("route-changes.json"),
   ]);
-  if (!upcomingResponse.ok) throw new Error("The upcoming schedule did not load.");
+  if (!networkResponse.ok) throw new Error("The booking observations did not load.");
   if (!airportResponse.ok) throw new Error("The airport map did not load.");
-  schedule = await upcomingResponse.json();
-  schedule.flights ??= [];
-  operatingDays = indexUpcoming(schedule);
+  booking = await networkResponse.json();
+  if (!Array.isArray(booking.observations) || !Array.isArray(booking.checks) || !Array.isArray(booking.summaries)) {
+    throw new Error("The booking observation file is incomplete.");
+  }
+  changes = changeResponse.ok ? await changeResponse.json() : { events: [] };
+  schedule = { flights: booking.observations };
   airports = new Map((await airportResponse.json()).map((airport) => [airport.iata, airport]));
   arcs = buildArcs();
-  const dates = publishedDates();
-  if (!form.elements.date.value) {
-    const today = new Date().toISOString().slice(0, 10);
-    form.elements.date.value = dates.find((date) => date >= today) ?? dates[dates.length - 1] ?? today;
-  }
-  if (network) network.textContent = describeNetwork();
+  if (!form.elements.date.value) form.elements.date.value = scheduleToday();
+  renderProvenance();
   try {
     drawMap();
   } catch {
@@ -205,7 +243,7 @@ async function load() {
     search();
     return;
   }
-  status.textContent = openingStatus(dates);
+  showHome();
 }
 
 function toIsDestination(originCodes) {
@@ -249,12 +287,18 @@ function showSelectedAirport() {
   isolatePath = true;
   showNetwork = false;
   const reached = new Map();
-  for (const code of from.codes) {
-    const routes = routesFromAirport(code, Number.isFinite(maxStops) ? maxStops : 0);
-    for (const segment of routes.segments) airportPairs.add(segment);
-    for (const [destination, stops] of routes.reached) {
-      const previous = reached.get(destination);
-      if (previous === undefined || stops < previous) reached.set(destination, stops);
+  const timed = maxStops > 0 ? timedReach(from.codes, form.elements.date.value, maxStops, false) : null;
+  if (timed) {
+    for (const segment of timed.segments) airportPairs.add(segment);
+    for (const [destination, stops] of timed.reached) reached.set(destination, stops);
+  } else {
+    for (const code of from.codes) {
+      const routes = routesFromAirport(code, Number.isFinite(maxStops) ? maxStops : 0);
+      for (const segment of routes.segments) airportPairs.add(segment);
+      for (const [destination, stops] of routes.reached) {
+        const previous = reached.get(destination);
+        if (previous === undefined || stops < previous) reached.set(destination, stops);
+      }
     }
   }
   originPick = from.codes[0] ?? "";
@@ -281,12 +325,18 @@ function showArrivals() {
   isolatePath = true;
   showNetwork = false;
   const reached = new Map();
-  for (const code of to.codes) {
-    const routes = routesToAirport(code, Number.isFinite(maxStops) ? maxStops : 0);
-    for (const segment of routes.segments) airportPairs.add(segment);
-    for (const [origin, stops] of routes.reached) {
-      const previous = reached.get(origin);
-      if (previous === undefined || stops < previous) reached.set(origin, stops);
+  const timed = maxStops > 0 ? timedReach(to.codes, form.elements.date.value, maxStops, true) : null;
+  if (timed) {
+    for (const segment of timed.segments) airportPairs.add(segment);
+    for (const [origin, stops] of timed.reached) reached.set(origin, stops);
+  } else {
+    for (const code of to.codes) {
+      const routes = routesToAirport(code, Number.isFinite(maxStops) ? maxStops : 0);
+      for (const segment of routes.segments) airportPairs.add(segment);
+      for (const [origin, stops] of routes.reached) {
+        const previous = reached.get(origin);
+        if (previous === undefined || stops < previous) reached.set(origin, stops);
+      }
     }
   }
   originPick = to.codes[0] ?? "";
@@ -299,7 +349,8 @@ function showArrivals() {
   fitCurrentRoutes();
 }
 
-function showFullNetwork() {
+function showHome() {
+  viewMode = "home";
   originPick = "";
   pathPairs = new Set();
   airportPairs = new Set();
@@ -315,10 +366,149 @@ function showFullNetwork() {
   closeSuggest("to");
   document.querySelector("#route-calendar").hidden = true;
   pressStarts();
-  if (network) network.textContent = describeNetwork();
-  status.textContent = openingStatus(publishedDates());
+  pressViews("home");
+  const today = scheduleToday();
+  const rows = homeRows(liveSummaries(today), today);
+  status.textContent = "Home view: Oakland and San Francisco, Las Vegas connections, then Los Angeles, Burbank, Santa Ana, Ontario, and San Diego. The full network shows every confirmed timed nonstop.";
+  const heading = document.createElement("h2");
+  heading.className = "section-label";
+  heading.textContent = "Watched corridors";
+  results.append(heading);
+  for (const row of rows) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "card";
+    const tone = row.arc === "future_only" ? "Future only" : row.arc === "near_term" ? "Near-term" : row.status.replaceAll("_", " ");
+    button.textContent = `${row.origin}–${row.destination}. ${tone}. ${row.text}`;
+    button.addEventListener("click", () => {
+      setEndpoint("from", airportSelection(row.origin));
+      setEndpoint("to", airportSelection(row.destination));
+      search();
+    });
+    results.append(button);
+  }
   paintRoutes();
   fitCurrentRoutes();
+}
+
+function showEntireNetwork() {
+  viewMode = "network";
+  originPick = "";
+  pathPairs = new Set();
+  airportPairs = new Set();
+  focusPairs = new Set();
+  isolatePath = false;
+  airportFocus = false;
+  showNetwork = true;
+  connectionHubs = [];
+  results.replaceChildren();
+  showOvernight.hidden = true;
+  airportCard.hidden = true;
+  closeSuggest("from");
+  closeSuggest("to");
+  document.querySelector("#route-calendar").hidden = true;
+  pressStarts();
+  pressViews("network");
+  status.textContent = `Full network: ${arcs.length} confirmed timed nonstop${arcs.length === 1 ? "" : "s"} with a future booking observation. Listed markets are not drawn. Historical-only routes are not drawn.`;
+  paintRoutes();
+  fitCurrentRoutes();
+}
+
+function showChanges() {
+  viewMode = "home";
+  originPick = "";
+  pathPairs = new Set();
+  airportPairs = new Set();
+  focusPairs = new Set();
+  isolatePath = false;
+  airportFocus = false;
+  showNetwork = false;
+  results.replaceChildren();
+  showOvernight.hidden = true;
+  airportCard.hidden = true;
+  document.querySelector("#route-calendar").hidden = true;
+  pressStarts();
+  pressViews("changes");
+  status.textContent = "Changes compare stored booking snapshots. A possible gap is not an end date.";
+  const today = scheduleToday();
+  const watches = liveSummaries(today)
+    .filter((summary) => summary.gapNote || summary.status === "blocked" || summary.status === "unknown" || summary.status === "future" || summary.uncheckedDates.length)
+    .filter((summary) => HOME_FOCUS.has(summary.origin) && HOME_FOCUS.has(summary.destination))
+    .sort((left, right) => priorityRank(left.origin) - priorityRank(right.origin) || priorityRank(left.destination) - priorityRank(right.destination));
+  const watchHeading = document.createElement("h2");
+  watchHeading.className = "section-label";
+  watchHeading.textContent = "Coverage";
+  results.append(watchHeading);
+  for (const summary of watches) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "card";
+    button.textContent = `${summary.origin}–${summary.destination}. ${summary.coverageNote}`;
+    button.addEventListener("click", () => {
+      setEndpoint("from", airportSelection(summary.origin));
+      setEndpoint("to", airportSelection(summary.destination));
+      search();
+    });
+    results.append(button);
+  }
+  const eventHeading = document.createElement("h2");
+  eventHeading.className = "section-label";
+  eventHeading.textContent = "Recent changes";
+  results.append(eventHeading);
+  const events = [...(changes.events ?? [])].sort((left, right) => priorityRank(left.origin) - priorityRank(right.origin) || priorityRank(left.destination) - priorityRank(right.destination));
+  if (!events.length) {
+    const empty = document.createElement("p");
+    empty.className = "meta";
+    empty.textContent = "No snapshot difference is stored yet. The next booking update records new observations, extensions, frequency changes, possible gaps, blocked checks, and reappeared service.";
+    results.append(empty);
+  }
+  for (const event of events) {
+    const row = document.createElement("p");
+    row.className = "meta";
+    row.textContent = `${event.recordedOn}. ${event.origin}–${event.destination}. ${eventLabel(event.type)}. ${event.detail}`;
+    results.append(row);
+  }
+  paintRoutes();
+  fitCurrentRoutes();
+}
+
+function showBayToSocal() {
+  pressViews("socal");
+  setEndpoint("from", { label: "Bay Area", codes: [...BAY_ORIGINS], notes: {} });
+  setEndpoint("to", { label: "Southern California", codes: [...SOCAL_DESTINATIONS], notes: {} });
+  form.elements.stops.value = "1";
+  search();
+}
+
+function pressViews(active) {
+  const map = { home: "#home-view", network: "#full-network", changes: "#changes-view", socal: "#socal-view" };
+  for (const [name, selector] of Object.entries(map)) {
+    const button = document.querySelector(selector);
+    if (button) button.setAttribute("aria-pressed", name === active ? "true" : "false");
+  }
+}
+
+function liveSummaries(today) {
+  return (booking?.summaries ?? []).map((summary) => describePair(summary.origin, summary.destination, booking.observations, booking.checks, today));
+}
+
+function renderProvenance(dateNote = "") {
+  if (!provenance || !booking) return;
+  const model = provenanceModel({ lastRefresh: booking.lastRefresh, today: scheduleToday() });
+  provenance.textContent = `${provenanceText(model)}${dateNote ? ` ${dateNote}` : ""}`;
+}
+
+function eventLabel(type) {
+  const labels = {
+    new_observation: "New observation",
+    schedule_extended: "Schedule extended",
+    more_flights: "More flights",
+    fewer_flights: "Fewer flights",
+    possible_gap: "Possible gap",
+    data_blocked: "Data blocked",
+    service_reappeared: "Service reappeared",
+  };
+  return labels[type] ?? type;
 }
 
 function refreshEndpoints() {
@@ -338,7 +528,7 @@ function refreshEndpoints() {
     showArrivals();
     return;
   }
-  showFullNetwork();
+  showHome();
 }
 
 function search() {
@@ -352,7 +542,7 @@ function search() {
   const destinations = to.codes.filter((code) => !from.codes.includes(code));
   if (!from.codes.length) {
     if (to.codes.length) showArrivals();
-    else showFullNetwork();
+    else showHome();
     return;
   }
   if (!destinations.length) {
@@ -408,24 +598,23 @@ function search() {
     }
   }
   const alternatives = savedTripDates(from.codes, destinations, maxStops).filter((hit) => hit.date !== date);
+  const coverage = coverageSentences(from.codes, destinations, date);
   if (visible.length === 0) {
-    if (!published.direct.size) {
-      status.textContent = `${title}. ${noDatedNonstopSentence()}`;
-      if (published.segments.size) status.textContent += " Dated connections within this stops limit are on the map.";
-    } else if (itineraries.length > 0) status.textContent = filterEmptyMessage(filtered.hidden, title, date);
+    if (itineraries.length > 0) status.textContent = filterEmptyMessage(filtered.hidden, title, date);
     else if (hidden > 0) status.textContent = `No daytime itinerary for ${title} on ${date}.`;
-    else status.textContent = `${title}. No departure on ${date}. Operating days are marked on the calendar.`;
+    else status.textContent = `${title}. ${coverage[0] ?? "Not checked yet."}`;
+    if (coverage.length > 1) status.textContent += ` ${coverage.length} route checks are listed below.`;
     if (hidden > 0) {
       status.textContent += ` ${hiddenCopy(hidden)}`;
       showOvernight.hidden = false;
     }
+    appendCoverage(from.codes, destinations, date, []);
     if (alternatives.length) showDateChoices(alternatives);
     paintRoutes();
     fitCurrentRoutes();
     return;
   }
   status.textContent = `${visible.length} itinerar${visible.length === 1 ? "y" : "ies"} for ${title} on ${date}.`;
-  if (!published.direct.size) status.textContent += ` ${noDatedNonstopSentence()}`;
   const filterNote = filterHideNote(filtered.hidden);
   if (filterNote) status.textContent += ` ${filterNote}`;
   if (hidden > 0) {
@@ -433,6 +622,7 @@ function search() {
     showOvernight.hidden = false;
   }
   visible.forEach((itinerary, index) => results.append(card(itinerary, date, index === 0, to.notes)));
+  appendCoverage(from.codes, destinations, date, visible);
   paintRoutes();
   fitCurrentRoutes();
 }
@@ -447,6 +637,8 @@ function card(itinerary, date, selected, notes = {}) {
   path.className = "path";
   path.append(badge(itinerary.stops === 0 ? "Nonstop" : `${itinerary.stops} stop${itinerary.stops === 1 ? "" : "s"}`));
   if (itinerary.vegasOvernight) path.append(badge("Overnight in Las Vegas", "vegas"));
+  else if (itinerary.connections.some((connection) => connection.kind === "long")) path.append(badge("Long layover"));
+  else if (itinerary.connections.some((connection) => connection.kind === "overnight")) path.append(badge("Overnight"));
   if (itinerary.hasRedEye) path.append(badge("Red-eye"));
   const last = itinerary.segments[itinerary.segments.length - 1];
   if (last && notes[last.destination]) path.append(badge(notes[last.destination]));
@@ -469,7 +661,7 @@ function card(itinerary, date, selected, notes = {}) {
     const meta = document.createElement("p");
     meta.className = "meta";
     const extra = segment.departureLocal.slice(0, 10) === date ? "" : ` · departs ${segment.departureLocal.slice(0, 10)}`;
-    meta.textContent = `${segment.flightNumber} · local times${extra}`;
+    meta.textContent = `${segment.flightNumber} · Frontier booking observation · local times${extra}`;
     article.append(leg, meta);
     const connection = itinerary.connections[index];
     const outbound = itinerary.segments[index + 1];
@@ -477,9 +669,14 @@ function card(itinerary, date, selected, notes = {}) {
     const note = document.createElement("button");
     note.type = "button";
     note.className = "layover";
-    note.textContent = connection.vegasOvernight
-      ? `Overnight in Las Vegas · ${formatElapsed(connection.minutes)}`
-      : `${formatElapsed(connection.minutes)} in ${airportPlace(connection.airport)}`;
+    if (connection.kind === "overnight" || connection.vegasOvernight) {
+      const place = connection.airport === "LAS" ? "Overnight in Las Vegas" : connection.label;
+      note.textContent = `${place} · ${formatElapsed(connection.minutes)}`;
+    } else if (connection.kind === "long") {
+      note.textContent = `Long layover · ${formatElapsed(connection.minutes)} in ${airportPlace(connection.airport)}`;
+    } else {
+      note.textContent = `${formatElapsed(connection.minutes)} in ${airportPlace(connection.airport)}`;
+    }
     note.addEventListener("click", () => {
       focusSavedFlight(article, note, [segment, outbound], layoverStatus(connection, segment, outbound));
     });
@@ -531,49 +728,42 @@ function listReached(reached) {
 
 function airportStatus(from, reached, maxStops) {
   const place = from.codes.length === 1 ? airportPlace(from.codes[0]) : endTitle(from);
-  const groups = [[], [], []];
-  for (const [code, stops] of reached) groups[Math.min(stops, 2)].push(code);
-  const saved = [...new Set(from.codes.flatMap((code) => savedDestinations(code)))].sort();
-  const savedNote = saved.length ? ` Saved flight times to ${saved.map(airportPlace).join(", ")}.` : "";
-  if (!reached.size) {
-    return `${place}. No dated Frontier nonstop from this airport is in the on-time file.${savedNote}`;
-  }
-  const nonstopNames = groups[0].map(airportPlace).sort((left, right) => left.localeCompare(right));
-  const nonstopText = nonstopNames.length <= 8 ? nonstopNames.join(", ") : `${nonstopNames.length} airports`;
-  if (maxStops === 0) return `${place}. Nonstop to ${nonstopText}.${savedNote}`;
-  const limit = `Up to ${maxStops} stop${maxStops === 1 ? "" : "s"}`;
-  let text = `${place}. ${limit}. Nonstop to ${nonstopText}.`;
-  if (groups[1].length) text += ` ${groups[1].length} with 1 stop.`;
-  if (maxStops >= 2 && groups[2].length) text += ` ${groups[2].length} with 2 stops.`;
-  return `${text}${savedNote}`;
-}
-
-function savedOrigins(code) {
   const date = form.elements.date.value;
-  const found = new Set();
-  for (const flight of schedule?.flights ?? []) {
-    if (flight.destination === code && flight.date === date) found.add(flight.origin);
+  const today = scheduleToday();
+  if (from.codes.length === 1) {
+    const lines = liveSummaries(today)
+      .filter((summary) => summary.origin === from.codes[0] && classifyArc(summary.observedDates, today) !== "none")
+      .map((summary) => {
+        const kind = classifyArc(summary.observedDates, today) === "future_only" ? "future only" : "observed";
+        const verdict = dateVerdict(schedule.flights, booking.checks, summary.origin, summary.destination, date);
+        const onDate = verdict.kind === "flight_found" ? "flight found" : verdict.kind === "checked_empty" ? "checked empty" : verdict.kind === "blocked" ? "blocked" : "not checked yet";
+        return `${summary.destination} ${kind}, ${onDate}`;
+      });
+    if (!lines.length) return `${place}. No timed nonstop from this airport is in the booking observations. Unchecked routes stay unknown.`;
+    return `${place}. ${lines.join("; ")}.`;
   }
-  return [...found].sort();
+  if (!reached.size) return `${place}. No timed connection is in the booking observations for ${date}.`;
+  return `${place}. Up to ${maxStops} stop${maxStops === 1 ? "" : "s"}. ${reached.size} places with a timed itinerary on ${date}.`;
 }
 
 function arrivalStatus(to, reached, maxStops) {
   const place = to.codes.length === 1 ? airportPlace(to.codes[0]) : endTitle(to);
-  const groups = [[], [], []];
-  for (const [code, stops] of reached) groups[Math.min(stops, 2)].push(code);
-  const saved = [...new Set(to.codes.flatMap((code) => savedOrigins(code)))].sort();
-  const savedNote = saved.length ? ` Saved flight times from ${saved.map(airportPlace).join(", ")}.` : "";
-  if (!reached.size) {
-    return `${place}. No dated Frontier nonstop into this airport is in the on-time file.${savedNote}`;
+  const date = form.elements.date.value;
+  const today = scheduleToday();
+  if (to.codes.length === 1) {
+    const lines = liveSummaries(today)
+      .filter((summary) => summary.destination === to.codes[0] && classifyArc(summary.observedDates, today) !== "none")
+      .map((summary) => {
+        const kind = classifyArc(summary.observedDates, today) === "future_only" ? "future only" : "observed";
+        const verdict = dateVerdict(schedule.flights, booking.checks, summary.origin, summary.destination, date);
+        const onDate = verdict.kind === "flight_found" ? "flight found" : verdict.kind === "checked_empty" ? "checked empty" : verdict.kind === "blocked" ? "blocked" : "not checked yet";
+        return `${summary.origin} ${kind}, ${onDate}`;
+      });
+    if (!lines.length) return `${place}. No timed nonstop into this airport is in the booking observations. Unchecked routes stay unknown.`;
+    return `${place}. ${lines.join("; ")}.`;
   }
-  const nonstopNames = groups[0].map(airportPlace).sort((left, right) => left.localeCompare(right));
-  const nonstopText = nonstopNames.length <= 8 ? nonstopNames.join(", ") : `${nonstopNames.length} airports`;
-  if (maxStops === 0) return `${place}. Nonstop from ${nonstopText}.${savedNote}`;
-  const limit = `Up to ${maxStops} stop${maxStops === 1 ? "" : "s"}`;
-  let text = `${place}. ${limit}. Nonstop from ${nonstopText}.`;
-  if (groups[1].length) text += ` ${groups[1].length} with 1 stop.`;
-  if (maxStops >= 2 && groups[2].length) text += ` ${groups[2].length} with 2 stops.`;
-  return `${text}${savedNote}`;
+  if (!reached.size) return `${place}. No timed connection is in the booking observations for ${date}.`;
+  return `${place}. Up to ${maxStops} stop${maxStops === 1 ? "" : "s"}. ${reached.size} places with a timed itinerary on ${date}.`;
 }
 
 function showAirport(code) {
@@ -582,18 +772,31 @@ function showAirport(code) {
     airportCard.hidden = true;
     return;
   }
-  const maxStops = Number(form.elements.stops.value);
-  const inbound = airportFocus && !readEndpoint("from").codes.length && readEndpoint("to").codes.includes(code);
-  const reached = (inbound ? routesToAirport : routesFromAirport)(code, Number.isFinite(maxStops) ? maxStops : 0).reached;
+  const today = scheduleToday();
+  const date = form.elements.date.value;
+  const related = liveSummaries(today).filter((summary) => summary.origin === code || summary.destination === code);
+  const observed = related.filter((summary) => classifyArc(summary.observedDates, today) === "near_term");
+  const future = related.filter((summary) => classifyArc(summary.observedDates, today) === "future_only");
   airportCard.hidden = false;
   airportCard.replaceChildren();
   const title = document.createElement("h2");
   title.textContent = airport.iata;
   const placeName = document.createElement("p");
   placeName.textContent = `${airport.city} · ${airport.name}`;
-  const label = document.createElement("p");
-  label.textContent = inbound ? arrivalSummary(reached, maxStops) : reachSummary(reached, maxStops);
-  airportCard.append(title, placeName, label);
+  airportCard.append(title, placeName);
+  const next = observed.find((summary) => summary.origin === code && summary.nextDeparture);
+  if (next?.nextDeparture) {
+    const line = document.createElement("p");
+    line.textContent = `Next flight ${next.nextDeparture.flightNumber} on ${next.nextDeparture.date} to ${next.destination}.`;
+    airportCard.append(line);
+  }
+  appendAirportGroup(airportCard, "Observed", observed, date);
+  appendAirportGroup(airportCard, "Future only", future, date);
+  const quiet = related.filter((summary) => classifyArc(summary.observedDates, today) === "none" && (summary.gapNote || summary.status === "blocked" || summary.emptyDates.length));
+  appendAirportGroup(airportCard, "No current arc", quiet, date);
+  const source = document.createElement("p");
+  source.textContent = "Source: Frontier public booking observations.";
+  airportCard.append(source);
 }
 
 function drawMap() {
@@ -612,9 +815,9 @@ function drawMap() {
       type: "line",
       source: "routes",
       paint: {
-        "line-color": ["case", [">", ["get", "active"], 0], "#e8ffb0", ["==", ["get", "provenance"], "scheduled"], "#3dbe7a", "#2f6b49"],
-        "line-width": ["case", ["==", ["get", "active"], 2], 2.6, ["==", ["get", "active"], 1], 1.7, ["==", ["get", "provenance"], "scheduled"], 1.35, 0.85],
-        "line-opacity": ["case", ["==", ["get", "active"], 2], 0.95, ["==", ["get", "active"], 1], 0.88, ["==", ["get", "dim"], true], 0.14, ["==", ["get", "provenance"], "scheduled"], 0.8, 0.42],
+        "line-color": ["case", [">", ["get", "active"], 0], "#e8ffb0", ["==", ["get", "future"], 1], "#8ea898", "#3dbe7a"],
+        "line-width": ["case", ["==", ["get", "active"], 2], 2.8, ["==", ["get", "weight"], 2], 2.2, ["==", ["get", "weight"], 1], 1.45, 0.95],
+        "line-opacity": ["case", ["==", ["get", "active"], 2], 0.95, ["==", ["get", "active"], 1], 0.9, ["==", ["get", "dim"], true], 0.16, ["==", ["get", "future"], 1], 0.55, 0.82],
       },
       layout: { "line-cap": "round", "line-join": "round" },
     });
@@ -662,23 +865,67 @@ function buildArcs() {
   outbound = new Map();
   inbound = new Map();
   routeCache.clear();
-  for (const key of Object.keys(operatingDays?.daily?.flights ?? {})) {
-    const [origin, destination] = key.split("|");
-    const pair = { origin, destination };
+  const today = scheduleToday();
+  for (const summary of booking?.summaries ?? []) {
+    const live = describePair(summary.origin, summary.destination, booking.observations, booking.checks, today);
+    const kind = classifyArc(live.observedDates, today);
+    if (kind === "none") continue;
+    const key = `${live.origin}|${live.destination}`;
     if (seen.has(key)) continue;
-    const arc = arcFrom(pair.origin, pair.destination);
+    const arc = arcFrom(live.origin, live.destination);
     if (!arc) continue;
+    arc.future = kind === "future_only";
+    arc.weight = lineWeight(live.futureDepartureCount, live.futureCheckedDates, kind);
     seen.add(key);
     arcIndex.add(key);
-    const next = outbound.get(pair.origin) ?? [];
-    next.push(pair.destination);
-    outbound.set(pair.origin, next);
-    const previous = inbound.get(pair.destination) ?? [];
-    previous.push(pair.origin);
-    inbound.set(pair.destination, previous);
+    const next = outbound.get(live.origin) ?? [];
+    next.push(live.destination);
+    outbound.set(live.origin, next);
+    const previous = inbound.get(live.destination) ?? [];
+    previous.push(live.origin);
+    inbound.set(live.destination, previous);
     built.push(arc);
   }
   return built;
+}
+
+function timedReach(endpoints, date, maxStops, inbound) {
+  const targets = [...new Set(arcs.flatMap((arc) => [arc.origin, arc.destination]))];
+  const reached = new Map();
+  const segments = new Set();
+  const consider = (itinerary) => {
+    const destination = itinerary.segments.at(-1)?.destination;
+    const origin = itinerary.segments[0]?.origin;
+    const place = inbound ? origin : destination;
+    if (!place) return;
+    const previous = reached.get(place);
+    if (previous === undefined || itinerary.stops < previous) reached.set(place, itinerary.stops);
+    for (const segment of itinerary.segments) segments.add(`${segment.origin}|${segment.destination}`);
+  };
+  if (inbound) {
+    for (const origin of targets) {
+      const found = searchPublished(schedule.flights, {
+        from: origin,
+        to: endpoints,
+        date,
+        stops: { nonstop: true, one: maxStops >= 1, two: maxStops >= 2 },
+        excludeRedEyes: false,
+      });
+      for (const itinerary of found.itineraries) consider(itinerary);
+    }
+  } else {
+    for (const origin of endpoints) {
+      const found = searchPublished(schedule.flights, {
+        from: origin,
+        to: targets.filter((code) => code !== origin),
+        date,
+        stops: { nonstop: true, one: maxStops >= 1, two: maxStops >= 2 },
+        excludeRedEyes: false,
+      });
+      for (const itinerary of found.itineraries) consider(itinerary);
+    }
+  }
+  return { reached, segments };
 }
 
 function routesFromAirport(code, maxStops) {
@@ -737,24 +984,23 @@ function routesToAirport(code, maxStops) {
   return result;
 }
 
-function reachSummary(reached, maxStops) {
-  if (!reached.size) return "No dated Frontier nonstop from this airport.";
-  if (maxStops === 0) {
-    const names = [...reached.keys()].map(airportPlace).sort((left, right) => left.localeCompare(right));
-    if (names.length === 1) return `Nonstop to ${names[0]}.`;
-    return `${names.length} nonstop destinations.`;
+function appendAirportGroup(card, label, summaries, date) {
+  if (!summaries.length) return;
+  const heading = document.createElement("p");
+  heading.className = "section-label";
+  heading.textContent = label;
+  card.append(heading);
+  for (const summary of summaries) {
+    const line = document.createElement("p");
+    const verdict = dateVerdict(schedule.flights, booking.checks, summary.origin, summary.destination, date);
+    const here = card.querySelector("h2")?.textContent;
+    const outbound = summary.origin === here;
+    const other = outbound ? summary.destination : summary.origin;
+    const numbers = summary.flightNumbers.length ? ` Flights ${summary.flightNumbers.join(", ")}.` : "";
+    const checked = summary.lastCheckDate ? ` Last check ${summary.lastCheckDate}.` : "";
+    line.textContent = `${outbound ? "To" : "From"} ${other}. ${verdict.sentence} ${summary.departuresPhrase}${numbers}${checked} ${summary.weekdayLabel}`;
+    card.append(line);
   }
-  return `${reached.size} place${reached.size === 1 ? "" : "s"} within ${maxStops} stop${maxStops === 1 ? "" : "s"}.`;
-}
-
-function arrivalSummary(reached, maxStops) {
-  if (!reached.size) return "No dated Frontier nonstop into this airport.";
-  if (maxStops === 0) {
-    const names = [...reached.keys()].map(airportPlace).sort((left, right) => left.localeCompare(right));
-    if (names.length === 1) return `Nonstop from ${names[0]}.`;
-    return `${names.length} nonstop origins.`;
-  }
-  return `${reached.size} place${reached.size === 1 ? "" : "s"} within ${maxStops} stop${maxStops === 1 ? "" : "s"}.`;
 }
 
 function arcFrom(origin, destination) {
@@ -764,7 +1010,9 @@ function arcFrom(origin, destination) {
   return {
     origin,
     destination,
-    provenance: "scheduled",
+    provenance: "observed",
+    future: false,
+    weight: 0,
     coordinates: greatCircleArc([from.lon, from.lat], [to.lon, to.lat], 8),
   };
 }
@@ -783,10 +1031,6 @@ function nonstopCodes() {
     }
   }
   return codes;
-}
-
-function nonstopPairCount() {
-  return arcs.length;
 }
 
 const FLORIDA = new Set(["FLL", "JAX", "MCO", "MIA", "PBI", "PNS", "RSW", "SRQ", "TPA"]);
@@ -823,31 +1067,6 @@ function usAreaFromCoordinates(airport) {
   return "south";
 }
 
-function indexUpcoming(published) {
-  const flights = {};
-  for (const flight of published.flights ?? []) {
-    if (!flight?.origin || !flight?.destination || !flight?.date || flight.date < "2026-09-27") continue;
-    const key = `${flight.origin}|${flight.destination}`;
-    const departure = String(flight.departureLocal ?? "").slice(11, 16).replace(":", "");
-    const arrival = String(flight.arrivalLocal ?? "").slice(11, 16).replace(":", "");
-    const rolled = String(flight.arrivalLocal ?? "").slice(0, 10) > flight.date ? "1" : "0";
-    const record = departure.length === 4 && arrival.length === 4
-      ? `${flight.date}|${flight.flightNumber}|${departure}|${arrival}|${rolled}`
-      : flight.date;
-    (flights[key] ??= []).push(record);
-  }
-  return {
-    daily: {
-      flights,
-      sentence: published.sentence ?? "",
-      sourceName: published.sourceName ?? "Frontier public booking results",
-      sourceUrl: published.sourceUrl ?? "https://booking.flyfrontier.com/",
-      periodStart: published.periodStart,
-      periodEnd: published.periodEnd,
-    },
-  };
-}
-
 function airportAreas(code) {
   const part = primaryArea(code);
   const areas = new Set();
@@ -877,8 +1096,12 @@ function regionArcVisible(origin, destination, from, to) {
 
 function visibleArcs() {
   const { from, to } = regionSelection();
-  if (from === "any" && to === "any") return arcs;
-  return arcs.filter((arc) => regionArcVisible(arc.origin, arc.destination, from, to));
+  let list = arcs;
+  if (viewMode === "home" && !showNetwork && !isolatePath && !airportFocus) {
+    list = arcs.filter((arc) => HOME_FOCUS.has(arc.origin) && HOME_FOCUS.has(arc.destination));
+  }
+  if (from === "any" && to === "any") return list;
+  return list.filter((arc) => regionArcVisible(arc.origin, arc.destination, from, to));
 }
 
 function networkIsShowing() {
@@ -890,62 +1113,35 @@ function regionLabel(value) {
   return option?.textContent || value;
 }
 
-function sourceSpan() {
-  const daily = operatingDays?.daily;
-  if (!daily) return "";
-  return ` in ${daily.sourceName} from ${formatLong(daily.periodStart)} through ${formatLong(daily.periodEnd)}`;
-}
-
 function sliceDescription() {
   const { from, to } = regionSelection();
   if (from === "any" && to === "any") return "";
   const count = visibleArcs().length;
-  const noun = `${count.toLocaleString()} upcoming Frontier nonstop${count === 1 ? "" : "s"}`;
-  const source = sourceSpan();
+  const noun = `${count.toLocaleString()} confirmed timed nonstop${count === 1 ? "" : "s"}`;
   if (from === "any" || to === "any") {
     const label = regionLabel(from === "any" ? to : from);
     return count
-      ? `${label}: ${noun}${source} with at least one end in ${label}.`
-      : `${label}: no upcoming Frontier nonstop${source} has an end in ${label}.`;
+      ? `${label}: ${noun} with a future booking observation and at least one end in ${label}.`
+      : `${label}: no confirmed timed nonstop with a future booking observation has an end in ${label}.`;
   }
   const left = regionLabel(from);
   const right = regionLabel(to);
   if (from === to) {
     return count
-      ? `${left}: ${noun}${source} entirely inside ${left}.`
-      : `${left}: no upcoming Frontier nonstop${source} is entirely inside ${left}.`;
+      ? `${left}: ${noun} entirely inside ${left}.`
+      : `${left}: no confirmed timed nonstop is entirely inside ${left}.`;
   }
   return count
-    ? `${left} → ${right}: ${noun}${source}, with one end in each region.`
-    : `${left} → ${right}: no upcoming Frontier nonstop${source} has one end in each region.`;
+    ? `${left} → ${right}: ${noun}, with one end in each region.`
+    : `${left} → ${right}: no confirmed timed nonstop has one end in each region.`;
 }
 
 function showRegion() {
-  if (network) network.textContent = describeNetwork();
+  const slice = sliceDescription();
+  if (slice) status.textContent = slice;
   if (!map || !networkIsShowing()) return;
   paintRoutes();
   fitCurrentRoutes();
-}
-
-function noDatedNonstopSentence() {
-  const daily = operatingDays?.daily;
-  if (!daily?.periodStart) return "No upcoming Frontier nonstop is in the published booking results.";
-  return `No upcoming Frontier nonstop is in ${daily.sourceName} from ${formatLong(daily.periodStart)} through ${formatLong(daily.periodEnd)}.`;
-}
-
-function describeNetwork() {
-  const slice = sliceDescription();
-  if (slice) return slice;
-  const daily = operatingDays?.daily;
-  if (daily?.sentence) return daily.sentence;
-  const pairs = nonstopPairCount();
-  if (!pairs) return "No upcoming Frontier nonstop is on the map.";
-  return `This map shows ${pairs.toLocaleString()} upcoming Frontier nonstop city pairs.`;
-}
-
-function openingStatus(dates) {
-  if (!dates.length) return "No upcoming flight times are loaded.";
-  return `Upcoming flight times run ${dates[0]} through ${dates[dates.length - 1]}.`;
 }
 
 function pathKeys() {
@@ -957,7 +1153,7 @@ function routeFeature(arc, selected, dim) {
   const active = selected.has(key) ? 2 : focusPairs.has(key) ? 1 : 0;
   return {
     type: "Feature",
-    properties: { origin: arc.origin, destination: arc.destination, provenance: arc.provenance, active, dim: dim && active === 0 },
+    properties: { origin: arc.origin, destination: arc.destination, provenance: arc.provenance, future: arc.future ? 1 : 0, weight: arc.weight ?? 0, active, dim: dim && active === 0 },
     geometry: { type: "LineString", coordinates: arc.coordinates },
   };
 }
@@ -983,7 +1179,7 @@ function routeCollection() {
       if (!arc) continue;
       features.push({
         type: "Feature",
-        properties: { origin, destination, provenance: arc.provenance, active: 0, dim: false },
+        properties: { origin, destination, provenance: arc.provenance, future: arc.future ? 1 : 0, weight: arc.weight ?? 0, active: 0, dim: false },
         geometry: { type: "LineString", coordinates: arc.coordinates },
       });
     }
@@ -1080,15 +1276,6 @@ function paintRoutes() {
     }
   }
   syncNetworkToggle();
-}
-
-function savedDestinations(code) {
-  const date = form.elements.date.value;
-  const found = new Set();
-  for (const flight of schedule?.flights ?? []) {
-    if (flight.origin === code && flight.date === date) found.add(flight.destination);
-  }
-  return [...found].sort();
 }
 
 function hopDistance(starts, reverse) {
@@ -1234,7 +1421,43 @@ function sortItineraries(itineraries, mode) {
 }
 
 function hiddenCopy(count) {
-  return `${count} overnight flight${count === 1 ? " is" : "s are"} hidden.`;
+  return `The exclude red-eyes filter is hiding ${count} late departure${count === 1 ? "" : "s"}. They stay in the booking observations.`;
+}
+
+function coverageSentences(origins, destinations, date) {
+  const lines = [];
+  for (const origin of origins) {
+    for (const destination of destinations) {
+      if (origin === destination) continue;
+      lines.push(`${origin}–${destination}. ${dateVerdict(schedule.flights, booking.checks, origin, destination, date).sentence}`);
+    }
+  }
+  return lines;
+}
+
+function appendCoverage(origins, destinations, date, itineraries) {
+  const heading = document.createElement("h2");
+  heading.className = "section-label";
+  heading.textContent = "This date";
+  const block = document.createElement("div");
+  let rows = 0;
+  for (const origin of origins) {
+    for (const destination of destinations) {
+      if (origin === destination) continue;
+      const verdict = dateVerdict(schedule.flights, booking.checks, origin, destination, date);
+      const via = itineraries.filter((itinerary) => itinerary.stops > 0 && itinerary.segments[0]?.origin === origin && itinerary.segments.at(-1)?.destination === destination);
+      const direct = itineraries.filter((itinerary) => itinerary.stops === 0 && itinerary.segments[0]?.origin === origin && itinerary.segments[0]?.destination === destination);
+      if (verdict.kind === "flight_found" && direct.length && via.length === 0 && origins.length === 1 && destinations.length === 1) continue;
+      const row = document.createElement("p");
+      row.className = "meta";
+      const connection = via[0]?.vegasOvernight ? " Overnight in Las Vegas is listed above." : via.length ? " A timed connection is listed above." : "";
+      row.textContent = `${origin}–${destination}. ${verdict.sentence}${connection}`;
+      block.append(row);
+      rows += 1;
+    }
+  }
+  if (!rows) return;
+  results.append(heading, block);
 }
 
 function hubsIn(itineraries) {
@@ -1616,7 +1839,7 @@ function clearSearch() {
   form.elements.arrive.value = arrive;
   form.elements.layover.value = layover;
   form.elements.hub.value = hub;
-  showFullNetwork();
+  showHome();
 }
 
 function syncClear() {
@@ -1631,7 +1854,7 @@ function syncNetworkToggle() {
   const to = readEndpoint("to");
   const searching = from.codes.length > 0 && to.codes.some((code) => !from.codes.includes(code));
   button.hidden = !searching;
-  button.textContent = showNetwork ? "Hide network" : "Show network";
+  button.textContent = showNetwork ? "Focus path" : "Show all confirmed";
   button.setAttribute("aria-pressed", showNetwork ? "true" : "false");
 }
 
@@ -1663,11 +1886,6 @@ function formatMonth(month) {
   return `${MONTH_NAMES[Number(index) - 1]} ${year}`;
 }
 
-function formatLong(iso) {
-  const [year, month, day] = iso.split("-");
-  return `${MONTH_NAMES[Number(month) - 1]} ${Number(day)}, ${year}`;
-}
-
 function pairKeys(origins, destinations) {
   const keys = [];
   for (const origin of origins) {
@@ -1678,26 +1896,18 @@ function pairKeys(origins, destinations) {
   return keys;
 }
 
-function routeCoverage(origins, destinations) {
-  const keys = pairKeys(origins, destinations);
-  const daily = operatingDays?.daily;
-  const records = [];
-  for (const key of keys) {
-    for (const record of daily?.flights?.[key] ?? []) records.push(record);
+function mergedMarks(origins, destinations) {
+  const rank = { unchecked: 1, blocked: 2, empty: 3, flight: 4 };
+  const marks = {};
+  for (const origin of origins) {
+    for (const destination of destinations) {
+      if (origin === destination) continue;
+      for (const [date, mark] of Object.entries(calendarMarks(booking?.checks ?? [], origin, destination))) {
+        if (!marks[date] || rank[mark] > rank[marks[date]]) marks[date] = mark;
+      }
+    }
   }
-  const dailyDates = new Set(records.map((record) => record.slice(0, 10)));
-  const kind = dailyDates.size ? "day" : "none";
-  const sentence = dailyDates.size ? (daily?.sentence ?? "") : noDatedNonstopSentence();
-  return { kind, sentence, records, dailyDates, savedDates: new Set(), months: [] };
-}
-
-function calendarBounds(coverage) {
-  const daily = operatingDays?.daily;
-  const monthly = operatingDays?.monthly;
-  const marks = [...coverage.dailyDates, ...coverage.savedDates].map((date) => date.slice(0, 7)).sort();
-  const start = coverage.kind === "month" ? monthly.periodStart : daily?.periodStart?.slice(0, 7);
-  const end = coverage.kind === "month" ? monthly.periodEnd : daily?.periodEnd?.slice(0, 7);
-  return [marks[0] && marks[0] < start ? marks[0] : start, marks.at(-1) && marks.at(-1) > end ? marks.at(-1) : end];
+  return marks;
 }
 
 function renderRouteCalendar() {
@@ -1705,21 +1915,19 @@ function renderRouteCalendar() {
   const from = readEndpoint("from");
   const to = readEndpoint("to");
   const destinations = to.codes.filter((code) => !from.codes.includes(code));
-  if (!operatingDays || !from.codes.length || !destinations.length) {
+  if (!booking || !from.codes.length || !destinations.length) {
     box.hidden = true;
     return null;
   }
-  const coverage = routeCoverage(from.codes, destinations);
+  const marks = mergedMarks(from.codes, destinations);
   const routeKey = pairKeys(from.codes, destinations).join(",");
-  const [minMonth, maxMonth] = calendarBounds(coverage);
+  const selected = form.elements.date.value.slice(0, 7);
+  const markedMonths = [...new Set(Object.keys(marks).map((date) => date.slice(0, 7)))].sort();
+  const minMonth = markedMonths[0] && markedMonths[0] < selected ? markedMonths[0] : selected;
+  const maxMonth = markedMonths.at(-1) && markedMonths.at(-1) > selected ? markedMonths.at(-1) : selected;
   if (calendarRoute !== routeKey || !calendarMonth) {
     calendarRoute = routeKey;
-    const selected = form.elements.date.value.slice(0, 7);
-    const markedMonths = new Set([...coverage.dailyDates, ...coverage.savedDates].map((date) => date.slice(0, 7)));
-    if (coverage.kind === "day" && markedMonths.has(selected)) calendarMonth = selected;
-    else if (coverage.kind === "month") calendarMonth = coverage.months.at(-1);
-    else if (markedMonths.size) calendarMonth = [...markedMonths].sort().at(-1);
-    else calendarMonth = selected >= minMonth && selected <= maxMonth ? selected : maxMonth;
+    calendarMonth = selected || minMonth;
   }
   if (calendarMonth < minMonth) calendarMonth = minMonth;
   if (calendarMonth > maxMonth) calendarMonth = maxMonth;
@@ -1727,47 +1935,19 @@ function renderRouteCalendar() {
   document.querySelector("#cal-label").textContent = formatMonth(calendarMonth);
   document.querySelector("#cal-prev").disabled = calendarMonth <= minMonth;
   document.querySelector("#cal-next").disabled = calendarMonth >= maxMonth;
-  const months = document.querySelector("#cal-months");
-  months.replaceChildren();
-  if (coverage.kind === "month") {
-    for (const month of monthsBetween(minMonth, maxMonth)) {
-      const marked = coverage.months.includes(month);
-      const chip = document.createElement(marked ? "button" : "span");
-      chip.className = marked ? "cal-month is-on" : "cal-month";
-      chip.textContent = `${MONTH_NAMES[Number(month.slice(5)) - 1].slice(0, 3)} ${month.slice(0, 4)}`;
-      if (marked) {
-        chip.type = "button";
-        chip.dataset.month = month;
-        chip.addEventListener("click", () => {
-          calendarMonth = month;
-          renderRouteCalendar();
-        });
-      }
-      months.append(chip);
-    }
-  }
-  const markedDays = coverage.kind === "day" ? new Set([...coverage.dailyDates, ...coverage.savedDates]) : new Set();
-  renderDayGrid(calendarMonth, markedDays);
+  document.querySelector("#cal-months").replaceChildren();
+  renderDayGrid(calendarMonth, marks);
+  const sentence = coverageSentences(from.codes, destinations, form.elements.date.value).join(" ");
   const sourceLine = document.querySelector("#cal-source");
-  if (sourceLine) sourceLine.textContent = coverage.sentence;
-  box.dataset.kind = coverage.kind;
-  box.dataset.months = coverage.months.join(",");
-  box.dataset.marked = [...markedDays].sort().join(",");
-  box.dataset.sentence = coverage.sentence;
-  return coverage;
+  if (sourceLine) sourceLine.textContent = `Flight found, checked empty, blocked, and not checked yet are marked separately. ${sentence}`;
+  box.dataset.kind = "day";
+  box.dataset.months = "";
+  box.dataset.marked = Object.keys(marks).sort().join(",");
+  box.dataset.sentence = sentence;
+  return { marks, sentence };
 }
 
-function monthsBetween(start, end) {
-  const months = [];
-  let cursor = start;
-  while (cursor && end && cursor <= end) {
-    months.push(cursor);
-    cursor = shiftMonth(cursor, 1);
-  }
-  return months;
-}
-
-function renderDayGrid(month, marked) {
+function renderDayGrid(month, marks) {
   const grid = document.querySelector("#cal-grid");
   grid.replaceChildren();
   for (const label of ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]) {
@@ -1779,26 +1959,23 @@ function renderDayGrid(month, marked) {
   const [year, index] = month.split("-").map(Number);
   const start = new Date(Date.UTC(year, index - 1, 1)).getUTCDay();
   const days = new Date(Date.UTC(year, index, 0)).getUTCDate();
+  const selected = form.elements.date.value;
   for (let pad = 0; pad < start; pad += 1) grid.append(document.createElement("span"));
   for (let day = 1; day <= days; day += 1) {
     const iso = `${month}-${String(day).padStart(2, "0")}`;
-    if (marked.has(iso)) {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "cal-day is-on";
-      button.textContent = String(day);
-      button.dataset.date = iso;
-      button.addEventListener("click", () => {
-        form.elements.date.value = iso;
-        search();
-      });
-      grid.append(button);
-    } else {
-      const span = document.createElement("span");
-      span.className = "cal-day";
-      span.textContent = String(day);
-      grid.append(span);
-    }
+    const mark = marks[iso];
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `cal-day${mark ? ` is-${mark}` : ""}${iso === selected ? " is-selected" : ""}`;
+    button.textContent = String(day);
+    button.dataset.date = iso;
+    const label = mark === "flight" ? "flight found" : mark === "empty" ? "checked empty" : mark === "blocked" ? "blocked" : mark === "unchecked" ? "not checked yet" : "no check stored";
+    button.setAttribute("aria-label", `${iso}, ${label}`);
+    button.addEventListener("click", () => {
+      form.elements.date.value = iso;
+      search();
+    });
+    grid.append(button);
   }
 }
 

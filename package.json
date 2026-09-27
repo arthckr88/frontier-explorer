@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:pages": "node scripts/build-pages.mjs",
+    "build:pages": "tsx src/site/check-integrity.ts && node scripts/build-pages.mjs",
+    "normalize:network": "tsx src/site/normalize-network.ts",
+    "check:integrity": "tsx src/site/check-integrity.ts",
     "update:published": "tsx src/site/update-published.ts",
     "start": "next start",
     "lint": "eslint .",
