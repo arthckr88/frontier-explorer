@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import { DateTime } from "luxon";
 import { cachePath, readFreshCache, selectCached, writeCache } from "@/site/browser/cache";
 import { parseBrowserArgs } from "@/site/browser/form";
+import { appendPriceHistory, priceObservationsFrom } from "@/site/browser/history";
 import { mergeBrowserNonstops, readBrowserFareFile, upsertFareResults, type BrowserFareFile } from "@/site/browser/integrate";
 import type { ScheduleInput } from "@/site/network";
 import { classifyBookingPage } from "@/site/browser/parse";
@@ -68,6 +69,7 @@ function rememberResult(result: BrowserResult) {
   if ((merged.flights?.length ?? 0) !== (schedule.flights?.length ?? 0)) {
     writeFileSync(flightsFile, `${JSON.stringify(merged, null, 2)}\n`);
   }
+  appendPriceHistory(fileURLToPath(new URL("../../../data/price-history.jsonl", import.meta.url)), priceObservationsFrom(result));
 }
 
 main();

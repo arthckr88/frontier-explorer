@@ -663,6 +663,8 @@ function card(itinerary, date, selected, notes = {}) {
     const extra = segment.departureLocal.slice(0, 10) === date ? "" : ` · departs ${segment.departureLocal.slice(0, 10)}`;
     meta.textContent = `${segment.flightNumber} · Frontier booking observation · local times${extra}`;
     article.append(leg, meta);
+    const quote = fareFor(segment);
+    if (quote) article.append(fareDetails(quote));
     const connection = itinerary.connections[index];
     const outbound = itinerary.segments[index + 1];
     if (!connection || !outbound) return;
@@ -1977,6 +1979,50 @@ function renderDayGrid(month, marks) {
     });
     grid.append(button);
   }
+}
+
+function fareFor(segment) {
+  return (booking.fares ?? []).find((fare) => fare.origin === segment.origin && fare.destination === segment.destination && fare.flightNumber === segment.flightNumber && fare.departureLocal === segment.departureLocal);
+}
+
+function fareDetails(fare) {
+  const block = document.createElement("div");
+  block.className = "fares";
+  if (typeof fare.durationMinutes === "number") {
+    const duration = document.createElement("p");
+    duration.className = "meta";
+    duration.textContent = `Duration ${formatElapsed(fare.durationMinutes)}`;
+    block.append(duration);
+  }
+  for (const [label, quote] of [
+    ["STANDARD", fare.standard],
+    ["DISCOUNT DEN", fare.discountDen],
+    ["GOWILD", fare.goWild],
+  ]) {
+    if (!quote || typeof quote.total !== "number" || quote.total < 0) continue;
+    const row = document.createElement("p");
+    row.className = "fare";
+    row.textContent = `${label} $${quote.display} · $${quote.total.toFixed(2)}`;
+    block.append(row);
+  }
+  const checked = document.createElement("p");
+  checked.className = "meta";
+  checked.textContent = `Fare checked ${fareChecked(fare.retrievedAt)}. Source: Frontier.`;
+  block.append(checked);
+  return block;
+}
+
+function fareChecked(iso) {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return iso;
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Los_Angeles",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZoneName: "short",
+  }).format(date);
 }
 
 function clock(local) {

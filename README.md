@@ -24,7 +24,7 @@ The verifier covers OAK, SFO, LAS, LAX, BUR, SNA, ONT, and SAN, both directions 
 
 ## Local Frontier browser fares
 
-`npm run frontier:browser -- --origin OAK --destination LAS --date 2026-09-28` opens headed Chrome on the public booking form, one route and one date. A fresh cache file is printed and Frontier is not opened again until it expires, or until `--force`. The queue command accepts at most five searches, waits 15 seconds between them, and stops if a search is blocked. It is not a crawl, and GitHub Actions does not run it. Pages does not launch a browser.
+`npm run frontier:browser -- --origin OAK --destination LAS --date 2026-09-28` opens headed Chrome on the public booking form, one route and one date. A fresh cache file is printed and Frontier is not opened again until it expires, or until `--force`. The queue command accepts at most five searches, waits 15 seconds between them, and stops if a search is blocked. It is not a crawl, and GitHub Actions does not run it. Pages does not launch a browser. When a sanitized fare exists, the results card shows Standard, Discount Den, and GoWild with the display dollar and the exact total. A missing fare or a negative sentinel is omitted. Seat counts are omitted when FlightData did not include them.
 
 ## Frontier availability API
 

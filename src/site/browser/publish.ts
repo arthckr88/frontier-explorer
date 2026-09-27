@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { appendPriceHistory, priceObservationsFromFares } from "@/site/browser/history";
 import { mergeBrowserNonstops, publishableFares, type BrowserFareFile } from "@/site/browser/integrate";
 import type { BrowserResult } from "@/site/browser/types";
 import type { ScheduleInput } from "@/site/network";
@@ -20,4 +21,5 @@ const merged = mergeBrowserNonstops(schedule, results);
 if ((merged.flights?.length ?? 0) !== (schedule.flights?.length ?? 0)) {
   writeFileSync(flightsFile, `${JSON.stringify(merged, null, 2)}\n`);
 }
+appendPriceHistory(fileURLToPath(new URL("../../../data/price-history.jsonl", import.meta.url)), priceObservationsFromFares(fares));
 console.log(`browser fares ${fares.length}; flights ${schedule.flights?.length ?? 0} -> ${merged.flights?.length ?? 0}`);

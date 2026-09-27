@@ -1,10 +1,11 @@
-import { mkdtempSync, readFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createRequire } from "node:module";
 import { describe, expect, it } from "vitest";
 import { cachePath, fareTtlMs, selectCached, writeCache } from "@/site/browser/cache";
 import { bookingDisplayDate, parseBrowserArgs } from "@/site/browser/form";
+import { appendPriceHistory, priceObservationsFrom } from "@/site/browser/history";
 import { mergeBrowserNonstops, publishableFares } from "@/site/browser/integrate";
 import { classifyBookingPage, displayDollars, normalizeFlightData } from "@/site/browser/parse";
 import { runBrowserQueue } from "@/site/browser/queue";
@@ -217,6 +218,29 @@ describe("browser observations stay beside booking evidence", () => {
     expect(added.flights?.[0]?.provenance).toBe("frontier_browser");
     expect(normalizeObservations(added, null)[0]?.source).toBe("Frontier browser fare check");
     expect(network.fares?.[0]?.source).toBe("frontier_browser");
+  });
+});
+
+describe("price history", () => {
+  it("appends fare observations and does not overwrite an older line", () => {
+    const directory = mkdtempSync(join(tmpdir(), "frontier-prices-"));
+    const file = join(directory, "price-history.jsonl");
+    writeFileSync(file, `${JSON.stringify({ origin: "OAK", destination: "LAS", date: "2026-09-01", flightNumber: "1", departureLocal: "2026-09-01T10:00:00", fareType: "standard", price: 10, observedAt: "2026-09-01T00:00:00.000Z" })}\n`);
+    const rows = priceObservationsFrom(okResult());
+    expect(rows.map((row) => [row.fareType, row.price])).toEqual([
+      ["standard", 50.98],
+      ["discountDen", 49.98],
+      ["goWild", 15.41],
+    ]);
+    appendPriceHistory(file, rows);
+    appendPriceHistory(file, rows);
+    const lines = readFileSync(file, "utf8").trim().split("\n");
+    expect(lines).toHaveLength(4);
+    expect(lines[0]).toContain("2026-09-01");
+    expect(JSON.parse(lines[3]).price).toBe(15.41);
+    expect(readFileSync("site/app.js", "utf8")).toContain("GOWILD");
+    expect(readFileSync("site/app.js", "utf8")).toContain("Source: Frontier.");
+    expect(readFileSync("site/app.js", "utf8")).not.toContain("seats remaining");
   });
 });
 

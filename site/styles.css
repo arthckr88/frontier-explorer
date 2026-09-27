@@ -527,6 +527,15 @@ article.card { cursor: default; }
   font-size: 0.82rem;
 }
 
+.fares {
+  margin: 0 0 8px;
+}
+
+.fare {
+  margin: 0;
+  font-size: 0.82rem;
+}
+
 .dock {
   position: fixed;
   z-index: 2;
