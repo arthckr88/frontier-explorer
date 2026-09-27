@@ -87,6 +87,7 @@ function onSearchControlChange(event) {
   }
   if (target.name === "stops" && !tripSelected()) {
     if (readEndpoint("from").codes.length) showSelectedAirport();
+    else if (readEndpoint("to").codes.length) showArrivals();
     return;
   }
   if (target.name === "redeye" || target.name === "stops" || target.name === "sort" || target.name === "date" || target.name === "duration" || target.name === "depart" || target.name === "arrive" || target.name === "layover") search();
@@ -127,14 +128,19 @@ for (const name of ["from", "to"]) {
       return;
     }
     renderSuggest(name);
+    if (!input.value.trim()) refreshEndpoints();
   });
   input.addEventListener("focus", () => renderSuggest(name));
   input.addEventListener("blur", () => {
     window.setTimeout(() => {
       closeSuggest(name);
       if (applyingField || document.activeElement === input) return;
+      if (!input.value.trim()) {
+        refreshEndpoints();
+        return;
+      }
       if (input.value.trim() === input.dataset.label && input.dataset.codes) return;
-      const selection = completionSelection(input.value);
+      const selection = completionSelection(input.value) ?? exactCodeSelection(input.value);
       if (selection) applyResolved(name, selection);
     }, 160);
   });
@@ -261,6 +267,80 @@ function showSelectedAirport() {
   fitCurrentRoutes();
 }
 
+function showArrivals() {
+  document.querySelector("#route-calendar").hidden = true;
+  const to = readEndpoint("to");
+  if (!to.codes.length) return;
+  const maxStops = Number(form.elements.stops.value);
+  results.replaceChildren();
+  showOvernight.hidden = true;
+  pathPairs = new Set();
+  focusPairs = new Set();
+  airportPairs = new Set();
+  airportFocus = true;
+  isolatePath = true;
+  showNetwork = false;
+  const reached = new Map();
+  for (const code of to.codes) {
+    const routes = routesToAirport(code, Number.isFinite(maxStops) ? maxStops : 0);
+    for (const segment of routes.segments) airportPairs.add(segment);
+    for (const [origin, stops] of routes.reached) {
+      const previous = reached.get(origin);
+      if (previous === undefined || stops < previous) reached.set(origin, stops);
+    }
+  }
+  originPick = to.codes[0] ?? "";
+  pressStarts();
+  if (to.codes.length === 1) showAirport(to.codes[0]);
+  else airportCard.hidden = true;
+  listReached(reached);
+  status.textContent = arrivalStatus(to, reached, maxStops);
+  paintRoutes();
+  fitCurrentRoutes();
+}
+
+function showFullNetwork() {
+  originPick = "";
+  pathPairs = new Set();
+  airportPairs = new Set();
+  focusPairs = new Set();
+  isolatePath = false;
+  airportFocus = false;
+  showNetwork = false;
+  connectionHubs = [];
+  results.replaceChildren();
+  showOvernight.hidden = true;
+  airportCard.hidden = true;
+  closeSuggest("from");
+  closeSuggest("to");
+  document.querySelector("#route-calendar").hidden = true;
+  pressStarts();
+  if (network) network.textContent = describeNetwork();
+  status.textContent = openingStatus(publishedDates());
+  paintRoutes();
+  fitCurrentRoutes();
+}
+
+function refreshEndpoints() {
+  if (!schedule) return;
+  const from = readEndpoint("from");
+  const to = readEndpoint("to");
+  const destinations = to.codes.filter((code) => !from.codes.includes(code));
+  if (from.codes.length && destinations.length) {
+    search();
+    return;
+  }
+  if (from.codes.length) {
+    showSelectedAirport();
+    return;
+  }
+  if (to.codes.length) {
+    showArrivals();
+    return;
+  }
+  showFullNetwork();
+}
+
 function search() {
   if (!schedule) return;
   closeSuggest("from");
@@ -270,7 +350,12 @@ function search() {
   const from = readEndpoint("from");
   const to = readEndpoint("to");
   const destinations = to.codes.filter((code) => !from.codes.includes(code));
-  if (from.codes.length && !destinations.length) {
+  if (!from.codes.length) {
+    if (to.codes.length) showArrivals();
+    else showFullNetwork();
+    return;
+  }
+  if (!destinations.length) {
     if (from.codes.length === 1 && airports.has(from.codes[0])) selectAirport(from.codes[0]);
     else showOrigin(from);
     return;
@@ -285,12 +370,6 @@ function search() {
   pressStarts();
   const date = form.elements.date.value;
   originPick = from.codes[0] ?? "";
-  if (!from.codes.length) {
-    status.textContent = "Choose a starting airport.";
-    document.querySelector("#route-calendar").hidden = true;
-    paintRoutes();
-    return;
-  }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     status.textContent = "Enter a date.";
     document.querySelector("#route-calendar").hidden = true;
@@ -469,6 +548,34 @@ function airportStatus(from, reached, maxStops) {
   return `${text}${savedNote}`;
 }
 
+function savedOrigins(code) {
+  const date = form.elements.date.value;
+  const found = new Set();
+  for (const flight of schedule?.flights ?? []) {
+    if (flight.destination === code && flight.date === date) found.add(flight.origin);
+  }
+  return [...found].sort();
+}
+
+function arrivalStatus(to, reached, maxStops) {
+  const place = to.codes.length === 1 ? airportPlace(to.codes[0]) : endTitle(to);
+  const groups = [[], [], []];
+  for (const [code, stops] of reached) groups[Math.min(stops, 2)].push(code);
+  const saved = [...new Set(to.codes.flatMap((code) => savedOrigins(code)))].sort();
+  const savedNote = saved.length ? ` Saved flight times from ${saved.map(airportPlace).join(", ")}.` : "";
+  if (!reached.size) {
+    return `${place}. No dated Frontier nonstop into this airport is in the on-time file.${savedNote}`;
+  }
+  const nonstopNames = groups[0].map(airportPlace).sort((left, right) => left.localeCompare(right));
+  const nonstopText = nonstopNames.length <= 8 ? nonstopNames.join(", ") : `${nonstopNames.length} airports`;
+  if (maxStops === 0) return `${place}. Nonstop from ${nonstopText}.${savedNote}`;
+  const limit = `Up to ${maxStops} stop${maxStops === 1 ? "" : "s"}`;
+  let text = `${place}. ${limit}. Nonstop from ${nonstopText}.`;
+  if (groups[1].length) text += ` ${groups[1].length} with 1 stop.`;
+  if (maxStops >= 2 && groups[2].length) text += ` ${groups[2].length} with 2 stops.`;
+  return `${text}${savedNote}`;
+}
+
 function showAirport(code) {
   const airport = airports.get(code);
   if (!airport) {
@@ -476,7 +583,8 @@ function showAirport(code) {
     return;
   }
   const maxStops = Number(form.elements.stops.value);
-  const reached = routesFromAirport(code, Number.isFinite(maxStops) ? maxStops : 0).reached;
+  const inbound = airportFocus && !readEndpoint("from").codes.length && readEndpoint("to").codes.includes(code);
+  const reached = (inbound ? routesToAirport : routesFromAirport)(code, Number.isFinite(maxStops) ? maxStops : 0).reached;
   airportCard.hidden = false;
   airportCard.replaceChildren();
   const title = document.createElement("h2");
@@ -484,7 +592,7 @@ function showAirport(code) {
   const placeName = document.createElement("p");
   placeName.textContent = `${airport.city} · ${airport.name}`;
   const label = document.createElement("p");
-  label.textContent = reachSummary(reached, maxStops);
+  label.textContent = inbound ? arrivalSummary(reached, maxStops) : reachSummary(reached, maxStops);
   airportCard.append(title, placeName, label);
 }
 
@@ -600,12 +708,51 @@ function routesFromAirport(code, maxStops) {
   return result;
 }
 
+function routesToAirport(code, maxStops) {
+  const cacheKey = `to|${code}|${maxStops}`;
+  const cached = routeCache.get(cacheKey);
+  if (cached) return cached;
+  const maxHops = maxStops + 1;
+  const segments = new Set();
+  const reached = new Map();
+  const stack = [{ airport: code, hops: 0, seen: new Set([code]) }];
+  while (stack.length) {
+    const current = stack.pop();
+    if (current.hops >= maxHops) continue;
+    for (const prev of inbound.get(current.airport) ?? []) {
+      if (current.seen.has(prev)) continue;
+      const edge = `${prev}|${current.airport}`;
+      if (!arcIndex.has(edge)) continue;
+      segments.add(edge);
+      const stops = current.hops;
+      const previous = reached.get(prev);
+      if (previous === undefined || stops < previous) reached.set(prev, stops);
+      const seen = new Set(current.seen);
+      seen.add(prev);
+      stack.push({ airport: prev, hops: current.hops + 1, seen });
+    }
+  }
+  const result = { segments, reached };
+  routeCache.set(cacheKey, result);
+  return result;
+}
+
 function reachSummary(reached, maxStops) {
   if (!reached.size) return "No dated Frontier nonstop from this airport.";
   if (maxStops === 0) {
     const names = [...reached.keys()].map(airportPlace).sort((left, right) => left.localeCompare(right));
     if (names.length === 1) return `Nonstop to ${names[0]}.`;
     return `${names.length} nonstop destinations.`;
+  }
+  return `${reached.size} place${reached.size === 1 ? "" : "s"} within ${maxStops} stop${maxStops === 1 ? "" : "s"}.`;
+}
+
+function arrivalSummary(reached, maxStops) {
+  if (!reached.size) return "No dated Frontier nonstop into this airport.";
+  if (maxStops === 0) {
+    const names = [...reached.keys()].map(airportPlace).sort((left, right) => left.localeCompare(right));
+    if (names.length === 1) return `Nonstop from ${names[0]}.`;
+    return `${names.length} nonstop origins.`;
   }
   return `${reached.size} place${reached.size === 1 ? "" : "s"} within ${maxStops} stop${maxStops === 1 ? "" : "s"}.`;
 }
@@ -893,7 +1040,9 @@ function paintRoutes() {
     canvas.dataset.mode = airportFocus && !showNetwork ? "airport" : isolatePath && !showNetwork ? "path" : "network";
     canvas.dataset.regionFrom = regionSelection().from;
     canvas.dataset.regionTo = regionSelection().to;
-    canvas.dataset.airport = airportFocus ? readEndpoint("from").codes.join(",") : "";
+    const focusedCodes = readEndpoint("from").codes.length ? readEndpoint("from").codes : readEndpoint("to").codes;
+    canvas.dataset.airport = airportFocus ? focusedCodes.join(",") : "";
+    canvas.dataset.direction = airportFocus ? (readEndpoint("from").codes.length ? "outbound" : "inbound") : "";
     const areaCodes = new Set();
     for (const arc of arcs) {
       areaCodes.add(arc.origin);
@@ -1195,7 +1344,7 @@ function applySuggestion(name, item, runSearch = true) {
   applyingField = previous;
   if (name === "from") originPick = selection.codes[0] ?? "";
   closeSuggest(name);
-  if (runSearch && readEndpoint("from").codes.length && toIsDestination(readEndpoint("from").codes)) search();
+  if (runSearch) search();
 }
 
 function renderSuggest(name) {
@@ -1293,6 +1442,12 @@ function commitField(name) {
   setEndpoint(name, selection);
   applyingField = false;
   if (name === "from") originPick = selection.codes[0] ?? originPick;
+}
+
+function exactCodeSelection(value) {
+  const raw = value.trim().toUpperCase();
+  if (/^[A-Z]{3}$/.test(raw) && airports.has(raw)) return airportSelection(raw);
+  return null;
 }
 
 function completionSelection(value) {
@@ -1452,18 +1607,6 @@ function clearSearch() {
   const hub = form.elements.hub.value;
   clearEndpoint("from");
   clearEndpoint("to");
-  originPick = "";
-  pathPairs = new Set();
-  airportPairs = new Set();
-  focusPairs = new Set();
-  isolatePath = false;
-  airportFocus = false;
-  showNetwork = false;
-  results.replaceChildren();
-  showOvernight.hidden = true;
-  airportCard.hidden = true;
-  closeSuggest("from");
-  closeSuggest("to");
   form.elements.date.value = date;
   form.elements.stops.value = stops;
   form.elements.sort.value = sort;
@@ -1473,14 +1616,7 @@ function clearSearch() {
   form.elements.arrive.value = arrive;
   form.elements.layover.value = layover;
   form.elements.hub.value = hub;
-  connectionHubs = [];
-  pressStarts();
-  document.querySelector("#route-calendar").hidden = true;
-  if (network) network.textContent = describeNetwork();
-  paintRoutes();
-  fitCurrentRoutes();
-  const dates = publishedDates();
-  status.textContent = openingStatus(dates);
+  showFullNetwork();
 }
 
 function syncClear() {
