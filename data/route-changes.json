@@ -2,12 +2,308 @@
   "windowDays": 90,
   "events": [
     {
+      "id": "data_blocked|ATL|JFK|Blocked on 2026-10-23. Those dates stay unknown.",
+      "type": "data_blocked",
+      "origin": "ATL",
+      "destination": "JFK",
+      "recordedOn": "2026-09-27",
+      "detail": "Blocked on 2026-10-23. Those dates stay unknown."
+    },
+    {
+      "id": "data_blocked|LAS|BNA|Blocked on 2026-10-23, 2026-10-24, 2026-10-25. Those dates stay unknown.",
+      "type": "data_blocked",
+      "origin": "LAS",
+      "destination": "BNA",
+      "recordedOn": "2026-09-27",
+      "detail": "Blocked on 2026-10-23, 2026-10-24, 2026-10-25. Those dates stay unknown."
+    },
+    {
+      "id": "data_blocked|LAS|BOI|Blocked on 2026-10-23, 2026-10-25. Those dates stay unknown.",
+      "type": "data_blocked",
+      "origin": "LAS",
+      "destination": "BOI",
+      "recordedOn": "2026-09-27",
+      "detail": "Blocked on 2026-10-23, 2026-10-25. Those dates stay unknown."
+    },
+    {
+      "id": "data_blocked|SFO|LAX|Blocked on 2026-10-23, 2026-10-25. Those dates stay unknown.",
+      "type": "data_blocked",
+      "origin": "SFO",
+      "destination": "LAX",
+      "recordedOn": "2026-09-27",
+      "detail": "Blocked on 2026-10-23, 2026-10-25. Those dates stay unknown."
+    },
+    {
+      "id": "data_blocked|SFO|PHX|Blocked on 2026-10-23, 2026-10-24, 2026-10-25. Those dates stay unknown.",
+      "type": "data_blocked",
+      "origin": "SFO",
+      "destination": "PHX",
+      "recordedOn": "2026-09-27",
+      "detail": "Blocked on 2026-10-23, 2026-10-24, 2026-10-25. Those dates stay unknown."
+    },
+    {
+      "id": "data_blocked|SFO|SNA|Blocked on 2026-10-23, 2026-10-24, 2026-10-25. Those dates stay unknown.",
+      "type": "data_blocked",
+      "origin": "SFO",
+      "destination": "SNA",
+      "recordedOn": "2026-09-27",
+      "detail": "Blocked on 2026-10-23, 2026-10-24, 2026-10-25. Those dates stay unknown."
+    },
+    {
+      "id": "more_flights|LAS|ATL|Departure rows increased from 25 to 31.",
+      "type": "more_flights",
+      "origin": "LAS",
+      "destination": "ATL",
+      "recordedOn": "2026-09-27",
+      "detail": "Departure rows increased from 25 to 31."
+    },
+    {
+      "id": "more_flights|LAS|AUS|Departure rows increased from 14 to 17.",
+      "type": "more_flights",
+      "origin": "LAS",
+      "destination": "AUS",
+      "recordedOn": "2026-09-27",
+      "detail": "Departure rows increased from 14 to 17."
+    },
+    {
+      "id": "more_flights|LAS|LAX|Departure rows increased from 41 to 51.",
+      "type": "more_flights",
+      "origin": "LAS",
+      "destination": "LAX",
+      "recordedOn": "2026-09-27",
+      "detail": "Departure rows increased from 41 to 51."
+    },
+    {
+      "id": "more_flights|LAS|MCO|Departure rows increased from 15 to 18.",
+      "type": "more_flights",
+      "origin": "LAS",
+      "destination": "MCO",
+      "recordedOn": "2026-09-27",
+      "detail": "Departure rows increased from 15 to 18."
+    },
+    {
+      "id": "more_flights|LAS|OAK|Departure rows increased from 18 to 23.",
+      "type": "more_flights",
+      "origin": "LAS",
+      "destination": "OAK",
+      "recordedOn": "2026-09-27",
+      "detail": "Departure rows increased from 18 to 23."
+    },
+    {
+      "id": "more_flights|LAS|SFO|Departure rows increased from 41 to 51.",
+      "type": "more_flights",
+      "origin": "LAS",
+      "destination": "SFO",
+      "recordedOn": "2026-09-27",
+      "detail": "Departure rows increased from 41 to 51."
+    },
+    {
+      "id": "more_flights|OAK|LAS|Departure rows increased from 21 to 26.",
+      "type": "more_flights",
+      "origin": "OAK",
+      "destination": "LAS",
+      "recordedOn": "2026-09-27",
+      "detail": "Departure rows increased from 21 to 26."
+    },
+    {
+      "id": "more_flights|SFO|ATL|Departure rows increased from 13 to 16.",
+      "type": "more_flights",
+      "origin": "SFO",
+      "destination": "ATL",
+      "recordedOn": "2026-09-27",
+      "detail": "Departure rows increased from 13 to 16."
+    },
+    {
+      "id": "more_flights|SFO|DEN|Departure rows increased from 29 to 37.",
+      "type": "more_flights",
+      "origin": "SFO",
+      "destination": "DEN",
+      "recordedOn": "2026-09-27",
+      "detail": "Departure rows increased from 29 to 37."
+    },
+    {
+      "id": "more_flights|SFO|DFW|Departure rows increased from 13 to 16.",
+      "type": "more_flights",
+      "origin": "SFO",
+      "destination": "DFW",
+      "recordedOn": "2026-09-27",
+      "detail": "Departure rows increased from 13 to 16."
+    },
+    {
+      "id": "more_flights|SFO|LAS|Departure rows increased from 43 to 53.",
+      "type": "more_flights",
+      "origin": "SFO",
+      "destination": "LAS",
+      "recordedOn": "2026-09-27",
+      "detail": "Departure rows increased from 43 to 53."
+    },
+    {
+      "id": "more_flights|SFO|LAX|Departure rows increased from 17 to 18.",
+      "type": "more_flights",
+      "origin": "SFO",
+      "destination": "LAX",
+      "recordedOn": "2026-09-27",
+      "detail": "Departure rows increased from 17 to 18."
+    },
+    {
+      "id": "more_flights|SFO|ONT|Departure rows increased from 7 to 9.",
+      "type": "more_flights",
+      "origin": "SFO",
+      "destination": "ONT",
+      "recordedOn": "2026-09-27",
+      "detail": "Departure rows increased from 7 to 9."
+    },
+    {
+      "id": "more_flights|SFO|SAN|Departure rows increased from 13 to 16.",
+      "type": "more_flights",
+      "origin": "SFO",
+      "destination": "SAN",
+      "recordedOn": "2026-09-27",
+      "detail": "Departure rows increased from 13 to 16."
+    },
+    {
       "id": "new_observation|SAN|LAS|Timed nonstop observed on 2026-09-28.",
       "type": "new_observation",
       "origin": "SAN",
       "destination": "LAS",
       "recordedOn": "2026-09-27",
       "detail": "Timed nonstop observed on 2026-09-28."
+    },
+    {
+      "id": "possible_gap|ATL|JFK|Checked empty on 2026-10-24, 2026-10-25 after the latest observed flight.",
+      "type": "possible_gap",
+      "origin": "ATL",
+      "destination": "JFK",
+      "recordedOn": "2026-09-27",
+      "detail": "Checked empty on 2026-10-24, 2026-10-25 after the latest observed flight."
+    },
+    {
+      "id": "possible_gap|LAS|BOI|Checked empty on 2026-10-24 after the latest observed flight.",
+      "type": "possible_gap",
+      "origin": "LAS",
+      "destination": "BOI",
+      "recordedOn": "2026-09-27",
+      "detail": "Checked empty on 2026-10-24 after the latest observed flight."
+    },
+    {
+      "id": "possible_gap|LAS|BUR|Checked empty on 2026-10-23, 2026-10-24, 2026-10-25 after the latest observed flight.",
+      "type": "possible_gap",
+      "origin": "LAS",
+      "destination": "BUR",
+      "recordedOn": "2026-09-27",
+      "detail": "Checked empty on 2026-10-23, 2026-10-24, 2026-10-25 after the latest observed flight."
+    },
+    {
+      "id": "schedule_extended|LAS|ATL|Latest observed date moved from 2026-10-22 to 2026-10-25.",
+      "type": "schedule_extended",
+      "origin": "LAS",
+      "destination": "ATL",
+      "recordedOn": "2026-09-27",
+      "detail": "Latest observed date moved from 2026-10-22 to 2026-10-25."
+    },
+    {
+      "id": "schedule_extended|LAS|AUS|Latest observed date moved from 2026-10-22 to 2026-10-25.",
+      "type": "schedule_extended",
+      "origin": "LAS",
+      "destination": "AUS",
+      "recordedOn": "2026-09-27",
+      "detail": "Latest observed date moved from 2026-10-22 to 2026-10-25."
+    },
+    {
+      "id": "schedule_extended|LAS|LAX|Latest observed date moved from 2026-10-22 to 2026-10-25.",
+      "type": "schedule_extended",
+      "origin": "LAS",
+      "destination": "LAX",
+      "recordedOn": "2026-09-27",
+      "detail": "Latest observed date moved from 2026-10-22 to 2026-10-25."
+    },
+    {
+      "id": "schedule_extended|LAS|MCO|Latest observed date moved from 2026-10-22 to 2026-10-25.",
+      "type": "schedule_extended",
+      "origin": "LAS",
+      "destination": "MCO",
+      "recordedOn": "2026-09-27",
+      "detail": "Latest observed date moved from 2026-10-22 to 2026-10-25."
+    },
+    {
+      "id": "schedule_extended|LAS|OAK|Latest observed date moved from 2026-10-22 to 2026-10-25.",
+      "type": "schedule_extended",
+      "origin": "LAS",
+      "destination": "OAK",
+      "recordedOn": "2026-09-27",
+      "detail": "Latest observed date moved from 2026-10-22 to 2026-10-25."
+    },
+    {
+      "id": "schedule_extended|LAS|SFO|Latest observed date moved from 2026-10-22 to 2026-10-25.",
+      "type": "schedule_extended",
+      "origin": "LAS",
+      "destination": "SFO",
+      "recordedOn": "2026-09-27",
+      "detail": "Latest observed date moved from 2026-10-22 to 2026-10-25."
+    },
+    {
+      "id": "schedule_extended|OAK|LAS|Latest observed date moved from 2026-10-22 to 2026-10-25.",
+      "type": "schedule_extended",
+      "origin": "OAK",
+      "destination": "LAS",
+      "recordedOn": "2026-09-27",
+      "detail": "Latest observed date moved from 2026-10-22 to 2026-10-25."
+    },
+    {
+      "id": "schedule_extended|SFO|ATL|Latest observed date moved from 2026-10-22 to 2026-10-25.",
+      "type": "schedule_extended",
+      "origin": "SFO",
+      "destination": "ATL",
+      "recordedOn": "2026-09-27",
+      "detail": "Latest observed date moved from 2026-10-22 to 2026-10-25."
+    },
+    {
+      "id": "schedule_extended|SFO|DEN|Latest observed date moved from 2026-10-22 to 2026-10-25.",
+      "type": "schedule_extended",
+      "origin": "SFO",
+      "destination": "DEN",
+      "recordedOn": "2026-09-27",
+      "detail": "Latest observed date moved from 2026-10-22 to 2026-10-25."
+    },
+    {
+      "id": "schedule_extended|SFO|DFW|Latest observed date moved from 2026-10-22 to 2026-10-25.",
+      "type": "schedule_extended",
+      "origin": "SFO",
+      "destination": "DFW",
+      "recordedOn": "2026-09-27",
+      "detail": "Latest observed date moved from 2026-10-22 to 2026-10-25."
+    },
+    {
+      "id": "schedule_extended|SFO|LAS|Latest observed date moved from 2026-10-22 to 2026-10-25.",
+      "type": "schedule_extended",
+      "origin": "SFO",
+      "destination": "LAS",
+      "recordedOn": "2026-09-27",
+      "detail": "Latest observed date moved from 2026-10-22 to 2026-10-25."
+    },
+    {
+      "id": "schedule_extended|SFO|LAX|Latest observed date moved from 2026-10-22 to 2026-10-24.",
+      "type": "schedule_extended",
+      "origin": "SFO",
+      "destination": "LAX",
+      "recordedOn": "2026-09-27",
+      "detail": "Latest observed date moved from 2026-10-22 to 2026-10-24."
+    },
+    {
+      "id": "schedule_extended|SFO|ONT|Latest observed date moved from 2026-10-22 to 2026-10-25.",
+      "type": "schedule_extended",
+      "origin": "SFO",
+      "destination": "ONT",
+      "recordedOn": "2026-09-27",
+      "detail": "Latest observed date moved from 2026-10-22 to 2026-10-25."
+    },
+    {
+      "id": "schedule_extended|SFO|SAN|Latest observed date moved from 2026-10-22 to 2026-10-25.",
+      "type": "schedule_extended",
+      "origin": "SFO",
+      "destination": "SAN",
+      "recordedOn": "2026-09-27",
+      "detail": "Latest observed date moved from 2026-10-22 to 2026-10-25."
     }
   ]
 }

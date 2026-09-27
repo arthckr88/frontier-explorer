@@ -4061,6 +4061,870 @@
       "arrivalUtc": "2026-10-22T20:16:00Z",
       "source": "Frontier public booking observations",
       "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "ATL",
+      "date": "2026-10-23",
+      "flightNumber": "1116",
+      "departureLocal": "2026-10-23T07:20:00",
+      "arrivalLocal": "2026-10-23T14:23:00",
+      "departureUtc": "2026-10-23T14:20:00Z",
+      "arrivalUtc": "2026-10-23T18:23:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "ATL",
+      "date": "2026-10-23",
+      "flightNumber": "2428",
+      "departureLocal": "2026-10-23T21:53:00",
+      "arrivalLocal": "2026-10-24T04:49:00",
+      "departureUtc": "2026-10-24T04:53:00Z",
+      "arrivalUtc": "2026-10-24T08:49:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "AUS",
+      "date": "2026-10-23",
+      "flightNumber": "4632",
+      "departureLocal": "2026-10-23T15:35:00",
+      "arrivalLocal": "2026-10-23T20:27:00",
+      "departureUtc": "2026-10-23T22:35:00Z",
+      "arrivalUtc": "2026-10-24T01:27:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "LAX",
+      "date": "2026-10-23",
+      "flightNumber": "3291",
+      "departureLocal": "2026-10-23T06:15:00",
+      "arrivalLocal": "2026-10-23T07:34:00",
+      "departureUtc": "2026-10-23T13:15:00Z",
+      "arrivalUtc": "2026-10-23T14:34:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "LAX",
+      "date": "2026-10-23",
+      "flightNumber": "2333",
+      "departureLocal": "2026-10-23T11:23:00",
+      "arrivalLocal": "2026-10-23T12:47:00",
+      "departureUtc": "2026-10-23T18:23:00Z",
+      "arrivalUtc": "2026-10-23T19:47:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "LAX",
+      "date": "2026-10-23",
+      "flightNumber": "2263",
+      "departureLocal": "2026-10-23T13:45:00",
+      "arrivalLocal": "2026-10-23T15:10:00",
+      "departureUtc": "2026-10-23T20:45:00Z",
+      "arrivalUtc": "2026-10-23T22:10:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "LAX",
+      "date": "2026-10-23",
+      "flightNumber": "1183",
+      "departureLocal": "2026-10-23T16:19:00",
+      "arrivalLocal": "2026-10-23T17:41:00",
+      "departureUtc": "2026-10-23T23:19:00Z",
+      "arrivalUtc": "2026-10-24T00:41:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "MCO",
+      "date": "2026-10-23",
+      "flightNumber": "1876",
+      "departureLocal": "2026-10-23T22:15:00",
+      "arrivalLocal": "2026-10-24T05:45:00",
+      "departureUtc": "2026-10-24T05:15:00Z",
+      "arrivalUtc": "2026-10-24T09:45:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "OAK",
+      "date": "2026-10-23",
+      "flightNumber": "2045",
+      "departureLocal": "2026-10-23T07:28:00",
+      "arrivalLocal": "2026-10-23T09:05:00",
+      "departureUtc": "2026-10-23T14:28:00Z",
+      "arrivalUtc": "2026-10-23T16:05:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "OAK",
+      "date": "2026-10-23",
+      "flightNumber": "3837",
+      "departureLocal": "2026-10-23T14:48:00",
+      "arrivalLocal": "2026-10-23T16:25:00",
+      "departureUtc": "2026-10-23T21:48:00Z",
+      "arrivalUtc": "2026-10-23T23:25:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "SFO",
+      "date": "2026-10-23",
+      "flightNumber": "3019",
+      "departureLocal": "2026-10-23T06:30:00",
+      "arrivalLocal": "2026-10-23T08:13:00",
+      "departureUtc": "2026-10-23T13:30:00Z",
+      "arrivalUtc": "2026-10-23T15:13:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "SFO",
+      "date": "2026-10-23",
+      "flightNumber": "4401",
+      "departureLocal": "2026-10-23T11:00:00",
+      "arrivalLocal": "2026-10-23T12:50:00",
+      "departureUtc": "2026-10-23T18:00:00Z",
+      "arrivalUtc": "2026-10-23T19:50:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "SFO",
+      "date": "2026-10-23",
+      "flightNumber": "3801",
+      "departureLocal": "2026-10-23T15:14:00",
+      "arrivalLocal": "2026-10-23T17:07:00",
+      "departureUtc": "2026-10-23T22:14:00Z",
+      "arrivalUtc": "2026-10-24T00:07:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "OAK",
+      "destination": "LAS",
+      "date": "2026-10-23",
+      "flightNumber": "2046",
+      "departureLocal": "2026-10-23T09:50:00",
+      "arrivalLocal": "2026-10-23T11:25:00",
+      "departureUtc": "2026-10-23T16:50:00Z",
+      "arrivalUtc": "2026-10-23T18:25:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "OAK",
+      "destination": "LAS",
+      "date": "2026-10-23",
+      "flightNumber": "3838",
+      "departureLocal": "2026-10-23T17:20:00",
+      "arrivalLocal": "2026-10-23T18:55:00",
+      "departureUtc": "2026-10-24T00:20:00Z",
+      "arrivalUtc": "2026-10-24T01:55:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "ATL",
+      "date": "2026-10-23",
+      "flightNumber": "1448",
+      "departureLocal": "2026-10-23T22:14:00",
+      "arrivalLocal": "2026-10-24T06:01:00",
+      "departureUtc": "2026-10-24T05:14:00Z",
+      "arrivalUtc": "2026-10-24T10:01:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "DEN",
+      "date": "2026-10-23",
+      "flightNumber": "1230",
+      "departureLocal": "2026-10-23T06:00:00",
+      "arrivalLocal": "2026-10-23T09:46:00",
+      "departureUtc": "2026-10-23T13:00:00Z",
+      "arrivalUtc": "2026-10-23T15:46:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "DEN",
+      "date": "2026-10-23",
+      "flightNumber": "1094",
+      "departureLocal": "2026-10-23T12:00:00",
+      "arrivalLocal": "2026-10-23T15:43:00",
+      "departureUtc": "2026-10-23T19:00:00Z",
+      "arrivalUtc": "2026-10-23T21:43:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "DEN",
+      "date": "2026-10-23",
+      "flightNumber": "3440",
+      "departureLocal": "2026-10-23T19:13:00",
+      "arrivalLocal": "2026-10-23T22:59:00",
+      "departureUtc": "2026-10-24T02:13:00Z",
+      "arrivalUtc": "2026-10-24T04:59:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "DFW",
+      "date": "2026-10-23",
+      "flightNumber": "2930",
+      "departureLocal": "2026-10-23T23:59:00",
+      "arrivalLocal": "2026-10-24T05:34:00",
+      "departureUtc": "2026-10-24T06:59:00Z",
+      "arrivalUtc": "2026-10-24T10:34:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAS",
+      "date": "2026-10-23",
+      "flightNumber": "4158",
+      "departureLocal": "2026-10-23T10:39:00",
+      "arrivalLocal": "2026-10-23T12:25:00",
+      "departureUtc": "2026-10-23T17:39:00Z",
+      "arrivalUtc": "2026-10-23T19:25:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAS",
+      "date": "2026-10-23",
+      "flightNumber": "2486",
+      "departureLocal": "2026-10-23T14:17:00",
+      "arrivalLocal": "2026-10-23T16:03:00",
+      "departureUtc": "2026-10-23T21:17:00Z",
+      "arrivalUtc": "2026-10-23T23:03:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAS",
+      "date": "2026-10-23",
+      "flightNumber": "4156",
+      "departureLocal": "2026-10-23T22:19:00",
+      "arrivalLocal": "2026-10-24T00:03:00",
+      "departureUtc": "2026-10-24T05:19:00Z",
+      "arrivalUtc": "2026-10-24T07:03:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "ONT",
+      "date": "2026-10-23",
+      "flightNumber": "1160",
+      "departureLocal": "2026-10-23T18:02:00",
+      "arrivalLocal": "2026-10-23T19:40:00",
+      "departureUtc": "2026-10-24T01:02:00Z",
+      "arrivalUtc": "2026-10-24T02:40:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "SAN",
+      "date": "2026-10-23",
+      "flightNumber": "3382",
+      "departureLocal": "2026-10-23T11:22:00",
+      "arrivalLocal": "2026-10-23T13:16:00",
+      "departureUtc": "2026-10-23T18:22:00Z",
+      "arrivalUtc": "2026-10-23T20:16:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "ATL",
+      "date": "2026-10-24",
+      "flightNumber": "1116",
+      "departureLocal": "2026-10-24T07:20:00",
+      "arrivalLocal": "2026-10-24T14:23:00",
+      "departureUtc": "2026-10-24T14:20:00Z",
+      "arrivalUtc": "2026-10-24T18:23:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "ATL",
+      "date": "2026-10-24",
+      "flightNumber": "2428",
+      "departureLocal": "2026-10-24T21:53:00",
+      "arrivalLocal": "2026-10-25T04:49:00",
+      "departureUtc": "2026-10-25T04:53:00Z",
+      "arrivalUtc": "2026-10-25T08:49:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "AUS",
+      "date": "2026-10-24",
+      "flightNumber": "4684",
+      "departureLocal": "2026-10-24T07:30:00",
+      "arrivalLocal": "2026-10-24T12:17:00",
+      "departureUtc": "2026-10-24T14:30:00Z",
+      "arrivalUtc": "2026-10-24T17:17:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "LAX",
+      "date": "2026-10-24",
+      "flightNumber": "3291",
+      "departureLocal": "2026-10-24T09:00:00",
+      "arrivalLocal": "2026-10-24T10:24:00",
+      "departureUtc": "2026-10-24T16:00:00Z",
+      "arrivalUtc": "2026-10-24T17:24:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "LAX",
+      "date": "2026-10-24",
+      "flightNumber": "2263",
+      "departureLocal": "2026-10-24T13:45:00",
+      "arrivalLocal": "2026-10-24T15:10:00",
+      "departureUtc": "2026-10-24T20:45:00Z",
+      "arrivalUtc": "2026-10-24T22:10:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "LAX",
+      "date": "2026-10-24",
+      "flightNumber": "1183",
+      "departureLocal": "2026-10-24T16:55:00",
+      "arrivalLocal": "2026-10-24T18:17:00",
+      "departureUtc": "2026-10-24T23:55:00Z",
+      "arrivalUtc": "2026-10-25T01:17:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "MCO",
+      "date": "2026-10-24",
+      "flightNumber": "1876",
+      "departureLocal": "2026-10-24T22:06:00",
+      "arrivalLocal": "2026-10-25T05:36:00",
+      "departureUtc": "2026-10-25T05:06:00Z",
+      "arrivalUtc": "2026-10-25T09:36:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "OAK",
+      "date": "2026-10-24",
+      "flightNumber": "2045",
+      "departureLocal": "2026-10-24T10:15:00",
+      "arrivalLocal": "2026-10-24T11:52:00",
+      "departureUtc": "2026-10-24T17:15:00Z",
+      "arrivalUtc": "2026-10-24T18:52:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "SFO",
+      "date": "2026-10-24",
+      "flightNumber": "3019",
+      "departureLocal": "2026-10-24T06:30:00",
+      "arrivalLocal": "2026-10-24T08:13:00",
+      "departureUtc": "2026-10-24T13:30:00Z",
+      "arrivalUtc": "2026-10-24T15:13:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "SFO",
+      "date": "2026-10-24",
+      "flightNumber": "4401",
+      "departureLocal": "2026-10-24T12:30:00",
+      "arrivalLocal": "2026-10-24T14:25:00",
+      "departureUtc": "2026-10-24T19:30:00Z",
+      "arrivalUtc": "2026-10-24T21:25:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "SFO",
+      "date": "2026-10-24",
+      "flightNumber": "4157",
+      "departureLocal": "2026-10-24T16:35:00",
+      "arrivalLocal": "2026-10-24T18:25:00",
+      "departureUtc": "2026-10-24T23:35:00Z",
+      "arrivalUtc": "2026-10-25T01:25:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "OAK",
+      "destination": "LAS",
+      "date": "2026-10-24",
+      "flightNumber": "2046",
+      "departureLocal": "2026-10-24T12:47:00",
+      "arrivalLocal": "2026-10-24T14:22:00",
+      "departureUtc": "2026-10-24T19:47:00Z",
+      "arrivalUtc": "2026-10-24T21:22:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "ATL",
+      "date": "2026-10-24",
+      "flightNumber": "1448",
+      "departureLocal": "2026-10-24T22:14:00",
+      "arrivalLocal": "2026-10-25T06:01:00",
+      "departureUtc": "2026-10-25T05:14:00Z",
+      "arrivalUtc": "2026-10-25T10:01:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "DEN",
+      "date": "2026-10-24",
+      "flightNumber": "1230",
+      "departureLocal": "2026-10-24T06:00:00",
+      "arrivalLocal": "2026-10-24T09:46:00",
+      "departureUtc": "2026-10-24T13:00:00Z",
+      "arrivalUtc": "2026-10-24T15:46:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "DEN",
+      "date": "2026-10-24",
+      "flightNumber": "3436",
+      "departureLocal": "2026-10-24T12:00:00",
+      "arrivalLocal": "2026-10-24T15:43:00",
+      "departureUtc": "2026-10-24T19:00:00Z",
+      "arrivalUtc": "2026-10-24T21:43:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "DFW",
+      "date": "2026-10-24",
+      "flightNumber": "2930",
+      "departureLocal": "2026-10-24T23:59:00",
+      "arrivalLocal": "2026-10-25T05:34:00",
+      "departureUtc": "2026-10-25T06:59:00Z",
+      "arrivalUtc": "2026-10-25T10:34:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAS",
+      "date": "2026-10-24",
+      "flightNumber": "4158",
+      "departureLocal": "2026-10-24T09:11:00",
+      "arrivalLocal": "2026-10-24T11:00:00",
+      "departureUtc": "2026-10-24T16:11:00Z",
+      "arrivalUtc": "2026-10-24T18:00:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAS",
+      "date": "2026-10-24",
+      "flightNumber": "2486",
+      "departureLocal": "2026-10-24T15:11:00",
+      "arrivalLocal": "2026-10-24T17:00:00",
+      "departureUtc": "2026-10-24T22:11:00Z",
+      "arrivalUtc": "2026-10-25T00:00:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAS",
+      "date": "2026-10-24",
+      "flightNumber": "4402",
+      "departureLocal": "2026-10-24T19:11:00",
+      "arrivalLocal": "2026-10-24T20:59:00",
+      "departureUtc": "2026-10-25T02:11:00Z",
+      "arrivalUtc": "2026-10-25T03:59:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAX",
+      "date": "2026-10-24",
+      "flightNumber": "2858",
+      "departureLocal": "2026-10-24T19:25:00",
+      "arrivalLocal": "2026-10-24T21:01:00",
+      "departureUtc": "2026-10-25T02:25:00Z",
+      "arrivalUtc": "2026-10-25T04:01:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "SAN",
+      "date": "2026-10-24",
+      "flightNumber": "3382",
+      "departureLocal": "2026-10-24T11:22:00",
+      "arrivalLocal": "2026-10-24T13:16:00",
+      "departureUtc": "2026-10-24T18:22:00Z",
+      "arrivalUtc": "2026-10-24T20:16:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "ATL",
+      "date": "2026-10-25",
+      "flightNumber": "1116",
+      "departureLocal": "2026-10-25T07:20:00",
+      "arrivalLocal": "2026-10-25T14:23:00",
+      "departureUtc": "2026-10-25T14:20:00Z",
+      "arrivalUtc": "2026-10-25T18:23:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "ATL",
+      "date": "2026-10-25",
+      "flightNumber": "2428",
+      "departureLocal": "2026-10-25T21:53:00",
+      "arrivalLocal": "2026-10-26T04:49:00",
+      "departureUtc": "2026-10-26T04:53:00Z",
+      "arrivalUtc": "2026-10-26T08:49:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "AUS",
+      "date": "2026-10-25",
+      "flightNumber": "4684",
+      "departureLocal": "2026-10-25T06:37:00",
+      "arrivalLocal": "2026-10-25T11:23:00",
+      "departureUtc": "2026-10-25T13:37:00Z",
+      "arrivalUtc": "2026-10-25T16:23:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "LAX",
+      "date": "2026-10-25",
+      "flightNumber": "3291",
+      "departureLocal": "2026-10-25T06:15:00",
+      "arrivalLocal": "2026-10-25T07:34:00",
+      "departureUtc": "2026-10-25T13:15:00Z",
+      "arrivalUtc": "2026-10-25T14:34:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "LAX",
+      "date": "2026-10-25",
+      "flightNumber": "2263",
+      "departureLocal": "2026-10-25T13:45:00",
+      "arrivalLocal": "2026-10-25T15:10:00",
+      "departureUtc": "2026-10-25T20:45:00Z",
+      "arrivalUtc": "2026-10-25T22:10:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "LAX",
+      "date": "2026-10-25",
+      "flightNumber": "1183",
+      "departureLocal": "2026-10-25T16:19:00",
+      "arrivalLocal": "2026-10-25T17:41:00",
+      "departureUtc": "2026-10-25T23:19:00Z",
+      "arrivalUtc": "2026-10-26T00:41:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "MCO",
+      "date": "2026-10-25",
+      "flightNumber": "1876",
+      "departureLocal": "2026-10-25T22:15:00",
+      "arrivalLocal": "2026-10-26T05:45:00",
+      "departureUtc": "2026-10-26T05:15:00Z",
+      "arrivalUtc": "2026-10-26T09:45:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "OAK",
+      "date": "2026-10-25",
+      "flightNumber": "2045",
+      "departureLocal": "2026-10-25T07:45:00",
+      "arrivalLocal": "2026-10-25T09:22:00",
+      "departureUtc": "2026-10-25T14:45:00Z",
+      "arrivalUtc": "2026-10-25T16:22:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "OAK",
+      "date": "2026-10-25",
+      "flightNumber": "3837",
+      "departureLocal": "2026-10-25T14:48:00",
+      "arrivalLocal": "2026-10-25T16:25:00",
+      "departureUtc": "2026-10-25T21:48:00Z",
+      "arrivalUtc": "2026-10-25T23:25:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "SFO",
+      "date": "2026-10-25",
+      "flightNumber": "3019",
+      "departureLocal": "2026-10-25T06:30:00",
+      "arrivalLocal": "2026-10-25T08:13:00",
+      "departureUtc": "2026-10-25T13:30:00Z",
+      "arrivalUtc": "2026-10-25T15:13:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "SFO",
+      "date": "2026-10-25",
+      "flightNumber": "4401",
+      "departureLocal": "2026-10-25T11:00:00",
+      "arrivalLocal": "2026-10-25T12:50:00",
+      "departureUtc": "2026-10-25T18:00:00Z",
+      "arrivalUtc": "2026-10-25T19:50:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "SFO",
+      "date": "2026-10-25",
+      "flightNumber": "4157",
+      "departureLocal": "2026-10-25T15:14:00",
+      "arrivalLocal": "2026-10-25T17:07:00",
+      "departureUtc": "2026-10-25T22:14:00Z",
+      "arrivalUtc": "2026-10-26T00:07:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "LAS",
+      "destination": "SFO",
+      "date": "2026-10-25",
+      "flightNumber": "1849",
+      "departureLocal": "2026-10-25T17:15:00",
+      "arrivalLocal": "2026-10-25T19:04:00",
+      "departureUtc": "2026-10-26T00:15:00Z",
+      "arrivalUtc": "2026-10-26T02:04:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "OAK",
+      "destination": "LAS",
+      "date": "2026-10-25",
+      "flightNumber": "2046",
+      "departureLocal": "2026-10-25T10:17:00",
+      "arrivalLocal": "2026-10-25T11:52:00",
+      "departureUtc": "2026-10-25T17:17:00Z",
+      "arrivalUtc": "2026-10-25T18:52:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "OAK",
+      "destination": "LAS",
+      "date": "2026-10-25",
+      "flightNumber": "3838",
+      "departureLocal": "2026-10-25T17:20:00",
+      "arrivalLocal": "2026-10-25T18:55:00",
+      "departureUtc": "2026-10-26T00:20:00Z",
+      "arrivalUtc": "2026-10-26T01:55:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "ATL",
+      "date": "2026-10-25",
+      "flightNumber": "1448",
+      "departureLocal": "2026-10-25T22:14:00",
+      "arrivalLocal": "2026-10-26T06:01:00",
+      "departureUtc": "2026-10-26T05:14:00Z",
+      "arrivalUtc": "2026-10-26T10:01:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "DEN",
+      "date": "2026-10-25",
+      "flightNumber": "1230",
+      "departureLocal": "2026-10-25T06:00:00",
+      "arrivalLocal": "2026-10-25T09:46:00",
+      "departureUtc": "2026-10-25T13:00:00Z",
+      "arrivalUtc": "2026-10-25T15:46:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "DEN",
+      "date": "2026-10-25",
+      "flightNumber": "1094",
+      "departureLocal": "2026-10-25T12:00:00",
+      "arrivalLocal": "2026-10-25T15:43:00",
+      "departureUtc": "2026-10-25T19:00:00Z",
+      "arrivalUtc": "2026-10-25T21:43:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "DEN",
+      "date": "2026-10-25",
+      "flightNumber": "3440",
+      "departureLocal": "2026-10-25T19:13:00",
+      "arrivalLocal": "2026-10-25T22:59:00",
+      "departureUtc": "2026-10-26T02:13:00Z",
+      "arrivalUtc": "2026-10-26T04:59:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "DFW",
+      "date": "2026-10-25",
+      "flightNumber": "2930",
+      "departureLocal": "2026-10-25T23:59:00",
+      "arrivalLocal": "2026-10-26T05:34:00",
+      "departureUtc": "2026-10-26T06:59:00Z",
+      "arrivalUtc": "2026-10-26T10:34:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAS",
+      "date": "2026-10-25",
+      "flightNumber": "4158",
+      "departureLocal": "2026-10-25T10:39:00",
+      "arrivalLocal": "2026-10-25T12:25:00",
+      "departureUtc": "2026-10-25T17:39:00Z",
+      "arrivalUtc": "2026-10-25T19:25:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAS",
+      "date": "2026-10-25",
+      "flightNumber": "2486",
+      "departureLocal": "2026-10-25T14:17:00",
+      "arrivalLocal": "2026-10-25T16:03:00",
+      "departureUtc": "2026-10-25T21:17:00Z",
+      "arrivalUtc": "2026-10-25T23:03:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAS",
+      "date": "2026-10-25",
+      "flightNumber": "4156",
+      "departureLocal": "2026-10-25T19:59:00",
+      "arrivalLocal": "2026-10-25T21:47:00",
+      "departureUtc": "2026-10-26T02:59:00Z",
+      "arrivalUtc": "2026-10-26T04:47:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAS",
+      "date": "2026-10-25",
+      "flightNumber": "4402",
+      "departureLocal": "2026-10-25T22:19:00",
+      "arrivalLocal": "2026-10-26T00:03:00",
+      "departureUtc": "2026-10-26T05:19:00Z",
+      "arrivalUtc": "2026-10-26T07:03:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "ONT",
+      "date": "2026-10-25",
+      "flightNumber": "1160",
+      "departureLocal": "2026-10-25T18:02:00",
+      "arrivalLocal": "2026-10-25T19:40:00",
+      "departureUtc": "2026-10-26T01:02:00Z",
+      "arrivalUtc": "2026-10-26T02:40:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
+    },
+    {
+      "origin": "SFO",
+      "destination": "SAN",
+      "date": "2026-10-25",
+      "flightNumber": "3382",
+      "departureLocal": "2026-10-25T11:22:00",
+      "arrivalLocal": "2026-10-25T13:16:00",
+      "departureUtc": "2026-10-25T18:22:00Z",
+      "arrivalUtc": "2026-10-25T20:16:00Z",
+      "source": "Frontier public booking observations",
+      "retrievedAt": null
     }
   ],
   "checks": [
@@ -4252,6 +5116,24 @@
     },
     {
       "origin": "ATL",
+      "destination": "JFK",
+      "date": "2026-10-23",
+      "state": "blocked"
+    },
+    {
+      "origin": "ATL",
+      "destination": "JFK",
+      "date": "2026-10-24",
+      "state": "checked_empty"
+    },
+    {
+      "origin": "ATL",
+      "destination": "JFK",
+      "date": "2026-10-25",
+      "state": "checked_empty"
+    },
+    {
+      "origin": "ATL",
       "destination": "LGA",
       "date": "2026-09-26",
       "state": "blocked"
@@ -4684,6 +5566,24 @@
     },
     {
       "origin": "LAS",
+      "destination": "ATL",
+      "date": "2026-10-23",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
+      "destination": "ATL",
+      "date": "2026-10-24",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
+      "destination": "ATL",
+      "date": "2026-10-25",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
       "destination": "AUS",
       "date": "2026-09-26",
       "state": "flights_found"
@@ -4846,6 +5746,24 @@
     },
     {
       "origin": "LAS",
+      "destination": "AUS",
+      "date": "2026-10-23",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
+      "destination": "AUS",
+      "date": "2026-10-24",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
+      "destination": "AUS",
+      "date": "2026-10-25",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
       "destination": "BNA",
       "date": "2026-09-27",
       "state": "flights_found"
@@ -5002,6 +5920,24 @@
     },
     {
       "origin": "LAS",
+      "destination": "BNA",
+      "date": "2026-10-23",
+      "state": "blocked"
+    },
+    {
+      "origin": "LAS",
+      "destination": "BNA",
+      "date": "2026-10-24",
+      "state": "blocked"
+    },
+    {
+      "origin": "LAS",
+      "destination": "BNA",
+      "date": "2026-10-25",
+      "state": "blocked"
+    },
+    {
+      "origin": "LAS",
       "destination": "BOI",
       "date": "2026-09-27",
       "state": "flights_found"
@@ -5155,6 +6091,24 @@
       "destination": "BOI",
       "date": "2026-10-22",
       "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
+      "destination": "BOI",
+      "date": "2026-10-23",
+      "state": "blocked"
+    },
+    {
+      "origin": "LAS",
+      "destination": "BOI",
+      "date": "2026-10-24",
+      "state": "checked_empty"
+    },
+    {
+      "origin": "LAS",
+      "destination": "BOI",
+      "date": "2026-10-25",
+      "state": "blocked"
     },
     {
       "origin": "LAS",
@@ -5316,6 +6270,24 @@
       "origin": "LAS",
       "destination": "BUR",
       "date": "2026-10-22",
+      "state": "checked_empty"
+    },
+    {
+      "origin": "LAS",
+      "destination": "BUR",
+      "date": "2026-10-23",
+      "state": "checked_empty"
+    },
+    {
+      "origin": "LAS",
+      "destination": "BUR",
+      "date": "2026-10-24",
+      "state": "checked_empty"
+    },
+    {
+      "origin": "LAS",
+      "destination": "BUR",
+      "date": "2026-10-25",
       "state": "checked_empty"
     },
     {
@@ -5578,6 +6550,24 @@
     },
     {
       "origin": "LAS",
+      "destination": "LAX",
+      "date": "2026-10-23",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
+      "destination": "LAX",
+      "date": "2026-10-24",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
+      "destination": "LAX",
+      "date": "2026-10-25",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
       "destination": "LGA",
       "date": "2026-09-26",
       "state": "checked_empty"
@@ -5776,6 +6766,24 @@
     },
     {
       "origin": "LAS",
+      "destination": "MCO",
+      "date": "2026-10-23",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
+      "destination": "MCO",
+      "date": "2026-10-24",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
+      "destination": "MCO",
+      "date": "2026-10-25",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
       "destination": "OAK",
       "date": "2026-09-26",
       "state": "flights_found"
@@ -5938,6 +6946,24 @@
     },
     {
       "origin": "LAS",
+      "destination": "OAK",
+      "date": "2026-10-23",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
+      "destination": "OAK",
+      "date": "2026-10-24",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
+      "destination": "OAK",
+      "date": "2026-10-25",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
       "destination": "SFO",
       "date": "2026-09-26",
       "state": "flights_found"
@@ -6096,6 +7122,24 @@
       "origin": "LAS",
       "destination": "SFO",
       "date": "2026-10-22",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
+      "destination": "SFO",
+      "date": "2026-10-23",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
+      "destination": "SFO",
+      "date": "2026-10-24",
+      "state": "flights_found"
+    },
+    {
+      "origin": "LAS",
+      "destination": "SFO",
+      "date": "2026-10-25",
       "state": "flights_found"
     },
     {
@@ -6408,6 +7452,24 @@
       "origin": "OAK",
       "destination": "LAS",
       "date": "2026-10-22",
+      "state": "flights_found"
+    },
+    {
+      "origin": "OAK",
+      "destination": "LAS",
+      "date": "2026-10-23",
+      "state": "flights_found"
+    },
+    {
+      "origin": "OAK",
+      "destination": "LAS",
+      "date": "2026-10-24",
+      "state": "flights_found"
+    },
+    {
+      "origin": "OAK",
+      "destination": "LAS",
+      "date": "2026-10-25",
       "state": "flights_found"
     },
     {
@@ -6724,6 +7786,24 @@
     },
     {
       "origin": "SFO",
+      "destination": "ATL",
+      "date": "2026-10-23",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
+      "destination": "ATL",
+      "date": "2026-10-24",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
+      "destination": "ATL",
+      "date": "2026-10-25",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
       "destination": "DEN",
       "date": "2026-09-25",
       "state": "flights_found"
@@ -6892,6 +7972,24 @@
     },
     {
       "origin": "SFO",
+      "destination": "DEN",
+      "date": "2026-10-23",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
+      "destination": "DEN",
+      "date": "2026-10-24",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
+      "destination": "DEN",
+      "date": "2026-10-25",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
       "destination": "DFW",
       "date": "2026-09-25",
       "state": "flights_found"
@@ -7060,6 +8158,24 @@
     },
     {
       "origin": "SFO",
+      "destination": "DFW",
+      "date": "2026-10-23",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
+      "destination": "DFW",
+      "date": "2026-10-24",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
+      "destination": "DFW",
+      "date": "2026-10-25",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
       "destination": "EWR",
       "date": "2026-09-26",
       "state": "checked_empty"
@@ -7396,6 +8512,24 @@
     },
     {
       "origin": "SFO",
+      "destination": "LAS",
+      "date": "2026-10-23",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAS",
+      "date": "2026-10-24",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAS",
+      "date": "2026-10-25",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-26",
       "state": "flights_found"
@@ -7555,6 +8689,24 @@
       "destination": "LAX",
       "date": "2026-10-22",
       "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAX",
+      "date": "2026-10-23",
+      "state": "blocked"
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAX",
+      "date": "2026-10-24",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
+      "destination": "LAX",
+      "date": "2026-10-25",
+      "state": "blocked"
     },
     {
       "origin": "SFO",
@@ -7810,6 +8962,24 @@
     },
     {
       "origin": "SFO",
+      "destination": "ONT",
+      "date": "2026-10-23",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
+      "destination": "ONT",
+      "date": "2026-10-24",
+      "state": "checked_empty"
+    },
+    {
+      "origin": "SFO",
+      "destination": "ONT",
+      "date": "2026-10-25",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
       "destination": "PHX",
       "date": "2026-09-27",
       "state": "flights_found"
@@ -7962,6 +9132,24 @@
       "origin": "SFO",
       "destination": "PHX",
       "date": "2026-10-22",
+      "state": "blocked"
+    },
+    {
+      "origin": "SFO",
+      "destination": "PHX",
+      "date": "2026-10-23",
+      "state": "blocked"
+    },
+    {
+      "origin": "SFO",
+      "destination": "PHX",
+      "date": "2026-10-24",
+      "state": "blocked"
+    },
+    {
+      "origin": "SFO",
+      "destination": "PHX",
+      "date": "2026-10-25",
       "state": "blocked"
     },
     {
@@ -8134,6 +9322,24 @@
     },
     {
       "origin": "SFO",
+      "destination": "SAN",
+      "date": "2026-10-23",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
+      "destination": "SAN",
+      "date": "2026-10-24",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
+      "destination": "SAN",
+      "date": "2026-10-25",
+      "state": "flights_found"
+    },
+    {
+      "origin": "SFO",
       "destination": "SNA",
       "date": "2026-09-27",
       "state": "flights_found"
@@ -8286,6 +9492,24 @@
       "origin": "SFO",
       "destination": "SNA",
       "date": "2026-10-22",
+      "state": "blocked"
+    },
+    {
+      "origin": "SFO",
+      "destination": "SNA",
+      "date": "2026-10-23",
+      "state": "blocked"
+    },
+    {
+      "origin": "SFO",
+      "destination": "SNA",
+      "date": "2026-10-24",
+      "state": "blocked"
+    },
+    {
+      "origin": "SFO",
+      "destination": "SNA",
+      "date": "2026-10-25",
       "state": "blocked"
     }
   ],
@@ -8327,9 +9551,9 @@
       "firstObservedDate": "2026-09-27",
       "lastObservedDate": "2026-09-30",
       "futureDepartureCount": 3,
-      "futureCheckedDates": 6,
-      "departuresPhrase": "3 departures across 6 checked dates.",
-      "weekdayLabel": "Sun, Tue, Wed observed. 6 dates checked, so this is not a weekly frequency.",
+      "futureCheckedDates": 8,
+      "departuresPhrase": "3 departures across 8 checked dates.",
+      "weekdayLabel": "Sun, Tue, Wed observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "4732"
       ],
@@ -8343,13 +9567,16 @@
         "2026-09-26",
         "2026-10-20",
         "2026-10-21",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "blockedDates": [
         "2026-09-28",
         "2026-10-01",
         "2026-10-02",
-        "2026-10-19"
+        "2026-10-19",
+        "2026-10-23"
       ],
       "uncheckedDates": [
         "2026-10-03",
@@ -8369,9 +9596,9 @@
         "2026-10-17",
         "2026-10-18"
       ],
-      "lastCheckDate": "2026-10-22",
-      "gapNote": "Observed through 2026-09-30. Later checks returned no nonstop on 2026-10-20, 2026-10-21, 2026-10-22. 2026-10-03, 2026-10-04, 2026-10-05, and 13 more through 2026-10-18 coverage incomplete.",
-      "coverageNote": "Observed through 2026-09-30. Later checks returned no nonstop on 2026-10-20, 2026-10-21, 2026-10-22. 2026-10-03, 2026-10-04, 2026-10-05, and 13 more through 2026-10-18 coverage incomplete."
+      "lastCheckDate": "2026-10-25",
+      "gapNote": "Observed through 2026-09-30. Later checks returned no nonstop on 2026-10-20, 2026-10-21, 2026-10-22, and 2 more through 2026-10-25. 2026-10-03, 2026-10-04, 2026-10-05, and 13 more through 2026-10-18 coverage incomplete.",
+      "coverageNote": "Observed through 2026-09-30. Later checks returned no nonstop on 2026-10-20, 2026-10-21, 2026-10-22, and 2 more through 2026-10-25. 2026-10-03, 2026-10-04, 2026-10-05, and 13 more through 2026-10-18 coverage incomplete."
     },
     {
       "origin": "ATL",
@@ -8726,14 +9953,17 @@
         "2026-10-19",
         "2026-10-20",
         "2026-10-21",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "firstObservedDate": "2026-09-25",
-      "lastObservedDate": "2026-10-22",
-      "futureDepartureCount": 22,
-      "futureCheckedDates": 11,
-      "departuresPhrase": "22 departures across 11 checked dates.",
-      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency.",
+      "lastObservedDate": "2026-10-25",
+      "futureDepartureCount": 28,
+      "futureCheckedDates": 14,
+      "departuresPhrase": "28 departures across 14 checked dates.",
+      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "1116",
         "2428"
@@ -8763,9 +9993,9 @@
         "2026-10-15",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
-      "coverageNote": "22 departures across 11 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
+      "coverageNote": "28 departures across 14 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "LAS",
@@ -8783,14 +10013,17 @@
         "2026-10-19",
         "2026-10-20",
         "2026-10-21",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "firstObservedDate": "2026-09-26",
-      "lastObservedDate": "2026-10-22",
-      "futureDepartureCount": 13,
-      "futureCheckedDates": 11,
-      "departuresPhrase": "13 departures across 11 checked dates.",
-      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency.",
+      "lastObservedDate": "2026-10-25",
+      "futureDepartureCount": 16,
+      "futureCheckedDates": 14,
+      "departuresPhrase": "16 departures across 14 checked dates.",
+      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "4632",
         "4684"
@@ -8820,9 +10053,9 @@
         "2026-10-15",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
-      "coverageNote": "13 departures across 11 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
+      "coverageNote": "16 departures across 14 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "LAS",
@@ -8856,7 +10089,10 @@
         "2026-10-20"
       ],
       "blockedDates": [
-        "2026-10-21"
+        "2026-10-21",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "uncheckedDates": [
         "2026-09-29",
@@ -8877,14 +10113,14 @@
         "2026-10-15",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
       "coverageNote": "6 departures across 8 checked dates. Sun, Mon, Thu observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "LAS",
       "destination": "BOI",
-      "status": "observed",
+      "status": "possible_gap",
       "observedDates": [
         "2026-09-27",
         "2026-09-28",
@@ -8895,9 +10131,9 @@
       "firstObservedDate": "2026-09-27",
       "lastObservedDate": "2026-10-22",
       "futureDepartureCount": 5,
-      "futureCheckedDates": 6,
-      "departuresPhrase": "5 departures across 6 checked dates.",
-      "weekdayLabel": "Sun, Mon, Thu observed. 6 dates checked, so this is not a weekly frequency.",
+      "futureCheckedDates": 7,
+      "departuresPhrase": "5 departures across 7 checked dates.",
+      "weekdayLabel": "Sun, Mon, Thu observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "1933"
       ],
@@ -8908,12 +10144,15 @@
         "arrivalLocal": "2026-09-27T13:55:00"
       },
       "emptyDates": [
-        "2026-10-17"
+        "2026-10-17",
+        "2026-10-24"
       ],
       "blockedDates": [
         "2026-10-19",
         "2026-10-20",
-        "2026-10-21"
+        "2026-10-21",
+        "2026-10-23",
+        "2026-10-25"
       ],
       "uncheckedDates": [
         "2026-09-29",
@@ -8934,9 +10173,9 @@
         "2026-10-15",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
-      "gapNote": null,
-      "coverageNote": "5 departures across 6 checked dates. Sun, Mon, Thu observed. 6 dates checked, so this is not a weekly frequency."
+      "lastCheckDate": "2026-10-25",
+      "gapNote": "Observed through 2026-10-22. Later checks returned no nonstop on 2026-10-24. Those dates were checked. That is negative evidence for those dates only.",
+      "coverageNote": "Observed through 2026-10-22. Later checks returned no nonstop on 2026-10-24. Those dates were checked. That is negative evidence for those dates only."
     },
     {
       "origin": "LAS",
@@ -8953,8 +10192,8 @@
       "firstObservedDate": "2026-09-26",
       "lastObservedDate": "2026-10-01",
       "futureDepartureCount": 5,
-      "futureCheckedDates": 11,
-      "departuresPhrase": "5 departures across 11 checked dates.",
+      "futureCheckedDates": 14,
+      "departuresPhrase": "5 departures across 14 checked dates.",
       "weekdayLabel": "Sun, Mon, Tue, Wed, Thu observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "4107"
@@ -8971,7 +10210,10 @@
         "2026-10-19",
         "2026-10-20",
         "2026-10-21",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "blockedDates": [],
       "uncheckedDates": [
@@ -8991,9 +10233,9 @@
         "2026-10-15",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
-      "gapNote": "Observed through 2026-10-01. Later checks returned no nonstop on 2026-10-17, 2026-10-18, 2026-10-19, and 3 more through 2026-10-22. 2026-10-02, 2026-10-03, 2026-10-04, and 12 more through 2026-10-16 coverage incomplete.",
-      "coverageNote": "Observed through 2026-10-01. Later checks returned no nonstop on 2026-10-17, 2026-10-18, 2026-10-19, and 3 more through 2026-10-22. 2026-10-02, 2026-10-03, 2026-10-04, and 12 more through 2026-10-16 coverage incomplete."
+      "lastCheckDate": "2026-10-25",
+      "gapNote": "Observed through 2026-10-01. Later checks returned no nonstop on 2026-10-17, 2026-10-18, 2026-10-19, and 6 more through 2026-10-25. 2026-10-02, 2026-10-03, 2026-10-04, and 12 more through 2026-10-16 coverage incomplete.",
+      "coverageNote": "Observed through 2026-10-01. Later checks returned no nonstop on 2026-10-17, 2026-10-18, 2026-10-19, and 6 more through 2026-10-25. 2026-10-02, 2026-10-03, 2026-10-04, and 12 more through 2026-10-16 coverage incomplete."
     },
     {
       "origin": "LAS",
@@ -9073,13 +10315,16 @@
         "2026-10-19",
         "2026-10-20",
         "2026-10-21",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "firstObservedDate": "2026-09-25",
-      "lastObservedDate": "2026-10-22",
-      "futureDepartureCount": 37,
-      "futureCheckedDates": 13,
-      "departuresPhrase": "37 departures across 13 checked dates.",
+      "lastObservedDate": "2026-10-25",
+      "futureDepartureCount": 47,
+      "futureCheckedDates": 16,
+      "departuresPhrase": "47 departures across 16 checked dates.",
       "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "1183",
@@ -9110,9 +10355,9 @@
         "2026-10-13",
         "2026-10-14"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
-      "coverageNote": "37 departures across 13 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
+      "coverageNote": "47 departures across 16 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "LAS",
@@ -9160,13 +10405,16 @@
         "2026-10-19",
         "2026-10-20",
         "2026-10-21",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "firstObservedDate": "2026-09-25",
-      "lastObservedDate": "2026-10-22",
-      "futureDepartureCount": 13,
-      "futureCheckedDates": 13,
-      "departuresPhrase": "13 departures across 13 checked dates.",
+      "lastObservedDate": "2026-10-25",
+      "futureDepartureCount": 16,
+      "futureCheckedDates": 16,
+      "departuresPhrase": "16 departures across 16 checked dates.",
       "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "1876"
@@ -9194,9 +10442,9 @@
         "2026-10-13",
         "2026-10-14"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
-      "coverageNote": "13 departures across 13 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
+      "coverageNote": "16 departures across 16 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "LAS",
@@ -9214,14 +10462,17 @@
         "2026-10-19",
         "2026-10-20",
         "2026-10-21",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "firstObservedDate": "2026-09-26",
-      "lastObservedDate": "2026-10-22",
-      "futureDepartureCount": 17,
-      "futureCheckedDates": 11,
-      "departuresPhrase": "17 departures across 11 checked dates.",
-      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency.",
+      "lastObservedDate": "2026-10-25",
+      "futureDepartureCount": 22,
+      "futureCheckedDates": 14,
+      "departuresPhrase": "22 departures across 14 checked dates.",
+      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "2045",
         "3837"
@@ -9251,9 +10502,9 @@
         "2026-10-15",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
-      "coverageNote": "17 departures across 11 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
+      "coverageNote": "22 departures across 14 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "LAS",
@@ -9291,14 +10542,17 @@
         "2026-10-19",
         "2026-10-20",
         "2026-10-21",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "firstObservedDate": "2026-09-26",
-      "lastObservedDate": "2026-10-22",
-      "futureDepartureCount": 38,
-      "futureCheckedDates": 11,
-      "departuresPhrase": "38 departures across 11 checked dates.",
-      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency.",
+      "lastObservedDate": "2026-10-25",
+      "futureDepartureCount": 48,
+      "futureCheckedDates": 14,
+      "departuresPhrase": "48 departures across 14 checked dates.",
+      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "1849",
         "3019",
@@ -9331,9 +10585,9 @@
         "2026-10-15",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
-      "coverageNote": "38 departures across 11 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
+      "coverageNote": "48 departures across 14 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "LAX",
@@ -9583,14 +10837,17 @@
         "2026-10-19",
         "2026-10-20",
         "2026-10-21",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "firstObservedDate": "2026-09-25",
-      "lastObservedDate": "2026-10-22",
-      "futureDepartureCount": 19,
-      "futureCheckedDates": 12,
-      "departuresPhrase": "19 departures across 12 checked dates.",
-      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency.",
+      "lastObservedDate": "2026-10-25",
+      "futureDepartureCount": 24,
+      "futureCheckedDates": 15,
+      "departuresPhrase": "24 departures across 15 checked dates.",
+      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "2046",
         "3838"
@@ -9619,9 +10876,9 @@
         "2026-10-14",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
-      "coverageNote": "19 departures across 12 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
+      "coverageNote": "24 departures across 15 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "OAK",
@@ -9898,14 +11155,17 @@
         "2026-10-19",
         "2026-10-20",
         "2026-10-21",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "firstObservedDate": "2026-09-25",
-      "lastObservedDate": "2026-10-22",
-      "futureDepartureCount": 11,
-      "futureCheckedDates": 11,
-      "departuresPhrase": "11 departures across 11 checked dates.",
-      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency.",
+      "lastObservedDate": "2026-10-25",
+      "futureDepartureCount": 14,
+      "futureCheckedDates": 14,
+      "departuresPhrase": "14 departures across 14 checked dates.",
+      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "1448"
       ],
@@ -9934,9 +11194,9 @@
         "2026-10-15",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
-      "coverageNote": "11 departures across 11 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
+      "coverageNote": "14 departures across 14 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "SFO",
@@ -9975,14 +11235,17 @@
         "2026-10-19",
         "2026-10-20",
         "2026-10-21",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "firstObservedDate": "2026-09-25",
-      "lastObservedDate": "2026-10-22",
-      "futureDepartureCount": 26,
-      "futureCheckedDates": 11,
-      "departuresPhrase": "26 departures across 11 checked dates.",
-      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency.",
+      "lastObservedDate": "2026-10-25",
+      "futureDepartureCount": 34,
+      "futureCheckedDates": 14,
+      "departuresPhrase": "34 departures across 14 checked dates.",
+      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "1094",
         "1230",
@@ -10015,9 +11278,9 @@
         "2026-10-15",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
-      "coverageNote": "26 departures across 11 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
+      "coverageNote": "34 departures across 14 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "SFO",
@@ -10036,14 +11299,17 @@
         "2026-10-19",
         "2026-10-20",
         "2026-10-21",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "firstObservedDate": "2026-09-25",
-      "lastObservedDate": "2026-10-22",
-      "futureDepartureCount": 11,
-      "futureCheckedDates": 11,
-      "departuresPhrase": "11 departures across 11 checked dates.",
-      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency.",
+      "lastObservedDate": "2026-10-25",
+      "futureDepartureCount": 14,
+      "futureCheckedDates": 14,
+      "departuresPhrase": "14 departures across 14 checked dates.",
+      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "2930"
       ],
@@ -10072,9 +11338,9 @@
         "2026-10-15",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
-      "coverageNote": "11 departures across 11 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
+      "coverageNote": "14 departures across 14 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "SFO",
@@ -10163,14 +11429,17 @@
         "2026-10-19",
         "2026-10-20",
         "2026-10-21",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "firstObservedDate": "2026-09-25",
-      "lastObservedDate": "2026-10-22",
-      "futureDepartureCount": 38,
-      "futureCheckedDates": 11,
-      "departuresPhrase": "38 departures across 11 checked dates.",
-      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency.",
+      "lastObservedDate": "2026-10-25",
+      "futureDepartureCount": 48,
+      "futureCheckedDates": 14,
+      "departuresPhrase": "48 departures across 14 checked dates.",
+      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "1850",
         "2486",
@@ -10203,9 +11472,9 @@
         "2026-10-15",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
-      "coverageNote": "38 departures across 11 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
+      "coverageNote": "48 departures across 14 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "SFO",
@@ -10222,13 +11491,14 @@
         "2026-10-18",
         "2026-10-19",
         "2026-10-20",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-24"
       ],
       "firstObservedDate": "2026-09-26",
-      "lastObservedDate": "2026-10-22",
-      "futureDepartureCount": 16,
-      "futureCheckedDates": 10,
-      "departuresPhrase": "16 departures across 10 checked dates.",
+      "lastObservedDate": "2026-10-24",
+      "futureDepartureCount": 17,
+      "futureCheckedDates": 11,
+      "departuresPhrase": "17 departures across 11 checked dates.",
       "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "2858",
@@ -10242,7 +11512,9 @@
       },
       "emptyDates": [],
       "blockedDates": [
-        "2026-10-21"
+        "2026-10-21",
+        "2026-10-23",
+        "2026-10-25"
       ],
       "uncheckedDates": [
         "2026-10-02",
@@ -10261,9 +11533,9 @@
         "2026-10-15",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
-      "coverageNote": "16 departures across 10 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
+      "coverageNote": "17 departures across 11 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "SFO",
@@ -10311,14 +11583,16 @@
         "2026-10-01",
         "2026-10-18",
         "2026-10-19",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-25"
       ],
       "firstObservedDate": "2026-09-25",
-      "lastObservedDate": "2026-10-22",
-      "futureDepartureCount": 6,
-      "futureCheckedDates": 9,
-      "departuresPhrase": "6 departures across 9 checked dates.",
-      "weekdayLabel": "Sun, Mon, Thu observed on the checked dates. This is not a published weekly frequency.",
+      "lastObservedDate": "2026-10-25",
+      "futureDepartureCount": 8,
+      "futureCheckedDates": 12,
+      "departuresPhrase": "8 departures across 12 checked dates.",
+      "weekdayLabel": "Sun, Mon, Thu, Fri observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "1160",
         "2678"
@@ -10332,7 +11606,8 @@
       "emptyDates": [
         "2026-10-17",
         "2026-10-20",
-        "2026-10-21"
+        "2026-10-21",
+        "2026-10-24"
       ],
       "blockedDates": [],
       "uncheckedDates": [
@@ -10355,9 +11630,9 @@
         "2026-10-15",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
-      "coverageNote": "6 departures across 9 checked dates. Sun, Mon, Thu observed on the checked dates. This is not a published weekly frequency."
+      "coverageNote": "8 departures across 12 checked dates. Sun, Mon, Thu, Fri observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "SFO",
@@ -10391,7 +11666,10 @@
         "2026-10-19",
         "2026-10-20",
         "2026-10-21",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "uncheckedDates": [
         "2026-09-30",
@@ -10411,7 +11689,7 @@
         "2026-10-15",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
       "coverageNote": "4 departures across 4 checked dates. Sun, Mon, Tue, Thu observed. 4 dates checked, so this is not a weekly frequency."
     },
@@ -10432,14 +11710,17 @@
         "2026-10-19",
         "2026-10-20",
         "2026-10-21",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "firstObservedDate": "2026-09-25",
-      "lastObservedDate": "2026-10-22",
-      "futureDepartureCount": 11,
-      "futureCheckedDates": 11,
-      "departuresPhrase": "11 departures across 11 checked dates.",
-      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency.",
+      "lastObservedDate": "2026-10-25",
+      "futureDepartureCount": 14,
+      "futureCheckedDates": 14,
+      "departuresPhrase": "14 departures across 14 checked dates.",
+      "weekdayLabel": "Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency.",
       "flightNumbers": [
         "3382"
       ],
@@ -10468,9 +11749,9 @@
         "2026-10-15",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
-      "coverageNote": "11 departures across 11 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
+      "coverageNote": "14 departures across 14 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "SFO",
@@ -10503,7 +11784,10 @@
         "2026-10-19",
         "2026-10-20",
         "2026-10-21",
-        "2026-10-22"
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
       ],
       "uncheckedDates": [
         "2026-09-29",
@@ -10524,7 +11808,7 @@
         "2026-10-15",
         "2026-10-16"
       ],
-      "lastCheckDate": "2026-10-22",
+      "lastCheckDate": "2026-10-25",
       "gapNote": null,
       "coverageNote": "3 departures across 3 checked dates. Sun, Mon, Thu observed. 3 dates checked, so this is not a weekly frequency."
     },
@@ -10572,19 +11856,19 @@
       "origin": "LAS",
       "destination": "BUR",
       "signal": "possible_gap",
-      "text": "Observed through 2026-10-01. Later checks returned no nonstop on 2026-10-17, 2026-10-18, 2026-10-19, and 3 more through 2026-10-22. 2026-10-02, 2026-10-03, 2026-10-04, and 12 more through 2026-10-16 coverage incomplete."
+      "text": "Observed through 2026-10-01. Later checks returned no nonstop on 2026-10-17, 2026-10-18, 2026-10-19, and 6 more through 2026-10-25. 2026-10-02, 2026-10-03, 2026-10-04, and 12 more through 2026-10-16 coverage incomplete."
     },
     {
       "origin": "LAS",
       "destination": "LAX",
       "signal": "coverage_problem",
-      "text": "37 departures across 13 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
+      "text": "47 departures across 16 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "LAS",
       "destination": "OAK",
       "signal": "coverage_problem",
-      "text": "17 departures across 11 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
+      "text": "22 departures across 14 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "LAS",
@@ -10596,7 +11880,7 @@
       "origin": "LAS",
       "destination": "SFO",
       "signal": "coverage_problem",
-      "text": "38 departures across 11 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
+      "text": "48 departures across 14 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "LAX",
@@ -10626,7 +11910,7 @@
       "origin": "OAK",
       "destination": "LAS",
       "signal": "coverage_problem",
-      "text": "19 departures across 12 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
+      "text": "24 departures across 15 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "OAK",
@@ -10668,19 +11952,19 @@
       "origin": "SFO",
       "destination": "LAS",
       "signal": "coverage_problem",
-      "text": "38 departures across 11 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
+      "text": "48 departures across 14 checked dates. Sun, Mon, Tue, Wed, Thu, Fri, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "SFO",
       "destination": "LAX",
       "signal": "coverage_problem",
-      "text": "16 departures across 10 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
+      "text": "17 departures across 11 checked dates. Sun, Mon, Tue, Wed, Thu, Sat observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "SFO",
       "destination": "ONT",
       "signal": "coverage_problem",
-      "text": "6 departures across 9 checked dates. Sun, Mon, Thu observed on the checked dates. This is not a published weekly frequency."
+      "text": "8 departures across 12 checked dates. Sun, Mon, Thu, Fri observed on the checked dates. This is not a published weekly frequency."
     },
     {
       "origin": "SFO",

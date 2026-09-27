@@ -154,7 +154,12 @@ describe("route change diff", () => {
     const extended = structuredClone(snap);
     const pair = extended.pairs["OAK|LAS"];
     expect(pair).toBeTruthy();
-    pair?.flights.push("2026-10-23|2046|2026-10-23T10:17:00");
+    const last = [...(pair?.flights ?? [])].map((row) => row.slice(0, 10)).sort().at(-1);
+    expect(last).toBeTruthy();
+    const next = new Date(`${last}T00:00:00Z`);
+    next.setUTCDate(next.getUTCDate() + 1);
+    const later = next.toISOString().slice(0, 10);
+    pair?.flights.push(`${later}|2046|${later}T10:17:00`);
     const once = diffSnapshots(snap, extended, TODAY);
     expect(once.map((item) => item.type)).toContain("schedule_extended");
     expect(once.map((item) => item.type)).toContain("more_flights");

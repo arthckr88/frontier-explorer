@@ -1,10 +1,10 @@
 {
   "confirmedPairs": 21,
   "listedCandidates": 5874,
-  "futureFlights": 305,
-  "checked": 276,
-  "blocked": 122,
-  "empty": 72,
+  "futureFlights": 377,
+  "checked": 322,
+  "blocked": 136,
+  "empty": 79,
   "unchecked": 306,
   "lastRetrieval": null,
   "priorityIncomplete": [
