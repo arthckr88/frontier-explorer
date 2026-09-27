@@ -54,6 +54,8 @@ export type RouteStatus = "observed" | "future" | "possible_gap" | "unknown" | "
 export type ArcKind = "near_term" | "future_only" | "none";
 export type LineWeight = 0 | 1 | 2;
 
+export type ScheduleProvenance = "frontier_booking" | "flightaware_schedule" | "frontier_newsroom";
+
 export type Observation = {
   origin: string;
   destination: string;
@@ -65,7 +67,18 @@ export type Observation = {
   arrivalUtc: string;
   source: string;
   retrievedAt: string | null;
+  provenance?: ScheduleProvenance;
+  /** A second source for the same flight. Kept for disagreement, not counted as another departure. */
+  corroboration?: boolean;
 };
+
+export function verificationPairs(origins?: readonly string[]): Array<{ origin: string; destination: string }> {
+  const allow = new Set(origins ?? PRIORITY_AIRPORTS);
+  return PRIORITY_CORRIDORS.filter(([origin, destination]) => allow.has(origin) && allow.has(destination)).map(([origin, destination]) => ({
+    origin,
+    destination,
+  }));
+}
 
 export type Check = {
   origin: string;
@@ -240,7 +253,7 @@ export function describePair(
   today: string,
 ): RouteSummary {
   const flights = observations
-    .filter((flight) => flight.origin === origin && flight.destination === destination)
+    .filter((flight) => flight.origin === origin && flight.destination === destination && flight.corroboration !== true)
     .sort((left, right) => compareIso(left.date, right.date) || left.departureLocal.localeCompare(right.departureLocal));
   const pairChecks = checks
     .filter((check) => check.origin === origin && check.destination === destination)

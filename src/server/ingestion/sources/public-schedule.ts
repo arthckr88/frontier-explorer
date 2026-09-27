@@ -6,6 +6,7 @@ import { sourceCache } from "@/server/db/schema";
 import { parseBookingMarkets, parsePublicScheduleHtml, type PublicFlight } from "@/server/ingestion/parse/public-schedule";
 import type { SourceRunResult } from "@/server/ingestion/types";
 import { PRIORITY_AIRPORTS } from "@/server/preferences/defaults";
+import { MAX_UPDATE_REQUESTS, verificationPairs } from "@/site/view";
 import type { Observation } from "@/types/domain";
 
 const SOURCE_ID = "frontier-public-schedule";
@@ -42,7 +43,7 @@ export async function fetchPublicSchedule(options: PublicScheduleOptions = {}): 
     };
   }
   const markets = parseBookingMarkets(homepage.body);
-  const pairs = priorityPairs(markets);
+  const pairs = verificationPairs(scheduleOrigins());
   if (pairs.length === 0) {
     return {
       sourceId: SOURCE_ID,
@@ -62,7 +63,7 @@ export async function fetchPublicSchedule(options: PublicScheduleOptions = {}): 
   const accums = new Map<string, PairAccum>();
   let failedDates = 0;
   let cursor = 0;
-  const tasks = pairs.flatMap((pair) => dates.map((date) => ({ ...pair, date })));
+  const tasks = pairs.flatMap((pair) => dates.map((date) => ({ ...pair, date }))).slice(0, MAX_UPDATE_REQUESTS);
 
   async function worker() {
     let session: CookieJar | null = null;
@@ -143,22 +144,6 @@ function scheduleOrigins() {
     .map((code) => code.trim().toUpperCase())
     .filter((code) => (PRIORITY_AIRPORTS as readonly string[]).includes(code));
   return requested && requested.length > 0 ? requested : [...PRIORITY_AIRPORTS];
-}
-
-function priorityPairs(markets: Map<string, string[]>) {
-  const priority = new Set<string>(PRIORITY_AIRPORTS);
-  const pairs: { origin: string; destination: string }[] = [];
-  for (const origin of scheduleOrigins()) {
-    const destinations = markets.get(origin) ?? [];
-    const ordered = [
-      ...destinations.filter((destination) => priority.has(destination)),
-      ...destinations.filter((destination) => !priority.has(destination)),
-    ];
-    for (const destination of ordered) {
-      if (destination !== origin) pairs.push({ origin, destination });
-    }
-  }
-  return pairs;
 }
 
 function priorityRouteGaps(markets: Map<string, string[]>, stored: Set<string>) {

@@ -33,7 +33,7 @@ async function main() {
     console.log("No booking dates to check inside the rolling windows.");
     return;
   }
-  console.log(`Checking ${plan.length} booking dates with concurrency ${concurrency()}. Priority corridors and confirmed routes only.`);
+  console.log(`Checking ${plan.length} booking dates with concurrency ${concurrency()}. Priority corridors only. This is verification, not a full-network crawl.`);
   await mapPool(plan, concurrency(), async (request) => {
     await pause(250);
     const key = `${request.origin}|${request.destination}|${request.date}`;

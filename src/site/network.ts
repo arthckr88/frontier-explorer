@@ -76,6 +76,8 @@ export type ScheduleInput = {
     departureUtc: string;
     arrivalUtc: string;
     retrievedAt?: string | null;
+    provenance?: "frontier_booking" | "flightaware_schedule" | "frontier_newsroom";
+    corroboration?: boolean;
   }>;
   routes?: Array<{ origin: string; destination: string; provenance?: string }>;
   checked?: string[];
@@ -144,8 +146,10 @@ export function normalizeObservations(schedule: ScheduleInput, refreshedAt: stri
       arrivalLocal: flight.arrivalLocal,
       departureUtc: flight.departureUtc,
       arrivalUtc: flight.arrivalUtc,
-      source: SOURCE_NAME,
+      source: flight.provenance === "flightaware_schedule" ? "FlightAware published schedule" : flight.provenance === "frontier_newsroom" ? "Announced by Frontier" : SOURCE_NAME,
       retrievedAt: flight.retrievedAt ?? refreshedAt,
+      ...(flight.provenance && flight.provenance !== "frontier_booking" ? { provenance: flight.provenance } : {}),
+      ...(flight.corroboration ? { corroboration: true } : {}),
     });
   }
   observations.sort(compareObservations);

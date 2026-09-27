@@ -68,50 +68,18 @@ export function planScheduleChecks(input: PlanInput): PlannedCheck[] {
     .map(([origin, destination]) => nextDateForPair(origin, destination, true, context))
     .filter((item): item is PlannedCheck => item !== null)
     .sort(comparePlans);
-  const confirmedItems = [...flightsByPair.keys()]
-    .filter((key) => {
-      const [origin, destination] = key.split("|");
-      return origin && destination && !isCorridor(origin, destination);
-    })
-    .map((key) => {
-      const [origin, destination] = key.split("|");
-      return nextDateForPair(origin ?? "", destination ?? "", false, context);
-    })
-    .filter((item): item is PlannedCheck => item !== null)
-    .sort(comparePlans);
-
-  const reserved = Math.min(confirmedItems.length, Math.max(0, limit - 8));
-  const corridorBudget = Math.max(0, limit - reserved);
   const chosen: PlannedCheck[] = [];
   const seen = new Set<string>();
-  const take = (item: PlannedCheck) => {
-    if (chosen.length >= limit) return;
+  for (const item of corridorItems) {
+    if (chosen.length >= limit) break;
     const key = `${item.origin}|${item.destination}|${item.date}`;
-    if (seen.has(key)) return;
-    if (item.reason === "retry-blocked" && chosen.filter((row) => row.reason === "retry-blocked").length >= 4) return;
+    if (seen.has(key)) continue;
+    if (item.reason === "retry-blocked" && chosen.filter((row) => row.reason === "retry-blocked").length >= 4) continue;
+    if (!isCorridor(item.origin, item.destination)) continue;
     seen.add(key);
     chosen.push(item);
-  };
-  for (const item of corridorItems) {
-    if (chosen.length >= corridorBudget) break;
-    take(item);
   }
-  for (const item of confirmedItems) take(item);
-  if (chosen.length < limit) {
-    const listed = (input.routes ?? [])
-      .filter((route) => route.provenance === "listed")
-      .filter((route) => DISCOVERY_AIRPORTS.includes(route.origin as (typeof DISCOVERY_AIRPORTS)[number]))
-      .filter((route) => DISCOVERY_AIRPORTS.includes(route.destination as (typeof DISCOVERY_AIRPORTS)[number]))
-      .sort((left, right) => comparePairs(left.origin, left.destination, right.origin, right.destination));
-    for (const route of listed) {
-      if (chosen.length >= limit) break;
-      const key = pairKey(route.origin, route.destination);
-      if (flightsByPair.has(key) || isCorridor(route.origin, route.destination)) continue;
-      if (checked.has(`${key}|${input.today}`) || blocked.has(`${key}|${input.today}`)) continue;
-      take({ origin: route.origin, destination: route.destination, date: input.today, reason: "listed-probe" });
-    }
-  }
-  return chosen.slice(0, limit);
+  return chosen;
 }
 
 export function applyDayResult(
