@@ -37,6 +37,16 @@
           Date
           <input name="date" type="date" required aria-label="Date" />
         </label>
+        <div id="route-calendar" class="calendar" hidden>
+          <div class="cal-nav">
+            <button type="button" id="cal-prev" aria-label="Previous month">‹</button>
+            <p id="cal-label"></p>
+            <button type="button" id="cal-next" aria-label="Next month">›</button>
+          </div>
+          <div id="cal-months" class="cal-months"></div>
+          <div id="cal-grid" class="cal-grid"></div>
+          <p id="cal-source"></p>
+        </div>
         <label class="field span">
           Sort
           <select name="sort" aria-label="Sort">

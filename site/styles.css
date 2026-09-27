@@ -93,6 +93,79 @@ h1 {
 
 .span { grid-column: 1 / -1; }
 
+.calendar {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 6px;
+}
+
+.calendar[hidden] { display: none !important; }
+
+.cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cal-nav p {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.cal-nav button,
+.calendar .cal-day,
+.calendar .cal-month {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 550;
+  min-height: 28px;
+  padding: 2px;
+}
+
+.cal-nav button {
+  width: 36px;
+  border-color: var(--line);
+  color: var(--text);
+}
+
+.cal-months {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.cal-month { width: auto; padding: 4px 8px; border-color: var(--line); }
+
+.cal-month.is-on,
+.cal-day.is-on {
+  background: var(--accent);
+  color: #090b0d;
+  font-weight: 700;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  text-align: center;
+}
+
+.cal-dow,
+.cal-day {
+  font-size: 0.78rem;
+}
+
+.cal-dow { color: var(--muted); padding: 2px 0; }
+
+.cal-source {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
 label.switch {
   display: flex;
   flex-flow: row nowrap;

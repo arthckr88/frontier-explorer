@@ -52,7 +52,14 @@ let applyingField = false;
 let isolatePath = false;
 let airportFocus = false;
 let showNetwork = false;
+let operatingDays = null;
+let calendarMonth = "";
+let calendarRoute = "";
 const routeCache = new Map();
+const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+document.querySelector("#cal-prev").addEventListener("click", () => stepCalendar(-1));
+document.querySelector("#cal-next").addEventListener("click", () => stepCalendar(1));
 
 load().catch((error) => {
   status.textContent = error instanceof Error ? error.message : "The published schedule did not load.";
@@ -155,15 +162,18 @@ document.querySelector("#new-york").addEventListener("click", () => {
 });
 
 async function load() {
-  const [flightResponse, airportResponse, nonstopResponse] = await Promise.all([
+  const [flightResponse, airportResponse, nonstopResponse, operatingResponse] = await Promise.all([
     fetch("flights.json"),
     fetch("airports.json"),
     fetch("nonstops.json"),
+    fetch("operating-days.json"),
   ]);
   if (!flightResponse.ok) throw new Error("The published schedule did not load.");
   if (!airportResponse.ok) throw new Error("The airport map did not load.");
   if (!nonstopResponse.ok) throw new Error("The nonstop network did not load.");
+  if (!operatingResponse.ok) throw new Error("The operating calendar did not load.");
   schedule = await flightResponse.json();
+  operatingDays = await operatingResponse.json();
   networkFile = await nonstopResponse.json();
   airports = new Map((await airportResponse.json()).map((airport) => [airport.iata, airport]));
   arcs = buildArcs();
@@ -218,6 +228,7 @@ function tripSelected() {
 }
 
 function showSelectedAirport() {
+  document.querySelector("#route-calendar").hidden = true;
   const from = readEndpoint("from");
   if (!from.codes.length) return;
   const maxStops = Number(form.elements.stops.value);
@@ -274,11 +285,13 @@ function search() {
   originPick = from.codes[0] ?? "";
   if (!from.codes.length) {
     status.textContent = "Choose a starting airport.";
+    document.querySelector("#route-calendar").hidden = true;
     paintRoutes();
     return;
   }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     status.textContent = "Enter a date.";
+    document.querySelector("#route-calendar").hidden = true;
     paintRoutes();
     return;
   }
@@ -288,10 +301,12 @@ function search() {
   showNetwork = false;
   const published = publishedTripSegments(from.codes, destinations, maxStops);
   for (const segment of published.segments) pathPairs.add(segment);
+  const coverage = renderRouteCalendar();
+  const datedFlights = schedule.flights.concat(operatingFlights(from.codes, destinations, date));
   let hidden = 0;
   let itineraries = [];
   for (const origin of from.codes) {
-    const found = searchPublished(schedule.flights, {
+    const found = searchPublished(datedFlights, {
       from: origin,
       to: destinations,
       date,
@@ -310,7 +325,8 @@ function search() {
   }
   const alternatives = savedTripDates(from.codes, destinations, maxStops).filter((hit) => hit.date !== date);
   if (visible.length === 0) {
-    if (published.direct.size) status.textContent = `${title}. Published nonstop, no saved departure on ${date}.`;
+    if (coverage?.kind === "month") status.textContent = `${title}. ${coverage.sentence}`;
+    else if (published.direct.size) status.textContent = `${title}. No departure on ${date}. Operating days are marked on the calendar.`;
     else if (published.segments.size) status.textContent = `${title}. Published connection, no saved departure on ${date}.`;
     else if (itineraries.length > 0) status.textContent = filterEmptyMessage(filtered.hidden, title, date);
     else if (hidden > 0) status.textContent = `No daytime itinerary for ${title} on ${date}.`;
@@ -1292,6 +1308,7 @@ function clearSearch() {
   form.elements.hub.value = hub;
   connectionHubs = [];
   pressStarts();
+  document.querySelector("#route-calendar").hidden = true;
   paintRoutes();
   fitCurrentRoutes();
   const dates = publishedDates();
@@ -1319,6 +1336,250 @@ function badge(text, kind) {
   span.className = kind ? `badge ${kind}` : "badge";
   span.textContent = text;
   return span;
+}
+
+function stepCalendar(delta) {
+  if (!calendarMonth) return;
+  const coverage = routeCoverage(readEndpoint("from").codes, readEndpoint("to").codes.filter((code) => !readEndpoint("from").codes.includes(code)));
+  const [minMonth, maxMonth] = calendarBounds(coverage);
+  const next = shiftMonth(calendarMonth, delta);
+  if (next < minMonth || next > maxMonth) return;
+  calendarMonth = next;
+  renderRouteCalendar();
+}
+
+function shiftMonth(month, delta) {
+  const [year, index] = month.split("-").map(Number);
+  const date = new Date(Date.UTC(year, index - 1 + delta, 1));
+  return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
+}
+
+function shiftIsoDate(iso, days) {
+  const date = new Date(`${iso}T00:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
+function formatMonth(month) {
+  const [year, index] = month.split("-");
+  return `${MONTH_NAMES[Number(index) - 1]} ${year}`;
+}
+
+function formatLong(iso) {
+  const [year, month, day] = iso.split("-");
+  return `${MONTH_NAMES[Number(month) - 1]} ${Number(day)}, ${year}`;
+}
+
+function pairKeys(origins, destinations) {
+  const keys = [];
+  for (const origin of origins) {
+    for (const destination of destinations) {
+      if (origin !== destination) keys.push(`${origin}|${destination}`);
+    }
+  }
+  return keys;
+}
+
+function routeCoverage(origins, destinations) {
+  const keys = pairKeys(origins, destinations);
+  const daily = operatingDays?.daily;
+  const monthly = operatingDays?.monthly;
+  const records = [];
+  const months = new Set();
+  for (const key of keys) {
+    for (const record of daily?.flights?.[key] ?? []) records.push(record);
+    for (const month of monthly?.pairs?.[key] ?? []) months.add(month);
+  }
+  const dailyDates = new Set(records.map((record) => record.slice(0, 10)));
+  const savedDates = new Set();
+  for (const flight of schedule?.flights ?? []) {
+    if (origins.includes(flight.origin) && destinations.includes(flight.destination)) savedDates.add(flight.date);
+  }
+  const monthList = [...months].sort();
+  let kind = "none";
+  let sentence = "";
+  if (dailyDates.size || savedDates.size) {
+    kind = "day";
+    sentence = daily?.sentence ?? "";
+    const savedList = [...savedDates].filter((date) => !dailyDates.has(date)).sort();
+    if (savedList.length) sentence = `${sentence} Saved flight times also mark ${savedList[0]} through ${savedList[savedList.length - 1]}.`.trim();
+  } else if (monthList.length) {
+    kind = "month";
+    const named = monthList.length <= 4
+      ? monthList.map(formatMonth).reduce((text, name, index, list) => {
+        if (index === 0) return name;
+        if (index === list.length - 1) return `${text} and ${name}`;
+        return `${text}, ${name}`;
+      }, "")
+      : `${monthList.length} months`;
+    sentence = `${monthly.sourceName} reports for July 2025 through June 2026 show this Frontier nonstop in ${named}, and daily dates are not in that source or in ${daily.sourceName} from ${formatLong(daily.periodStart)} through ${formatLong(daily.periodEnd)}.`;
+  } else if (daily && monthly) {
+    sentence = `No Frontier departure for this pair is in ${daily.sourceName} from ${formatLong(daily.periodStart)} through ${formatLong(daily.periodEnd)}, or in ${monthly.sourceName} for July 2025 through June 2026.`;
+  }
+  return { kind, sentence, records, dailyDates, savedDates, months: monthList };
+}
+
+function calendarBounds(coverage) {
+  const daily = operatingDays?.daily;
+  const monthly = operatingDays?.monthly;
+  const marks = [...coverage.dailyDates, ...coverage.savedDates].map((date) => date.slice(0, 7)).sort();
+  const start = coverage.kind === "month" ? monthly.periodStart : daily?.periodStart?.slice(0, 7);
+  const end = coverage.kind === "month" ? monthly.periodEnd : daily?.periodEnd?.slice(0, 7);
+  return [marks[0] && marks[0] < start ? marks[0] : start, marks.at(-1) && marks.at(-1) > end ? marks.at(-1) : end];
+}
+
+function operatingFlights(origins, destinations, date) {
+  const flights = [];
+  for (const key of pairKeys(origins, destinations)) {
+    for (const record of operatingDays?.daily?.flights?.[key] ?? []) {
+      if (!record.startsWith(date)) continue;
+      const [origin, destination] = key.split("|");
+      flights.push(publishedFromRecord(origin, destination, record));
+    }
+  }
+  return flights;
+}
+
+function publishedFromRecord(origin, destination, record) {
+  const [date, flightNumber, departure, arrival, rolled] = record.split("|");
+  const departureLocal = `${date}T${departure.slice(0, 2)}:${departure.slice(2)}:00`;
+  const arrivalDate = rolled === "1" ? shiftIsoDate(date, 1) : date;
+  const arrivalLocal = `${arrivalDate}T${arrival.slice(0, 2)}:${arrival.slice(2)}:00`;
+  return {
+    origin,
+    destination,
+    flightNumber,
+    date,
+    departureLocal,
+    arrivalLocal,
+    departureUtc: zonedLocalToUtc(departureLocal, airports.get(origin)?.timezone),
+    arrivalUtc: zonedLocalToUtc(arrivalLocal, airports.get(destination)?.timezone),
+  };
+}
+
+function zonedLocalToUtc(localIso, timeZone) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(localIso);
+  if (!match || !timeZone) return `${localIso}Z`;
+  const desired = Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]), Number(match[4]), Number(match[5]));
+  let utc = desired;
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", {
+      timeZone,
+      hourCycle: "h23",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    }).formatToParts(new Date(utc)).map((part) => [part.type, part.value]));
+    const shown = Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day), Number(parts.hour) % 24, Number(parts.minute), Number(parts.second));
+    const next = utc - (shown - desired);
+    if (next === utc) break;
+    utc = next;
+  }
+  return new Date(utc).toISOString().replace(".000Z", "Z");
+}
+
+function renderRouteCalendar() {
+  const box = document.querySelector("#route-calendar");
+  const from = readEndpoint("from");
+  const to = readEndpoint("to");
+  const destinations = to.codes.filter((code) => !from.codes.includes(code));
+  if (!operatingDays || !from.codes.length || !destinations.length) {
+    box.hidden = true;
+    return null;
+  }
+  const coverage = routeCoverage(from.codes, destinations);
+  const routeKey = pairKeys(from.codes, destinations).join(",");
+  const [minMonth, maxMonth] = calendarBounds(coverage);
+  if (calendarRoute !== routeKey || !calendarMonth) {
+    calendarRoute = routeKey;
+    const selected = form.elements.date.value.slice(0, 7);
+    const markedMonths = new Set([...coverage.dailyDates, ...coverage.savedDates].map((date) => date.slice(0, 7)));
+    if (coverage.kind === "day" && markedMonths.has(selected)) calendarMonth = selected;
+    else if (coverage.kind === "month") calendarMonth = coverage.months.at(-1);
+    else if (markedMonths.size) calendarMonth = [...markedMonths].sort().at(-1);
+    else calendarMonth = selected >= minMonth && selected <= maxMonth ? selected : maxMonth;
+  }
+  if (calendarMonth < minMonth) calendarMonth = minMonth;
+  if (calendarMonth > maxMonth) calendarMonth = maxMonth;
+  box.hidden = false;
+  document.querySelector("#cal-label").textContent = formatMonth(calendarMonth);
+  document.querySelector("#cal-prev").disabled = calendarMonth <= minMonth;
+  document.querySelector("#cal-next").disabled = calendarMonth >= maxMonth;
+  const months = document.querySelector("#cal-months");
+  months.replaceChildren();
+  if (coverage.kind === "month") {
+    for (const month of monthsBetween(minMonth, maxMonth)) {
+      const marked = coverage.months.includes(month);
+      const chip = document.createElement(marked ? "button" : "span");
+      chip.className = marked ? "cal-month is-on" : "cal-month";
+      chip.textContent = `${MONTH_NAMES[Number(month.slice(5)) - 1].slice(0, 3)} ${month.slice(0, 4)}`;
+      if (marked) {
+        chip.type = "button";
+        chip.dataset.month = month;
+        chip.addEventListener("click", () => {
+          calendarMonth = month;
+          renderRouteCalendar();
+        });
+      }
+      months.append(chip);
+    }
+  }
+  const markedDays = coverage.kind === "day" ? new Set([...coverage.dailyDates, ...coverage.savedDates]) : new Set();
+  renderDayGrid(calendarMonth, markedDays);
+  document.querySelector("#cal-source").textContent = coverage.sentence;
+  box.dataset.kind = coverage.kind;
+  box.dataset.months = coverage.months.join(",");
+  box.dataset.marked = [...markedDays].sort().join(",");
+  box.dataset.sentence = coverage.sentence;
+  return coverage;
+}
+
+function monthsBetween(start, end) {
+  const months = [];
+  let cursor = start;
+  while (cursor && end && cursor <= end) {
+    months.push(cursor);
+    cursor = shiftMonth(cursor, 1);
+  }
+  return months;
+}
+
+function renderDayGrid(month, marked) {
+  const grid = document.querySelector("#cal-grid");
+  grid.replaceChildren();
+  for (const label of ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]) {
+    const cell = document.createElement("div");
+    cell.className = "cal-dow";
+    cell.textContent = label;
+    grid.append(cell);
+  }
+  const [year, index] = month.split("-").map(Number);
+  const start = new Date(Date.UTC(year, index - 1, 1)).getUTCDay();
+  const days = new Date(Date.UTC(year, index, 0)).getUTCDate();
+  for (let pad = 0; pad < start; pad += 1) grid.append(document.createElement("span"));
+  for (let day = 1; day <= days; day += 1) {
+    const iso = `${month}-${String(day).padStart(2, "0")}`;
+    if (marked.has(iso)) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "cal-day is-on";
+      button.textContent = String(day);
+      button.dataset.date = iso;
+      button.addEventListener("click", () => {
+        form.elements.date.value = iso;
+        search();
+      });
+      grid.append(button);
+    } else {
+      const span = document.createElement("span");
+      span.className = "cal-day";
+      span.textContent = String(day);
+      grid.append(span);
+    }
+  }
 }
 
 function clock(local) {
