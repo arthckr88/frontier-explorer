@@ -9,6 +9,8 @@
     "normalize:network": "tsx src/site/normalize-network.ts",
     "check:integrity": "tsx src/site/check-integrity.ts",
     "update:published": "tsx src/site/update-published.ts",
+    "schedules:frontier": "tsx src/site/schedule/cli.ts",
+    "schedules:frontier:full": "tsx src/site/schedule/cli.ts full",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",

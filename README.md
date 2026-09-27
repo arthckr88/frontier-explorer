@@ -18,9 +18,22 @@ Frontier public booking observations
   → map and search
 ```
 
-`.github/workflows/sync.yml` runs hourly (`17 * * * *`). It checks out the repo, installs dependencies, updates a bounded set of booking dates, normalizes observations and route changes, checks integrity, runs tests, builds Pages, and commits the data artifacts when they changed. It does not call `POST /api/cron`. Concurrency stays at 4, and each run requests at most 20 dates. HTTP 406 is blocked, which means unknown, and is not stored as an empty check.
+`.github/workflows/sync.yml` runs hourly (`17 * * * *`). It checks out the repo, installs dependencies, verifies a bounded set of Frontier booking dates, normalizes observations and route changes, checks integrity, runs tests, builds Pages, and commits the data artifacts when they changed. It does not call `POST /api/cron` and it does not call FlightAware. Concurrency stays at 4, and each run requests at most 20 dates. HTTP 406 is blocked, which means unknown, and is not stored as an empty check. The full booking.flyfrontier.com crawl is stopped. Booking checks are a secondary verification of the priority corridors only. Observations already collected stay in `data/flights.json`.
 
-Priority corridors (both directions, without assuming they exist) are checked before other confirmed routes: OAK–LAS, SFO–LAS, LAS–LAX, LAS–BUR, SFO–LAX, OAK–LAX, SFO–BUR, OAK–BUR, SFO–ONT, OAK–ONT, SFO–SNA, and SAN–LAS. Priority routes use a 45-day horizon. Other confirmed routes use 21 days. The updater backfills holes between observed dates. See `data/RETENTION.md` before letting `flights.json` grow.
+The verifier covers OAK, SFO, LAS, LAX, BUR, SNA, ONT, and SAN, both directions of OAK–LAS, SFO–LAS, LAS–LAX, LAS–BUR, SFO–LAX, OAK–LAX, SFO–BUR, OAK–BUR, SFO–ONT, OAK–ONT, SFO–SNA, and SAN–LAS. It does not assume those routes exist. It backfills holes between observed dates on those corridors. See `data/RETENTION.md` before letting `flights.json` grow.
+
+## FlightAware published schedules
+
+FlightAware is a pluggable `ScheduleProvider`. The first implementation is `FlightAwareScheduleProvider`. `FLIGHTAWARE_API_KEY` is read on the server or in a workflow. It is not written into client JS, git, generated Pages files, logs, or reports. There is no key in this repo yet, so the live import has not been run.
+
+The cheap production plan uses AeroAPI `GET /schedules/{date_start}/{date_end}` filtered to airline `FFT`, one priority corridor, and `max_pages`. That endpoint is $0.020 per result set of up to 15 records (AeroAPI fee table, spec 4.17.1). The $0.005 airport and operator scheduled-flight endpoints only accept a start and end about two days ahead, so they cannot fill the 14-day window. `GET /operators/FFT` ($0.015) is the operator check and is expected to return ICAO `FFT` before any schedule query. A published FlightAware row is `flightaware_schedule` evidence. A Frontier booking row is `frontier_booking` verification. Newsroom text would be `frontier_newsroom` and is not a timed nonstop. If the two schedule sources disagree, both rows are kept and the disagreement is recorded. A blocked booking date stays blocked. A date FlightAware did not fully query stays unchecked. Absence from FlightAware is not a checked-empty booking result. A listed market still cannot draw an arc.
+
+```bash
+npm run schedules:frontier -- near
+npm run schedules:frontier:full
+```
+
+Both commands dry-run unless `--import` is present. `--import` without `FLIGHTAWARE_API_KEY` exits before any request. Do not run `schedules:frontier:full` on a schedule. The weekly workflow `.github/workflows/flightaware-schedule.yml` dry-runs only. Defaults are near 14 days, planning 60, extended 180, and a manual full year. `FLIGHTAWARE_MAX_RUN_COST_USD` defaults to 4.00 and `FLIGHTAWARE_MAX_PAGES` defaults to 2. The near plan's maximum estimated cost is $0.975 (one operator lookup plus 24 corridor queries at 2 pages). Four weekly near imports stay under about $5. The hourly Pages sync does not call FlightAware.
 
 Route changes compare the new snapshot with `data/route-summaries.json`. The event list in `data/route-changes.json` keeps at most 80 events and drops events older than 90 days. An unchanged snapshot does not emit events. Event types are new observation, schedule extended, more flights, fewer flights, possible gap, data blocked, and service reappeared.
 

@@ -2,6 +2,8 @@
 
 GitHub Pages reads Frontier public booking observations from `data/network.json`. That file is built from `data/flights.json`. Listed markets in the same raw file are candidates for the updater, not confirmed nonstops. `data/upcoming.json` is an old third-party sample and is not the live schedule. DOT history in `data/nonstops.json` and `data/operating-days.json` is not the current schedule. Pages does not ship those files.
 
+Frontier booking is now a targeted verifier for OAK, SFO, LAS, LAX, BUR, SNA, ONT, SAN and the priority corridors in both directions. The full booking crawl is stopped. FlightAware published schedules are a separate source (`flightaware_schedule`) behind `FLIGHTAWARE_API_KEY`. That key is not in the client bundle. A FlightAware row does not erase a booking row. Blocked stays blocked. See the README for the dry-run command and the $0.975 near-plan cap.
+
 Every network fact is an observation. An observation records the source id, display name, tier, kind, URL when one exists, retrieval time, external id, and the directional pair. Reconciliation may disagree with an observation. It does not rewrite it.
 
 ## Tiers

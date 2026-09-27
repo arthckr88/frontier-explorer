@@ -5,6 +5,7 @@ const app = readFileSync(new URL("../../site/app.js", import.meta.url), "utf8");
 const pages = readFileSync(new URL("../../scripts/build-pages.mjs", import.meta.url), "utf8");
 const html = readFileSync(new URL("../../site/index.html", import.meta.url), "utf8");
 const workflow = readFileSync(new URL("../../.github/workflows/sync.yml", import.meta.url), "utf8");
+const deploy = readFileSync(new URL("../../.github/workflows/deploy.yml", import.meta.url), "utf8");
 
 describe("GitHub Pages reads the booking observation artifact", () => {
   it("loads network.json and not the 2LNR upcoming file", () => {
@@ -30,5 +31,9 @@ describe("GitHub Pages reads the booking observation artifact", () => {
     expect(workflow).toContain("npm run build:pages");
     expect(workflow).not.toContain("/api/cron");
     expect(workflow).toContain("data/network.json");
+    expect(workflow).not.toContain("schedules:frontier");
+    expect(workflow).not.toContain("FLIGHTAWARE_API_KEY");
+    expect(deploy).not.toContain("cursor/frontier-route-explorer-596d");
+    expect(deploy).toContain("refs/heads/main");
   });
 });

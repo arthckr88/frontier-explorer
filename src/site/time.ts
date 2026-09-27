@@ -16,6 +16,15 @@ export function localToUtc(local: string, zone: string): string | null {
   return value.toUTC().toISO({ suppressMilliseconds: true });
 }
 
+export function utcToLocal(utc: string, zone: string): string | null {
+  if (!zone) return null;
+  const parsed = DateTime.fromISO(utc, { zone: "utc" });
+  if (!parsed.isValid) return null;
+  const local = parsed.setZone(zone);
+  if (!local.isValid) return null;
+  return local.toFormat("yyyy-MM-dd'T'HH:mm:ss");
+}
+
 export function zonedMinutes(startLocal: string, startZone: string, endLocal: string, endZone: string): number {
   const start = DateTime.fromISO(startLocal, { zone: startZone });
   const end = DateTime.fromISO(endLocal, { zone: endZone });

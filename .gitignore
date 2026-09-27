@@ -35,6 +35,9 @@ yarn-error.log*
 .env*
 !.env.example
 
+# FlightAware response cache. Never commit query bodies.
+/data/flightaware-cache.json
+
 # vercel
 .vercel
 

@@ -1,0 +1,42 @@
+name: FlightAware schedule
+
+on:
+  schedule:
+    - cron: "0 15 * * 1"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: near, planning, extended, or full
+        type: choice
+        options:
+          - near
+          - planning
+          - extended
+          - full
+        default: near
+      import:
+        description: Send FlightAware requests. Leave false until the API key is set.
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+      - run: npm ci
+      - name: Dry-run the schedule plan
+        if: github.event_name != 'workflow_dispatch' || inputs.import != true
+        run: npm run schedules:frontier -- ${{ github.event.inputs.mode || 'near' }}
+      - name: Import under the cost cap
+        if: github.event_name == 'workflow_dispatch' && inputs.import == true
+        env:
+          FLIGHTAWARE_API_KEY: ${{ secrets.FLIGHTAWARE_API_KEY }}
+        run: npm run schedules:frontier -- ${{ github.event.inputs.mode || 'near' }} --import
