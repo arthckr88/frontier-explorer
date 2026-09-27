@@ -81,6 +81,10 @@ form.addEventListener("submit", (event) => {
 form.addEventListener("change", (event) => {
   const target = event.target;
   if (!(target instanceof HTMLInputElement || target instanceof HTMLSelectElement)) return;
+  if (target.name === "from-region" || target.name === "to-region") {
+    showRegion();
+    return;
+  }
   if (target.name === "stops" && !tripSelected()) {
     if (readEndpoint("from").codes.length) showSelectedAirport();
     return;
@@ -618,15 +622,125 @@ function arcFrom(origin, destination) {
 
 function nonstopCodes() {
   const codes = new Set();
-  for (const arc of arcs) {
+  for (const arc of visibleArcs()) {
     codes.add(arc.origin);
     codes.add(arc.destination);
+  }
+  if (showNetwork) {
+    for (const key of pathKeys()) {
+      const [origin, destination] = key.split("|");
+      codes.add(origin);
+      codes.add(destination);
+    }
   }
   return codes;
 }
 
 function nonstopPairCount() {
   return arcs.length;
+}
+
+const FLORIDA = new Set(["FLL", "JAX", "MCO", "MIA", "PBI", "PNS", "RSW", "SRQ", "TPA"]);
+const NORTHEAST = new Set(["BDL", "BOS", "BTV", "BUF", "EWR", "ISP", "JFK", "LGA", "MDT", "PHL", "PIT", "PWM", "SYR", "TTN"]);
+const MIDWEST = new Set(["CID", "CLE", "CMH", "DSM", "DTW", "FAR", "FSD", "GRB", "GRR", "IND", "MCI", "MDW", "MKE", "MSN", "MSP", "OMA", "ORD", "STL"]);
+const WEST = new Set(["BOI", "BUR", "DEN", "GEG", "LAS", "LAX", "MSO", "ONT", "PAE", "PDX", "PHX", "PSP", "RNO", "SAN", "SEA", "SFO", "SJC", "SLC", "SMF", "SNA", "TUS"]);
+const SOUTH = new Set(["ATL", "AUS", "BNA", "BWI", "CHS", "CLT", "CRP", "CVG", "DCA", "DFW", "ELP", "IAD", "IAH", "LIT", "MEM", "MSY", "MYR", "OKC", "ORF", "RDU", "RIC", "SAT", "SAV", "TUL", "TYS", "XNA"]);
+const CENTRAL_AMERICA = new Set(["GT", "SV", "HN", "CR", "NI", "PA", "BZ"]);
+const CARIBBEAN = new Set(["PR", "VI", "DO", "JM", "BS", "AW", "AG", "TC", "SX", "CU", "HT", "TT", "BB", "GP", "MQ", "LC", "GD", "KY", "CW", "BQ", "KN", "DM", "VG", "MF", "BL", "AI", "MS"]);
+const US_PARTS = new Set(["west", "midwest", "south", "northeast", "florida"]);
+const EAST_PARTS = new Set(["northeast", "south", "florida"]);
+
+function primaryArea(code) {
+  if (FLORIDA.has(code)) return "florida";
+  if (NORTHEAST.has(code)) return "northeast";
+  if (MIDWEST.has(code)) return "midwest";
+  if (WEST.has(code)) return "west";
+  if (SOUTH.has(code)) return "south";
+  const airport = airports.get(code);
+  if (!airport) return "";
+  if (airport.country === "MX") return "mexico";
+  if (CENTRAL_AMERICA.has(airport.country)) return "central_america";
+  if (CARIBBEAN.has(airport.country)) return "caribbean";
+  return "";
+}
+
+function airportAreas(code) {
+  const part = primaryArea(code);
+  const areas = new Set();
+  if (!part) return areas;
+  areas.add(part);
+  if (US_PARTS.has(part)) areas.add("united_states");
+  if (EAST_PARTS.has(part)) areas.add("east");
+  return areas;
+}
+
+function regionSelection() {
+  return {
+    from: form.elements["from-region"]?.value || "any",
+    to: form.elements["to-region"]?.value || "any",
+  };
+}
+
+function regionArcVisible(origin, destination, from, to) {
+  if (from === "any" && to === "any") return true;
+  const left = airportAreas(origin);
+  const right = airportAreas(destination);
+  if (from === "any") return left.has(to) || right.has(to);
+  if (to === "any") return left.has(from) || right.has(from);
+  if (from === to) return left.has(from) && right.has(to);
+  return (left.has(from) && right.has(to)) || (left.has(to) && right.has(from));
+}
+
+function visibleArcs() {
+  const { from, to } = regionSelection();
+  if (from === "any" && to === "any") return arcs;
+  return arcs.filter((arc) => regionArcVisible(arc.origin, arc.destination, from, to));
+}
+
+function networkIsShowing() {
+  return showNetwork || (!airportFocus && !isolatePath);
+}
+
+function regionLabel(value) {
+  const option = form.elements["from-region"]?.querySelector(`option[value="${value}"]`);
+  return option?.textContent || value;
+}
+
+function sourceSpan() {
+  const daily = operatingDays?.daily;
+  if (!daily) return "";
+  return ` in ${daily.sourceName} from ${formatLong(daily.periodStart)} through ${formatLong(daily.periodEnd)}`;
+}
+
+function sliceDescription() {
+  const { from, to } = regionSelection();
+  if (from === "any" && to === "any") return "";
+  const count = visibleArcs().length;
+  const noun = `${count.toLocaleString()} dated Frontier nonstop${count === 1 ? "" : "s"}`;
+  const source = sourceSpan();
+  if (from === "any" || to === "any") {
+    const label = regionLabel(from === "any" ? to : from);
+    return count
+      ? `${label}: ${noun}${source} with at least one end in ${label}.`
+      : `${label}: no dated Frontier nonstop${source} has an end in ${label}.`;
+  }
+  const left = regionLabel(from);
+  const right = regionLabel(to);
+  if (from === to) {
+    return count
+      ? `${left}: ${noun}${source} entirely inside ${left}.`
+      : `${left}: no dated Frontier nonstop${source} is entirely inside ${left}.`;
+  }
+  return count
+    ? `${left} → ${right}: ${noun}${source}, with one end in each region.`
+    : `${left} → ${right}: no dated Frontier nonstop${source} has one end in each region.`;
+}
+
+function showRegion() {
+  network.textContent = describeNetwork();
+  if (!map || !networkIsShowing()) return;
+  paintRoutes();
+  fitCurrentRoutes();
 }
 
 function noDatedNonstopSentence() {
@@ -636,6 +750,8 @@ function noDatedNonstopSentence() {
 }
 
 function describeNetwork() {
+  const slice = sliceDescription();
+  if (slice) return slice;
   const daily = operatingDays?.daily;
   const pairs = nonstopPairCount();
   if (!daily || !pairs) return "No dated Frontier nonstop is on the map.";
@@ -669,7 +785,7 @@ function routeCollection() {
   const features = [];
   const seen = new Set();
   if (!pathOnly && !airportOnly) {
-    for (const arc of arcs) {
+    for (const arc of visibleArcs()) {
       seen.add(`${arc.origin}|${arc.destination}`);
       features.push(routeFeature(arc, selected, dim));
     }
@@ -737,7 +853,15 @@ function paintRoutes() {
     canvas.dataset.selected = [...pathKeys()].join(",");
     canvas.dataset.focus = [...focusPairs].join(",");
     canvas.dataset.mode = airportFocus && !showNetwork ? "airport" : isolatePath && !showNetwork ? "path" : "network";
+    canvas.dataset.regionFrom = regionSelection().from;
+    canvas.dataset.regionTo = regionSelection().to;
     canvas.dataset.airport = airportFocus ? readEndpoint("from").codes.join(",") : "";
+    const areaCodes = new Set();
+    for (const arc of arcs) {
+      areaCodes.add(arc.origin);
+      areaCodes.add(arc.destination);
+    }
+    canvas.dataset.areas = [...areaCodes].map((code) => `${code}:${primaryArea(code)}`).join(",");
     canvas.dataset.visible = String(collection.features.length);
     canvas.dataset.pairs = collection.features.map((feature) => `${feature.properties.origin}|${feature.properties.destination}`).join(",");
     canvas.dataset.airports = airportsOnMap.features.map((feature) => feature.properties.iata).join(",");
@@ -1312,6 +1436,7 @@ function clearSearch() {
   connectionHubs = [];
   pressStarts();
   document.querySelector("#route-calendar").hidden = true;
+  network.textContent = describeNetwork();
   paintRoutes();
   fitCurrentRoutes();
   const dates = publishedDates();

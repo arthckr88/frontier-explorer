@@ -33,6 +33,38 @@
           <input name="to" type="text" autocomplete="off" spellcheck="false" placeholder="City or code" aria-label="To" aria-autocomplete="list" aria-controls="to-list" enterkeyhint="search" />
           <ul id="to-list" class="suggest" role="listbox" hidden></ul>
         </label>
+        <label class="field">
+          From region
+          <select name="from-region" aria-label="From region">
+            <option value="any" selected>Any</option>
+            <option value="united_states">United States</option>
+            <option value="west">West</option>
+            <option value="midwest">Midwest</option>
+            <option value="south">South</option>
+            <option value="northeast">Northeast</option>
+            <option value="east" title="Northeast, South, and Florida">East</option>
+            <option value="florida">Florida</option>
+            <option value="mexico">Mexico</option>
+            <option value="caribbean">Caribbean</option>
+            <option value="central_america">Central America</option>
+          </select>
+        </label>
+        <label class="field">
+          To region
+          <select name="to-region" aria-label="To region">
+            <option value="any" selected>Any</option>
+            <option value="united_states">United States</option>
+            <option value="west">West</option>
+            <option value="midwest">Midwest</option>
+            <option value="south">South</option>
+            <option value="northeast">Northeast</option>
+            <option value="east" title="Northeast, South, and Florida">East</option>
+            <option value="florida">Florida</option>
+            <option value="mexico">Mexico</option>
+            <option value="caribbean">Caribbean</option>
+            <option value="central_america">Central America</option>
+          </select>
+        </label>
         <label class="field span">
           Date
           <input name="date" type="date" required aria-label="Date" />
