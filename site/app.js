@@ -42,6 +42,7 @@ let map = null;
 let arcs = [];
 let arcIndex = new Set();
 let outbound = new Map();
+let inbound = new Map();
 let originPick = "";
 let pathPairs = new Set();
 let airportPairs = new Set();
@@ -147,6 +148,7 @@ document.querySelector("#network-toggle").addEventListener("click", () => {
   showNetwork = !showNetwork;
   syncNetworkToggle();
   paintRoutes();
+  fitCurrentRoutes();
 });
 
 for (const button of document.querySelectorAll("[data-origin]")) {
@@ -242,13 +244,7 @@ function showSelectedAirport() {
   listReached(reached);
   status.textContent = airportStatus(from, reached, maxStops);
   paintRoutes();
-  const fitCodes = new Set(from.codes);
-  for (const key of airportPairs) {
-    const [origin, destination] = key.split("|");
-    fitCodes.add(origin);
-    fitCodes.add(destination);
-  }
-  fit([...fitCodes], paddingForSheet());
+  fitCurrentRoutes();
 }
 
 function search() {
@@ -285,10 +281,11 @@ function search() {
     return;
   }
   const title = `${endTitle(from)} → ${endTitle(to)}`;
-  const listedPairs = listedDirects(from.codes, destinations);
   const maxStops = Number(form.elements.stops.value);
   isolatePath = true;
   showNetwork = false;
+  const published = publishedTripSegments(from.codes, destinations, maxStops);
+  for (const segment of published.segments) pathPairs.add(segment);
   let hidden = 0;
   let itineraries = [];
   for (const origin of from.codes) {
@@ -308,30 +305,21 @@ function search() {
   const visible = filtered.itineraries;
   if (visible.length > 0) {
     for (const segment of visible[0].segments) pathPairs.add(`${segment.origin}|${segment.destination}`);
-  } else if (itineraries.length === 0 && hidden === 0) {
-    for (const [origin, destination] of listedPairs) pathPairs.add(`${origin}|${destination}`);
   }
+  const alternatives = savedTripDates(from.codes, destinations, maxStops).filter((hit) => hit.date !== date);
   if (visible.length === 0) {
-    if (itineraries.length > 0) {
-      status.textContent = filterEmptyMessage(filtered.hidden, title, date);
-      if (hidden > 0) {
-        status.textContent += ` ${hiddenCopy(hidden)}`;
-        showOvernight.hidden = false;
-      }
-    } else if (hidden > 0) {
-      status.textContent = `No daytime itinerary for ${title} on ${date}. ${hiddenCopy(hidden)}`;
+    if (published.direct.size) status.textContent = `${title}. Published nonstop, no saved departure on ${date}.`;
+    else if (published.segments.size) status.textContent = `${title}. Published connection, no saved departure on ${date}.`;
+    else if (itineraries.length > 0) status.textContent = filterEmptyMessage(filtered.hidden, title, date);
+    else if (hidden > 0) status.textContent = `No daytime itinerary for ${title} on ${date}.`;
+    else status.textContent = `${title}. No saved flight for this route.`;
+    if (hidden > 0) {
+      status.textContent += ` ${hiddenCopy(hidden)}`;
       showOvernight.hidden = false;
-    } else {
-      const alternatives = savedTripDates(from.codes, destinations, maxStops).filter((hit) => hit.date !== date);
-      if (alternatives.length) {
-        status.textContent = `${title}. No saved flight on ${date}.`;
-        showDateChoices(alternatives);
-      } else {
-        status.textContent = `${title}. No saved flight for this route.`;
-      }
     }
+    if (alternatives.length) showDateChoices(alternatives);
     paintRoutes();
-    fit([...from.codes, ...destinations, ...listedPairs.flatMap(([origin, destination]) => [origin, destination])], paddingForSheet());
+    fitCurrentRoutes();
     return;
   }
   status.textContent = `${visible.length} itinerar${visible.length === 1 ? "y" : "ies"} for ${title} on ${date}.`;
@@ -343,7 +331,7 @@ function search() {
   }
   visible.forEach((itinerary, index) => results.append(card(itinerary, date, index === 0, to.notes)));
   paintRoutes();
-  fit(visible[0].segments.flatMap((segment) => [segment.origin, segment.destination]), paddingForSheet());
+  fitCurrentRoutes();
 }
 
 function card(itinerary, date, selected, notes = {}) {
@@ -405,7 +393,7 @@ function focusSavedFlight(article, control, segments, text) {
   focusPairs = new Set();
   status.textContent = text;
   paintRoutes();
-  fit(segments.flatMap((segment) => [segment.origin, segment.destination]), paddingForSheet());
+  fitCurrentRoutes();
 }
 
 function flightStatus(segment) {
@@ -527,9 +515,12 @@ function drawMap() {
     });
     paintRoutes();
     map.on("moveend", () => paintRoutes());
-    if (pathPairs.size === 0 && focusPairs.size === 0 && airportPairs.size === 0) fit([...nonstopCodes()], { left: 420, bottom: 48, right: 40, top: 40 });
+    fitCurrentRoutes();
   });
-  window.addEventListener("resize", () => map?.resize());
+  window.addEventListener("resize", () => {
+    map?.resize();
+    fitCurrentRoutes();
+  });
 }
 
 function buildArcs() {
@@ -537,6 +528,7 @@ function buildArcs() {
   const built = [];
   arcIndex = new Set();
   outbound = new Map();
+  inbound = new Map();
   routeCache.clear();
   for (const pair of networkFile?.pairs ?? []) {
     const key = `${pair.origin}|${pair.destination}`;
@@ -548,6 +540,9 @@ function buildArcs() {
     const next = outbound.get(pair.origin) ?? [];
     next.push(pair.destination);
     outbound.set(pair.origin, next);
+    const previous = inbound.get(pair.destination) ?? [];
+    previous.push(pair.origin);
+    inbound.set(pair.destination, previous);
     built.push(arc);
   }
   return built;
@@ -674,7 +669,7 @@ function routeCollection() {
   for (const key of selected) {
     if (seen.has(key) || airportOnly) continue;
     const [origin, destination] = key.split("|");
-    if (!savedFlightPair(origin, destination)) continue;
+    if (!arcIndex.has(key) && !savedFlightPair(origin, destination)) continue;
     const arc = arcFrom(origin, destination);
     if (!arc) continue;
     features.push(routeFeature(arc, selected, dim));
@@ -733,12 +728,26 @@ function paintRoutes() {
       const point = map.project(feature.geometry.coordinates);
       return `${feature.properties.iata}:${Math.round(point.x)},${Math.round(point.y)}`;
     }).join(";") : "";
+    if (map && collection.features.length) {
+      let minX = Infinity;
+      let minY = Infinity;
+      let maxX = -Infinity;
+      let maxY = -Infinity;
+      for (const feature of collection.features) {
+        for (const coord of feature.geometry.coordinates) {
+          const point = map.project(coord);
+          minX = Math.min(minX, point.x);
+          minY = Math.min(minY, point.y);
+          maxX = Math.max(maxX, point.x);
+          maxY = Math.max(maxY, point.y);
+        }
+      }
+      canvas.dataset.arcBox = [minX, minY, maxX, maxY].map((value) => Math.round(value)).join(",");
+    } else {
+      canvas.dataset.arcBox = "";
+    }
   }
   syncNetworkToggle();
-}
-
-function outboundPairs(code) {
-  return new Set(destinationsFrom(code).map((destination) => `${code}|${destination}`));
 }
 
 function savedDestinations(code) {
@@ -750,60 +759,133 @@ function savedDestinations(code) {
   return [...found].sort();
 }
 
-function destinationsFrom(code) {
-  const found = new Set();
-  for (const route of schedule?.routes ?? []) {
-    if (route.origin === code) found.add(route.destination);
+function hopDistance(starts, reverse) {
+  const dist = new Map();
+  const queue = [];
+  for (const code of starts) {
+    if (dist.has(code)) continue;
+    dist.set(code, 0);
+    queue.push(code);
   }
-  if (found.size === 0) {
-    for (const flight of schedule?.flights ?? []) {
-      if (flight.origin === code) found.add(flight.destination);
+  while (queue.length) {
+    const code = queue.shift();
+    const nextHop = dist.get(code) + 1;
+    for (const next of (reverse ? inbound : outbound).get(code) ?? []) {
+      if (dist.has(next)) continue;
+      dist.set(next, nextHop);
+      queue.push(next);
     }
   }
-  return [...found].sort();
+  return dist;
 }
 
-function hasRoute(origin, destination) {
-  return (schedule?.routes ?? []).some((route) => route.origin === origin && route.destination === destination) || (schedule?.flights ?? []).some((flight) => flight.origin === origin && flight.destination === destination);
+function publishedTripSegments(origins, destinations, maxStops) {
+  const maxHops = maxStops + 1;
+  const destSet = new Set(destinations);
+  const toDest = hopDistance(destinations, true);
+  const segments = new Set();
+  const direct = new Set();
+  for (const origin of origins) {
+    const stack = [{ airport: origin, hops: 0, seen: new Set([origin]), path: [] }];
+    while (stack.length) {
+      const current = stack.pop();
+      if (current.hops >= maxHops) continue;
+      for (const next of outbound.get(current.airport) ?? []) {
+        if (current.seen.has(next)) continue;
+        const arrive = current.hops + 1;
+        const remain = toDest.get(next);
+        if (remain === undefined || arrive + remain > maxHops) continue;
+        const edge = `${current.airport}|${next}`;
+        if (destSet.has(next)) {
+          for (const earlier of current.path) segments.add(earlier);
+          segments.add(edge);
+          if (arrive === 1) direct.add(edge);
+          continue;
+        }
+        if (arrive >= maxHops) continue;
+        const seen = new Set(current.seen);
+        seen.add(next);
+        stack.push({ airport: next, hops: arrive, seen, path: current.path.concat(edge) });
+      }
+    }
+  }
+  return { segments, direct };
 }
 
-function hasScheduled(origin, destination) {
-  return (schedule?.routes ?? []).some((route) => route.origin === origin && route.destination === destination && route.provenance === "scheduled") || (schedule?.flights ?? []).some((flight) => flight.origin === origin && flight.destination === destination);
+function cameraPadding() {
+  const gap = 24;
+  const frame = document.querySelector("#map").getBoundingClientRect();
+  const sheet = document.querySelector(".sheet")?.getBoundingClientRect();
+  const dock = document.querySelector(".dock")?.getBoundingClientRect();
+  const zoom = document.querySelector(".maplibregl-ctrl-top-right")?.getBoundingClientRect();
+  const attrib = document.querySelector(".maplibregl-ctrl-bottom-right")?.getBoundingClientRect();
+  const narrow = frame.width <= 800;
+  const padding = narrow
+    ? {
+        top: Math.max(48, dock && dock.height > 0 ? dock.bottom - frame.top + gap : 0, zoom ? zoom.bottom - frame.top + 8 : 0),
+        right: 20,
+        bottom: Math.max(24, sheet && sheet.height > 0 ? frame.bottom - sheet.top + gap : 0),
+        left: 16,
+      }
+    : {
+        top: Math.max(36, zoom && zoom.height > 0 ? zoom.height + 12 : 0),
+        right: Math.max(48, dock && dock.width > 0 ? frame.right - dock.left + gap : 0, zoom && zoom.width > 0 ? frame.right - zoom.left + 12 : 0),
+        bottom: Math.max(28, attrib && attrib.height > 0 ? frame.bottom - attrib.top + 8 : 0),
+        left: Math.max(48, sheet && sheet.width > 0 ? sheet.right - frame.left + gap : 0),
+      };
+  const minSpan = 96;
+  if (padding.left + padding.right > frame.width - minSpan) {
+    const scale = (frame.width - minSpan) / Math.max(padding.left + padding.right, 1);
+    padding.left = Math.round(padding.left * scale);
+    padding.right = Math.round(padding.right * scale);
+  }
+  if (padding.top + padding.bottom > frame.height - minSpan) {
+    const scale = (frame.height - minSpan) / Math.max(padding.top + padding.bottom, 1);
+    padding.top = Math.round(padding.top * scale);
+    padding.bottom = Math.round(padding.bottom * scale);
+  }
+  return padding;
 }
 
-function fit(codes, padding) {
+function geographicBounds(points) {
+  const lons = points.map((point) => point[0]).sort((left, right) => left - right);
+  const median = lons[Math.floor(lons.length / 2)] ?? 0;
+  let minLon = Infinity;
+  let maxLon = -Infinity;
+  let minLat = Infinity;
+  let maxLat = -Infinity;
+  for (const [lon, lat] of points) {
+    let shifted = lon;
+    while (shifted - median > 180) shifted -= 360;
+    while (median - shifted > 180) shifted += 360;
+    minLon = Math.min(minLon, shifted);
+    maxLon = Math.max(maxLon, shifted);
+    minLat = Math.min(minLat, lat);
+    maxLat = Math.max(maxLat, lat);
+  }
+  const lonPad = Math.max((maxLon - minLon) * 0.04, 0.4);
+  const latPad = Math.max((maxLat - minLat) * 0.04, 0.3);
+  return [[minLon - lonPad, minLat - latPad], [maxLon + lonPad, maxLat + latPad]];
+}
+
+function fitCurrentRoutes() {
   if (!map) return;
-  const bounds = [...codes].reduce((box, code) => {
-    const airport = airports.get(code);
-    if (!airport) return box;
-    if (!box) return [[airport.lon, airport.lat], [airport.lon, airport.lat]];
-    box[0][0] = Math.min(box[0][0], airport.lon);
-    box[0][1] = Math.min(box[0][1], airport.lat);
-    box[1][0] = Math.max(box[1][0], airport.lon);
-    box[1][1] = Math.max(box[1][1], airport.lat);
-    return box;
-  }, null);
-  if (!bounds) return;
-  map.fitBounds(bounds, { padding, maxZoom: 4.8, duration: 500 });
-}
-
-function paddingForSheet() {
-  if (window.innerWidth <= 800) return { top: 150, left: 24, right: 24, bottom: Math.round(window.innerHeight * 0.5) };
-  return { top: 48, left: 430, right: 48, bottom: 48 };
+  const points = [];
+  for (const feature of routeCollection().features) {
+    for (const coord of feature.geometry.coordinates) points.push(coord);
+  }
+  if (!points.length) {
+    for (const code of [...readEndpoint("from").codes, ...readEndpoint("to").codes]) {
+      const airport = airports.get(code);
+      if (airport) points.push([airport.lon, airport.lat]);
+    }
+  }
+  if (!points.length) return;
+  map.fitBounds(geographicBounds(points), { padding: cameraPadding(), duration: 450 });
 }
 
 function publishedDates() {
   return [...new Set((schedule?.flights ?? []).map((flight) => flight.date))].sort();
-}
-
-function listedDirects(origins, destinations) {
-  const pairs = [];
-  for (const origin of origins) {
-    for (const destination of destinations) {
-      if (origin !== destination && hasRoute(origin, destination)) pairs.push([origin, destination]);
-    }
-  }
-  return pairs;
 }
 
 function sortItineraries(itineraries, mode) {
@@ -1196,7 +1278,7 @@ function clearSearch() {
   syncFiltersToggle();
   pressStarts();
   paintRoutes();
-  fit([...nonstopCodes()], window.innerWidth <= 800 ? paddingForSheet() : { left: 420, bottom: 48, right: 40, top: 40 });
+  fitCurrentRoutes();
   const dates = publishedDates();
   status.textContent = openingStatus(dates);
 }
