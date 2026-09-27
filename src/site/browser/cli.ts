@@ -1,8 +1,10 @@
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { DateTime } from "luxon";
 import { cachePath, readFreshCache, selectCached, writeCache } from "@/site/browser/cache";
 import { parseBrowserArgs } from "@/site/browser/form";
+import { mergeBrowserNonstops, readBrowserFareFile, upsertFareResults, type BrowserFareFile } from "@/site/browser/integrate";
+import type { ScheduleInput } from "@/site/network";
 import { classifyBookingPage } from "@/site/browser/parse";
 import { captureBookingPage } from "@/site/browser/playwright-search";
 import { runBrowserQueue } from "@/site/browser/queue";
@@ -45,7 +47,27 @@ async function collectOne(query: BrowserQuery, today: string, force: boolean): P
     mkdirSync(fileURLToPath(CACHE_ROOT), { recursive: true });
     writeFileSync(new URL(`markets-${query.origin}.json`, CACHE_ROOT), `${JSON.stringify(captured.meta.markets, null, 2)}\n`);
   }
-  return sanitizeBrowserResult(stored, currency);
+  const clean = sanitizeBrowserResult(stored, currency);
+  rememberResult(clean);
+  return clean;
+}
+
+function rememberResult(result: BrowserResult) {
+  const fareFile = new URL("../../../data/browser-fares.json", import.meta.url);
+  const flightsFile = new URL("../../../data/flights.json", import.meta.url);
+  let existing: BrowserFareFile["fares"] = [];
+  try {
+    existing = readBrowserFareFile(readFileSync(fareFile, "utf8"));
+  } catch {
+    existing = [];
+  }
+  const fares = upsertFareResults(existing, result);
+  writeFileSync(fareFile, `${JSON.stringify({ source: "frontier_browser", fares }, null, 2)}\n`);
+  const schedule = JSON.parse(readFileSync(flightsFile, "utf8")) as ScheduleInput;
+  const merged = mergeBrowserNonstops(schedule, [result]);
+  if ((merged.flights?.length ?? 0) !== (schedule.flights?.length ?? 0)) {
+    writeFileSync(flightsFile, `${JSON.stringify(merged, null, 2)}\n`);
+  }
 }
 
 main();

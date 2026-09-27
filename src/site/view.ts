@@ -54,7 +54,7 @@ export type RouteStatus = "observed" | "future" | "possible_gap" | "unknown" | "
 export type ArcKind = "near_term" | "future_only" | "none";
 export type LineWeight = 0 | 1 | 2;
 
-export type ScheduleProvenance = "frontier_booking" | "flightaware_schedule" | "frontier_newsroom";
+export type ScheduleProvenance = "frontier_booking" | "flightaware_schedule" | "frontier_newsroom" | "frontier_browser";
 
 export type Observation = {
   origin: string;

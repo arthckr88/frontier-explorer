@@ -34,7 +34,7 @@ export async function captureBookingPage(query: BrowserQuery, now = new Date()):
   try {
     await page.goto(BOOKING_HOME, { waitUntil: "domcontentloaded", timeout: 45_000 });
     await dismissCookies(page);
-    await page.locator("#rboneway").click({ timeout: 15_000 });
+    await page.locator("label[for='rboneway']").click({ timeout: 15_000 });
     await chooseAirport(page, "#origin", query.origin);
     await chooseAirport(page, "#destination", query.destination);
     await pickDepartureDate(page, query.date);
@@ -60,8 +60,9 @@ async function chooseAirport(page: import("playwright").Page, selector: "#origin
   const input = page.locator(selector);
   await input.waitFor({ state: "visible", timeout: 15_000 });
   await input.click();
-  await input.fill(code);
-  const option = page.locator("li, [role='option'], .ui-menu-item").filter({ hasText: new RegExp(`\\b${code}\\b`) }).first();
+  await input.fill("");
+  await input.pressSequentially(code, { delay: 40 });
+  const option = page.locator(".ui-menu-item, li, [role='option']").filter({ hasText: new RegExp(`\\b${code}\\b`) }).locator("visible=true").first();
   await option.click({ timeout: 10_000 });
 }
 
@@ -83,7 +84,7 @@ async function pickDepartureDate(page: import("playwright").Page, iso: string) {
 }
 
 async function dismissCookies(page: import("playwright").Page) {
-  const deny = page.getByRole("button", { name: /deny cookies/i });
+  const deny = page.getByRole("button", { name: /deny/i });
   if (await deny.count()) {
     await deny.first().click({ timeout: 3_000 }).catch(() => undefined);
   }

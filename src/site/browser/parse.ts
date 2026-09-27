@@ -112,7 +112,7 @@ function normalizeItinerary(itinerary: Record<string, unknown>, query: BrowserQu
 
 function readFare(value: unknown): BrowserFare | null {
   const total = typeof value === "number" && Number.isFinite(value) ? value : null;
-  if (total == null) return null;
+  if (total == null || total < 0) return null;
   return { available: true, total, display: displayDollars(total), currency: null };
 }
 

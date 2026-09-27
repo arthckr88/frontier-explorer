@@ -63,6 +63,7 @@ export type NetworkArtifact = {
   candidateCount: number;
   confirmedPairCount: number;
   coveragePartial: boolean;
+  fares?: BrowserFareRecord[];
 };
 
 export type ScheduleInput = {
@@ -76,13 +77,32 @@ export type ScheduleInput = {
     departureUtc: string;
     arrivalUtc: string;
     retrievedAt?: string | null;
-    provenance?: "frontier_booking" | "flightaware_schedule" | "frontier_newsroom";
+    provenance?: "frontier_booking" | "flightaware_schedule" | "frontier_newsroom" | "frontier_browser";
     corroboration?: boolean;
   }>;
   routes?: Array<{ origin: string; destination: string; provenance?: string }>;
   checked?: string[];
   blocked?: string[];
   refreshedAt?: string | null;
+  browserFares?: BrowserFareRecord[];
+};
+
+export type BrowserFareRecord = {
+  origin: string;
+  destination: string;
+  date: string;
+  carrier: string | null;
+  flightNumber: string;
+  departureLocal: string;
+  arrivalLocal: string;
+  durationMinutes: number | null;
+  stops: number | null;
+  standard: { available: boolean; total: number; display: number; currency: string | null } | null;
+  discountDen: { available: boolean; total: number; display: number; currency: string | null } | null;
+  goWild: { available: boolean; total: number; display: number; currency: string | null } | null;
+  seatsRemaining: number | null;
+  retrievedAt: string;
+  source: "frontier_browser";
 };
 
 export type Diagnostic = {
@@ -113,6 +133,7 @@ export function buildNetwork(schedule: ScheduleInput, today: string): NetworkArt
   const watches = summaries.filter((summary) => isPriorityCorridor(summary.origin, summary.destination)).map(watchFor);
   const listed = (schedule.routes ?? []).filter((route) => route.provenance === "listed");
   const confirmed = new Set(observations.map((flight) => pairKey(flight.origin, flight.destination)));
+  const fares = schedule.browserFares ?? [];
   return {
     source: SOURCE_NAME,
     sourceUrl: "https://booking.flyfrontier.com/",
@@ -126,6 +147,7 @@ export function buildNetwork(schedule: ScheduleInput, today: string): NetworkArt
     candidateCount: listed.length,
     confirmedPairCount: confirmed.size,
     coveragePartial: watches.some((watch) => watch.signal !== "observed"),
+    ...(fares.length ? { fares } : {}),
   };
 }
 
@@ -146,7 +168,14 @@ export function normalizeObservations(schedule: ScheduleInput, refreshedAt: stri
       arrivalLocal: flight.arrivalLocal,
       departureUtc: flight.departureUtc,
       arrivalUtc: flight.arrivalUtc,
-      source: flight.provenance === "flightaware_schedule" ? "FlightAware published schedule" : flight.provenance === "frontier_newsroom" ? "Announced by Frontier" : SOURCE_NAME,
+      source:
+        flight.provenance === "flightaware_schedule"
+          ? "FlightAware published schedule"
+          : flight.provenance === "frontier_newsroom"
+            ? "Announced by Frontier"
+            : flight.provenance === "frontier_browser"
+              ? "Frontier browser fare check"
+              : SOURCE_NAME,
       retrievedAt: flight.retrievedAt ?? refreshedAt,
       ...(flight.provenance && flight.provenance !== "frontier_booking" ? { provenance: flight.provenance } : {}),
       ...(flight.corroboration ? { corroboration: true } : {}),

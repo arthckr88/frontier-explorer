@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync } from "node:fs";
+import { attachBrowserFares, loadBrowserFareText } from "@/site/browser/integrate";
 import { buildNetwork, diagnostics, diffSnapshots, emptyChangeFile, mergeChanges, snapshotsFrom, type RouteChangeFile, type RouteSnapshotFile, type ScheduleInput } from "@/site/network";
 import { scheduleToday } from "@/site/view";
 
@@ -8,7 +9,8 @@ const summaryPath = new URL("../../data/route-summaries.json", import.meta.url);
 const changePath = new URL("../../data/route-changes.json", import.meta.url);
 const diagnosticPath = new URL("../../data/diagnostics.json", import.meta.url);
 
-const schedule = JSON.parse(readFileSync(flightsPath, "utf8")) as ScheduleInput;
+const stored = JSON.parse(readFileSync(flightsPath, "utf8")) as ScheduleInput;
+const schedule = attachBrowserFares(stored, loadBrowserFareText(new URL("../../data/browser-fares.json", import.meta.url)));
 const today = scheduleToday();
 const network = buildNetwork(schedule, today);
 const previous = readJson<RouteSnapshotFile>(summaryPath);

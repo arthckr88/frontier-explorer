@@ -1,3 +1,4 @@
+import { displayDollars } from "@/site/browser/parse";
 import type { BrowserFlight, BrowserResult } from "@/site/browser/types";
 import { BROWSER_SOURCE } from "@/site/browser/types";
 
@@ -68,11 +69,11 @@ export function sanitizeMarkets(payload: unknown, retrievedAt: string, expiresAt
 }
 
 function withCurrency(fare: BrowserFlight["fares"]["standard"], currency: string | null) {
-  if (!fare) return null;
+  if (!fare || !(fare.total >= 0)) return null;
   return {
     available: true,
     total: fare.total,
-    display: fare.display,
+    display: displayDollars(fare.total),
     currency: fare.currency ?? currency,
   };
 }

@@ -5,11 +5,12 @@ import { createRequire } from "node:module";
 import { describe, expect, it } from "vitest";
 import { cachePath, fareTtlMs, selectCached, writeCache } from "@/site/browser/cache";
 import { bookingDisplayDate, parseBrowserArgs } from "@/site/browser/form";
+import { mergeBrowserNonstops, publishableFares } from "@/site/browser/integrate";
 import { classifyBookingPage, displayDollars, normalizeFlightData } from "@/site/browser/parse";
 import { runBrowserQueue } from "@/site/browser/queue";
 import { sanitizeBrowserResult, sanitizeMarkets, stripSecretKeys } from "@/site/browser/sanitize";
 import type { BrowserResult } from "@/site/browser/types";
-import { buildNetwork, confirmedArcKeys } from "@/site/network";
+import { buildNetwork, confirmedArcKeys, normalizeObservations } from "@/site/network";
 
 const require = createRequire(import.meta.url);
 const { findForbiddenMarkers } = require("../../../scripts/pages-secret-scan.mjs") as {
@@ -152,6 +153,70 @@ describe("browser cache and queue", () => {
     });
     expect(parseBrowserArgs(["--origin", "OAK", "--destination", "LAS", "--date", "2026-09-28", "--force"]).force).toBe(true);
     expect(bookingDisplayDate("2026-09-28")).toBe("Sep 28, 2026");
+  });
+});
+
+describe("browser observations stay beside booking evidence", () => {
+  it("drops a negative fare, keeps an existing booking flight, and does not add a connection", () => {
+    const unavailable = classifyBookingPage(
+      {
+        url: SELECT_URL,
+        html: resultsPage({
+          journeys: [
+            {
+              flights: [
+                {
+                  stopCount: 0,
+                  standardFare: 169.98,
+                  goWildFare: -1,
+                  legs: [leg("3308", "SFO", "LAX", "2026-09-28T09:00:00", "2026-09-28T10:37:00")],
+                },
+                {
+                  stopCount: 1,
+                  standardFare: 174.98,
+                  legs: [
+                    leg("1230", "SFO", "DEN", "2026-09-28T06:04:00", "2026-09-28T09:00:00"),
+                    leg("200", "DEN", "LAX", "2026-09-28T12:00:00", "2026-09-28T14:39:00"),
+                  ],
+                },
+              ],
+            },
+          ],
+        }),
+        httpStatus: 200,
+      },
+      { origin: "SFO", destination: "LAX", date: "2026-09-28" },
+      "2026-09-27T22:54:31.514Z",
+    );
+    expect(unavailable.flights[0]?.fares.goWild).toBeNull();
+    expect(unavailable.flights[0]?.fares.standard?.total).toBe(169.98);
+    const booking = {
+      origin: "SFO",
+      destination: "LAX",
+      flightNumber: "3308",
+      date: "2026-09-28",
+      departureLocal: "2026-09-28T09:00:00",
+      arrivalLocal: "2026-09-28T10:37:00",
+      departureUtc: "2026-09-28T16:00:00Z",
+      arrivalUtc: "2026-09-28T17:37:00Z",
+      provenance: "frontier_booking" as const,
+    };
+    const merged = mergeBrowserNonstops({ flights: [booking], routes: [{ origin: "OAK", destination: "BUR", provenance: "listed" }] }, [unavailable, { ...okResult(), status: "blocked", flights: [] }]);
+    expect(merged.flights).toEqual([booking]);
+    const fares = publishableFares([unavailable]);
+    expect(fares.some((fare) => fare.stops !== 0)).toBe(true);
+    expect(fares.some((fare) => fare.goWild)).toBe(false);
+    const network = buildNetwork(
+      { ...merged, browserFares: fares, routes: [{ origin: "OAK", destination: "BUR", provenance: "listed" }] },
+      TODAY,
+    );
+    expect(confirmedArcKeys(network, TODAY)).not.toContain("OAK|BUR");
+    expect(network.observations.some((flight) => flight.provenance === "frontier_browser")).toBe(false);
+    const added = mergeBrowserNonstops({ flights: [] }, [unavailable]);
+    expect(added.flights).toHaveLength(1);
+    expect(added.flights?.[0]?.provenance).toBe("frontier_browser");
+    expect(normalizeObservations(added, null)[0]?.source).toBe("Frontier browser fare check");
+    expect(network.fares?.[0]?.source).toBe("frontier_browser");
   });
 });
 

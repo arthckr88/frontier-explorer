@@ -1,8 +1,8 @@
 {
-  "confirmedPairs": 20,
+  "confirmedPairs": 21,
   "listedCandidates": 5874,
-  "futureFlights": 304,
-  "checked": 275,
+  "futureFlights": 305,
+  "checked": 276,
   "blocked": 122,
   "empty": 72,
   "unchecked": 306,
@@ -94,10 +94,6 @@
     },
     {
       "pair": "SNA-SFO",
-      "reason": "not checked yet"
-    },
-    {
-      "pair": "SAN-LAS",
       "reason": "not checked yet"
     },
     {

@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { attachBrowserFares, loadBrowserFareText } from "@/site/browser/integrate";
 import { buildNetwork, diagnostics, integrityErrors, type NetworkArtifact, type ScheduleInput } from "@/site/network";
 
 const flightsPath = new URL("../../data/flights.json", import.meta.url);
@@ -21,8 +22,10 @@ try {
   process.exit(1);
 }
 
-const errors = integrityErrors(schedule, network);
-const rebuilt = buildNetwork(schedule, network.today);
+const fares = loadBrowserFareText(new URL("../../data/browser-fares.json", import.meta.url));
+const scheduleWithFares = attachBrowserFares(schedule, fares);
+const errors = integrityErrors(scheduleWithFares, network);
+const rebuilt = buildNetwork(scheduleWithFares, network.today);
 if (JSON.stringify(rebuilt) !== JSON.stringify(network)) {
   errors.push("data/network.json does not match the booking observations. Run npm run normalize:network.");
 }

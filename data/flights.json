@@ -3369,6 +3369,18 @@
       "arrivalLocal": "2026-10-22T13:16:00",
       "departureUtc": "2026-10-22T18:22:00Z",
       "arrivalUtc": "2026-10-22T20:16:00Z"
+    },
+    {
+      "origin": "SAN",
+      "destination": "LAS",
+      "flightNumber": "1326",
+      "date": "2026-09-28",
+      "departureLocal": "2026-09-28T21:03:00",
+      "arrivalLocal": "2026-09-28T22:32:00",
+      "departureUtc": "2026-09-29T04:03:00Z",
+      "arrivalUtc": "2026-09-29T05:32:00Z",
+      "retrievedAt": "2026-09-27T22:56:39.802Z",
+      "provenance": "frontier_browser"
     }
   ],
   "checked": [

@@ -1,4 +1,13 @@
 {
   "windowDays": 90,
-  "events": []
+  "events": [
+    {
+      "id": "new_observation|SAN|LAS|Timed nonstop observed on 2026-09-28.",
+      "type": "new_observation",
+      "origin": "SAN",
+      "destination": "LAS",
+      "recordedOn": "2026-09-27",
+      "detail": "Timed nonstop observed on 2026-09-28."
+    }
+  ]
 }
