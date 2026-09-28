@@ -4,6 +4,7 @@ import {
   SITEMAP_FROM_CITY,
   SITEMAP_XML,
   catalogueDiff,
+  applyFareModuleReads,
   composeCandidateMarkets,
   composeOfficialCatalogue,
   parseCityToCitySitemap,
@@ -11,6 +12,7 @@ import {
   parseFlightsFromSitemap,
   type OfficialCatalogue,
 } from "@/site/direct-routes";
+import { readTruncatedFareModules } from "@/site/read-fare-pages";
 
 const cataloguePath = new URL("../../data/frontier-direct-routes.json", import.meta.url);
 const marketsPath = new URL("../../data/frontier-markets.json", import.meta.url);
@@ -33,7 +35,8 @@ const pages = await mapPool(pageUrls, 6, async (url) => {
   return parseFlightsFromPage(html, url);
 });
 const reference = airportReference();
-const catalogue = composeOfficialCatalogue(pages, retrievedAt, reference);
+const drafted = composeOfficialCatalogue(pages, retrievedAt, reference);
+const catalogue = applyFareModuleReads(drafted, await readTruncatedFareModules(drafted), reference);
 const markets = composeCandidateMarkets(parseCityToCitySitemap(`${citySitemap}\n${xmlSitemap}`), pages, catalogue);
 const previous = readPrevious();
 const diff = catalogueDiff(previous, catalogue);

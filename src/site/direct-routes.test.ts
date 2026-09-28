@@ -52,11 +52,12 @@ describe("official direct routes", () => {
     })}</script>`;
     const page = parseFlightsFromPage(html, "https://flights.flyfrontier.com/en/flights-from-san-francisco");
     expect(page.fareModule).toEqual({ embedded: 1, total: 1, lastPage: 1 });
-    const gap = classifyScheduleGap("SFO", "LAX", page.fareModule);
+    const gap = classifyScheduleGap("SFO", "LAX", { origin: "SFO", sourceUrl: page.sourceUrl, embedded: 1, total: 1, lastPage: 1, status: "complete", named: 1 });
     expect(gap.classification).toBe("SCHEDULE_CONFIRMED_ONLY");
-    expect(gap.reason).toContain("complete");
-    const partial = classifyScheduleGap("LAS", "BUR", { embedded: 20, total: 30 });
-    expect(partial.classification).toBe("SCHEDULE_CONFIRMED_ONLY");
-    expect(partial.reason).toContain("embedded key");
+    expect(gap.reason).toContain("does not name LAX");
+    const missed = classifyScheduleGap("LAS", "BUR", { origin: "LAS", embedded: 20, total: 30, lastPage: 2, sourceUrl: page.sourceUrl });
+    expect(missed.classification).toBe("IMPORTER_MISSED_ROUTE");
+    const blocked = classifyScheduleGap("LAS", "LAX", { origin: "LAS", embedded: 20, total: 30, lastPage: 2, sourceUrl: page.sourceUrl, status: "blocked", detail: "A challenge replaced the flights-from page." });
+    expect(blocked.reason).toContain("BLOCKED");
   });
 });

@@ -4,7 +4,7 @@ Frontier Route Explorer keeps these sources separate. A later source does not re
 
 ## A. Current direct network
 
-Frontier-owned explicit direct or nonstop evidence only. The flights-from fare module names both airport codes and has no layover. A generic bookable market, a city-to-city sitemap URL, or a popularity link is not a nonstop.
+Frontier-owned explicit direct or nonstop evidence only. The flights-from fare module names both airport codes and has no layover. When that module reports another page, a normal browser opens the public flights-from page and uses Clear filter and Show more. Pairs named on those rows become official directs. A challenge stops that page and is recorded as blocked. The importer does not copy an authorization header or call a private key. A generic bookable market, a city-to-city sitemap URL, a “More flights from” link, or a popularity link is not a nonstop.
 
 ## B. Dated schedule and fares
 

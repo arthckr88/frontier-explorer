@@ -1,5 +1,5 @@
 {
-  "retrievedAt": "2026-09-28T02:45:19.484Z",
+  "retrievedAt": "2026-09-28T03:15:58.191Z",
   "source": "Frontier city-to-city sitemap",
   "provenance": "frontier_candidate_market",
   "markets": [
@@ -2315,16 +2315,6 @@
     },
     {
       "originSlug": "atlanta",
-      "destinationSlug": "austin",
-      "origin": "ATL",
-      "destination": "AUS",
-      "originCity": "Atlanta, GA",
-      "destinationCity": "Austin, TX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-atlanta-to-austin",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "atlanta",
       "destinationSlug": "belize-city",
       "origin": "ATL",
       "destination": "BZE",
@@ -2375,16 +2365,6 @@
     },
     {
       "originSlug": "atlanta",
-      "destinationSlug": "buffalo",
-      "origin": "ATL",
-      "destination": "BUF",
-      "originCity": "Atlanta, GA",
-      "destinationCity": "Buffalo, NY",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-atlanta-to-buffalo",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "atlanta",
       "destinationSlug": "burbank",
       "origin": "ATL",
       "destination": "BUR",
@@ -2425,42 +2405,12 @@
     },
     {
       "originSlug": "atlanta",
-      "destinationSlug": "cincinnati",
-      "origin": "ATL",
-      "destination": "CVG",
-      "originCity": "Atlanta, GA",
-      "destinationCity": "Cincinnati, OH",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-atlanta-to-cincinnati",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "atlanta",
-      "destinationSlug": "cleveland",
-      "origin": "ATL",
-      "destination": "CLE",
-      "originCity": "Atlanta, GA",
-      "destinationCity": "Cleveland, OH",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-atlanta-to-cleveland",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "atlanta",
       "destinationSlug": "colorado-springs",
       "origin": "ATL",
       "destination": "COS",
       "originCity": "Atlanta, GA",
       "destinationCity": "Colorado Springs, CO",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-atlanta-to-colorado-springs",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "atlanta",
-      "destinationSlug": "columbus",
-      "origin": "ATL",
-      "destination": "CMH",
-      "originCity": "Atlanta, GA",
-      "destinationCity": "Columbus, OH",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-atlanta-to-columbus",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -2695,16 +2645,6 @@
     },
     {
       "originSlug": "atlanta",
-      "destinationSlug": "minneapolis",
-      "origin": "ATL",
-      "destination": "MSP",
-      "originCity": "Atlanta, GA",
-      "destinationCity": "Minneapolis/St. Paul, MN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-atlanta-to-minneapolis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "atlanta",
       "destinationSlug": "missoula",
       "origin": "ATL",
       "destination": "MSO",
@@ -2795,16 +2735,6 @@
     },
     {
       "originSlug": "atlanta",
-      "destinationSlug": "phoenix",
-      "origin": "ATL",
-      "destination": "PHX",
-      "originCity": "Atlanta, GA",
-      "destinationCity": "Phoenix, AZ",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-atlanta-to-phoenix",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "atlanta",
       "destinationSlug": "pittsburgh",
       "origin": "ATL",
       "destination": "PIT",
@@ -2871,16 +2801,6 @@
       "originCity": "Atlanta, GA",
       "destinationCity": "Punta Cana, Dominican Republic",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-atlanta-to-punta-cana",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "atlanta",
-      "destinationSlug": "raleigh",
-      "origin": "ATL",
-      "destination": "RDU",
-      "originCity": "Atlanta, GA",
-      "destinationCity": "Raleigh, NC",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-atlanta-to-raleigh",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -3035,16 +2955,6 @@
     },
     {
       "originSlug": "atlanta",
-      "destinationSlug": "st-louis",
-      "origin": "ATL",
-      "destination": "STL",
-      "originCity": "Atlanta, GA",
-      "destinationCity": "St. Louis, MO",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-atlanta-to-st-louis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "atlanta",
       "destinationSlug": "st-maarten",
       "origin": "ATL",
       "destination": "SXM",
@@ -3185,16 +3095,6 @@
     },
     {
       "originSlug": "austin",
-      "destinationSlug": "boston",
-      "origin": "AUS",
-      "destination": "BOS",
-      "originCity": "Austin, TX",
-      "destinationCity": "Boston, MA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-austin-to-boston",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "austin",
       "destinationSlug": "bozeman",
       "origin": "AUS",
       "destination": "BZN",
@@ -3281,16 +3181,6 @@
       "originCity": "Austin, TX",
       "destinationCity": "Charleston, SC",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-austin-to-charleston",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "austin",
-      "destinationSlug": "cincinnati",
-      "origin": "AUS",
-      "destination": "CVG",
-      "originCity": "Austin, TX",
-      "destinationCity": "Cincinnati, OH",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-austin-to-cincinnati",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -3445,16 +3335,6 @@
     },
     {
       "originSlug": "austin",
-      "destinationSlug": "indianapolis",
-      "origin": "AUS",
-      "destination": "IND",
-      "originCity": "Austin, TX",
-      "destinationCity": "Indianapolis, IN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-austin-to-indianapolis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "austin",
       "destinationSlug": "jackson-hole",
       "origin": "AUS",
       "destination": "JAC",
@@ -3575,16 +3455,6 @@
     },
     {
       "originSlug": "austin",
-      "destinationSlug": "nashville",
-      "origin": "AUS",
-      "destination": "BNA",
-      "originCity": "Austin, TX",
-      "destinationCity": "Nashville, TN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-austin-to-nashville",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "austin",
       "destinationSlug": "norfolk",
       "origin": "AUS",
       "destination": "ORF",
@@ -3611,16 +3481,6 @@
       "originCity": "Austin, TX",
       "destinationCity": "Omaha, NE",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-austin-to-omaha",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "austin",
-      "destinationSlug": "ontario-ca",
-      "origin": "AUS",
-      "destination": "ONT",
-      "originCity": "Austin, TX",
-      "destinationCity": "Ontario/LA, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-austin-to-ontario-ca",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -3705,32 +3565,12 @@
     },
     {
       "originSlug": "austin",
-      "destinationSlug": "raleigh",
-      "origin": "AUS",
-      "destination": "RDU",
-      "originCity": "Austin, TX",
-      "destinationCity": "Raleigh, NC",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-austin-to-raleigh",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "austin",
       "destinationSlug": "reno",
       "origin": "AUS",
       "destination": "RNO",
       "originCity": "Austin, TX",
       "destinationCity": "Reno, NV",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-austin-to-reno",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "austin",
-      "destinationSlug": "sacramento",
-      "origin": "AUS",
-      "destination": "SMF",
-      "originCity": "Austin, TX",
-      "destinationCity": "Sacramento, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-austin-to-sacramento",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -3775,16 +3615,6 @@
     },
     {
       "originSlug": "austin",
-      "destinationSlug": "seattle",
-      "origin": "AUS",
-      "destination": "SEA",
-      "originCity": "Austin, TX",
-      "destinationCity": "Seattle, WA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-austin-to-seattle",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "austin",
       "destinationSlug": "sioux-falls",
       "origin": "AUS",
       "destination": "FSD",
@@ -3821,16 +3651,6 @@
       "originCity": "Austin, TX",
       "destinationCity": "Syracuse, NY",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-austin-to-syracuse",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "austin",
-      "destinationSlug": "tampa",
-      "origin": "AUS",
-      "destination": "TPA",
-      "originCity": "Austin, TX",
-      "destinationCity": "Tampa, FL",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-austin-to-tampa",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -4165,16 +3985,6 @@
     },
     {
       "originSlug": "baltimore",
-      "destinationSlug": "fort-myers",
-      "origin": "BWI",
-      "destination": "RSW",
-      "originCity": "Baltimore, MD",
-      "destinationCity": "Fort Myers, FL",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-baltimore-to-fort-myers",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "baltimore",
       "destinationSlug": "fresno",
       "origin": "BWI",
       "destination": "FAT",
@@ -4195,32 +4005,12 @@
     },
     {
       "originSlug": "baltimore",
-      "destinationSlug": "guatemala-city",
-      "origin": "BWI",
-      "destination": "GUA",
-      "originCity": "Baltimore, MD",
-      "destinationCity": "Guatemala City",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-baltimore-to-guatemala-city",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "baltimore",
       "destinationSlug": "huntsville",
       "origin": "BWI",
       "destination": "HSV",
       "originCity": "Baltimore, MD",
       "destinationCity": "Huntsville, AL",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-baltimore-to-huntsville",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "baltimore",
-      "destinationSlug": "indianapolis",
-      "origin": "BWI",
-      "destination": "IND",
-      "originCity": "Baltimore, MD",
-      "destinationCity": "Indianapolis, IN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-baltimore-to-indianapolis",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -4251,16 +4041,6 @@
       "originCity": "Baltimore, MD",
       "destinationCity": "Kalispell",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-baltimore-to-kalispell",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "baltimore",
-      "destinationSlug": "kansas-city",
-      "origin": "BWI",
-      "destination": "MCI",
-      "originCity": "Baltimore, MD",
-      "destinationCity": "Kansas City, MO",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-baltimore-to-kansas-city",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -4315,16 +4095,6 @@
     },
     {
       "originSlug": "baltimore",
-      "destinationSlug": "minneapolis",
-      "origin": "BWI",
-      "destination": "MSP",
-      "originCity": "Baltimore, MD",
-      "destinationCity": "Minneapolis/St. Paul, MN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-baltimore-to-minneapolis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "baltimore",
       "destinationSlug": "missoula",
       "origin": "BWI",
       "destination": "MSO",
@@ -4375,32 +4145,12 @@
     },
     {
       "originSlug": "baltimore",
-      "destinationSlug": "ontario-ca",
-      "origin": "BWI",
-      "destination": "ONT",
-      "originCity": "Baltimore, MD",
-      "destinationCity": "Ontario/LA, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-baltimore-to-ontario-ca",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "baltimore",
       "destinationSlug": "orange-county",
       "origin": "BWI",
       "destination": "SNA",
       "originCity": "Baltimore, MD",
       "destinationCity": "Santa Ana, CA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-baltimore-to-orange-county",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "baltimore",
-      "destinationSlug": "pensacola",
-      "origin": "BWI",
-      "destination": "PNS",
-      "originCity": "Baltimore, MD",
-      "destinationCity": "Pensacola, FL",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-baltimore-to-pensacola",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -4465,16 +4215,6 @@
     },
     {
       "originSlug": "baltimore",
-      "destinationSlug": "san-antonio",
-      "origin": "BWI",
-      "destination": "SAT",
-      "originCity": "Baltimore, MD",
-      "destinationCity": "San Antonio, TX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-baltimore-to-san-antonio",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "baltimore",
       "destinationSlug": "san-diego",
       "origin": "BWI",
       "destination": "SAN",
@@ -4501,26 +4241,6 @@
       "originCity": "Baltimore, MD",
       "destinationCity": "Cozumel",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-baltimore-to-san-miguel-de-cozumel",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "baltimore",
-      "destinationSlug": "san-salvador",
-      "origin": "BWI",
-      "destination": "SAL",
-      "originCity": "Baltimore, MD",
-      "destinationCity": "San Salvador",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-baltimore-to-san-salvador",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "baltimore",
-      "destinationSlug": "santo-domingo",
-      "origin": "BWI",
-      "destination": "SDQ",
-      "originCity": "Baltimore, MD",
-      "destinationCity": "Santo Domingo",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-baltimore-to-santo-domingo",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -6865,16 +6585,6 @@
     },
     {
       "originSlug": "boston",
-      "destinationSlug": "grand-rapids",
-      "origin": "BOS",
-      "destination": "GRR",
-      "originCity": "Boston, MA",
-      "destinationCity": "Grand Rapids, MI",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-boston-to-grand-rapids",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "boston",
       "destinationSlug": "guatemala-city",
       "origin": "BOS",
       "destination": "GUA",
@@ -6925,26 +6635,6 @@
     },
     {
       "originSlug": "boston",
-      "destinationSlug": "milwaukee",
-      "origin": "BOS",
-      "destination": "MKE",
-      "originCity": "Boston, MA",
-      "destinationCity": "Milwaukee, WI",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-boston-to-milwaukee",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "boston",
-      "destinationSlug": "minneapolis",
-      "origin": "BOS",
-      "destination": "MSP",
-      "originCity": "Boston, MA",
-      "destinationCity": "Minneapolis/St. Paul, MN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-boston-to-minneapolis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "boston",
       "destinationSlug": "montego-bay",
       "origin": "BOS",
       "destination": "MBJ",
@@ -6991,16 +6681,6 @@
       "originCity": "Boston, MA",
       "destinationCity": "Ontario/LA, CA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-boston-to-ontario-ca",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "boston",
-      "destinationSlug": "punta-cana",
-      "origin": "BOS",
-      "destination": "PUJ",
-      "originCity": "Boston, MA",
-      "destinationCity": "Punta Cana, Dominican Republic",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-boston-to-punta-cana",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -9965,32 +9645,12 @@
     },
     {
       "originSlug": "cancun",
-      "destinationSlug": "des-moines",
-      "origin": "CUN",
-      "destination": "DSM",
-      "originCity": "Cancun, MX",
-      "destinationCity": "Des Moines, IA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cancun-to-des-moines",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cancun",
       "destinationSlug": "durango-1",
       "origin": "CUN",
       "destination": "DRO",
       "originCity": "Cancun, MX",
       "destinationCity": "Durango",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cancun-to-durango-1",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cancun",
-      "destinationSlug": "fargo",
-      "origin": "CUN",
-      "destination": "FAR",
-      "originCity": "Cancun, MX",
-      "destinationCity": "Fargo, ND",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cancun-to-fargo",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -10025,16 +9685,6 @@
     },
     {
       "originSlug": "cancun",
-      "destinationSlug": "grand-rapids",
-      "origin": "CUN",
-      "destination": "GRR",
-      "originCity": "Cancun, MX",
-      "destinationCity": "Grand Rapids, MI",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cancun-to-grand-rapids",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cancun",
       "destinationSlug": "green-bay",
       "origin": "CUN",
       "destination": "GRB",
@@ -10065,16 +9715,6 @@
     },
     {
       "originSlug": "cancun",
-      "destinationSlug": "indianapolis",
-      "origin": "CUN",
-      "destination": "IND",
-      "originCity": "Cancun, MX",
-      "destinationCity": "Indianapolis, IN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cancun-to-indianapolis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cancun",
       "destinationSlug": "jackson",
       "origin": "CUN",
       "destination": "JAN",
@@ -10101,16 +9741,6 @@
       "originCity": "Cancun, MX",
       "destinationCity": "Kalispell",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cancun-to-kalispell",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cancun",
-      "destinationSlug": "kansas-city",
-      "origin": "CUN",
-      "destination": "MCI",
-      "originCity": "Cancun, MX",
-      "destinationCity": "Kansas City, MO",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cancun-to-kansas-city",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -10165,36 +9795,6 @@
     },
     {
       "originSlug": "cancun",
-      "destinationSlug": "memphis",
-      "origin": "CUN",
-      "destination": "MEM",
-      "originCity": "Cancun, MX",
-      "destinationCity": "Memphis, TN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cancun-to-memphis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cancun",
-      "destinationSlug": "milwaukee",
-      "origin": "CUN",
-      "destination": "MKE",
-      "originCity": "Cancun, MX",
-      "destinationCity": "Milwaukee, WI",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cancun-to-milwaukee",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cancun",
-      "destinationSlug": "minneapolis",
-      "origin": "CUN",
-      "destination": "MSP",
-      "originCity": "Cancun, MX",
-      "destinationCity": "Minneapolis/St. Paul, MN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cancun-to-minneapolis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cancun",
       "destinationSlug": "missoula",
       "origin": "CUN",
       "destination": "MSO",
@@ -10231,16 +9831,6 @@
       "originCity": "Cancun, MX",
       "destinationCity": "New Orleans, LA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cancun-to-new-orleans",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cancun",
-      "destinationSlug": "norfolk",
-      "origin": "CUN",
-      "destination": "ORF",
-      "originCity": "Cancun, MX",
-      "destinationCity": "Norfolk, VA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cancun-to-norfolk",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -10371,16 +9961,6 @@
       "originCity": "Cancun, MX",
       "destinationCity": "Sacramento, CA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cancun-to-sacramento",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cancun",
-      "destinationSlug": "salt-lake-city",
-      "origin": "CUN",
-      "destination": "SLC",
-      "originCity": "Cancun, MX",
-      "destinationCity": "Salt Lake City, UT",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cancun-to-salt-lake-city",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -11575,16 +11155,6 @@
     },
     {
       "originSlug": "charlotte",
-      "destinationSlug": "grand-rapids",
-      "origin": "CLT",
-      "destination": "GRR",
-      "originCity": "Charlotte, NC",
-      "destinationCity": "Grand Rapids, MI",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-charlotte-to-grand-rapids",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "charlotte",
       "destinationSlug": "green-bay",
       "origin": "CLT",
       "destination": "GRB",
@@ -11621,16 +11191,6 @@
       "originCity": "Charlotte, NC",
       "destinationCity": "Huntsville, AL",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-charlotte-to-huntsville",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "charlotte",
-      "destinationSlug": "indianapolis",
-      "origin": "CLT",
-      "destination": "IND",
-      "originCity": "Charlotte, NC",
-      "destinationCity": "Indianapolis, IN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-charlotte-to-indianapolis",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -11695,16 +11255,6 @@
     },
     {
       "originSlug": "charlotte",
-      "destinationSlug": "minneapolis",
-      "origin": "CLT",
-      "destination": "MSP",
-      "originCity": "Charlotte, NC",
-      "destinationCity": "Minneapolis/St. Paul, MN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-charlotte-to-minneapolis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "charlotte",
       "destinationSlug": "missoula",
       "origin": "CLT",
       "destination": "MSO",
@@ -11735,16 +11285,6 @@
     },
     {
       "originSlug": "charlotte",
-      "destinationSlug": "oklahoma-city",
-      "origin": "CLT",
-      "destination": "OKC",
-      "originCity": "Charlotte, NC",
-      "destinationCity": "Oklahoma City, OK",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-charlotte-to-oklahoma-city",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "charlotte",
       "destinationSlug": "omaha",
       "origin": "CLT",
       "destination": "OMA",
@@ -11761,26 +11301,6 @@
       "originCity": "Charlotte, NC",
       "destinationCity": "Ontario/LA, CA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-charlotte-to-ontario-ca",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "charlotte",
-      "destinationSlug": "orange-county",
-      "origin": "CLT",
-      "destination": "SNA",
-      "originCity": "Charlotte, NC",
-      "destinationCity": "Santa Ana, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-charlotte-to-orange-county",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "charlotte",
-      "destinationSlug": "portland",
-      "origin": "CLT",
-      "destination": "PDX",
-      "originCity": "Charlotte, NC",
-      "destinationCity": "Portland, OR",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-charlotte-to-portland",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -11845,36 +11365,6 @@
     },
     {
       "originSlug": "charlotte",
-      "destinationSlug": "salt-lake-city",
-      "origin": "CLT",
-      "destination": "SLC",
-      "originCity": "Charlotte, NC",
-      "destinationCity": "Salt Lake City, UT",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-charlotte-to-salt-lake-city",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "charlotte",
-      "destinationSlug": "san-antonio",
-      "origin": "CLT",
-      "destination": "SAT",
-      "originCity": "Charlotte, NC",
-      "destinationCity": "San Antonio, TX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-charlotte-to-san-antonio",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "charlotte",
-      "destinationSlug": "san-diego",
-      "origin": "CLT",
-      "destination": "SAN",
-      "originCity": "Charlotte, NC",
-      "destinationCity": "San Diego, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-charlotte-to-san-diego",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "charlotte",
       "destinationSlug": "san-jose",
       "origin": "CLT",
       "destination": "SJC",
@@ -11911,16 +11401,6 @@
       "originCity": "Charlotte, NC",
       "destinationCity": "Sarasota, FL",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-charlotte-to-sarasota",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "charlotte",
-      "destinationSlug": "seattle",
-      "origin": "CLT",
-      "destination": "SEA",
-      "originCity": "Charlotte, NC",
-      "destinationCity": "Seattle, WA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-charlotte-to-seattle",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -12045,16 +11525,6 @@
     },
     {
       "originSlug": "chicago",
-      "destinationSlug": "el-paso",
-      "origin": "ORD",
-      "destination": "ELP",
-      "originCity": "Chicago, IL",
-      "destinationCity": "El Paso, TX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-chicago-to-el-paso",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "chicago",
       "destinationSlug": "fayetteville",
       "origin": "ORD",
       "destination": "XNA",
@@ -12095,46 +11565,6 @@
     },
     {
       "originSlug": "chicago",
-      "destinationSlug": "norfolk",
-      "origin": "ORD",
-      "destination": "ORF",
-      "originCity": "Chicago, IL",
-      "destinationCity": "Norfolk, VA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-chicago-to-norfolk",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "chicago",
-      "destinationSlug": "orange-county",
-      "origin": "ORD",
-      "destination": "SNA",
-      "originCity": "Chicago, IL",
-      "destinationCity": "Santa Ana, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-chicago-to-orange-county",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "chicago",
-      "destinationSlug": "pensacola",
-      "origin": "ORD",
-      "destination": "PNS",
-      "originCity": "Chicago, IL",
-      "destinationCity": "Pensacola, FL",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-chicago-to-pensacola",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "chicago",
-      "destinationSlug": "portland",
-      "origin": "ORD",
-      "destination": "PDX",
-      "originCity": "Chicago, IL",
-      "destinationCity": "Portland, OR",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-chicago-to-portland",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "chicago",
       "destinationSlug": "portland-me",
       "origin": "ORD",
       "destination": "PWM",
@@ -12171,46 +11601,6 @@
       "originCity": "Chicago, IL",
       "destinationCity": "Puerto Vallarta, Mexico",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-chicago-to-puerto-vallarta",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "chicago",
-      "destinationSlug": "reno",
-      "origin": "ORD",
-      "destination": "RNO",
-      "originCity": "Chicago, IL",
-      "destinationCity": "Reno, NV",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-chicago-to-reno",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "chicago",
-      "destinationSlug": "sacramento",
-      "origin": "ORD",
-      "destination": "SMF",
-      "originCity": "Chicago, IL",
-      "destinationCity": "Sacramento, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-chicago-to-sacramento",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "chicago",
-      "destinationSlug": "san-jose",
-      "origin": "ORD",
-      "destination": "SJC",
-      "originCity": "Chicago, IL",
-      "destinationCity": "San Jose, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-chicago-to-san-jose",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "chicago",
-      "destinationSlug": "san-jose-3",
-      "origin": "ORD",
-      "destination": "SJO",
-      "originCity": "Chicago, IL",
-      "destinationCity": "San Jose, CR",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-chicago-to-san-jose-3",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -12285,16 +11675,6 @@
     },
     {
       "originSlug": "chicago",
-      "destinationSlug": "trenton",
-      "origin": "ORD",
-      "destination": "TTN",
-      "originCity": "Chicago, IL",
-      "destinationCity": "Trenton, NJ",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-chicago-to-trenton",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "chicago",
       "destinationSlug": "tucson",
       "origin": "ORD",
       "destination": "TUS",
@@ -12335,16 +11715,6 @@
     },
     {
       "originSlug": "cincinnati",
-      "destinationSlug": "chicago",
-      "origin": "CVG",
-      "destination": "ORD",
-      "originCity": "Cincinnati, OH",
-      "destinationCity": "Chicago, IL",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cincinnati-to-chicago",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cincinnati",
       "destinationSlug": "des-moines",
       "origin": "CVG",
       "destination": "DSM",
@@ -12361,16 +11731,6 @@
       "originCity": "Cincinnati, OH",
       "destinationCity": "Durango",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cincinnati-to-durango-1",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cincinnati",
-      "destinationSlug": "el-paso",
-      "origin": "CVG",
-      "destination": "ELP",
-      "originCity": "Cincinnati, OH",
-      "destinationCity": "El Paso, TX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cincinnati-to-el-paso",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -12495,16 +11855,6 @@
     },
     {
       "originSlug": "cincinnati",
-      "destinationSlug": "long-island",
-      "origin": "CVG",
-      "destination": "ISP",
-      "originCity": "Cincinnati, OH",
-      "destinationCity": "Islip, NY",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cincinnati-to-long-island",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cincinnati",
       "destinationSlug": "madison",
       "origin": "CVG",
       "destination": "MSN",
@@ -12625,16 +11975,6 @@
     },
     {
       "originSlug": "cincinnati",
-      "destinationSlug": "portland",
-      "origin": "CVG",
-      "destination": "PDX",
-      "originCity": "Cincinnati, OH",
-      "destinationCity": "Portland, OR",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cincinnati-to-portland",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cincinnati",
       "destinationSlug": "portland-me",
       "origin": "CVG",
       "destination": "PWM",
@@ -12675,62 +12015,12 @@
     },
     {
       "originSlug": "cincinnati",
-      "destinationSlug": "raleigh",
-      "origin": "CVG",
-      "destination": "RDU",
-      "originCity": "Cincinnati, OH",
-      "destinationCity": "Raleigh, NC",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cincinnati-to-raleigh",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cincinnati",
       "destinationSlug": "reno",
       "origin": "CVG",
       "destination": "RNO",
       "originCity": "Cincinnati, OH",
       "destinationCity": "Reno, NV",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cincinnati-to-reno",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cincinnati",
-      "destinationSlug": "sacramento",
-      "origin": "CVG",
-      "destination": "SMF",
-      "originCity": "Cincinnati, OH",
-      "destinationCity": "Sacramento, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cincinnati-to-sacramento",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cincinnati",
-      "destinationSlug": "salt-lake-city",
-      "origin": "CVG",
-      "destination": "SLC",
-      "originCity": "Cincinnati, OH",
-      "destinationCity": "Salt Lake City, UT",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cincinnati-to-salt-lake-city",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cincinnati",
-      "destinationSlug": "san-antonio",
-      "origin": "CVG",
-      "destination": "SAT",
-      "originCity": "Cincinnati, OH",
-      "destinationCity": "San Antonio, TX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cincinnati-to-san-antonio",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cincinnati",
-      "destinationSlug": "san-diego",
-      "origin": "CVG",
-      "destination": "SAN",
-      "originCity": "Cincinnati, OH",
-      "destinationCity": "San Diego, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cincinnati-to-san-diego",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -12791,16 +12081,6 @@
       "originCity": "Cincinnati, OH",
       "destinationCity": "Sarasota, FL",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cincinnati-to-sarasota",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cincinnati",
-      "destinationSlug": "seattle",
-      "origin": "CVG",
-      "destination": "SEA",
-      "originCity": "Cincinnati, OH",
-      "destinationCity": "Seattle, WA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cincinnati-to-seattle",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -13045,16 +12325,6 @@
     },
     {
       "originSlug": "cleveland",
-      "destinationSlug": "kansas-city",
-      "origin": "CLE",
-      "destination": "MCI",
-      "originCity": "Cleveland, OH",
-      "destinationCity": "Kansas City, MO",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cleveland-to-kansas-city",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cleveland",
       "destinationSlug": "liberia-1",
       "origin": "CLE",
       "destination": "LIR",
@@ -13085,16 +12355,6 @@
     },
     {
       "originSlug": "cleveland",
-      "destinationSlug": "memphis",
-      "origin": "CLE",
-      "destination": "MEM",
-      "originCity": "Cleveland, OH",
-      "destinationCity": "Memphis, TN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cleveland-to-memphis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cleveland",
       "destinationSlug": "milwaukee",
       "origin": "CLE",
       "destination": "MKE",
@@ -13105,32 +12365,12 @@
     },
     {
       "originSlug": "cleveland",
-      "destinationSlug": "minneapolis",
-      "origin": "CLE",
-      "destination": "MSP",
-      "originCity": "Cleveland, OH",
-      "destinationCity": "Minneapolis/St. Paul, MN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cleveland-to-minneapolis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cleveland",
       "destinationSlug": "missoula",
       "origin": "CLE",
       "destination": "MSO",
       "originCity": "Cleveland, OH",
       "destinationCity": "Missoula, MT",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cleveland-to-missoula",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cleveland",
-      "destinationSlug": "montego-bay",
-      "origin": "CLE",
-      "destination": "MBJ",
-      "originCity": "Cleveland, OH",
-      "destinationCity": "Montego Bay, Jamaica",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cleveland-to-montego-bay",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -13185,42 +12425,12 @@
     },
     {
       "originSlug": "cleveland",
-      "destinationSlug": "ontario-ca",
-      "origin": "CLE",
-      "destination": "ONT",
-      "originCity": "Cleveland, OH",
-      "destinationCity": "Ontario/LA, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cleveland-to-ontario-ca",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cleveland",
       "destinationSlug": "orange-county",
       "origin": "CLE",
       "destination": "SNA",
       "originCity": "Cleveland, OH",
       "destinationCity": "Santa Ana, CA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cleveland-to-orange-county",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cleveland",
-      "destinationSlug": "pensacola",
-      "origin": "CLE",
-      "destination": "PNS",
-      "originCity": "Cleveland, OH",
-      "destinationCity": "Pensacola, FL",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cleveland-to-pensacola",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cleveland",
-      "destinationSlug": "portland",
-      "origin": "CLE",
-      "destination": "PDX",
-      "originCity": "Cleveland, OH",
-      "destinationCity": "Portland, OR",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cleveland-to-portland",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -13265,32 +12475,12 @@
     },
     {
       "originSlug": "cleveland",
-      "destinationSlug": "reno",
-      "origin": "CLE",
-      "destination": "RNO",
-      "originCity": "Cleveland, OH",
-      "destinationCity": "Reno, NV",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cleveland-to-reno",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cleveland",
       "destinationSlug": "sacramento",
       "origin": "CLE",
       "destination": "SMF",
       "originCity": "Cleveland, OH",
       "destinationCity": "Sacramento, CA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cleveland-to-sacramento",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cleveland",
-      "destinationSlug": "san-antonio",
-      "origin": "CLE",
-      "destination": "SAT",
-      "originCity": "Cleveland, OH",
-      "destinationCity": "San Antonio, TX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cleveland-to-san-antonio",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -13351,16 +12541,6 @@
       "originCity": "Cleveland, OH",
       "destinationCity": "Sarasota, FL",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cleveland-to-sarasota",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "cleveland",
-      "destinationSlug": "seattle",
-      "origin": "CLE",
-      "destination": "SEA",
-      "originCity": "Cleveland, OH",
-      "destinationCity": "Seattle, WA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cleveland-to-seattle",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -13975,16 +13155,6 @@
     },
     {
       "originSlug": "columbus",
-      "destinationSlug": "minneapolis",
-      "origin": "CMH",
-      "destination": "MSP",
-      "originCity": "Columbus, OH",
-      "destinationCity": "Minneapolis/St. Paul, MN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-columbus-to-minneapolis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "columbus",
       "destinationSlug": "missoula",
       "origin": "CMH",
       "destination": "MSO",
@@ -14001,16 +13171,6 @@
       "originCity": "Columbus, OH",
       "destinationCity": "Oakland, CA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-columbus-to-oakland",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "columbus",
-      "destinationSlug": "omaha",
-      "origin": "CMH",
-      "destination": "OMA",
-      "originCity": "Columbus, OH",
-      "destinationCity": "Omaha, NE",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-columbus-to-omaha",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -14071,26 +13231,6 @@
       "originCity": "Columbus, OH",
       "destinationCity": "Reno, NV",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-columbus-to-reno",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "columbus",
-      "destinationSlug": "sacramento",
-      "origin": "CMH",
-      "destination": "SMF",
-      "originCity": "Columbus, OH",
-      "destinationCity": "Sacramento, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-columbus-to-sacramento",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "columbus",
-      "destinationSlug": "san-jose-3",
-      "origin": "CMH",
-      "destination": "SJO",
-      "originCity": "Columbus, OH",
-      "destinationCity": "San Jose, CR",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-columbus-to-san-jose-3",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -14305,16 +13445,6 @@
     },
     {
       "originSlug": "dallas",
-      "destinationSlug": "cincinnati",
-      "origin": "DFW",
-      "destination": "CVG",
-      "originCity": "Dallas, TX",
-      "destinationCity": "Cincinnati, OH",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-dallas-to-cincinnati",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "dallas",
       "destinationSlug": "des-moines",
       "origin": "DFW",
       "destination": "DSM",
@@ -14465,16 +13595,6 @@
     },
     {
       "originSlug": "dallas",
-      "destinationSlug": "indianapolis",
-      "origin": "DFW",
-      "destination": "IND",
-      "originCity": "Dallas, TX",
-      "destinationCity": "Indianapolis, IN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-dallas-to-indianapolis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "dallas",
       "destinationSlug": "jackson-hole",
       "origin": "DFW",
       "destination": "JAC",
@@ -14565,16 +13685,6 @@
     },
     {
       "originSlug": "dallas",
-      "destinationSlug": "minneapolis",
-      "origin": "DFW",
-      "destination": "MSP",
-      "originCity": "Dallas, TX",
-      "destinationCity": "Minneapolis/St. Paul, MN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-dallas-to-minneapolis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "dallas",
       "destinationSlug": "missoula",
       "origin": "DFW",
       "destination": "MSO",
@@ -14601,16 +13711,6 @@
       "originCity": "Dallas, TX",
       "destinationCity": "Myrtle Beach, SC",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-dallas-to-myrtle-beach",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "dallas",
-      "destinationSlug": "nashville",
-      "origin": "DFW",
-      "destination": "BNA",
-      "originCity": "Dallas, TX",
-      "destinationCity": "Nashville, TN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-dallas-to-nashville",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -14661,16 +13761,6 @@
       "originCity": "Dallas, TX",
       "destinationCity": "Omaha, NE",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-dallas-to-omaha",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "dallas",
-      "destinationSlug": "orange-county",
-      "origin": "DFW",
-      "destination": "SNA",
-      "originCity": "Dallas, TX",
-      "destinationCity": "Santa Ana, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-dallas-to-orange-county",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -14745,16 +13835,6 @@
     },
     {
       "originSlug": "dallas",
-      "destinationSlug": "raleigh",
-      "origin": "DFW",
-      "destination": "RDU",
-      "originCity": "Dallas, TX",
-      "destinationCity": "Raleigh, NC",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-dallas-to-raleigh",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "dallas",
       "destinationSlug": "reno",
       "origin": "DFW",
       "destination": "RNO",
@@ -14791,16 +13871,6 @@
       "originCity": "Dallas, TX",
       "destinationCity": "San Antonio, TX",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-dallas-to-san-antonio",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "dallas",
-      "destinationSlug": "san-jose",
-      "origin": "DFW",
-      "destination": "SJC",
-      "originCity": "Dallas, TX",
-      "destinationCity": "San Jose, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-dallas-to-san-jose",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -14855,16 +13925,6 @@
     },
     {
       "originSlug": "dallas",
-      "destinationSlug": "seattle",
-      "origin": "DFW",
-      "destination": "SEA",
-      "originCity": "Dallas, TX",
-      "destinationCity": "Seattle, WA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-dallas-to-seattle",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "dallas",
       "destinationSlug": "sioux-falls",
       "origin": "DFW",
       "destination": "FSD",
@@ -14881,16 +13941,6 @@
       "originCity": "Dallas, TX",
       "destinationCity": "Spokane, WA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-dallas-to-spokane",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "dallas",
-      "destinationSlug": "st-louis",
-      "origin": "DFW",
-      "destination": "STL",
-      "originCity": "Dallas, TX",
-      "destinationCity": "St. Louis, MO",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-dallas-to-st-louis",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -15155,36 +14205,6 @@
     },
     {
       "originSlug": "denver",
-      "destinationSlug": "charlotte",
-      "origin": "DEN",
-      "destination": "CLT",
-      "originCity": "Denver, CO",
-      "destinationCity": "Charlotte, NC",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-denver-to-charlotte",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "denver",
-      "destinationSlug": "chicago",
-      "origin": "DEN",
-      "destination": "ORD",
-      "originCity": "Denver, CO",
-      "destinationCity": "Chicago, IL",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-denver-to-chicago",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "denver",
-      "destinationSlug": "cincinnati",
-      "origin": "DEN",
-      "destination": "CVG",
-      "originCity": "Denver, CO",
-      "destinationCity": "Cincinnati, OH",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-denver-to-cincinnati",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "denver",
       "destinationSlug": "cleveland",
       "origin": "DEN",
       "destination": "CLE",
@@ -15355,16 +14375,6 @@
     },
     {
       "originSlug": "denver",
-      "destinationSlug": "indianapolis",
-      "origin": "DEN",
-      "destination": "IND",
-      "originCity": "Denver, CO",
-      "destinationCity": "Indianapolis, IN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-denver-to-indianapolis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "denver",
       "destinationSlug": "jackson",
       "origin": "DEN",
       "destination": "JAN",
@@ -15525,16 +14535,6 @@
     },
     {
       "originSlug": "denver",
-      "destinationSlug": "new-orleans",
-      "origin": "DEN",
-      "destination": "MSY",
-      "originCity": "Denver, CO",
-      "destinationCity": "New Orleans, LA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-denver-to-new-orleans",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "denver",
       "destinationSlug": "new-york",
       "origin": "DEN",
       "destination": "LGA",
@@ -15595,42 +14595,12 @@
     },
     {
       "originSlug": "denver",
-      "destinationSlug": "orange-county",
-      "origin": "DEN",
-      "destination": "SNA",
-      "originCity": "Denver, CO",
-      "destinationCity": "Santa Ana, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-denver-to-orange-county",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "denver",
       "destinationSlug": "palm-springs",
       "origin": "DEN",
       "destination": "PSP",
       "originCity": "Denver, CO",
       "destinationCity": "Palm Springs, CA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-denver-to-palm-springs",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "denver",
-      "destinationSlug": "pensacola",
-      "origin": "DEN",
-      "destination": "PNS",
-      "originCity": "Denver, CO",
-      "destinationCity": "Pensacola, FL",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-denver-to-pensacola",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "denver",
-      "destinationSlug": "philadelphia",
-      "origin": "DEN",
-      "destination": "PHL",
-      "originCity": "Denver, CO",
-      "destinationCity": "Philadelphia, PA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-denver-to-philadelphia",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -15685,16 +14655,6 @@
     },
     {
       "originSlug": "denver",
-      "destinationSlug": "raleigh",
-      "origin": "DEN",
-      "destination": "RDU",
-      "originCity": "Denver, CO",
-      "destinationCity": "Raleigh, NC",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-denver-to-raleigh",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "denver",
       "destinationSlug": "reno",
       "origin": "DEN",
       "destination": "RNO",
@@ -15721,16 +14681,6 @@
       "originCity": "Denver, CO",
       "destinationCity": "Sacramento, CA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-denver-to-sacramento",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "denver",
-      "destinationSlug": "san-antonio",
-      "origin": "DEN",
-      "destination": "SAT",
-      "originCity": "Denver, CO",
-      "destinationCity": "San Antonio, TX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-denver-to-san-antonio",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -16355,16 +15305,6 @@
     },
     {
       "originSlug": "detroit",
-      "destinationSlug": "jacksonville",
-      "origin": "DTW",
-      "destination": "JAX",
-      "originCity": "Detroit, MI",
-      "destinationCity": "Jacksonville, FL",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-detroit-to-jacksonville",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "detroit",
       "destinationSlug": "kalispell",
       "origin": "DTW",
       "destination": "FCA",
@@ -16435,16 +15375,6 @@
     },
     {
       "originSlug": "detroit",
-      "destinationSlug": "montego-bay",
-      "origin": "DTW",
-      "destination": "MBJ",
-      "originCity": "Detroit, MI",
-      "destinationCity": "Montego Bay, Jamaica",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-detroit-to-montego-bay",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "detroit",
       "destinationSlug": "myrtle-beach",
       "origin": "DTW",
       "destination": "MYR",
@@ -16465,26 +15395,6 @@
     },
     {
       "originSlug": "detroit",
-      "destinationSlug": "norfolk",
-      "origin": "DTW",
-      "destination": "ORF",
-      "originCity": "Detroit, MI",
-      "destinationCity": "Norfolk, VA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-detroit-to-norfolk",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "detroit",
-      "destinationSlug": "oakland",
-      "origin": "DTW",
-      "destination": "OAK",
-      "originCity": "Detroit, MI",
-      "destinationCity": "Oakland, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-detroit-to-oakland",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "detroit",
       "destinationSlug": "oklahoma-city",
       "origin": "DTW",
       "destination": "OKC",
@@ -16501,36 +15411,6 @@
       "originCity": "Detroit, MI",
       "destinationCity": "Omaha, NE",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-detroit-to-omaha",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "detroit",
-      "destinationSlug": "ontario-ca",
-      "origin": "DTW",
-      "destination": "ONT",
-      "originCity": "Detroit, MI",
-      "destinationCity": "Ontario/LA, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-detroit-to-ontario-ca",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "detroit",
-      "destinationSlug": "orange-county",
-      "origin": "DTW",
-      "destination": "SNA",
-      "originCity": "Detroit, MI",
-      "destinationCity": "Santa Ana, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-detroit-to-orange-county",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "detroit",
-      "destinationSlug": "portland",
-      "origin": "DTW",
-      "destination": "PDX",
-      "originCity": "Detroit, MI",
-      "destinationCity": "Portland, OR",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-detroit-to-portland",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -16571,26 +15451,6 @@
       "originCity": "Detroit, MI",
       "destinationCity": "Reno, NV",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-detroit-to-reno",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "detroit",
-      "destinationSlug": "sacramento",
-      "origin": "DTW",
-      "destination": "SMF",
-      "originCity": "Detroit, MI",
-      "destinationCity": "Sacramento, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-detroit-to-sacramento",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "detroit",
-      "destinationSlug": "san-antonio",
-      "origin": "DTW",
-      "destination": "SAT",
-      "originCity": "Detroit, MI",
-      "destinationCity": "San Antonio, TX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-detroit-to-san-antonio",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -16671,16 +15531,6 @@
       "originCity": "Detroit, MI",
       "destinationCity": "Spokane, WA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-detroit-to-spokane",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "detroit",
-      "destinationSlug": "st-louis",
-      "origin": "DTW",
-      "destination": "STL",
-      "originCity": "Detroit, MI",
-      "destinationCity": "St. Louis, MO",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-detroit-to-st-louis",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -21505,16 +20355,6 @@
     },
     {
       "originSlug": "houston",
-      "destinationSlug": "indianapolis",
-      "origin": "IAH",
-      "destination": "IND",
-      "originCity": "Houston, TX",
-      "destinationCity": "Indianapolis, IN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-houston-to-indianapolis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "houston",
       "destinationSlug": "jackson-hole",
       "origin": "IAH",
       "destination": "JAC",
@@ -21525,42 +20365,12 @@
     },
     {
       "originSlug": "houston",
-      "destinationSlug": "jacksonville",
-      "origin": "IAH",
-      "destination": "JAX",
-      "originCity": "Houston, TX",
-      "destinationCity": "Jacksonville, FL",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-houston-to-jacksonville",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "houston",
-      "destinationSlug": "kansas-city",
-      "origin": "IAH",
-      "destination": "MCI",
-      "originCity": "Houston, TX",
-      "destinationCity": "Kansas City, MO",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-houston-to-kansas-city",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "houston",
       "destinationSlug": "knoxville",
       "origin": "IAH",
       "destination": "TYS",
       "originCity": "Houston, TX",
       "destinationCity": "Knoxville, TN",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-houston-to-knoxville",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "houston",
-      "destinationSlug": "long-island",
-      "origin": "IAH",
-      "destination": "ISP",
-      "originCity": "Houston, TX",
-      "destinationCity": "Islip, NY",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-houston-to-long-island",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -21595,16 +20405,6 @@
     },
     {
       "originSlug": "houston",
-      "destinationSlug": "minneapolis",
-      "origin": "IAH",
-      "destination": "MSP",
-      "originCity": "Houston, TX",
-      "destinationCity": "Minneapolis/St. Paul, MN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-houston-to-minneapolis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "houston",
       "destinationSlug": "missoula",
       "origin": "IAH",
       "destination": "MSO",
@@ -21631,36 +20431,6 @@
       "originCity": "Houston, TX",
       "destinationCity": "Omaha, NE",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-houston-to-omaha",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "houston",
-      "destinationSlug": "orange-county",
-      "origin": "IAH",
-      "destination": "SNA",
-      "originCity": "Houston, TX",
-      "destinationCity": "Santa Ana, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-houston-to-orange-county",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "houston",
-      "destinationSlug": "pittsburgh",
-      "origin": "IAH",
-      "destination": "PIT",
-      "originCity": "Houston, TX",
-      "destinationCity": "Pittsburgh, PA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-houston-to-pittsburgh",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "houston",
-      "destinationSlug": "portland",
-      "origin": "IAH",
-      "destination": "PDX",
-      "originCity": "Houston, TX",
-      "destinationCity": "Portland, OR",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-houston-to-portland",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -21725,16 +20495,6 @@
     },
     {
       "originSlug": "houston",
-      "destinationSlug": "sacramento",
-      "origin": "IAH",
-      "destination": "SMF",
-      "originCity": "Houston, TX",
-      "destinationCity": "Sacramento, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-houston-to-sacramento",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "houston",
       "destinationSlug": "san-jose",
       "origin": "IAH",
       "destination": "SJC",
@@ -21771,16 +20531,6 @@
       "originCity": "Houston, TX",
       "destinationCity": "Savannah, GA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-houston-to-savannah",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "houston",
-      "destinationSlug": "st-louis",
-      "origin": "IAH",
-      "destination": "STL",
-      "originCity": "Houston, TX",
-      "destinationCity": "St. Louis, MO",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-houston-to-st-louis",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -24035,16 +22785,6 @@
     },
     {
       "originSlug": "las-vegas",
-      "destinationSlug": "austin",
-      "origin": "LAS",
-      "destination": "AUS",
-      "originCity": "Las Vegas, NV",
-      "destinationCity": "Austin, TX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-las-vegas-to-austin",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "las-vegas",
       "destinationSlug": "belize-city",
       "origin": "LAS",
       "destination": "BZE",
@@ -24091,16 +22831,6 @@
       "originCity": "Las Vegas, NV",
       "destinationCity": "Charlotte, NC",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-las-vegas-to-charlotte",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "las-vegas",
-      "destinationSlug": "cincinnati",
-      "origin": "LAS",
-      "destination": "CVG",
-      "originCity": "Las Vegas, NV",
-      "destinationCity": "Cincinnati, OH",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-las-vegas-to-cincinnati",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -24195,16 +22925,6 @@
     },
     {
       "originSlug": "las-vegas",
-      "destinationSlug": "kansas-city",
-      "origin": "LAS",
-      "destination": "MCI",
-      "originCity": "Las Vegas, NV",
-      "destinationCity": "Kansas City, MO",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-las-vegas-to-kansas-city",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "las-vegas",
       "destinationSlug": "knoxville",
       "origin": "LAS",
       "destination": "TYS",
@@ -24265,16 +22985,6 @@
     },
     {
       "originSlug": "las-vegas",
-      "destinationSlug": "miami",
-      "origin": "LAS",
-      "destination": "MIA",
-      "originCity": "Las Vegas, NV",
-      "destinationCity": "Miami, FL",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-las-vegas-to-miami",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "las-vegas",
       "destinationSlug": "milwaukee",
       "origin": "LAS",
       "destination": "MKE",
@@ -24325,32 +23035,12 @@
     },
     {
       "originSlug": "las-vegas",
-      "destinationSlug": "nashville",
-      "origin": "LAS",
-      "destination": "BNA",
-      "originCity": "Las Vegas, NV",
-      "destinationCity": "Nashville, TN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-las-vegas-to-nashville",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "las-vegas",
       "destinationSlug": "nassau",
       "origin": "LAS",
       "destination": "NAS",
       "originCity": "Las Vegas, NV",
       "destinationCity": "Nassau",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-las-vegas-to-nassau",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "las-vegas",
-      "destinationSlug": "new-orleans",
-      "origin": "LAS",
-      "destination": "MSY",
-      "originCity": "Las Vegas, NV",
-      "destinationCity": "New Orleans, LA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-las-vegas-to-new-orleans",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -24405,16 +23095,6 @@
     },
     {
       "originSlug": "las-vegas",
-      "destinationSlug": "orange-county",
-      "origin": "LAS",
-      "destination": "SNA",
-      "originCity": "Las Vegas, NV",
-      "destinationCity": "Santa Ana, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-las-vegas-to-orange-county",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "las-vegas",
       "destinationSlug": "pensacola",
       "origin": "LAS",
       "destination": "PNS",
@@ -24431,16 +23111,6 @@
       "originCity": "Las Vegas, NV",
       "destinationCity": "Pittsburgh, PA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-las-vegas-to-pittsburgh",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "las-vegas",
-      "destinationSlug": "portland",
-      "origin": "LAS",
-      "destination": "PDX",
-      "originCity": "Las Vegas, NV",
-      "destinationCity": "Portland, OR",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-las-vegas-to-portland",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -24565,16 +23235,6 @@
     },
     {
       "originSlug": "las-vegas",
-      "destinationSlug": "seattle",
-      "origin": "LAS",
-      "destination": "SEA",
-      "originCity": "Las Vegas, NV",
-      "destinationCity": "Seattle, WA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-las-vegas-to-seattle",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "las-vegas",
       "destinationSlug": "sioux-falls",
       "origin": "LAS",
       "destination": "FSD",
@@ -24621,16 +23281,6 @@
       "originCity": "Las Vegas, NV",
       "destinationCity": "Syracuse, NY",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-las-vegas-to-syracuse",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "las-vegas",
-      "destinationSlug": "tampa",
-      "origin": "LAS",
-      "destination": "TPA",
-      "originCity": "Las Vegas, NV",
-      "destinationCity": "Tampa, FL",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-las-vegas-to-tampa",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -26885,16 +25535,6 @@
     },
     {
       "originSlug": "miami",
-      "destinationSlug": "buffalo",
-      "origin": "MIA",
-      "destination": "BUF",
-      "originCity": "Miami, FL",
-      "destinationCity": "Buffalo, NY",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-buffalo",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "miami",
       "destinationSlug": "cabo-san-lucas",
       "origin": "MIA",
       "destination": "SJD",
@@ -26905,32 +25545,12 @@
     },
     {
       "originSlug": "miami",
-      "destinationSlug": "cancun",
-      "origin": "MIA",
-      "destination": "CUN",
-      "originCity": "Miami, FL",
-      "destinationCity": "Cancun, MX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-cancun",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "miami",
       "destinationSlug": "fayetteville",
       "origin": "MIA",
       "destination": "XNA",
       "originCity": "Miami, FL",
       "destinationCity": "Bentonville/Fayetteville, AR ",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-fayetteville",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "miami",
-      "destinationSlug": "hartford",
-      "origin": "MIA",
-      "destination": "BDL",
-      "originCity": "Miami, FL",
-      "destinationCity": "Hartford, CT",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-hartford",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -27005,16 +25625,6 @@
     },
     {
       "originSlug": "miami",
-      "destinationSlug": "montego-bay",
-      "origin": "MIA",
-      "destination": "MBJ",
-      "originCity": "Miami, FL",
-      "destinationCity": "Montego Bay, Jamaica",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-montego-bay",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "miami",
       "destinationSlug": "myrtle-beach",
       "origin": "MIA",
       "destination": "MYR",
@@ -27035,32 +25645,12 @@
     },
     {
       "originSlug": "miami",
-      "destinationSlug": "new-orleans",
-      "origin": "MIA",
-      "destination": "MSY",
-      "originCity": "Miami, FL",
-      "destinationCity": "New Orleans, LA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-new-orleans",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "miami",
       "destinationSlug": "new-york-stewart",
       "origin": "MIA",
       "destination": "SWF",
       "originCity": "Miami, FL",
       "destinationCity": "New York Stewart",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-new-york-stewart",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "miami",
-      "destinationSlug": "norfolk",
-      "origin": "MIA",
-      "destination": "ORF",
-      "originCity": "Miami, FL",
-      "destinationCity": "Norfolk, VA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-norfolk",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -27121,16 +25711,6 @@
       "originCity": "Miami, FL",
       "destinationCity": null,
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-oranjestad",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "miami",
-      "destinationSlug": "orlando",
-      "origin": "MIA",
-      "destination": "MCO",
-      "originCity": "Miami, FL",
-      "destinationCity": "Orlando, FL",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-orlando",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -27215,42 +25795,12 @@
     },
     {
       "originSlug": "miami",
-      "destinationSlug": "sacramento",
-      "origin": "MIA",
-      "destination": "SMF",
-      "originCity": "Miami, FL",
-      "destinationCity": "Sacramento, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-sacramento",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "miami",
-      "destinationSlug": "salt-lake-city",
-      "origin": "MIA",
-      "destination": "SLC",
-      "originCity": "Miami, FL",
-      "destinationCity": "Salt Lake City, UT",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-salt-lake-city",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "miami",
       "destinationSlug": "san-antonio",
       "origin": "MIA",
       "destination": "SAT",
       "originCity": "Miami, FL",
       "destinationCity": "San Antonio, TX",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-san-antonio",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "miami",
-      "destinationSlug": "san-diego",
-      "origin": "MIA",
-      "destination": "SAN",
-      "originCity": "Miami, FL",
-      "destinationCity": "San Diego, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-san-diego",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -27755,16 +26305,6 @@
     },
     {
       "originSlug": "minneapolis",
-      "destinationSlug": "norfolk",
-      "origin": "MSP",
-      "destination": "ORF",
-      "originCity": "Minneapolis/St. Paul, MN",
-      "destinationCity": "Norfolk, VA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-minneapolis-to-norfolk",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "minneapolis",
       "destinationSlug": "oakland",
       "origin": "MSP",
       "destination": "OAK",
@@ -27781,16 +26321,6 @@
       "originCity": "Minneapolis/St. Paul, MN",
       "destinationCity": "Santa Ana, CA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-minneapolis-to-orange-county",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "minneapolis",
-      "destinationSlug": "pittsburgh",
-      "origin": "MSP",
-      "destination": "PIT",
-      "originCity": "Minneapolis/St. Paul, MN",
-      "destinationCity": "Pittsburgh, PA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-minneapolis-to-pittsburgh",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -27835,16 +26365,6 @@
     },
     {
       "originSlug": "minneapolis",
-      "destinationSlug": "reno",
-      "origin": "MSP",
-      "destination": "RNO",
-      "originCity": "Minneapolis/St. Paul, MN",
-      "destinationCity": "Reno, NV",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-minneapolis-to-reno",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "minneapolis",
       "destinationSlug": "rochester-ny",
       "origin": "MSP",
       "destination": "ROC",
@@ -27881,16 +26401,6 @@
       "originCity": "Minneapolis/St. Paul, MN",
       "destinationCity": "St. Thomas",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-minneapolis-to-st-thomas",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "minneapolis",
-      "destinationSlug": "syracuse",
-      "origin": "MSP",
-      "destination": "SYR",
-      "originCity": "Minneapolis/St. Paul, MN",
-      "destinationCity": "Syracuse, NY",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-minneapolis-to-syracuse",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -28655,16 +27165,6 @@
     },
     {
       "originSlug": "nashville",
-      "destinationSlug": "buffalo",
-      "origin": "BNA",
-      "destination": "BUF",
-      "originCity": "Nashville, TN",
-      "destinationCity": "Buffalo, NY",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-nashville-to-buffalo",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "nashville",
       "destinationSlug": "burbank",
       "origin": "BNA",
       "destination": "BUR",
@@ -28855,16 +27355,6 @@
     },
     {
       "originSlug": "nashville",
-      "destinationSlug": "long-island",
-      "origin": "BNA",
-      "destination": "ISP",
-      "originCity": "Nashville, TN",
-      "destinationCity": "Islip, NY",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-nashville-to-long-island",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "nashville",
       "destinationSlug": "milwaukee",
       "origin": "BNA",
       "destination": "MKE",
@@ -28905,52 +27395,12 @@
     },
     {
       "originSlug": "nashville",
-      "destinationSlug": "new-orleans",
-      "origin": "BNA",
-      "destination": "MSY",
-      "originCity": "Nashville, TN",
-      "destinationCity": "New Orleans, LA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-nashville-to-new-orleans",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "nashville",
-      "destinationSlug": "new-york",
-      "origin": "BNA",
-      "destination": "LGA",
-      "originCity": "Nashville, TN",
-      "destinationCity": "New York City, NY",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-nashville-to-new-york",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "nashville",
-      "destinationSlug": "norfolk",
-      "origin": "BNA",
-      "destination": "ORF",
-      "originCity": "Nashville, TN",
-      "destinationCity": "Norfolk, VA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-nashville-to-norfolk",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "nashville",
       "destinationSlug": "oakland",
       "origin": "BNA",
       "destination": "OAK",
       "originCity": "Nashville, TN",
       "destinationCity": "Oakland, CA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-nashville-to-oakland",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "nashville",
-      "destinationSlug": "oklahoma-city",
-      "origin": "BNA",
-      "destination": "OKC",
-      "originCity": "Nashville, TN",
-      "destinationCity": "Oklahoma City, OK",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-nashville-to-oklahoma-city",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -29035,16 +27485,6 @@
     },
     {
       "originSlug": "nashville",
-      "destinationSlug": "raleigh",
-      "origin": "BNA",
-      "destination": "RDU",
-      "originCity": "Nashville, TN",
-      "destinationCity": "Raleigh, NC",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-nashville-to-raleigh",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "nashville",
       "destinationSlug": "reno",
       "origin": "BNA",
       "destination": "RNO",
@@ -29061,16 +27501,6 @@
       "originCity": "Nashville, TN",
       "destinationCity": "Rochester",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-nashville-to-rochester-ny",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "nashville",
-      "destinationSlug": "sacramento",
-      "origin": "BNA",
-      "destination": "SMF",
-      "originCity": "Nashville, TN",
-      "destinationCity": "Sacramento, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-nashville-to-sacramento",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -29161,16 +27591,6 @@
       "originCity": "Nashville, TN",
       "destinationCity": "Syracuse, NY",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-nashville-to-syracuse",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "nashville",
-      "destinationSlug": "trenton",
-      "origin": "BNA",
-      "destination": "TTN",
-      "originCity": "Nashville, TN",
-      "destinationCity": "Trenton, NJ",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-nashville-to-trenton",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -29395,46 +27815,6 @@
     },
     {
       "originSlug": "new-orleans",
-      "destinationSlug": "oklahoma-city",
-      "origin": "MSY",
-      "destination": "OKC",
-      "originCity": "New Orleans, LA",
-      "destinationCity": "Oklahoma City, OK",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-new-orleans-to-oklahoma-city",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "new-orleans",
-      "destinationSlug": "omaha",
-      "origin": "MSY",
-      "destination": "OMA",
-      "originCity": "New Orleans, LA",
-      "destinationCity": "Omaha, NE",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-new-orleans-to-omaha",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "new-orleans",
-      "destinationSlug": "ontario-ca",
-      "origin": "MSY",
-      "destination": "ONT",
-      "originCity": "New Orleans, LA",
-      "destinationCity": "Ontario/LA, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-new-orleans-to-ontario-ca",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "new-orleans",
-      "destinationSlug": "orange-county",
-      "origin": "MSY",
-      "destination": "SNA",
-      "originCity": "New Orleans, LA",
-      "destinationCity": "Santa Ana, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-new-orleans-to-orange-county",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "new-orleans",
       "destinationSlug": "portland",
       "origin": "MSY",
       "destination": "PDX",
@@ -29605,26 +27985,6 @@
     },
     {
       "originSlug": "new-york",
-      "destinationSlug": "milwaukee",
-      "origin": "LGA",
-      "destination": "MKE",
-      "originCity": "New York City, NY",
-      "destinationCity": "Milwaukee, WI",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-new-york-to-milwaukee",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "new-york",
-      "destinationSlug": "montego-bay",
-      "origin": "LGA",
-      "destination": "MBJ",
-      "originCity": "New York City, NY",
-      "destinationCity": "Montego Bay, Jamaica",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-new-york-to-montego-bay",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "new-york",
       "destinationSlug": "myrtle-beach",
       "origin": "LGA",
       "destination": "MYR",
@@ -29651,26 +28011,6 @@
       "originCity": "New York City, NY",
       "destinationCity": "Oklahoma City, OK",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-new-york-to-oklahoma-city",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "new-york",
-      "destinationSlug": "san-antonio",
-      "origin": "LGA",
-      "destination": "SAT",
-      "originCity": "New York City, NY",
-      "destinationCity": "San Antonio, TX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-new-york-to-san-antonio",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "new-york",
-      "destinationSlug": "san-jose-3",
-      "origin": "LGA",
-      "destination": "SJO",
-      "originCity": "New York City, NY",
-      "destinationCity": "San Jose, CR",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-new-york-to-san-jose-3",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -29775,16 +28115,6 @@
     },
     {
       "originSlug": "newark",
-      "destinationSlug": "kansas-city",
-      "origin": "EWR",
-      "destination": "MCI",
-      "originCity": "Newark, NJ",
-      "destinationCity": "Kansas City, MO",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-newark-to-kansas-city",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "newark",
       "destinationSlug": "liberia-1",
       "origin": "EWR",
       "destination": "LIR",
@@ -29805,32 +28135,12 @@
     },
     {
       "originSlug": "newark",
-      "destinationSlug": "memphis",
-      "origin": "EWR",
-      "destination": "MEM",
-      "originCity": "Newark, NJ",
-      "destinationCity": "Memphis, TN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-newark-to-memphis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "newark",
       "destinationSlug": "minneapolis",
       "origin": "EWR",
       "destination": "MSP",
       "originCity": "Newark, NJ",
       "destinationCity": "Minneapolis/St. Paul, MN",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-newark-to-minneapolis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "newark",
-      "destinationSlug": "montego-bay",
-      "origin": "EWR",
-      "destination": "MBJ",
-      "originCity": "Newark, NJ",
-      "destinationCity": "Montego Bay, Jamaica",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-newark-to-montego-bay",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -29885,16 +28195,6 @@
     },
     {
       "originSlug": "newark",
-      "destinationSlug": "punta-cana",
-      "origin": "EWR",
-      "destination": "PUJ",
-      "originCity": "Newark, NJ",
-      "destinationCity": "Punta Cana, Dominican Republic",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-newark-to-punta-cana",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "newark",
       "destinationSlug": "salt-lake-city",
       "origin": "EWR",
       "destination": "SLC",
@@ -29905,32 +28205,12 @@
     },
     {
       "originSlug": "newark",
-      "destinationSlug": "san-jose-3",
-      "origin": "EWR",
-      "destination": "SJO",
-      "originCity": "Newark, NJ",
-      "destinationCity": "San Jose, CR",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-newark-to-san-jose-3",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "newark",
       "destinationSlug": "san-miguel-de-cozumel",
       "origin": "EWR",
       "destination": "CZM",
       "originCity": "Newark, NJ",
       "destinationCity": "Cozumel",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-newark-to-san-miguel-de-cozumel",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "newark",
-      "destinationSlug": "san-salvador",
-      "origin": "EWR",
-      "destination": "SAL",
-      "originCity": "Newark, NJ",
-      "destinationCity": "San Salvador",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-newark-to-san-salvador",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -30755,16 +29035,6 @@
     },
     {
       "originSlug": "ontario-ca",
-      "destinationSlug": "fayetteville",
-      "origin": "ONT",
-      "destination": "XNA",
-      "originCity": "Ontario/LA, CA",
-      "destinationCity": "Bentonville/Fayetteville, AR ",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-ontario-ca-to-fayetteville",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "ontario-ca",
       "destinationSlug": "fort-myers",
       "origin": "ONT",
       "destination": "RSW",
@@ -30861,16 +29131,6 @@
       "originCity": "Ontario/LA, CA",
       "destinationCity": "Punta Cana, Dominican Republic",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-ontario-ca-to-punta-cana",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "ontario-ca",
-      "destinationSlug": "raleigh",
-      "origin": "ONT",
-      "destination": "RDU",
-      "originCity": "Ontario/LA, CA",
-      "destinationCity": "Raleigh, NC",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-ontario-ca-to-raleigh",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -31035,16 +29295,6 @@
     },
     {
       "originSlug": "orlando",
-      "destinationSlug": "austin",
-      "origin": "MCO",
-      "destination": "AUS",
-      "originCity": "Orlando, FL",
-      "destinationCity": "Austin, TX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-orlando-to-austin",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "orlando",
       "destinationSlug": "belize-city",
       "origin": "MCO",
       "destination": "BZE",
@@ -31071,26 +29321,6 @@
       "originCity": "Orlando, FL",
       "destinationCity": "Bogota",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-orlando-to-bogota",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "orlando",
-      "destinationSlug": "boston",
-      "origin": "MCO",
-      "destination": "BOS",
-      "originCity": "Orlando, FL",
-      "destinationCity": "Boston, MA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-orlando-to-boston",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "orlando",
-      "destinationSlug": "buffalo",
-      "origin": "MCO",
-      "destination": "BUF",
-      "originCity": "Orlando, FL",
-      "destinationCity": "Buffalo, NY",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-orlando-to-buffalo",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -31141,16 +29371,6 @@
       "originCity": "Orlando, FL",
       "destinationCity": "Cedar Rapids, IA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-orlando-to-cedar-rapids",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "orlando",
-      "destinationSlug": "columbus",
-      "origin": "MCO",
-      "destination": "CMH",
-      "originCity": "Orlando, FL",
-      "destinationCity": "Columbus, OH",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-orlando-to-columbus",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -31245,32 +29465,12 @@
     },
     {
       "originSlug": "orlando",
-      "destinationSlug": "hartford",
-      "origin": "MCO",
-      "destination": "BDL",
-      "originCity": "Orlando, FL",
-      "destinationCity": "Hartford, CT",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-orlando-to-hartford",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "orlando",
       "destinationSlug": "huntsville",
       "origin": "MCO",
       "destination": "HSV",
       "originCity": "Orlando, FL",
       "destinationCity": "Huntsville, AL",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-orlando-to-huntsville",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "orlando",
-      "destinationSlug": "indianapolis",
-      "origin": "MCO",
-      "destination": "IND",
-      "originCity": "Orlando, FL",
-      "destinationCity": "Indianapolis, IN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-orlando-to-indianapolis",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -31321,16 +29521,6 @@
       "originCity": "Orlando, FL",
       "destinationCity": "Madison, WI",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-orlando-to-madison",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "orlando",
-      "destinationSlug": "medellin",
-      "origin": "MCO",
-      "destination": "MDE",
-      "originCity": "Orlando, FL",
-      "destinationCity": "Medellin",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-orlando-to-medellin",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -31411,16 +29601,6 @@
       "originCity": "Orlando, FL",
       "destinationCity": "Nassau",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-orlando-to-nassau",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "orlando",
-      "destinationSlug": "new-orleans",
-      "origin": "MCO",
-      "destination": "MSY",
-      "originCity": "Orlando, FL",
-      "destinationCity": "New Orleans, LA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-orlando-to-new-orleans",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -31715,16 +29895,6 @@
     },
     {
       "originSlug": "orlando",
-      "destinationSlug": "st-louis",
-      "origin": "MCO",
-      "destination": "STL",
-      "originCity": "Orlando, FL",
-      "destinationCity": "St. Louis, MO",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-orlando-to-st-louis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "orlando",
       "destinationSlug": "st-maarten",
       "origin": "MCO",
       "destination": "SXM",
@@ -31935,16 +30105,6 @@
     },
     {
       "originSlug": "philadelphia",
-      "destinationSlug": "montego-bay",
-      "origin": "PHL",
-      "destination": "MBJ",
-      "originCity": "Philadelphia, PA",
-      "destinationCity": "Montego Bay, Jamaica",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-philadelphia-to-montego-bay",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "philadelphia",
       "destinationSlug": "nassau",
       "origin": "PHL",
       "destination": "NAS",
@@ -31961,26 +30121,6 @@
       "originCity": "Philadelphia, PA",
       "destinationCity": "Santa Ana, CA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-philadelphia-to-orange-county",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "philadelphia",
-      "destinationSlug": "pensacola",
-      "origin": "PHL",
-      "destination": "PNS",
-      "originCity": "Philadelphia, PA",
-      "destinationCity": "Pensacola, FL",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-philadelphia-to-pensacola",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "philadelphia",
-      "destinationSlug": "phoenix",
-      "origin": "PHL",
-      "destination": "PHX",
-      "originCity": "Philadelphia, PA",
-      "destinationCity": "Phoenix, AZ",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-philadelphia-to-phoenix",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -32031,56 +30171,6 @@
       "originCity": "Philadelphia, PA",
       "destinationCity": "Reno, NV",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-philadelphia-to-reno",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "philadelphia",
-      "destinationSlug": "sacramento",
-      "origin": "PHL",
-      "destination": "SMF",
-      "originCity": "Philadelphia, PA",
-      "destinationCity": "Sacramento, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-philadelphia-to-sacramento",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "philadelphia",
-      "destinationSlug": "salt-lake-city",
-      "origin": "PHL",
-      "destination": "SLC",
-      "originCity": "Philadelphia, PA",
-      "destinationCity": "Salt Lake City, UT",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-philadelphia-to-salt-lake-city",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "philadelphia",
-      "destinationSlug": "san-antonio",
-      "origin": "PHL",
-      "destination": "SAT",
-      "originCity": "Philadelphia, PA",
-      "destinationCity": "San Antonio, TX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-philadelphia-to-san-antonio",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "philadelphia",
-      "destinationSlug": "san-diego",
-      "origin": "PHL",
-      "destination": "SAN",
-      "originCity": "Philadelphia, PA",
-      "destinationCity": "San Diego, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-philadelphia-to-san-diego",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "philadelphia",
-      "destinationSlug": "san-francisco",
-      "origin": "PHL",
-      "destination": "SFO",
-      "originCity": "Philadelphia, PA",
-      "destinationCity": "San Francisco, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-philadelphia-to-san-francisco",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -32141,26 +30231,6 @@
       "originCity": "Philadelphia, PA",
       "destinationCity": "Savannah, GA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-philadelphia-to-savannah",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "philadelphia",
-      "destinationSlug": "seattle",
-      "origin": "PHL",
-      "destination": "SEA",
-      "originCity": "Philadelphia, PA",
-      "destinationCity": "Seattle, WA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-philadelphia-to-seattle",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "philadelphia",
-      "destinationSlug": "st-louis",
-      "origin": "PHL",
-      "destination": "STL",
-      "originCity": "Philadelphia, PA",
-      "destinationCity": "St. Louis, MO",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-philadelphia-to-st-louis",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -32235,26 +30305,6 @@
     },
     {
       "originSlug": "phoenix",
-      "destinationSlug": "fayetteville",
-      "origin": "PHX",
-      "destination": "XNA",
-      "originCity": "Phoenix, AZ",
-      "destinationCity": "Bentonville/Fayetteville, AR ",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-phoenix-to-fayetteville",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "phoenix",
-      "destinationSlug": "fort-myers",
-      "origin": "PHX",
-      "destination": "RSW",
-      "originCity": "Phoenix, AZ",
-      "destinationCity": "Fort Myers, FL",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-phoenix-to-fort-myers",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "phoenix",
       "destinationSlug": "knoxville",
       "origin": "PHX",
       "destination": "TYS",
@@ -32271,26 +30321,6 @@
       "originCity": "Phoenix, AZ",
       "destinationCity": "Louisville, KY",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-phoenix-to-louisville",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "phoenix",
-      "destinationSlug": "pensacola",
-      "origin": "PHX",
-      "destination": "PNS",
-      "originCity": "Phoenix, AZ",
-      "destinationCity": "Pensacola, FL",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-phoenix-to-pensacola",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "phoenix",
-      "destinationSlug": "pittsburgh",
-      "origin": "PHX",
-      "destination": "PIT",
-      "originCity": "Phoenix, AZ",
-      "destinationCity": "Pittsburgh, PA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-phoenix-to-pittsburgh",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -32325,36 +30355,6 @@
     },
     {
       "originSlug": "phoenix",
-      "destinationSlug": "punta-cana",
-      "origin": "PHX",
-      "destination": "PUJ",
-      "originCity": "Phoenix, AZ",
-      "destinationCity": "Punta Cana, Dominican Republic",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-phoenix-to-punta-cana",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "phoenix",
-      "destinationSlug": "raleigh",
-      "origin": "PHX",
-      "destination": "RDU",
-      "originCity": "Phoenix, AZ",
-      "destinationCity": "Raleigh, NC",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-phoenix-to-raleigh",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "phoenix",
-      "destinationSlug": "reno",
-      "origin": "PHX",
-      "destination": "RNO",
-      "originCity": "Phoenix, AZ",
-      "destinationCity": "Reno, NV",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-phoenix-to-reno",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "phoenix",
       "destinationSlug": "rochester-ny",
       "origin": "PHX",
       "destination": "ROC",
@@ -32371,16 +30371,6 @@
       "originCity": "Phoenix, AZ",
       "destinationCity": "San Jose, CR",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-phoenix-to-san-jose-3",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "phoenix",
-      "destinationSlug": "san-juan",
-      "origin": "PHX",
-      "destination": "SJU",
-      "originCity": "Phoenix, AZ",
-      "destinationCity": "San Juan, PR",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-phoenix-to-san-juan",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -32421,26 +30411,6 @@
       "originCity": "Phoenix, AZ",
       "destinationCity": "St. Thomas",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-phoenix-to-st-thomas",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "phoenix",
-      "destinationSlug": "syracuse",
-      "origin": "PHX",
-      "destination": "SYR",
-      "originCity": "Phoenix, AZ",
-      "destinationCity": "Syracuse, NY",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-phoenix-to-syracuse",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "phoenix",
-      "destinationSlug": "trenton",
-      "origin": "PHX",
-      "destination": "TTN",
-      "originCity": "Phoenix, AZ",
-      "destinationCity": "Trenton, NJ",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-phoenix-to-trenton",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -33575,16 +31545,6 @@
     },
     {
       "originSlug": "raleigh",
-      "destinationSlug": "hartford",
-      "origin": "RDU",
-      "destination": "BDL",
-      "originCity": "Raleigh, NC",
-      "destinationCity": "Hartford, CT",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-raleigh-to-hartford",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "raleigh",
       "destinationSlug": "louisville",
       "origin": "RDU",
       "destination": "SDF",
@@ -33655,16 +31615,6 @@
     },
     {
       "originSlug": "raleigh",
-      "destinationSlug": "santo-domingo",
-      "origin": "RDU",
-      "destination": "SDQ",
-      "originCity": "Raleigh, NC",
-      "destinationCity": "Santo Domingo",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-raleigh-to-santo-domingo",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "raleigh",
       "destinationSlug": "sarasota",
       "origin": "RDU",
       "destination": "SRQ",
@@ -33691,16 +31641,6 @@
       "originCity": "Raleigh, NC",
       "destinationCity": "St. Thomas",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-raleigh-to-st-thomas",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "raleigh",
-      "destinationSlug": "syracuse",
-      "origin": "RDU",
-      "destination": "SYR",
-      "originCity": "Raleigh, NC",
-      "destinationCity": "Syracuse, NY",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-raleigh-to-syracuse",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -37005,16 +34945,6 @@
     },
     {
       "originSlug": "washington",
-      "destinationSlug": "el-paso",
-      "origin": "DCA",
-      "destination": "ELP",
-      "originCity": "Washington, D.C.",
-      "destinationCity": "El Paso, TX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-washington-to-el-paso",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "washington",
       "destinationSlug": "fargo",
       "origin": "DCA",
       "destination": "FAR",
@@ -37155,16 +35085,6 @@
     },
     {
       "originSlug": "washington",
-      "destinationSlug": "minneapolis",
-      "origin": "DCA",
-      "destination": "MSP",
-      "originCity": "Washington, D.C.",
-      "destinationCity": "Minneapolis/St. Paul, MN",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-washington-to-minneapolis",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "washington",
       "destinationSlug": "missoula",
       "origin": "DCA",
       "destination": "MSO",
@@ -37181,36 +35101,6 @@
       "originCity": "Washington, D.C.",
       "destinationCity": "Oakland, CA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-washington-to-oakland",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "washington",
-      "destinationSlug": "oklahoma-city",
-      "origin": "DCA",
-      "destination": "OKC",
-      "originCity": "Washington, D.C.",
-      "destinationCity": "Oklahoma City, OK",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-washington-to-oklahoma-city",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "washington",
-      "destinationSlug": "omaha",
-      "origin": "DCA",
-      "destination": "OMA",
-      "originCity": "Washington, D.C.",
-      "destinationCity": "Omaha, NE",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-washington-to-omaha",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "washington",
-      "destinationSlug": "orange-county",
-      "origin": "DCA",
-      "destination": "SNA",
-      "originCity": "Washington, D.C.",
-      "destinationCity": "Santa Ana, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-washington-to-orange-county",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -37251,26 +35141,6 @@
       "originCity": "Washington, D.C.",
       "destinationCity": "Reno, NV",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-washington-to-reno",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "washington",
-      "destinationSlug": "sacramento",
-      "origin": "DCA",
-      "destination": "SMF",
-      "originCity": "Washington, D.C.",
-      "destinationCity": "Sacramento, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-washington-to-sacramento",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "washington",
-      "destinationSlug": "san-antonio",
-      "origin": "DCA",
-      "destination": "SAT",
-      "originCity": "Washington, D.C.",
-      "destinationCity": "San Antonio, TX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-washington-to-san-antonio",
       "provenance": "frontier_candidate_market"
     },
     {

@@ -115,8 +115,9 @@ describe("full network integrity", () => {
     for (const route of sample) expect(route.provenance).toBe("frontier_official_direct_route");
     const denRoutes = (catalog.network.official?.routes ?? []).filter((route) => route.origin === "DEN");
     const denModule = catalog.network.official?.fareModules?.find((sample) => sample.origin === "DEN");
-    expect(denRoutes.length).toBeGreaterThan(0);
-    if (denModule) expect(denModule.total).toBeGreaterThanOrEqual(denModule.embedded);
+    expect(denRoutes.length).toBeGreaterThan(20);
+    expect(denModule?.status).toBe("complete");
+    expect(denRoutes.length).toBe(denModule?.named);
   });
 
   it("classifies dated nonstops missing from the official layer and keeps connection fares off the nonstop graph", () => {

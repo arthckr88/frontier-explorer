@@ -55,6 +55,11 @@ for (const fare of fares) {
     errors.push("A connection fare is missing itinerary fields.");
   }
 }
+for (const sample of network.official?.fareModules ?? []) {
+  if (sample.total > sample.embedded && sample.status !== "complete" && sample.status !== "blocked") {
+    errors.push(`${sample.origin} fare module still stops at the first page.`);
+  }
+}
 const unexplained = (network.official?.discrepancies ?? []).filter((item) => !item.classification || !item.reason);
 if (unexplained.length) errors.push(`${unexplained.length} schedule gaps have no classification.`);
 for (const pair of [

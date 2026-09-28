@@ -40,6 +40,19 @@ export type FareModuleSample = {
   total: number;
   lastPage: number;
   sourceUrl: string;
+  named?: number;
+  status?: "complete" | "blocked";
+  detail?: string;
+};
+
+export type FareModuleRead = {
+  origin: string;
+  status: "complete" | "blocked";
+  destinations: string[];
+  currentPage: number | null;
+  lastPage: number | null;
+  total: number | null;
+  detail: string;
 };
 
 export type ScheduleDiscrepancy = {
@@ -240,22 +253,32 @@ export function composeOfficialCatalogue(
 export function classifyScheduleGap(
   origin: string,
   destination: string,
-  module: { embedded: number; total: number } | null,
+  module: FareModuleSample | { embedded: number; total: number; status?: FareModuleSample["status"]; named?: number; lastPage?: number; detail?: string } | null,
 ): ScheduleDiscrepancy {
-  if (module && module.total > 0 && module.embedded >= module.total) {
+  if (module?.status === "blocked") {
     return {
       origin,
       destination,
       classification: "SCHEDULE_CONFIRMED_ONLY",
-      reason: `Dated browser nonstop. The ${origin} flights-from fare module is complete (${module.embedded} of ${module.total} fare rows) and does not name ${destination}. Not taken from a candidate market.`,
+      reason: `BLOCKED. The ${origin} flights-from page did not show the remaining fare rows${module.detail ? `: ${module.detail}` : "."} ${destination} is not named on the rows that loaded. Not guessed.`,
+    };
+  }
+  if (module && (module.status === "complete" || (module.total > 0 && module.embedded >= module.total))) {
+    const named = module.named ?? module.embedded;
+    const pages = module.lastPage ?? 1;
+    return {
+      origin,
+      destination,
+      classification: "SCHEDULE_CONFIRMED_ONLY",
+      reason: `Dated browser nonstop. The ${origin} flights-from fare module was read in full (${named} named destinations, ${pages} page${pages === 1 ? "" : "s"}) and does not name ${destination}. Not taken from a candidate market.`,
     };
   }
   if (module && module.total > module.embedded) {
     return {
       origin,
       destination,
-      classification: "SCHEDULE_CONFIRMED_ONLY",
-      reason: `Dated browser nonstop. ${destination} is not in the ${module.embedded} fare rows embedded for ${origin}. The module reports ${module.total} fare rows; the rest are not in the static HTML, and the next page is not requested because that call uses an embedded key. Not promoted from the unread page or from a candidate market.`,
+      classification: "IMPORTER_MISSED_ROUTE",
+      reason: `Dated browser nonstop. ${destination} is not in the ${module.embedded} fare rows embedded for ${origin}. The module reports ${module.total} fare rows and the remaining page was not read.`,
     };
   }
   return {
@@ -264,6 +287,81 @@ export function classifyScheduleGap(
     classification: "SCHEDULE_CONFIRMED_ONLY",
     reason: `Dated browser nonstop. No flights-from fare module for ${origin} names ${destination}. Not taken from a candidate market.`,
   };
+}
+
+export function applyFareModuleReads(
+  catalogue: OfficialCatalogue,
+  reads: FareModuleRead[],
+  reference: Map<string, { name: string; city: string; country: string }> = new Map(),
+): OfficialCatalogue {
+  const readByOrigin = new Map(reads.map((read) => [read.origin, read]));
+  const routes = [...catalogue.routes];
+  const seen = new Set(routes.map((route) => `${route.origin}|${route.destination}`));
+  const airports = [...catalogue.airports];
+  const airportCodes = new Set(airports.map((airport) => airport.iata));
+  const unresolved = [...catalogue.unresolved];
+  for (const read of reads) {
+    if (read.status !== "complete") continue;
+    const sample = catalogue.fareModules.find((item) => item.origin === read.origin);
+    const sourceUrl = sample?.sourceUrl ?? "";
+    const originCity = cityName(null, read.origin, reference);
+    for (const destination of read.destinations) {
+      if (!/^[A-Z]{3}$/.test(destination) || destination === read.origin) continue;
+      const known = reference.size === 0 || (reference.has(read.origin) && reference.has(destination));
+      if (!known) {
+        unresolved.push({
+          originSlug: read.origin.toLowerCase(),
+          destinationSlug: destination.toLowerCase(),
+          originCity,
+          destinationLabel: `${read.origin}-${destination}`,
+          reason: "Fare named an airport code that is not in the airport reference.",
+        });
+        continue;
+      }
+      for (const code of [read.origin, destination]) {
+        if (airportCodes.has(code)) continue;
+        const airport = reference.get(code);
+        if (!airport) continue;
+        airportCodes.add(code);
+        airports.push({ iata: code, city: airport.city, name: airport.name, country: airport.country });
+      }
+      const key = `${read.origin}|${destination}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      routes.push({
+        origin: read.origin,
+        destination,
+        originCity,
+        destinationCity: cityName(null, destination, reference),
+        sourceUrl,
+        provenance: "frontier_official_direct_route",
+      });
+    }
+  }
+  routes.sort((left, right) => left.origin.localeCompare(right.origin) || left.destination.localeCompare(right.destination));
+  airports.sort((left, right) => left.iata.localeCompare(right.iata));
+  const fareModules = catalogue.fareModules.map((sample) => {
+    const read = readByOrigin.get(sample.origin);
+    const named = routes.filter((route) => route.origin === sample.origin).length;
+    if (!read) {
+      const complete = sample.total === 0 || (sample.total > 0 && sample.embedded >= sample.total);
+      return {
+        ...sample,
+        named,
+        status: complete ? "complete" as const : undefined,
+        detail: sample.total === 0 ? "The flights-from page reported no fare rows." : complete ? "The static flights-from page already includes every reported fare row." : sample.detail,
+      };
+    }
+    return {
+      ...sample,
+      total: read.total ?? sample.total,
+      lastPage: read.lastPage ?? sample.lastPage,
+      named,
+      status: read.status,
+      detail: read.detail,
+    };
+  });
+  return { ...catalogue, airports, routes, unresolved, fareModules };
 }
 
 export function composeCandidateMarkets(pairs: { originSlug: string; destinationSlug: string; sourceUrl: string }[], pages: ParsedFlightsFromPage[], official: OfficialCatalogue): CandidateMarket[] {
