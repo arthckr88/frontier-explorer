@@ -23,7 +23,7 @@ export function HomeView({
   const focusAirport = /^[A-Z]{3}$/.test(typedFrom) ? typedFrom : null;
   const selected = query?.origin && query.destination ? { origin: query.origin, destination: query.destination } : null;
   return (
-    <div className="relative -my-3 flex h-[calc(100dvh-4.75rem)] min-h-0 flex-col gap-1 overflow-hidden sm:-my-4">
+    <div className="relative -my-3 flex h-[calc(100dvh-5.25rem)] min-h-0 flex-col gap-1 overflow-hidden sm:-my-4">
       <SearchPanel
         key={routeKey}
         catalog={catalog}
