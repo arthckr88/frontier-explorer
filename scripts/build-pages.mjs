@@ -1,51 +1,91 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync, copyFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync, copyFileSync, rmSync } from "node:fs";
+import path from "node:path";
 import { fileURLToPath } from "node:url";
-import ts from "typescript";
+import esbuild from "esbuild";
+import postcss from "postcss";
+import tailwind from "@tailwindcss/postcss";
 import { scanDirectory } from "./pages-secret-scan.mjs";
 
-compile("../src/site/published-search.ts", "search.js");
-compile("../src/site/view.ts", "view.js");
-mkdirSync(new URL("../dist", import.meta.url), { recursive: true });
-copyFileSync(new URL("../site/index.html", import.meta.url), new URL("../dist/index.html", import.meta.url));
-copyFileSync(new URL("../site/app.js", import.meta.url), new URL("../dist/app.js", import.meta.url));
-copyFileSync(new URL("../site/styles.css", import.meta.url), new URL("../dist/styles.css", import.meta.url));
-copyFileSync(new URL("../data/network.json", import.meta.url), new URL("../dist/network.json", import.meta.url));
-copyFileSync(new URL("../data/route-changes.json", import.meta.url), new URL("../dist/route-changes.json", import.meta.url));
-writeFileSync(new URL("../dist/airports.json", import.meta.url), JSON.stringify(publishedAirports()));
-copyFileSync(new URL("../node_modules/maplibre-gl/dist/maplibre-gl.mjs", import.meta.url), new URL("../dist/maplibre-gl.mjs", import.meta.url));
-copyFileSync(new URL("../node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs", import.meta.url), new URL("../dist/maplibre-gl-shared.mjs", import.meta.url));
-copyFileSync(new URL("../node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs", import.meta.url), new URL("../dist/maplibre-gl-worker.mjs", import.meta.url));
-copyFileSync(new URL("../node_modules/maplibre-gl/dist/maplibre-gl.css", import.meta.url), new URL("../dist/maplibre-gl.css", import.meta.url));
-copyFileSync(new URL("../dist/index.html", import.meta.url), new URL("../dist/404.html", import.meta.url));
+const root = fileURLToPath(new URL("..", import.meta.url));
+const dist = path.join(root, "dist");
+rmSync(dist, { recursive: true, force: true });
+mkdirSync(dist, { recursive: true });
+
+await esbuild.build({
+  absWorkingDir: root,
+  entryPoints: ["src/gh-pages/main.tsx"],
+  bundle: true,
+  format: "esm",
+  outfile: "dist/app.js",
+  jsx: "automatic",
+  define: { "process.env.NODE_ENV": '"production"' },
+  plugins: [aliasPlugin()],
+  loader: { ".css": "css" },
+  legalComments: "none",
+});
+
+const css = readFileSync(path.join(root, "src/app/globals.css"), "utf8");
+const processed = await postcss([tailwind()]).process(css, { from: path.join(root, "src/app/globals.css") });
+writeFileSync(path.join(dist, "styles.css"), processed.css);
+
+copyFileSync(path.join(root, "data/network.json"), path.join(dist, "network.json"));
+copyFileSync(path.join(root, "data/browser-fares.json"), path.join(dist, "browser-fares.json"));
+copyFileSync(path.join(root, "data/route-changes.json"), path.join(dist, "route-changes.json"));
+copyFileSync(path.join(root, "data/price-history.jsonl"), path.join(dist, "price-history.jsonl"));
+writeFileSync(path.join(dist, "airports.json"), JSON.stringify(publishedAirports()));
+copyFileSync(path.join(root, "node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs"), path.join(dist, "maplibre-gl-worker.mjs"));
+copyFileSync(path.join(root, "node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs"), path.join(dist, "maplibre-gl-shared.mjs"));
+
+const html = `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Frontier Route Explorer</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="app.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="app.js"></script>
+    <noscript>The map and search need JavaScript to read the stored Frontier schedule.</noscript>
+  </body>
+</html>
+`;
+writeFileSync(path.join(dist, "index.html"), html);
+copyFileSync(path.join(dist, "index.html"), path.join(dist, "404.html"));
 assertNoCredentialMarkers();
 console.log("Wrote dist/ for GitHub Pages.");
 
+function aliasPlugin() {
+  return {
+    name: "at-alias",
+    setup(build) {
+      build.onResolve({ filter: /^@\// }, (args) => {
+        const base = path.join(root, "src", args.path.slice(2));
+        const candidates = [base, `${base}.tsx`, `${base}.ts`, `${base}.css`, path.join(base, "index.ts"), path.join(base, "index.tsx")];
+        const found = candidates.find((candidate) => existsSync(candidate));
+        if (!found) return { errors: [{ text: `Cannot resolve ${args.path}` }] };
+        return { path: found };
+      });
+    },
+  };
+}
+
 function assertNoCredentialMarkers() {
-  const roots = ["../dist", "../site", "../public"].map((relative) => fileURLToPath(new URL(relative, import.meta.url)));
-  const hits = roots.filter((root) => existsSync(root)).flatMap((root) => scanDirectory(root));
+  const roots = [dist, path.join(root, "public")].filter((directory) => existsSync(directory));
+  const hits = roots.flatMap((directory) => scanDirectory(directory));
   if (hits.length === 0) return;
   const summary = hits.map((hit) => `${hit.file}: ${hit.markers.join(", ")}`).join("; ");
   throw new Error(`Pages build refused credential markers. ${summary}`);
 }
 
-function compile(relativePath, outName) {
-  const source = readFileSync(new URL(relativePath, import.meta.url), "utf8");
-  const compiled = ts.transpileModule(source, {
-    compilerOptions: {
-      target: ts.ScriptTarget.ES2020,
-      module: ts.ModuleKind.ES2020,
-    },
-  });
-  mkdirSync(new URL("../dist", import.meta.url), { recursive: true });
-  writeFileSync(new URL(`../dist/${outName}`, import.meta.url), compiled.outputText);
-}
-
 function publishedAirports() {
-  const network = JSON.parse(readFileSync(new URL("../data/network.json", import.meta.url), "utf8"));
+  const network = JSON.parse(readFileSync(path.join(root, "data/network.json"), "utf8"));
   if (!Array.isArray(network.observations) || network.observations.length === 0) {
     throw new Error("data/network.json has no booking observations.");
   }
-  const codes = new Set(["OAK", "SFO", "LAS", "LAX", "BUR", "SAN", "ONT", "SNA"]);
+  const codes = new Set(["OAK", "SFO", "LAS", "LAX", "BUR", "SAN", "ONT", "SNA", "MCO", "FLL", "MIA", "LGA", "JFK"]);
   for (const flight of network.observations) {
     codes.add(flight.origin);
     codes.add(flight.destination);
@@ -58,7 +98,11 @@ function publishedAirports() {
     codes.add(summary.origin);
     codes.add(summary.destination);
   }
-  const airports = JSON.parse(readFileSync(new URL("../data/airports.json", import.meta.url), "utf8"));
+  for (const fare of network.fares ?? []) {
+    codes.add(fare.origin);
+    codes.add(fare.destination);
+  }
+  const airports = JSON.parse(readFileSync(path.join(root, "data/airports.json"), "utf8"));
   return airports
     .filter((airport) => codes.has(airport.iata) && Number.isFinite(airport.lat) && Number.isFinite(airport.lon))
     .map((airport) => ({
@@ -69,5 +113,6 @@ function publishedAirports() {
       lat: airport.lat,
       lon: airport.lon,
       timezone: airport.timezone,
+      region: airport.region ?? "other",
     }));
 }

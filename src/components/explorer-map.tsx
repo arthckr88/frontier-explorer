@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { GeoJSONSource, Map as MapLibreMap, NavigationControl } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+import { AppLink } from "@/components/app-link";
 import type { MapAirport, MapRoute } from "@/server/queries/read";
 
 const STATUS_COLOR: Record<string, string> = {
@@ -15,7 +16,6 @@ const STATUS_COLOR: Record<string, string> = {
   STALE: "#e07a3d",
   PAUSED: "#8b939c",
   ENDED: "#6b7280",
-  UNKNOWN: "#8b939c",
 };
 
 const REGIONS = [
@@ -90,6 +90,8 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
     });
   }, [origin, reachable, region, routes, scope, statuses]);
 
+  const presentStatuses = useMemo(() => new Set(routes.map((route) => route.status)), [routes]);
+
   const routeData = useMemo(
     () => ({
       type: "FeatureCollection" as const,
@@ -127,6 +129,12 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
     };
   }, [airports, interest, routes.length, visible]);
 
+  const dataRef = useRef({ routeData, airportData });
+
+  useEffect(() => {
+    dataRef.current = { routeData, airportData };
+  }, [airportData, routeData]);
+
   useEffect(() => {
     if (!container.current || mapRef.current) return;
     const map = new MapLibreMap({
@@ -136,25 +144,55 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
       zoom: 3.1,
     });
     map.addControl(new NavigationControl({ showCompass: false }), "top-right");
+    const paint = () => {
+      if (!map.getSource("routes")) return;
+      const current = dataRef.current;
+      const routeSource = map.getSource("routes");
+      const airportSource = map.getSource("airports");
+      if (routeSource instanceof GeoJSONSource) routeSource.setData(current.routeData);
+      if (airportSource instanceof GeoJSONSource) airportSource.setData(current.airportData);
+      const coordinates = current.routeData.features.flatMap((feature) => feature.geometry.coordinates);
+      if (coordinates.length === 0) return;
+      let west = 180;
+      let south = 90;
+      let east = -180;
+      let north = -90;
+      for (const [lon, lat] of coordinates) {
+        if (!lon || !lat) continue;
+        west = Math.min(west, lon);
+        east = Math.max(east, lon);
+        south = Math.min(south, lat);
+        north = Math.max(north, lat);
+      }
+      if (west <= east && south <= north) {
+        map.fitBounds(
+          [
+            [west, south],
+            [east, north],
+          ],
+          { padding: 48, maxZoom: 5.4, duration: 0 },
+        );
+      }
+    };
     map.on("load", () => {
-      map.addSource("routes", { type: "geojson", data: routeData });
+      map.addSource("routes", { type: "geojson", data: dataRef.current.routeData });
       map.addLayer({
         id: "route-lines",
         type: "line",
         source: "routes",
         paint: {
           "line-color": ["get", "color"],
-          "line-width": 1.4,
-          "line-opacity": 0.85,
+          "line-width": 1.6,
+          "line-opacity": 0.9,
         },
       });
-      map.addSource("airports", { type: "geojson", data: airportData });
+      map.addSource("airports", { type: "geojson", data: dataRef.current.airportData });
       map.addLayer({
         id: "airport-dots",
         type: "circle",
         source: "airports",
         paint: {
-          "circle-radius": ["case", ["get", "mine"], 5, 3.5],
+          "circle-radius": ["case", ["get", "mine"], 5.5, 3.5],
           "circle-color": ["case", ["get", "mine"], "#e8ffb0", "#d5ddd8"],
           "circle-stroke-width": 1,
           "circle-stroke-color": "#090b0d",
@@ -170,24 +208,48 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
         const iata = event.features?.[0]?.properties?.iata;
         if (typeof iata === "string") setOrigin(iata);
       });
+      paint();
     });
+    const observer = new ResizeObserver(() => map.resize());
+    observer.observe(container.current);
     mapRef.current = map;
     return () => {
+      observer.disconnect();
       map.remove();
       mapRef.current = null;
     };
-    // The map is created once; data updates flow through setData.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tileStyle]);
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map?.isStyleLoaded()) return;
+    if (!map?.isStyleLoaded() || !map.getSource("routes")) return;
     const routeSource = map.getSource("routes");
     const airportSource = map.getSource("airports");
     if (routeSource instanceof GeoJSONSource) routeSource.setData(routeData);
     if (airportSource instanceof GeoJSONSource) airportSource.setData(airportData);
-  }, [airportData, routeData]);
+    const coordinates = routeData.features.flatMap((feature) => feature.geometry.coordinates);
+    if (coordinates.length === 0) return;
+    let west = 180;
+    let south = 90;
+    let east = -180;
+    let north = -90;
+    for (const [lon, lat] of coordinates) {
+      if (lon == null || lat == null) continue;
+      west = Math.min(west, lon);
+      east = Math.max(east, lon);
+      south = Math.min(south, lat);
+      north = Math.max(north, lat);
+    }
+    if (west <= east && south <= north) {
+      map.fitBounds(
+        [
+          [west, south],
+          [east, north],
+        ],
+        { padding: 48, maxZoom: origin ? 6 : 5.4, duration: 0 },
+      );
+    }
+  }, [airportData, origin, routeData]);
 
   const hovered = airports.find((airport) => airport.iata === hover);
   const outbound = origin ? visible.filter((route) => route.origin === origin) : [];
@@ -203,7 +265,7 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
           ))}
         </FilterGroup>
         <FilterGroup label="Status">
-          {Object.keys(STATUS_COLOR).map((status) => (
+          {Object.keys(STATUS_COLOR).filter((status) => presentStatuses.has(status)).map((status) => (
             <button
               key={status}
               type="button"
@@ -244,47 +306,43 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
           </button>
         </FilterGroup>
       </aside>
-      <div className="relative min-h-[420px] overflow-hidden rounded-md border border-[#24302a] lg:min-h-[640px]">
-        <div ref={container} className="absolute inset-0" />
+      <div className="relative h-[420px] overflow-hidden rounded-md border border-[#24302a] lg:h-[640px]">
+        <div ref={container} className="h-full w-full" />
         <div className="pointer-events-none absolute bottom-3 left-3 right-3 flex flex-col gap-2 sm:right-auto sm:max-w-sm">
           <div className="pointer-events-auto rounded-md border border-[#24302a] bg-[#090b0d]/90 p-3 text-xs">
             {routes.length === 0 ? (
-              <p>No route observations are loaded. Airports you care about are marked. Run a sync to pull Frontier newsroom announcements. Green means a schedule source confirmed the route.</p>
+              <p>No stored nonstop routes to draw.</p>
             ) : (
-              <p>
-                {visible.length} directional routes shown. Announced and unverified routes are not painted as confirmed current service.
-              </p>
+              <p>{visible.length} nonstop routes. Green routes were stored from Frontier.</p>
             )}
             {hovered ? (
               <p className="mt-2 font-mono text-[#e7ece8]">
                 {hovered.iata} · {hovered.city}
                 <br />
-                {visible.filter((route) => route.origin === hovered.iata).length} observed destinations
+                {visible.filter((route) => route.origin === hovered.iata).length} destinations
               </p>
             ) : null}
           </div>
           {origin ? (
             <div className="pointer-events-auto max-h-56 overflow-auto rounded-md border border-[#24302a] bg-[#12161b] p-3 text-xs">
               <div className="mb-2 flex items-center justify-between">
-                <a className="font-mono text-sm text-[#e8ffb0]" href={`/airports/${origin}`}>
+                <AppLink href={`/airports/${origin}`} className="font-mono text-sm text-[#e8ffb0]">
                   {origin}
-                </a>
+                </AppLink>
                 <button type="button" className="text-[#8b9790]" onClick={() => setOrigin(null)}>
                   Clear
                 </button>
               </div>
-              {outbound.length === 0 ? <p className="text-[#8b9790]">No observed destinations in the current filters.</p> : null}
+              {outbound.length === 0 ? <p className="text-[#8b9790]">No stored destinations in the current filters.</p> : null}
               <ul className="space-y-1">
                 {outbound.map((route) => (
                   <li key={`${route.origin}-${route.destination}`}>
-                    <a href={`/routes/${route.origin}/${route.destination}`} className="flex justify-between gap-3 hover:text-[#3dbe7a]">
+                    <AppLink href={`/routes/${route.origin}/${route.destination}`} className="flex justify-between gap-3 hover:text-[#3dbe7a]">
                       <span>
                         {route.origin} → {route.destination}
                       </span>
-                      <span className="font-mono text-[#8b9790]">
-                        {route.frequency != null ? `${route.frequency}/wk` : route.announcedFrequency != null ? `ann. ${route.announcedFrequency}/wk` : route.status}
-                      </span>
-                    </a>
+                      <span className="font-mono text-[#8b9790]">Nonstop</span>
+                    </AppLink>
                   </li>
                 ))}
               </ul>

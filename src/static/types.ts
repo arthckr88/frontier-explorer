@@ -1,0 +1,73 @@
+import type { BrowserFareRecord, NetworkArtifact, RouteChange, RouteChangeFile } from "@/site/network";
+
+export type AirportRecord = {
+  iata: string;
+  name: string;
+  city: string;
+  country: string;
+  lat: number;
+  lon: number;
+  timezone: string | null;
+  region: string;
+};
+
+export type PriceHistoryRow = {
+  origin: string;
+  destination: string;
+  date: string;
+  flightNumber: string;
+  departureLocal: string;
+  fareType: string;
+  price: number;
+  observedAt: string;
+};
+
+export type StaticCatalog = {
+  network: NetworkArtifact;
+  fares: BrowserFareRecord[];
+  changes: RouteChangeFile;
+  priceHistory: PriceHistoryRow[];
+  airports: AirportRecord[];
+};
+
+export type DisplayFare = {
+  total: number;
+  display: number;
+  currency: string;
+};
+
+export type StoredFlight = {
+  id: string;
+  origin: string;
+  destination: string;
+  date: string;
+  flightNumber: string;
+  departureLocal: string;
+  arrivalLocal: string;
+  durationMinutes: number;
+  stops: number;
+  standard: DisplayFare | null;
+  discountDen: DisplayFare | null;
+  goWild: DisplayFare | null;
+  checkedAt: string | null;
+  redEye: boolean;
+};
+
+export type FareQuery = {
+  origin: string;
+  destination: string;
+  date: string;
+  maxStops: number;
+  maxDuration: number | null;
+  depart: "" | "morning" | "afternoon" | "evening";
+  arrive: "" | "morning" | "afternoon" | "evening";
+  sort: "stops" | "duration" | "depart";
+  excludeRedEyes: boolean;
+};
+
+export type FareLookupResult = {
+  flights: StoredFlight[];
+  message: string | null;
+};
+
+export type { BrowserFareRecord, NetworkArtifact, RouteChange, RouteChangeFile };

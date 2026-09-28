@@ -234,7 +234,7 @@ describe("listed markets and Pages secrets", () => {
 
   it("rejects credential markers and finds none in the client sources", () => {
     expect(findForbiddenMarkers("frontiertoken")).toEqual(["frontiertoken"]);
-    for (const file of ["site/app.js", "site/index.html", "site/styles.css", "src/site/availability/provider.ts"]) {
+    for (const file of ["src/gh-pages/main.tsx", "src/views/search-panel.tsx", "src/static/adapter.ts", "src/site/availability/provider.ts"]) {
       expect(findForbiddenMarkers(readFileSync(file, "utf8")), file).toEqual([]);
     }
     expect(readFileSync("scripts/build-pages.mjs", "utf8")).toContain("assertNoCredentialMarkers");

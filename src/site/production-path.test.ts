@@ -1,9 +1,9 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
-const app = readFileSync(new URL("../../site/app.js", import.meta.url), "utf8");
+const loader = readFileSync(new URL("../gh-pages/load-browser.ts", import.meta.url), "utf8");
 const pages = readFileSync(new URL("../../scripts/build-pages.mjs", import.meta.url), "utf8");
-const html = readFileSync(new URL("../../site/index.html", import.meta.url), "utf8");
+const dataView = readFileSync(new URL("../views/data-view.tsx", import.meta.url), "utf8");
 const deploy = readFileSync(new URL("../../.github/workflows/deploy.yml", import.meta.url), "utf8");
 const ci = readFileSync(new URL("../../.github/workflows/ci.yml", import.meta.url), "utf8");
 const workflows = readdirSync(new URL("../../.github/workflows", import.meta.url))
@@ -11,19 +11,23 @@ const workflows = readdirSync(new URL("../../.github/workflows", import.meta.url
   .sort();
 
 describe("GitHub Pages reads the booking observation artifact", () => {
-  it("loads network.json and not the 2LNR upcoming file", () => {
-    expect(app).toContain('fetch("network.json")');
-    expect(app).not.toContain("upcoming.json");
-    expect(app).not.toContain("on-time file");
-    expect(app).not.toContain("Saved flight");
-    expect(app).not.toMatch(/date < "2026-09-27"/);
-    expect(app).not.toContain("2026-09-27");
-    expect(html).toContain('id="provenance"');
+  it("loads network.json and not the legacy schedule files", () => {
+    expect(loader).toContain('fetch("network.json")');
+    expect(loader).toContain('fetch("browser-fares.json")');
+    expect(loader).toContain('fetch("route-changes.json")');
+    expect(loader).toContain('fetch("price-history.jsonl")');
+    expect(loader).not.toContain("upcoming.json");
+    expect(loader).not.toContain("operating-days.json");
     expect(pages).toContain("network.json");
+    expect(pages).toContain("browser-fares.json");
     expect(pages).toContain("route-changes.json");
+    expect(pages).toContain("price-history.jsonl");
+    expect(pages).not.toContain("site/index.html");
+    expect(pages).not.toContain("site/app.js");
     expect(pages).not.toContain("operating-days.json");
     expect(pages).not.toContain("nonstops.json");
     expect(pages).not.toContain("upcoming.json");
+    expect(dataView).toContain('id="provenance"');
   });
 
   it("keeps Pages deploy on main and does not schedule Frontier or FlightAware", () => {
