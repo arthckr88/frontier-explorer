@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { untimedPaths } from "@/lib/graph/untimed";
 import { findForbiddenMarkers } from "../../scripts/pages-secret-scan.mjs";
 import { UNRESOLVED_MAPPING_THRESHOLD } from "@/site/direct-routes";
-import { staticAirportDetail, staticDirectory, staticFareLookup, staticNetworkAdapter, staticRouteDetail } from "@/static/adapter";
+import { staticAirportDetail, staticDirectory, staticFareLookup, staticNetworkAdapter, staticRouteDetail, storedGoWild } from "@/static/adapter";
 import { loadCatalog } from "@/static/load";
 
 const catalog = loadCatalog();
@@ -110,6 +110,39 @@ describe("full network integrity", () => {
       expect(staticRouteDetail(catalog, origin ?? "", destination ?? "")?.official).toBe(true);
     }
     expect(findForbiddenMarkers(JSON.stringify(catalog.network.official)).length).toBe(0);
+    const sample = (catalog.network.official?.routes ?? []).filter((_, index) => index % 30 === 0).slice(0, 30);
+    expect(sample.length).toBeGreaterThanOrEqual(20);
+    for (const route of sample) expect(route.provenance).toBe("frontier_official_direct_route");
+    const denRoutes = (catalog.network.official?.routes ?? []).filter((route) => route.origin === "DEN");
+    const denModule = catalog.network.official?.fareModules?.find((sample) => sample.origin === "DEN");
+    expect(denRoutes.length).toBeGreaterThan(0);
+    if (denModule) expect(denModule.total).toBeGreaterThanOrEqual(denModule.embedded);
+  });
+
+  it("classifies dated nonstops missing from the official layer and keeps connection fares off the nonstop graph", () => {
+    const gaps = new Map((catalog.network.official?.discrepancies ?? []).map((item) => [`${item.origin}-${item.destination}`, item]));
+    for (const pair of ["SFO-LAX", "SFO-SAN", "LAS-LAX", "LAS-BUR"]) {
+      const [origin, destination] = pair.split("-");
+      const official = catalog.network.official?.routes.some((route) => route.origin === origin && route.destination === destination);
+      const gap = gaps.get(pair);
+      expect(official || Boolean(gap?.reason)).toBe(true);
+      if (!official) expect(gap?.classification).toBe("SCHEDULE_CONFIRMED_ONLY");
+    }
+    expect((catalog.network.official?.discrepancies ?? []).filter((item) => !item.reason)).toEqual([]);
+    const network = staticNetworkAdapter(catalog);
+    const edges = new Set(network.routes.map((route) => `${route.origin}|${route.destination}`));
+    const connection = catalog.fares.find((fare) => (fare.stops ?? 0) > 0 && !edges.has(`${fare.origin}|${fare.destination}`));
+    if (connection) expect(edges.has(`${connection.origin}|${connection.destination}`)).toBe(false);
+    const graph = network.routes.map((route) => ({ origin: route.origin, destination: route.destination, status: route.status, frequency: null }));
+    const avoided = untimedPaths(graph, ["BOS", "PHL", "MCO", "TPA", "FLL"], ["SJU", "CUN", "PUJ", "MBJ"], 2).find(
+      (path) => path.stops > 0 && path.airports.every((code) => !["LAS", "DEN", "ATL"].includes(code)),
+    );
+    expect(avoided?.stops).toBeGreaterThan(0);
+    const rows = storedGoWild(catalog);
+    const keys = rows.map((row) => `${row.flightNumber}|${row.departureLocal}|${row.arrivalLocal}`);
+    expect(new Set(keys).size).toBe(keys.length);
+    expect(rows.some((row) => row.stops === 0)).toBe(true);
+    expect(rows.some((row) => row.stops > 0)).toBe(true);
   });
 });
 

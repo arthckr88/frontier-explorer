@@ -22,12 +22,33 @@ export type PriceHistoryRow = {
   observedAt: string;
 };
 
+export type HistoricalMetrics = {
+  frequency: {
+    current: string;
+    currentNote: string;
+    historicalSource: string;
+    historicalUrl: string;
+    historicalPeriod: string;
+    historicalNote: string;
+    routes: { origin: string; destination: string; departures: number; perWeek: number }[];
+  };
+  popularity: {
+    source: string;
+    sourceUrl: string;
+    period: string;
+    passengersStored: boolean;
+    note: string;
+    pairs: { origin: string; destination: string }[];
+  };
+};
+
 export type StaticCatalog = {
   network: NetworkArtifact;
   fares: BrowserFareRecord[];
   changes: RouteChangeFile;
   priceHistory: PriceHistoryRow[];
   airports: AirportRecord[];
+  historical?: HistoricalMetrics | null;
 };
 
 export type DisplayFare = {

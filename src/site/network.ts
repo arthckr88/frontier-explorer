@@ -83,6 +83,8 @@ export type OfficialNetwork = {
   unresolved: { originSlug: string; destinationSlug: string; originCity: string | null; destinationLabel: string; reason: string }[];
   candidateMarkets: number;
   lastBrowserCollection: string | null;
+  fareModules?: { origin: string; embedded: number; total: number; lastPage: number; sourceUrl: string }[];
+  discrepancies?: { origin: string; destination: string; classification: "SCHEDULE_CONFIRMED_ONLY" | "IMPORTER_MISSED_ROUTE"; reason: string }[];
 };
 
 export type ScheduleInput = {

@@ -109,7 +109,7 @@ export function PlannerView({
         </div>
         <div>
           <h2 className="mb-2 font-mono text-[11px] uppercase tracking-[0.16em] text-[#8b9790]">Paths</h2>
-          <p className="mb-2 text-xs text-[#8b9790]">A path without times is a possible network path, not a dated itinerary.</p>
+          <p className="mb-2 text-xs text-[#8b9790]">A path without times is a Possible network path, not a dated itinerary.</p>
           {planned.untimed.length === 0 ? <p className="text-sm text-[#8b9790]">No path connects these airports.</p> : planned.untimed.map((path) => (
             <div key={path.airports.join("-")} className="mb-2 font-mono text-xs">{path.airports.join(" → ")}</div>
           ))}

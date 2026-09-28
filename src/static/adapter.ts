@@ -80,7 +80,7 @@ export function staticNetworkAdapter(catalog: StaticCatalog): NetworkModel {
   }
   for (const edge of edges) {
     const key = pairKey(edge.origin, edge.destination);
-    if (!drawn.has(key)) drawn.set(key, { origin: edge.origin, destination: edge.destination, status: "SCHEDULE_CONFIRMED" });
+    if (!drawn.has(key)) drawn.set(key, { origin: edge.origin, destination: edge.destination, status: "SCHEDULE_CONFIRMED_ONLY" });
   }
   const used = new Set<string>([...drawn.values()].flatMap((route) => [route.origin, route.destination]));
   for (const code of catalog.network.official?.airports ?? []) used.add(code);
@@ -180,6 +180,8 @@ export function staticChrome(catalog: StaticCatalog): { status: string; links: C
     links.push({ href: "/discover", label: "Discover" }, { href: "/planner", label: "Planner" });
   }
   if (catalog.changes.events.length > 0) links.push({ href: "/changes", label: "Changes" });
+  if (catalog.historical?.frequency) links.push({ href: "/frequency", label: "Frequency" });
+  if (catalog.historical?.popularity) links.push({ href: "/popularity", label: "Popularity" });
   if (storedGoWild(catalog).length > 0) links.push({ href: "/gowild", label: "GoWild" });
   links.push({ href: "/system/data", label: "Data" }, { href: "/settings", label: "Settings" });
   return {
@@ -252,7 +254,7 @@ function connectionPaths(catalog: StaticCatalog, query: FareQuery) {
       airports: path.airports,
       stops: path.stops,
       kind: "possible" as const,
-      label: "possible network path",
+      label: "Possible network path",
     }));
   return [...timed, ...possible].sort((a, b) => a.stops - b.stops || a.airports.join(">").localeCompare(b.airports.join(">"))).slice(0, 8);
 }
@@ -531,7 +533,7 @@ export function staticPlanner(
   }).sort((a, b) => a.stops - b.stops || a.elapsedMinutes - b.elapsedMinutes || a.segments[0]!.departureLocal.localeCompare(b.segments[0]!.departureLocal));
   return {
     itineraries,
-    untimed: untimed.map((path) => ({ ...path, label: "possible network path" })),
+    untimed: untimed.map((path) => ({ ...path, label: "Possible network path" })),
     notice: itineraries.length === 0 ? "No flights connect these airports on this date." : null,
   };
 }
@@ -756,6 +758,8 @@ export function staticDirectory(catalog: StaticCatalog, filters: DirectoryFilter
     .filter((route) => matchesScope(points, route.origin, route.destination, filters))
     .filter((route) => !query || `${route.origin} ${route.destination} ${points.get(route.origin)?.city ?? ""} ${points.get(route.destination)?.city ?? ""}`.toLowerCase().includes(query))
     .sort((a, b) => a.origin.localeCompare(b.origin) || a.destination.localeCompare(b.destination));
+  const officialCount = routes.filter((route) => route.official).length;
+  const scheduleOnlyCount = routes.filter((route) => route.confirmed && !route.official).length;
   const airportCodes = new Set<string>(catalog.network.official?.airports ?? []);
   for (const route of routes) {
     airportCodes.add(route.origin);
@@ -771,6 +775,8 @@ export function staticDirectory(catalog: StaticCatalog, filters: DirectoryFilter
   return {
     airports,
     routes,
+    officialCount,
+    scheduleOnlyCount,
     officialKeys: officialKeys.size,
     countries: [...new Set([...points.values()].map((airport) => airport.country))].sort(),
     regions: [...new Set([...points.values()].map((airport) => airport.region).filter(Boolean))].sort(),
@@ -817,28 +823,35 @@ export type GoWildFare = {
   flightNumber: string;
   departureLocal: string;
   arrivalLocal: string;
+  stops: number;
+  durationMinutes: number | null;
   goWild: DisplayFare;
   checkedAt: string;
 };
 
 export function storedGoWild(catalog: StaticCatalog): GoWildFare[] {
-  const rows: GoWildFare[] = [];
+  const latest = new Map<string, GoWildFare>();
   for (const fare of catalog.fares) {
     const goWild = displayFare(fare.goWild);
-    if (!goWild) continue;
-    rows.push({
+    if (!goWild || goWild.total < 0) continue;
+    if (!fare.origin || !fare.destination || !fare.date || !fare.flightNumber || !fare.departureLocal || !fare.arrivalLocal) continue;
+    const row: GoWildFare = {
       origin: fare.origin,
       destination: fare.destination,
       date: fare.date,
       flightNumber: fare.flightNumber,
       departureLocal: fare.departureLocal,
       arrivalLocal: fare.arrivalLocal,
+      stops: fare.stops ?? 0,
+      durationMinutes: fare.durationMinutes,
       goWild,
       checkedAt: fare.retrievedAt,
-    });
+    };
+    const key = `${row.origin}|${row.destination}|${row.date}|${row.stops}|${row.flightNumber}|${row.departureLocal}|${row.arrivalLocal}`;
+    const current = latest.get(key);
+    if (!current || row.checkedAt > current.checkedAt) latest.set(key, row);
   }
-  rows.sort((a, b) => a.departureLocal.localeCompare(b.departureLocal) || a.flightNumber.localeCompare(b.flightNumber));
-  return rows;
+  return [...latest.values()].sort((a, b) => a.departureLocal.localeCompare(b.departureLocal) || a.arrivalLocal.localeCompare(b.arrivalLocal) || a.flightNumber.localeCompare(b.flightNumber));
 }
 
 export function staticDiagnostics(catalog: StaticCatalog) {

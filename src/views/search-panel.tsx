@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AppLink } from "@/components/app-link";
 import { calendarToday, clock, fareText, formatChecked, formatElapsed, staticFareLookup } from "@/static/adapter";
 import type { FareQuery, StaticCatalog, StoredFlight } from "@/static/types";
 
@@ -205,12 +206,19 @@ function ResultList({ catalog, query }: { catalog: StaticCatalog; query: FareQue
     <div id="results" className="space-y-3">
       {result.officialNonstop ? <p className="text-sm">Frontier direct route.</p> : <p className="text-sm text-[#8b9790]">Frontier direct route: no.</p>}
       {result.message ? <p className="rounded-md border border-[#e2a84a]/40 bg-[#181e24] px-3 py-3 text-sm">{result.message}</p> : null}
+      {result.officialNonstop && result.flights.length === 0 ? (
+        <p className="text-sm">
+          <AppLink className="text-[#3dbe7a]" href={`/routes/${query.origin}/${query.destination}`}>
+            Open {query.origin} → {query.destination}
+          </AppLink>
+        </p>
+      ) : null}
       {result.flights.map((flight) => (
         <FlightCard key={flight.id} flight={flight} />
       ))}
       {result.paths.map((path) => (
         <p key={path.airports.join("-")} className="rounded-md border border-[#24302a] px-3 py-2 text-sm">
-          {path.airports.join(" → ")} · {path.stops} stop{path.stops === 1 ? "" : "s"} · {path.kind === "timed" ? path.label : "possible network path"}
+          {path.airports.join(" → ")} · {path.stops} stop{path.stops === 1 ? "" : "s"} · {path.kind === "timed" ? path.label : "Possible network path"}
         </p>
       ))}
     </div>
@@ -229,8 +237,19 @@ function FlightCard({ flight }: { flight: StoredFlight }) {
         <span className="text-[#8b9790]">{formatElapsed(flight.durationMinutes)}</span>
       </div>
       <div className="text-base font-medium">
-        {flight.origin} {clock(flight.departureLocal)} → {flight.destination} {clock(flight.arrivalLocal)}
+        {flight.stops === 0 ? (
+          <>
+            {flight.origin} {clock(flight.departureLocal)} → {flight.destination} {clock(flight.arrivalLocal)}
+          </>
+        ) : (
+          <>
+            Departs {flight.origin} {clock(flight.departureLocal)}. Arrives {flight.destination} {clock(flight.arrivalLocal)}.
+          </>
+        )}
       </div>
+      {flight.stops > 0 ? (
+        <p className="mt-1 text-sm text-[#8b9790]">F9 {flight.flightNumber} is the first flight. The connecting flight was not included with this fare.</p>
+      ) : null}
       {priced.length === 0 ? (
         <p className="mt-3 text-sm text-[#8b9790]">Fare not checked for this date.</p>
       ) : (

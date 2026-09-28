@@ -32,6 +32,7 @@ copyFileSync(path.join(root, "data/network.json"), path.join(dist, "network.json
 copyFileSync(path.join(root, "data/browser-fares.json"), path.join(dist, "browser-fares.json"));
 copyFileSync(path.join(root, "data/route-changes.json"), path.join(dist, "route-changes.json"));
 copyFileSync(path.join(root, "data/price-history.jsonl"), path.join(dist, "price-history.jsonl"));
+copyFileSync(path.join(root, "data/historical-metrics.json"), path.join(dist, "historical-metrics.json"));
 writeFileSync(path.join(dist, "airports.json"), JSON.stringify(publishedAirports()));
 copyFileSync(path.join(root, "node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs"), path.join(dist, "maplibre-gl-worker.mjs"));
 copyFileSync(path.join(root, "node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs"), path.join(dist, "maplibre-gl-shared.mjs"));

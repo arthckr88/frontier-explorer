@@ -43,6 +43,8 @@ describe("GitHub Pages reads the booking observation artifact", () => {
       .join("\n");
     expect(text).not.toContain("npm run update:published");
     expect(text).not.toContain("frontier:browser");
+    expect(text).not.toContain("frontier:network");
+    expect(text).not.toContain("frontier:verify-network");
     expect(text).not.toContain("schedules:frontier");
     expect(text).not.toContain("FLIGHTAWARE_API_KEY");
     expect(text).not.toContain("aeroapi");

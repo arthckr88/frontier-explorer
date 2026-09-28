@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import type { BrowserFareRecord, NetworkArtifact, RouteChangeFile } from "@/site/network";
-import type { AirportRecord, PriceHistoryRow, StaticCatalog } from "@/static/types";
+import type { AirportRecord, HistoricalMetrics, PriceHistoryRow, StaticCatalog } from "@/static/types";
 
 function readDataFile(name: string) {
   return readFileSync(path.join(process.cwd(), "data", name), "utf8");
@@ -23,6 +23,7 @@ export function loadCatalog(): StaticCatalog {
     .map((line) => line.trim())
     .filter(Boolean)
     .map((line) => JSON.parse(line) as PriceHistoryRow);
+  const historical = readHistorical();
   const codes = referencedCodes(network, fares, changes);
   for (const code of network.official?.airports ?? []) codes.add(code);
   for (const route of network.official?.routes ?? []) {
@@ -35,8 +36,17 @@ export function loadCatalog(): StaticCatalog {
     changes,
     priceHistory,
     airports: airports.filter((airport) => codes.has(airport.iata)),
+    historical,
   };
   return cached;
+}
+
+function readHistorical(): HistoricalMetrics | null {
+  try {
+    return JSON.parse(readDataFile("historical-metrics.json")) as HistoricalMetrics;
+  } catch {
+    return null;
+  }
 }
 
 function referencedCodes(network: NetworkArtifact, fares: BrowserFareRecord[], changes: RouteChangeFile) {

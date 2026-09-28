@@ -48,7 +48,9 @@ export function DiscoverView({ catalog, from = "" }: { catalog: StaticCatalog; f
         <label className="flex items-center gap-2 text-sm text-[#8b9790]"><input type="checkbox" checked={filters.confirmedOnly} onChange={(event) => setFilters({ ...filters, confirmedOnly: event.target.checked })} /> Schedule-confirmed</label>
         <label className="flex items-center gap-2 text-sm text-[#8b9790]"><input type="checkbox" checked={filters.faresOnly} onChange={(event) => setFilters({ ...filters, faresOnly: event.target.checked })} /> Routes with fares</label>
       </form>
-      <p className="font-mono text-xs text-[#8b9790]">{data.airports.length} airports · {data.routes.length} directs</p>
+      <p className="font-mono text-xs text-[#8b9790]">
+        {data.airports.length} airports · {data.officialCount} official directs · {data.scheduleOnlyCount} schedule-confirmed only
+      </p>
       <div className="flex flex-wrap gap-2">
         {data.airports.map((airport) => (
           <AppLink key={airport.iata} href={`/airports/${airport.iata}`} className="rounded border border-[#24302a] px-2 py-1 text-sm">
@@ -61,8 +63,7 @@ export function DiscoverView({ catalog, from = "" }: { catalog: StaticCatalog; f
           <AppLink key={`${route.origin}${route.destination}`} href={`/routes/${route.origin}/${route.destination}`} className="flex justify-between gap-3 rounded border border-[#24302a] px-2 py-1 text-sm hover:text-[#3dbe7a]">
             <span>{route.origin} → {route.destination}</span>
             <span className="font-mono text-[11px] text-[#8b9790]">
-              {route.official ? "Official direct" : "Dated schedule"}
-              {route.confirmed ? " · dated schedule" : ""}
+              {route.official && route.confirmed ? "Official direct · dated schedule" : route.official ? "Official direct" : "Schedule-confirmed only"}
               {route.fares ? " · fares" : ""}
             </span>
           </AppLink>

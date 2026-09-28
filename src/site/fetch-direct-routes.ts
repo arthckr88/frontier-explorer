@@ -37,6 +37,8 @@ const catalogue = composeOfficialCatalogue(pages, retrievedAt, reference);
 const markets = composeCandidateMarkets(parseCityToCitySitemap(`${citySitemap}\n${xmlSitemap}`), pages, catalogue);
 const previous = readPrevious();
 const diff = catalogueDiff(previous, catalogue);
+const denModule = catalogue.fareModules.find((sample) => sample.origin === "DEN");
+const denDestinations = catalogue.routes.filter((route) => route.origin === "DEN").length;
 writeFileSync(cataloguePath, `${JSON.stringify(catalogue, null, 2)}\n`);
 writeFileSync(
   marketsPath,
@@ -55,6 +57,8 @@ console.log(
       removed: diff.removed.length,
       addedSample: diff.added.slice(0, 12),
       removedSample: diff.removed.slice(0, 12),
+      denDestinations,
+      denFareModule: denModule ?? null,
     },
     null,
     2,

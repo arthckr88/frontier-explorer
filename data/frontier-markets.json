@@ -1,5 +1,5 @@
 {
-  "retrievedAt": "2026-09-28T01:31:20.193Z",
+  "retrievedAt": "2026-09-28T02:45:19.484Z",
   "source": "Frontier city-to-city sitemap",
   "provenance": "frontier_candidate_market",
   "markets": [
@@ -26885,16 +26885,6 @@
     },
     {
       "originSlug": "miami",
-      "destinationSlug": "austin",
-      "origin": "MIA",
-      "destination": "AUS",
-      "originCity": "Miami, FL",
-      "destinationCity": "Austin, TX",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-austin",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "miami",
       "destinationSlug": "buffalo",
       "origin": "MIA",
       "destination": "BUF",
@@ -26911,6 +26901,16 @@
       "originCity": "Miami, FL",
       "destinationCity": "Cabo San Lucas",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-cabo-san-lucas",
+      "provenance": "frontier_candidate_market"
+    },
+    {
+      "originSlug": "miami",
+      "destinationSlug": "cancun",
+      "origin": "MIA",
+      "destination": "CUN",
+      "originCity": "Miami, FL",
+      "destinationCity": "Cancun, MX",
+      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-cancun",
       "provenance": "frontier_candidate_market"
     },
     {
@@ -27225,6 +27225,16 @@
     },
     {
       "originSlug": "miami",
+      "destinationSlug": "salt-lake-city",
+      "origin": "MIA",
+      "destination": "SLC",
+      "originCity": "Miami, FL",
+      "destinationCity": "Salt Lake City, UT",
+      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-salt-lake-city",
+      "provenance": "frontier_candidate_market"
+    },
+    {
+      "originSlug": "miami",
       "destinationSlug": "san-antonio",
       "origin": "MIA",
       "destination": "SAT",
@@ -27241,16 +27251,6 @@
       "originCity": "Miami, FL",
       "destinationCity": "San Diego, CA",
       "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-san-diego",
-      "provenance": "frontier_candidate_market"
-    },
-    {
-      "originSlug": "miami",
-      "destinationSlug": "san-francisco",
-      "origin": "MIA",
-      "destination": "SFO",
-      "originCity": "Miami, FL",
-      "destinationCity": "San Francisco, CA",
-      "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami-to-san-francisco",
       "provenance": "frontier_candidate_market"
     },
     {

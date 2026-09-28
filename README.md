@@ -4,7 +4,7 @@ Frontier Route Explorer is a static GitHub Pages site for Frontier's network. It
 
 Three layers stay separate:
 
-- An official direct route is an airport pair Frontier names on a public flights-from page. `npm run frontier:network` reads the city-to-city sitemap and those pages, writes `data/frontier-direct-routes.json`, and leaves city-to-city pairs in `data/frontier-markets.json` as candidate markets. A candidate market is not a nonstop.
+- An official direct route is an airport pair Frontier names on a public flights-from page. `npm run frontier:network` is local and manual. It reads the flights-from sitemap and those pages, writes `data/frontier-direct-routes.json`, leaves city-to-city pairs in `data/frontier-markets.json` as candidate markets, rebuilds `data/network.json`, and runs the integrity check. It does not fetch booking fares, crawl dates, or run in GitHub Actions. A candidate market is not a nonstop. A fare module that says it has more rows than the static HTML contains is recorded as a partial sample. The unread page is not requested, because that call uses an embedded key.
 - A schedule observation is a dated nonstop already in `data/flights.json`. The map draws it only when that dated observation exists.
 - A fare observation is a Standard, Discount Den, or GoWild price in `data/browser-fares.json` for one route and one date. A missing fare is not a missing route. Price history is append-only in `data/price-history.jsonl`.
 
@@ -26,7 +26,7 @@ npx serve dist
 
 `npm run frontier:verify-network -- --date 2026-10-01 --limit 1 --official-only --unchecked-only` checks official directs only, one query at a time, and resumes at the next unchecked route. It is not a network-wide crawl.
 
-Search on the Pages site does not run either command. Frequency stays hidden unless schedule coverage is broad enough to be honest. One captured date is not a weekly frequency. Historical passenger totals, when present, are labeled with their period and do not create a current route.
+Search on the Pages site does not run either command. Current frequency stays “Insufficient schedule coverage” unless dated coverage is broad enough. One captured date is not a weekly frequency. Historical DOT/BTS frequency and T-100 city pairs are labeled with their period. Passenger totals are not in the stored extract, and historical pairs do not create a current route. Source rules are in `docs/source-contract.md`. GitHub repos are schema research only: `docs/github-source-integration.md`.
 
 `npm run dev` starts the Next.js app. That app is not the Pages site. Pages build fails if credential markers appear in the output.
 

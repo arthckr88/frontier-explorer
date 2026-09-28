@@ -14364,7 +14364,7 @@
     }
   ],
   "official": {
-    "retrievedAt": "2026-09-28T01:31:20.193Z",
+    "retrievedAt": "2026-09-28T02:45:19.484Z",
     "source": "Frontier official direct routes",
     "sourceUrl": "https://flights.flyfrontier.com/en/sitemap/flights-from-city/page-1",
     "airports": [
@@ -19163,6 +19163,14 @@
       },
       {
         "origin": "MIA",
+        "destination": "AUS",
+        "originCity": "Miami",
+        "destinationCity": "Austin",
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami",
+        "provenance": "frontier_official_direct_route"
+      },
+      {
+        "origin": "MIA",
         "destination": "BOS",
         "originCity": "Miami",
         "destinationCity": "Boston",
@@ -19182,14 +19190,6 @@
         "destination": "CLE",
         "originCity": "Miami",
         "destinationCity": "Cleveland",
-        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami",
-        "provenance": "frontier_official_direct_route"
-      },
-      {
-        "origin": "MIA",
-        "destination": "CUN",
-        "originCity": "Miami",
-        "destinationCity": "Cancún",
         "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami",
         "provenance": "frontier_official_direct_route"
       },
@@ -19299,17 +19299,17 @@
       },
       {
         "origin": "MIA",
-        "destination": "SJU",
+        "destination": "SFO",
         "originCity": "Miami",
-        "destinationCity": "San Juan",
+        "destinationCity": "San Francisco",
         "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami",
         "provenance": "frontier_official_direct_route"
       },
       {
         "origin": "MIA",
-        "destination": "SLC",
+        "destination": "SJU",
         "originCity": "Miami",
-        "destinationCity": "Salt Lake City",
+        "destinationCity": "San Juan",
         "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami",
         "provenance": "frontier_official_direct_route"
       },
@@ -22300,6 +22300,940 @@
     ],
     "unresolved": [],
     "candidateMarkets": 3799,
-    "lastBrowserCollection": "2026-09-27T22:56:39.802Z"
+    "lastBrowserCollection": "2026-09-27T22:56:39.802Z",
+    "fareModules": [
+      {
+        "origin": "ABQ",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-albuquerque"
+      },
+      {
+        "origin": "ALB",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-albany"
+      },
+      {
+        "origin": "ANC",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-anchorage"
+      },
+      {
+        "origin": "ATL",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-atlanta"
+      },
+      {
+        "origin": "AUS",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-austin"
+      },
+      {
+        "origin": "BDL",
+        "embedded": 18,
+        "total": 18,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-hartford"
+      },
+      {
+        "origin": "BIL",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-billings"
+      },
+      {
+        "origin": "BIS",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-bismarck"
+      },
+      {
+        "origin": "BKG",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-branson"
+      },
+      {
+        "origin": "BMI",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-bloomington"
+      },
+      {
+        "origin": "BNA",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-nashville"
+      },
+      {
+        "origin": "BOG",
+        "embedded": 1,
+        "total": 1,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-bogota"
+      },
+      {
+        "origin": "BOI",
+        "embedded": 12,
+        "total": 12,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-boise"
+      },
+      {
+        "origin": "BOS",
+        "embedded": 20,
+        "total": 23,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-boston"
+      },
+      {
+        "origin": "BTV",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-burlington"
+      },
+      {
+        "origin": "BUF",
+        "embedded": 16,
+        "total": 16,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-buffalo"
+      },
+      {
+        "origin": "BUR",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-burbank"
+      },
+      {
+        "origin": "BWI",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-baltimore"
+      },
+      {
+        "origin": "BZE",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-belize-city"
+      },
+      {
+        "origin": "BZN",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-bozeman"
+      },
+      {
+        "origin": "CHS",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-charleston"
+      },
+      {
+        "origin": "CID",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cedar-rapids"
+      },
+      {
+        "origin": "CLE",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cleveland"
+      },
+      {
+        "origin": "CLT",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-charlotte"
+      },
+      {
+        "origin": "CMH",
+        "embedded": 20,
+        "total": 23,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-columbus"
+      },
+      {
+        "origin": "COS",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-colorado-springs"
+      },
+      {
+        "origin": "CTG",
+        "embedded": 1,
+        "total": 1,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cartagena"
+      },
+      {
+        "origin": "CUN",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cancun"
+      },
+      {
+        "origin": "CVG",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cincinnati"
+      },
+      {
+        "origin": "CZM",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-san-miguel-de-cozumel"
+      },
+      {
+        "origin": "DCA",
+        "embedded": 20,
+        "total": 26,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-washington"
+      },
+      {
+        "origin": "DEN",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-denver"
+      },
+      {
+        "origin": "DFW",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-dallas"
+      },
+      {
+        "origin": "DJT",
+        "embedded": 1,
+        "total": 1,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-west-palm-beach"
+      },
+      {
+        "origin": "DRO",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-durango-1"
+      },
+      {
+        "origin": "DSM",
+        "embedded": 10,
+        "total": 10,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-des-moines"
+      },
+      {
+        "origin": "DTW",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-detroit"
+      },
+      {
+        "origin": "ELP",
+        "embedded": 20,
+        "total": 20,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-el-paso"
+      },
+      {
+        "origin": "EWR",
+        "embedded": 20,
+        "total": 26,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-newark"
+      },
+      {
+        "origin": "FAR",
+        "embedded": 10,
+        "total": 10,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-fargo"
+      },
+      {
+        "origin": "FAT",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-fresno"
+      },
+      {
+        "origin": "FCA",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-kalispell"
+      },
+      {
+        "origin": "FSD",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-sioux-falls"
+      },
+      {
+        "origin": "GEG",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-spokane"
+      },
+      {
+        "origin": "GJT",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-grand-junction"
+      },
+      {
+        "origin": "GRB",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-green-bay"
+      },
+      {
+        "origin": "GRR",
+        "embedded": 16,
+        "total": 16,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-grand-rapids"
+      },
+      {
+        "origin": "GUA",
+        "embedded": 4,
+        "total": 4,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-guatemala-city"
+      },
+      {
+        "origin": "HRL",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-harlingen"
+      },
+      {
+        "origin": "HSV",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-huntsville"
+      },
+      {
+        "origin": "IAH",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-houston"
+      },
+      {
+        "origin": "ICT",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-wichita"
+      },
+      {
+        "origin": "ILG",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-wilmington-de"
+      },
+      {
+        "origin": "IND",
+        "embedded": 17,
+        "total": 17,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-indianapolis"
+      },
+      {
+        "origin": "ISP",
+        "embedded": 9,
+        "total": 9,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-long-island"
+      },
+      {
+        "origin": "JAC",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-jackson-hole"
+      },
+      {
+        "origin": "JAN",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-jackson"
+      },
+      {
+        "origin": "JAX",
+        "embedded": 7,
+        "total": 7,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-jacksonville"
+      },
+      {
+        "origin": "LAS",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-las-vegas"
+      },
+      {
+        "origin": "LAX",
+        "embedded": 20,
+        "total": 20,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-los-angeles"
+      },
+      {
+        "origin": "LGA",
+        "embedded": 20,
+        "total": 23,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-new-york"
+      },
+      {
+        "origin": "LIR",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-liberia-1"
+      },
+      {
+        "origin": "LIT",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-little-rock"
+      },
+      {
+        "origin": "MBJ",
+        "embedded": 5,
+        "total": 5,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-montego-bay"
+      },
+      {
+        "origin": "MCI",
+        "embedded": 18,
+        "total": 18,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-kansas-city"
+      },
+      {
+        "origin": "MCO",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-orlando"
+      },
+      {
+        "origin": "MDE",
+        "embedded": 1,
+        "total": 1,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-medellin"
+      },
+      {
+        "origin": "MDT",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-harrisburg"
+      },
+      {
+        "origin": "MEM",
+        "embedded": 13,
+        "total": 13,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-memphis"
+      },
+      {
+        "origin": "MIA",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-miami"
+      },
+      {
+        "origin": "MKE",
+        "embedded": 9,
+        "total": 9,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-milwaukee"
+      },
+      {
+        "origin": "MSN",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-madison"
+      },
+      {
+        "origin": "MSO",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-missoula"
+      },
+      {
+        "origin": "MSP",
+        "embedded": 20,
+        "total": 24,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-minneapolis"
+      },
+      {
+        "origin": "MSY",
+        "embedded": 20,
+        "total": 26,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-new-orleans"
+      },
+      {
+        "origin": "MYR",
+        "embedded": 3,
+        "total": 3,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-myrtle-beach"
+      },
+      {
+        "origin": "NAS",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-nassau"
+      },
+      {
+        "origin": "OAK",
+        "embedded": 8,
+        "total": 8,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-oakland"
+      },
+      {
+        "origin": "OKC",
+        "embedded": 14,
+        "total": 14,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-oklahoma-city"
+      },
+      {
+        "origin": "OMA",
+        "embedded": 11,
+        "total": 11,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-omaha"
+      },
+      {
+        "origin": "ONT",
+        "embedded": 20,
+        "total": 21,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-ontario-ca"
+      },
+      {
+        "origin": "ORD",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-chicago"
+      },
+      {
+        "origin": "ORF",
+        "embedded": 5,
+        "total": 5,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-norfolk"
+      },
+      {
+        "origin": "PDX",
+        "embedded": 14,
+        "total": 14,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-portland"
+      },
+      {
+        "origin": "PHL",
+        "embedded": 20,
+        "total": 30,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-philadelphia"
+      },
+      {
+        "origin": "PHX",
+        "embedded": 20,
+        "total": 29,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-phoenix"
+      },
+      {
+        "origin": "PIT",
+        "embedded": 5,
+        "total": 5,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-pittsburgh"
+      },
+      {
+        "origin": "PLS",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-providence-island"
+      },
+      {
+        "origin": "PNS",
+        "embedded": 13,
+        "total": 13,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-pensacola"
+      },
+      {
+        "origin": "PSP",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-palm-springs"
+      },
+      {
+        "origin": "PUJ",
+        "embedded": 8,
+        "total": 8,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-punta-cana"
+      },
+      {
+        "origin": "PVD",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-providence"
+      },
+      {
+        "origin": "PVR",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-puerto-vallarta"
+      },
+      {
+        "origin": "PWM",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-portland-me"
+      },
+      {
+        "origin": "RDU",
+        "embedded": 20,
+        "total": 22,
+        "lastPage": 2,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-raleigh"
+      },
+      {
+        "origin": "RNO",
+        "embedded": 5,
+        "total": 5,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-reno"
+      },
+      {
+        "origin": "ROC",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-rochester-ny"
+      },
+      {
+        "origin": "RSW",
+        "embedded": 9,
+        "total": 9,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-fort-myers"
+      },
+      {
+        "origin": "SAL",
+        "embedded": 1,
+        "total": 1,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-san-salvador"
+      },
+      {
+        "origin": "SAN",
+        "embedded": 14,
+        "total": 14,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-san-diego"
+      },
+      {
+        "origin": "SAT",
+        "embedded": 10,
+        "total": 10,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-san-antonio"
+      },
+      {
+        "origin": "SAV",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-savannah"
+      },
+      {
+        "origin": "SDF",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-louisville"
+      },
+      {
+        "origin": "SDQ",
+        "embedded": 4,
+        "total": 4,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-santo-domingo"
+      },
+      {
+        "origin": "SEA",
+        "embedded": 9,
+        "total": 9,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-seattle"
+      },
+      {
+        "origin": "SFO",
+        "embedded": 12,
+        "total": 12,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-san-francisco"
+      },
+      {
+        "origin": "SJC",
+        "embedded": 4,
+        "total": 4,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-san-jose"
+      },
+      {
+        "origin": "SJD",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-cabo-san-lucas"
+      },
+      {
+        "origin": "SJO",
+        "embedded": 3,
+        "total": 3,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-san-jose-3"
+      },
+      {
+        "origin": "SJU",
+        "embedded": 13,
+        "total": 13,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-san-juan"
+      },
+      {
+        "origin": "SLC",
+        "embedded": 11,
+        "total": 11,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-salt-lake-city"
+      },
+      {
+        "origin": "SMF",
+        "embedded": 8,
+        "total": 8,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-sacramento"
+      },
+      {
+        "origin": "SNA",
+        "embedded": 5,
+        "total": 5,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-orange-county"
+      },
+      {
+        "origin": "SRQ",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-sarasota"
+      },
+      {
+        "origin": "STL",
+        "embedded": 8,
+        "total": 8,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-st-louis"
+      },
+      {
+        "origin": "STT",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-st-thomas"
+      },
+      {
+        "origin": "SWF",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-new-york-stewart"
+      },
+      {
+        "origin": "SXM",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-st-maarten"
+      },
+      {
+        "origin": "SYR",
+        "embedded": 2,
+        "total": 2,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-syracuse"
+      },
+      {
+        "origin": "TPA",
+        "embedded": 16,
+        "total": 16,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-tampa"
+      },
+      {
+        "origin": "TTN",
+        "embedded": 6,
+        "total": 6,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-trenton"
+      },
+      {
+        "origin": "TUL",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-tulsa"
+      },
+      {
+        "origin": "TUS",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-tucson"
+      },
+      {
+        "origin": "TYS",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-knoxville"
+      },
+      {
+        "origin": "XNA",
+        "embedded": 2,
+        "total": 2,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-fayetteville"
+      },
+      {
+        "origin": "YOW",
+        "embedded": 0,
+        "total": 0,
+        "lastPage": 1,
+        "sourceUrl": "https://flights.flyfrontier.com/en/flights-from-ottawa"
+      }
+    ],
+    "discrepancies": [
+      {
+        "origin": "ATL",
+        "destination": "JFK",
+        "classification": "SCHEDULE_CONFIRMED_ONLY",
+        "reason": "Dated browser nonstop. JFK is not in the 20 fare rows embedded for ATL. The module reports 30 fare rows; the rest are not in the static HTML, and the next page is not requested because that call uses an embedded key. Not promoted from the unread page or from a candidate market."
+      },
+      {
+        "origin": "LAS",
+        "destination": "AUS",
+        "classification": "SCHEDULE_CONFIRMED_ONLY",
+        "reason": "Dated browser nonstop. AUS is not in the 20 fare rows embedded for LAS. The module reports 30 fare rows; the rest are not in the static HTML, and the next page is not requested because that call uses an embedded key. Not promoted from the unread page or from a candidate market."
+      },
+      {
+        "origin": "LAS",
+        "destination": "BNA",
+        "classification": "SCHEDULE_CONFIRMED_ONLY",
+        "reason": "Dated browser nonstop. BNA is not in the 20 fare rows embedded for LAS. The module reports 30 fare rows; the rest are not in the static HTML, and the next page is not requested because that call uses an embedded key. Not promoted from the unread page or from a candidate market."
+      },
+      {
+        "origin": "LAS",
+        "destination": "BOI",
+        "classification": "SCHEDULE_CONFIRMED_ONLY",
+        "reason": "Dated browser nonstop. BOI is not in the 20 fare rows embedded for LAS. The module reports 30 fare rows; the rest are not in the static HTML, and the next page is not requested because that call uses an embedded key. Not promoted from the unread page or from a candidate market."
+      },
+      {
+        "origin": "LAS",
+        "destination": "BUR",
+        "classification": "SCHEDULE_CONFIRMED_ONLY",
+        "reason": "Dated browser nonstop. BUR is not in the 20 fare rows embedded for LAS. The module reports 30 fare rows; the rest are not in the static HTML, and the next page is not requested because that call uses an embedded key. Not promoted from the unread page or from a candidate market."
+      },
+      {
+        "origin": "LAS",
+        "destination": "LAX",
+        "classification": "SCHEDULE_CONFIRMED_ONLY",
+        "reason": "Dated browser nonstop. LAX is not in the 20 fare rows embedded for LAS. The module reports 30 fare rows; the rest are not in the static HTML, and the next page is not requested because that call uses an embedded key. Not promoted from the unread page or from a candidate market."
+      },
+      {
+        "origin": "SFO",
+        "destination": "LAX",
+        "classification": "SCHEDULE_CONFIRMED_ONLY",
+        "reason": "Dated browser nonstop. The SFO flights-from fare module is complete (12 of 12 fare rows) and does not name LAX. Not taken from a candidate market."
+      },
+      {
+        "origin": "SFO",
+        "destination": "SAN",
+        "classification": "SCHEDULE_CONFIRMED_ONLY",
+        "reason": "Dated browser nonstop. The SFO flights-from fare module is complete (12 of 12 fare rows) and does not name SAN. Not taken from a candidate market."
+      }
+    ]
   }
 }

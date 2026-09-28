@@ -50,6 +50,38 @@ for (const fare of fares) {
   if (fare.origin === "OAK" && fare.destination === "LAS" && fare.standard?.total === 50.98 && fare.date !== "2026-09-28") {
     errors.push("A September 28 OAK-LAS fare is attached to another date.");
   }
+  if (fare.goWild && fare.goWild.total < 0) errors.push(`GoWild ${fare.origin}-${fare.destination} ${fare.date} uses a negative total.`);
+  if ((fare.stops ?? 0) > 0 && (!fare.origin || !fare.destination || !fare.date || !fare.flightNumber || !fare.departureLocal || !fare.arrivalLocal)) {
+    errors.push("A connection fare is missing itinerary fields.");
+  }
+}
+const unexplained = (network.official?.discrepancies ?? []).filter((item) => !item.classification || !item.reason);
+if (unexplained.length) errors.push(`${unexplained.length} schedule gaps have no classification.`);
+for (const pair of [
+  ["SFO", "LAX"],
+  ["SFO", "SAN"],
+  ["LAS", "LAX"],
+  ["LAS", "BUR"],
+]) {
+  const official = network.official?.routes.some((route) => route.origin === pair[0] && route.destination === pair[1]);
+  const gap = network.official?.discrepancies?.find((item) => item.origin === pair[0] && item.destination === pair[1]);
+  if (!official && !gap) errors.push(`${pair[0]}-${pair[1]} is an unexplained discrepancy.`);
+}
+const observationKeys = new Set(network.observations.map((flight) => `${flight.origin}|${flight.destination}|${flight.date}|${flight.flightNumber}|${flight.departureLocal.slice(0, 16)}`));
+for (const fare of fares) {
+  if ((fare.stops ?? 0) === 0) continue;
+  const key = `${fare.origin}|${fare.destination}|${fare.date}|${fare.flightNumber}|${fare.departureLocal.slice(0, 16)}`;
+  const matching = network.observations.filter(
+    (flight) =>
+      flight.origin === fare.origin &&
+      flight.destination === fare.destination &&
+      flight.date === fare.date &&
+      flight.flightNumber === fare.flightNumber &&
+      flight.departureLocal.slice(0, 16) === fare.departureLocal.slice(0, 16) &&
+      flight.arrivalLocal.slice(0, 16) === fare.arrivalLocal.slice(0, 16),
+  );
+  if (matching.length && !observationKeys.has(key)) errors.push(`Connection fare ${key} became a nonstop.`);
+  if (matching.length) errors.push(`Connection fare ${fare.origin}-${fare.destination} ${fare.flightNumber} is stored as a nonstop with the connection arrival.`);
 }
 if (errors.length) {
   for (const error of errors) console.error(error);

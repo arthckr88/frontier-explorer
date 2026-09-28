@@ -34,6 +34,21 @@ export type UnresolvedMapping = {
   reason: string;
 };
 
+export type FareModuleSample = {
+  origin: string;
+  embedded: number;
+  total: number;
+  lastPage: number;
+  sourceUrl: string;
+};
+
+export type ScheduleDiscrepancy = {
+  origin: string;
+  destination: string;
+  classification: "SCHEDULE_CONFIRMED_ONLY" | "IMPORTER_MISSED_ROUTE";
+  reason: string;
+};
+
 export type OfficialCatalogue = {
   retrievedAt: string;
   source: typeof OFFICIAL_SOURCE;
@@ -41,6 +56,7 @@ export type OfficialCatalogue = {
   airports: OfficialAirport[];
   routes: OfficialRoute[];
   unresolved: UnresolvedMapping[];
+  fareModules: FareModuleSample[];
 };
 
 export type CandidateMarket = {
@@ -68,6 +84,7 @@ export type ParsedFlightsFromPage = {
   originCity: string | null;
   originAirports: string[];
   farePairs: ParsedFarePair[];
+  fareModule: { embedded: number; total: number; lastPage: number } | null;
 };
 
 export function absoluteFlightsUrl(href: string) {
@@ -120,6 +137,7 @@ export function parseFlightsFromPage(html: string, sourceUrl: string): ParsedFli
     originCity: originCity || null,
     originAirports,
     farePairs: farePairs(data),
+    fareModule: fareModuleSample(data),
   };
 }
 
@@ -143,6 +161,7 @@ export function composeOfficialCatalogue(
 ): OfficialCatalogue {
   const routes: OfficialRoute[] = [];
   const unresolved: UnresolvedMapping[] = [];
+  const fareModules: FareModuleSample[] = [];
   const seen = new Set<string>();
   const pageCities = new Map<string, string>();
   for (const page of pages) {
@@ -160,6 +179,9 @@ export function composeOfficialCatalogue(
       continue;
     }
     pageCities.set(origin, cityName(page.originCity, origin, reference));
+    if (page.fareModule) {
+      fareModules.push({ origin, ...page.fareModule, sourceUrl: page.sourceUrl });
+    }
     for (const pair of page.farePairs) {
       const known = reference.size === 0 || (reference.has(pair.origin) && reference.has(pair.destination));
       if (!known) {
@@ -211,6 +233,36 @@ export function composeOfficialCatalogue(
     airports,
     routes,
     unresolved,
+    fareModules: fareModules.sort((left, right) => left.origin.localeCompare(right.origin)),
+  };
+}
+
+export function classifyScheduleGap(
+  origin: string,
+  destination: string,
+  module: { embedded: number; total: number } | null,
+): ScheduleDiscrepancy {
+  if (module && module.total > 0 && module.embedded >= module.total) {
+    return {
+      origin,
+      destination,
+      classification: "SCHEDULE_CONFIRMED_ONLY",
+      reason: `Dated browser nonstop. The ${origin} flights-from fare module is complete (${module.embedded} of ${module.total} fare rows) and does not name ${destination}. Not taken from a candidate market.`,
+    };
+  }
+  if (module && module.total > module.embedded) {
+    return {
+      origin,
+      destination,
+      classification: "SCHEDULE_CONFIRMED_ONLY",
+      reason: `Dated browser nonstop. ${destination} is not in the ${module.embedded} fare rows embedded for ${origin}. The module reports ${module.total} fare rows; the rest are not in the static HTML, and the next page is not requested because that call uses an embedded key. Not promoted from the unread page or from a candidate market.`,
+    };
+  }
+  return {
+    origin,
+    destination,
+    classification: "SCHEDULE_CONFIRMED_ONLY",
+    reason: `Dated browser nonstop. No flights-from fare module for ${origin} names ${destination}. Not taken from a candidate market.`,
   };
 }
 
@@ -289,6 +341,21 @@ function stringArrays(value: unknown, key: string): string[][] {
     if (!node || typeof node !== "object" || Array.isArray(node)) return;
     const record = node as Record<string, unknown>;
     if (Array.isArray(record[key]) && record[key].length > 0 && record[key].every((item) => typeof item === "string")) found.push(record[key] as string[]);
+  });
+  return found;
+}
+
+function fareModuleSample(value: unknown): { embedded: number; total: number; lastPage: number } | null {
+  let found: { embedded: number; total: number; lastPage: number } | null = null;
+  walk(value, (node) => {
+    if (found || !node || typeof node !== "object" || Array.isArray(node)) return;
+    const record = node as Record<string, unknown>;
+    const pagination = record.pagination;
+    if (!pagination || typeof pagination !== "object" || Array.isArray(pagination)) return;
+    const page = pagination as Record<string, unknown>;
+    if (typeof page.total !== "number" || typeof page.lastPage !== "number") return;
+    const embedded = Array.isArray(record.fares) ? record.fares.length : typeof page.to === "number" ? page.to : 0;
+    found = { embedded, total: page.total, lastPage: page.lastPage };
   });
   return found;
 }

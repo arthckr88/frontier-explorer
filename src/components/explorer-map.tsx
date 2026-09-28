@@ -8,6 +8,7 @@ import type { MapAirport, MapRoute } from "@/server/queries/read";
 
 const STATUS_COLOR: Record<string, string> = {
   SCHEDULE_CONFIRMED: "#3dbe7a",
+  SCHEDULE_CONFIRMED_ONLY: "#e2a84a",
   OFFICIAL_DIRECT: "#7ea2c4",
   FUTURE_ONLY: "#3ec6d4",
   ACTIVE: "#3dbe7a",
@@ -177,8 +178,8 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
         source: "routes",
         paint: {
           "line-color": ["get", "color"],
-          "line-width": 1.6,
-          "line-opacity": 0.9,
+          "line-width": ["match", ["get", "status"], "SCHEDULE_CONFIRMED", 2.4, "SCHEDULE_CONFIRMED_ONLY", 2.1, 1.15],
+          "line-opacity": ["match", ["get", "status"], "OFFICIAL_DIRECT", 0.28, "SCHEDULE_CONFIRMED_ONLY", 0.85, "SCHEDULE_CONFIRMED", 0.95, 0.8],
         },
       });
       map.addSource("airports", { type: "geojson", data: dataRef.current.airportData });

@@ -10,7 +10,9 @@ import { AirportView } from "@/views/airport-view";
 import { ChangesView } from "@/views/changes-view";
 import { DataView } from "@/views/data-view";
 import { DiscoverView } from "@/views/discover-view";
+import { FrequencyView } from "@/views/frequency-view";
 import { GoWildView } from "@/views/gowild-view";
+import { PopularityView } from "@/views/popularity-view";
 import { HomeView } from "@/views/home-view";
 import { PlannerView } from "@/views/planner-view";
 import { RouteView } from "@/views/route-view";
@@ -72,6 +74,10 @@ function App({ catalog }: { catalog: StaticCatalog }) {
   } else if (path === "/changes") {
     const scope = params.get("scope") === "mine" ? "mine" : "all";
     body = <ChangesView catalog={catalog} windowKey={params.get("window") || "30d"} scope={scope} />;
+  } else if (path === "/frequency" || path === "/rankings/frequency") {
+    body = <FrequencyView catalog={catalog} />;
+  } else if (path === "/popularity" || path === "/rankings/popularity") {
+    body = <PopularityView catalog={catalog} />;
   } else if (path === "/gowild") {
     body = <GoWildView catalog={catalog} />;
   } else if (path === "/system/data" || path === "/data") {

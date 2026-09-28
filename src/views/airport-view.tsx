@@ -11,7 +11,7 @@ export function AirportView({ catalog, iata }: { catalog: StaticCatalog; iata: s
         <p className="font-mono text-xs text-[#3dbe7a]">{data.airport.iata}</p>
         <h1 className="text-3xl font-medium">{data.airport.name}</h1>
         <p className="text-[#8b9790]">
-          {data.airport.city} · {data.airport.timezone ?? "timezone unavailable"} · {(data.airport.region || "").replaceAll("_", " ")}
+          {data.airport.city} · {data.airport.country} · {(data.airport.region || "region unavailable").replaceAll("_", " ")}
         </p>
       </header>
       <dl className="grid grid-cols-2 gap-3 text-sm">
@@ -20,12 +20,13 @@ export function AirportView({ catalog, iata }: { catalog: StaticCatalog; iata: s
           <dd className="font-mono text-xl">{data.outbound.filter((route) => route.official).length}</dd>
         </div>
         <div className="rounded border border-[#24302a] p-2">
-          <dt className="text-[#8b9790]">Coordinates</dt>
-          <dd className="font-mono text-xs">
-            {data.airport.lat}, {data.airport.lon}
-          </dd>
+          <dt className="text-[#8b9790]">Schedule-confirmed destinations</dt>
+          <dd className="font-mono text-xl">{data.outbound.filter((route) => route.confirmed).length}</dd>
         </div>
       </dl>
+      {catalog.fares.some((fare) => fare.origin === data.airport.iata || fare.destination === data.airport.iata) ? (
+        <p className="text-sm text-[#8b9790]">Fares exist for some flights at this airport. Open a route to see Standard, Discount Den, and GoWild when a fare was checked.</p>
+      ) : null}
       {data.outbound.length === 0 ? (
         <p className="text-sm text-[#8b9790]">No Frontier departures from this airport.</p>
       ) : (

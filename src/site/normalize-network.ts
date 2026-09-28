@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { attachBrowserFares, loadBrowserFareText } from "@/site/browser/integrate";
-import type { OfficialCatalogue } from "@/site/direct-routes";
+import { classifyScheduleGap, type OfficialCatalogue } from "@/site/direct-routes";
 import { buildNetwork, diagnostics, diffSnapshots, emptyChangeFile, mergeChanges, snapshotsFrom, type OfficialNetwork, type RouteChangeFile, type RouteSnapshotFile, type ScheduleInput } from "@/site/network";
 import { scheduleToday } from "@/site/view";
 
@@ -37,6 +37,17 @@ function officialNetwork(fares: { retrievedAt?: string }[]): OfficialNetwork {
     candidateMarkets = 0;
   }
   const lastBrowserCollection = fares.map((fare) => fare.retrievedAt ?? "").filter(Boolean).sort().at(-1) ?? null;
+  const modules = new Map((catalogue.fareModules ?? []).map((sample) => [sample.origin, sample]));
+  const officialKeys = new Set(catalogue.routes.map((route) => `${route.origin}|${route.destination}`));
+  const seen = new Set<string>();
+  const discrepancies = [];
+  for (const flight of stored.flights ?? []) {
+    const key = `${flight.origin}|${flight.destination}`;
+    if (!flight.origin || !flight.destination || officialKeys.has(key) || seen.has(key)) continue;
+    seen.add(key);
+    discrepancies.push(classifyScheduleGap(flight.origin, flight.destination, modules.get(flight.origin) ?? null));
+  }
+  discrepancies.sort((left, right) => left.origin.localeCompare(right.origin) || left.destination.localeCompare(right.destination));
   return {
     retrievedAt: catalogue.retrievedAt,
     source: "Frontier official direct routes",
@@ -46,6 +57,8 @@ function officialNetwork(fares: { retrievedAt?: string }[]): OfficialNetwork {
     unresolved: catalogue.unresolved,
     candidateMarkets,
     lastBrowserCollection,
+    fareModules: catalogue.fareModules ?? [],
+    discrepancies,
   };
 }
 
