@@ -9,6 +9,8 @@
     "normalize:network": "tsx src/site/normalize-network.ts",
     "check:integrity": "tsx src/site/check-integrity.ts",
     "update:published": "tsx src/site/update-published.ts",
+    "frontier:network": "tsx src/site/fetch-direct-routes.ts",
+    "frontier:verify-network": "tsx src/site/verify-network.ts",
     "frontier:browser": "tsx src/site/browser/cli.ts",
     "frontier:browser:queue": "tsx src/site/browser/cli.ts --queue",
     "start": "next start",

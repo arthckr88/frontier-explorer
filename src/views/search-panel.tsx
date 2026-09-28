@@ -14,6 +14,8 @@ const EMPTY: FareQuery = {
   arrive: "",
   sort: "stops",
   excludeRedEyes: true,
+  via: "",
+  layover: "",
 };
 
 export function SearchPanel({
@@ -34,6 +36,9 @@ export function SearchPanel({
   const [arrive, setArrive] = useState<FareQuery["arrive"]>(initial?.arrive ?? "");
   const [sort, setSort] = useState<FareQuery["sort"]>(initial?.sort ?? "stops");
   const [excludeRedEyes, setExcludeRedEyes] = useState(initial?.excludeRedEyes ?? true);
+  const [via, setVia] = useState(initial?.via ?? "");
+  const [layover, setLayover] = useState<FareQuery["layover"]>(initial?.layover ?? "");
+  const airports = [...catalog.airports].sort((a, b) => a.iata.localeCompare(b.iata));
 
   function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -48,14 +53,16 @@ export function SearchPanel({
       arrive,
       sort,
       excludeRedEyes,
+      via,
+      layover,
     });
   }
 
   return (
     <section className="mx-auto max-w-3xl space-y-3 sm:space-y-4">
       <header className="space-y-1">
-        <h1 className="text-2xl font-medium">Search Frontier</h1>
-        <p className="text-sm text-[#8b9790]">One origin, one destination, one date.</p>
+        <h1 className="text-2xl font-medium">Frontier Route Explorer</h1>
+        <p className="text-sm text-[#8b9790]">Any Frontier origin, destination, and date. This searches schedules and fares already on this site.</p>
       </header>
       <form className="grid gap-2 sm:gap-3" onSubmit={submit}>
         <div className="grid gap-2 sm:grid-cols-3 sm:gap-3">
@@ -70,9 +77,10 @@ export function SearchPanel({
               autoCorrect="off"
               spellCheck={false}
               enterKeyHint="next"
+              list="frontier-airports"
               value={from}
               onChange={(event) => setFrom(event.target.value.toUpperCase())}
-              placeholder="OAK"
+              placeholder="DEN"
               aria-label="From"
               className="w-full rounded-md border border-[#24302a] bg-[#090b0d] px-3 py-3 text-base uppercase"
             />
@@ -88,9 +96,10 @@ export function SearchPanel({
               autoCorrect="off"
               spellCheck={false}
               enterKeyHint="next"
+              list="frontier-airports"
               value={to}
               onChange={(event) => setTo(event.target.value.toUpperCase())}
-              placeholder="LAS"
+              placeholder="MCO"
               aria-label="To"
               className="w-full rounded-md border border-[#24302a] bg-[#090b0d] px-3 py-3 text-base uppercase"
             />
@@ -151,6 +160,25 @@ export function SearchPanel({
               <option value="depart">Earliest departure</option>
             </select>
           </Field>
+          <Field label="Layover">
+            <select aria-label="Layover" value={layover} onChange={(event) => setLayover(event.target.value as FareQuery["layover"])} className={selectClass}>
+              <option value="">Any</option>
+              <option value="short">Short (60–90 min)</option>
+              <option value="normal">Normal (75–180 min)</option>
+              <option value="long">Long (2 hours or more)</option>
+            </select>
+          </Field>
+          <Field label="Connecting airport">
+            <input
+              aria-label="Connecting airport"
+              list="frontier-airports"
+              maxLength={3}
+              value={via}
+              onChange={(event) => setVia(event.target.value.toUpperCase())}
+              placeholder="Any"
+              className="w-full rounded-md border border-[#24302a] bg-[#090b0d] px-3 py-3 text-base uppercase"
+            />
+          </Field>
           <label className="flex items-end gap-2 pb-3 text-sm text-[#8b9790]">
             <input type="checkbox" checked={excludeRedEyes} onChange={(event) => setExcludeRedEyes(event.target.checked)} />
             Exclude red-eyes
@@ -159,6 +187,11 @@ export function SearchPanel({
         <button className="rounded-md bg-[#3dbe7a] px-4 py-3 text-base font-medium text-[#090b0d]" type="submit">
           Search
         </button>
+        <datalist id="frontier-airports">
+          {airports.map((airport) => (
+            <option key={airport.iata} value={airport.iata}>{airport.city}</option>
+          ))}
+        </datalist>
       </form>
       <ResultList catalog={catalog} query={initial?.origin && initial.destination && initial.date ? ({ ...EMPTY, ...initial } as FareQuery) : null} />
     </section>
@@ -170,9 +203,15 @@ function ResultList({ catalog, query }: { catalog: StaticCatalog; query: FareQue
   const result = staticFareLookup(catalog, query);
   return (
     <div id="results" className="space-y-3">
+      {result.officialNonstop ? <p className="text-sm">Frontier direct route.</p> : <p className="text-sm text-[#8b9790]">Frontier direct route: no.</p>}
       {result.message ? <p className="rounded-md border border-[#e2a84a]/40 bg-[#181e24] px-3 py-3 text-sm">{result.message}</p> : null}
       {result.flights.map((flight) => (
         <FlightCard key={flight.id} flight={flight} />
+      ))}
+      {result.paths.map((path) => (
+        <p key={path.airports.join("-")} className="rounded-md border border-[#24302a] px-3 py-2 text-sm">
+          {path.airports.join(" → ")} · {path.stops} stop{path.stops === 1 ? "" : "s"} · {path.kind === "timed" ? path.label : "possible network path"}
+        </p>
       ))}
     </div>
   );

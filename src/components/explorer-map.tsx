@@ -7,6 +7,9 @@ import { AppLink } from "@/components/app-link";
 import type { MapAirport, MapRoute } from "@/server/queries/read";
 
 const STATUS_COLOR: Record<string, string> = {
+  SCHEDULE_CONFIRMED: "#3dbe7a",
+  OFFICIAL_DIRECT: "#7ea2c4",
+  FUTURE_ONLY: "#3ec6d4",
   ACTIVE: "#3dbe7a",
   UPCOMING: "#3ec6d4",
   ANNOUNCED: "#7eb6ff",
@@ -39,23 +42,15 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
   const container = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const [region, setRegion] = useState<(typeof REGIONS)[number][0]>("all");
-  const [statuses, setStatuses] = useState<string[]>([
-    "ACTIVE",
-    "UPCOMING",
-    "ANNOUNCED",
-    "SEASONAL",
-    "ENDING_SOON",
-    "POSSIBLY_ENDING",
-  ]);
+  const [statuses, setStatuses] = useState<string[]>(["SCHEDULE_CONFIRMED", "OFFICIAL_DIRECT", "FUTURE_ONLY", "ACTIVE", "UPCOMING", "ANNOUNCED"]);
   const [scope, setScope] = useState<"all" | "domestic" | "international">("all");
   const [origin, setOrigin] = useState<string | null>(null);
   const [hover, setHover] = useState<string | null>(null);
-  const [reach, setReach] = useState<"all" | "OAK" | "SFO">("all");
   const [stops, setStops] = useState<0 | 1 | 2 | null>(null);
 
   const reachable = useMemo(() => {
-    if (reach === "all" && stops == null) return null;
-    const seeds = reach === "all" ? interest : [reach];
+    if (stops == null || !origin) return null;
+    const seeds = [origin];
     const adjacency = new Map<string, string[]>();
     for (const route of routes.filter((item) => statuses.includes(item.status))) {
       const list = adjacency.get(route.origin) ?? [];
@@ -76,7 +71,7 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
       }
     }
     return best;
-  }, [interest, reach, routes, statuses, stops]);
+  }, [origin, routes, statuses, stops]);
 
   const visible = useMemo(() => {
     return routes.filter((route) => {
@@ -101,13 +96,13 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
           origin: route.origin,
           destination: route.destination,
           status: route.status,
-          color: STATUS_COLOR[route.status] ?? "#8b939c",
+          color: origin && (route.origin === origin || route.destination === origin) ? "#e8ffb0" : (STATUS_COLOR[route.status] ?? "#8b939c"),
           pair: `${route.origin}-${route.destination}`,
         },
         geometry: { type: "LineString" as const, coordinates: route.coordinates },
       })),
     }),
-    [visible],
+    [origin, visible],
   );
 
   const airportData = useMemo(() => {
@@ -289,12 +284,6 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
           ))}
         </FilterGroup>
         <FilterGroup label="Reach">
-          <button className={chip(reach === "OAK")} onClick={() => setReach(reach === "OAK" ? "all" : "OAK")} type="button">
-            From OAK
-          </button>
-          <button className={chip(reach === "SFO")} onClick={() => setReach(reach === "SFO" ? "all" : "SFO")} type="button">
-            From SFO
-          </button>
           <button className={chip(stops === 0)} onClick={() => setStops(stops === 0 ? null : 0)} type="button">
             Nonstop
           </button>
@@ -313,7 +302,9 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
             {routes.length === 0 ? (
               <p>No nonstop routes to draw.</p>
             ) : (
-              <p>{visible.length} nonstop routes. Green routes are Frontier nonstops.</p>
+              <p>
+                {routes.filter((route) => route.official).length} official directs. Green routes have a dated schedule.
+              </p>
             )}
             {hovered ? (
               <p className="mt-2 font-mono text-[#e7ece8]">
@@ -327,7 +318,7 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
             <div className="pointer-events-auto max-h-56 overflow-auto rounded-md border border-[#24302a] bg-[#12161b] p-3 text-xs">
               <div className="mb-2 flex items-center justify-between">
                 <AppLink href={`/airports/${origin}`} className="font-mono text-sm text-[#e8ffb0]">
-                  {origin}
+                  {origin} {airports.find((airport) => airport.iata === origin)?.city ?? ""}
                 </AppLink>
                 <button type="button" className="text-[#8b9790]" onClick={() => setOrigin(null)}>
                   Clear
@@ -341,7 +332,10 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
                       <span>
                         {route.origin} → {route.destination}
                       </span>
-                      <span className="font-mono text-[#8b9790]">Nonstop</span>
+                      <span className="font-mono text-[#8b9790]">
+                        {route.status === "SCHEDULE_CONFIRMED" || route.status === "ACTIVE" ? "Dated schedule" : "Official direct"}
+                        {route.nextDeparture ? ` · ${route.nextDeparture}` : ""}
+                      </span>
                     </AppLink>
                   </li>
                 ))}

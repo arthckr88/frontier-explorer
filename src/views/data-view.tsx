@@ -16,24 +16,29 @@ export function DataView({ catalog }: { catalog: StaticCatalog }) {
         </p>
       </header>
       <dl className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-3">
-        <Fact label="Booking observations" value={String(data.observations)} />
-        <Fact label="Confirmed nonstop pairs" value={String(data.confirmedPairs)} />
-        <Fact label="Listed market candidates" value={String(data.listedCandidates)} />
-        <Fact label="Fare rows" value={String(data.fares)} />
-        <Fact label="Price-history rows" value={String(data.priceHistory)} />
-        <Fact label="Schedule" value={data.scheduleStart && data.scheduleThrough ? `${formatDay(data.scheduleStart)} – ${formatDay(data.scheduleThrough)}` : "—"} />
-        <Fact label="Checked with flights" value={String(data.flightsFound)} />
+        <Fact label="Official airports" value={String(data.officialAirports)} />
+        <Fact label="Official directs" value={String(data.officialDirects)} />
+        <Fact label="Candidate markets" value={String(data.listedCandidates)} />
+        <Fact label="Schedule-confirmed routes" value={String(data.confirmedPairs)} />
+        <Fact label="Flight observations" value={String(data.observations)} />
+        <Fact label="Fare observations" value={String(data.fares)} />
+        <Fact label="Price history" value={String(data.priceHistory)} />
+        <Fact label="Checks" value={String(data.checks)} />
         <Fact label="Checked empty" value={String(data.empty)} />
         <Fact label="Blocked" value={String(data.blocked)} />
         <Fact label="Unchecked" value={String(data.unchecked)} />
-        <Fact label="Change events" value={String(data.changes)} />
+        <Fact label="Horizon" value={data.scheduleStart && data.scheduleThrough ? `${formatDay(data.scheduleStart)} – ${formatDay(data.scheduleThrough)}` : "—"} />
+        <Fact label="Last official refresh" value={data.lastOfficialRefresh ? formatDay(data.lastOfficialRefresh.slice(0, 10)) : "—"} />
+        <Fact label="Last browser collection" value={data.lastBrowserCollection ? formatDay(data.lastBrowserCollection.slice(0, 10)) : "—"} />
+        <Fact label="Unresolved mappings" value={String(data.unresolved)} />
       </dl>
       <ul className="space-y-2 text-sm text-[#c5d0c9]">
         <li>Blocked is not an empty schedule. Unchecked is not an empty schedule.</li>
         <li>A connection or a listed market does not create a nonstop route.</li>
         <li>A GoWild value of -1 is not a price.</li>
-        <li>Weekly frequency is not published from these checks, so Frequency stays off the main navigation.</li>
-        <li>No passenger totals are stored, so Popularity stays off the main navigation.</li>
+        <li>Frequency: {data.frequency} One date is not a weekly frequency.</li>
+        <li>Popularity is hidden. Historical passengers are not loaded, and passenger totals do not create a current route.</li>
+        <li>Statuses stay separate: OFFICIAL_DIRECT, SCHEDULE_CONFIRMED, FUTURE_ONLY, CHECKED_EMPTY, BLOCKED, UNCHECKED, STALE, CANDIDATE_ONLY.</li>
       </ul>
     </section>
   );

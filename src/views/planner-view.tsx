@@ -6,9 +6,9 @@ import { clock, staticPlanner } from "@/static/adapter";
 import type { StaticCatalog } from "@/static/types";
 
 const MODULES = {
-  "bay-la": { label: "Bay Area → Los Angeles", origins: ["OAK", "SFO"], destinations: ["LAX", "BUR"] },
-  "bay-ny": { label: "Bay Area → New York", origins: ["OAK", "SFO"], destinations: ["LGA", "JFK"] },
-  florida: { label: "Florida", origins: ["OAK", "SFO", "LAS"], destinations: ["MCO", "FLL", "MIA"] },
+  "bay-la": { label: "Bay Area → Southern California", origins: ["OAK", "SFO", "SJC"], destinations: ["LAX", "BUR", "ONT", "SNA", "SAN"] },
+  "bay-ny": { label: "Bay Area → New York", origins: ["OAK", "SFO", "SJC"], destinations: ["LGA", "EWR", "SWF", "ISP"] },
+  florida: { label: "Florida", origins: ["OAK", "SFO", "SJC"], destinations: ["MCO", "TPA", "FLL", "MIA", "RSW"] },
 } as const;
 
 export function PlannerView({
@@ -21,14 +21,14 @@ export function PlannerView({
   date: string;
 }) {
   const selected = moduleKey && moduleKey in MODULES ? MODULES[moduleKey as keyof typeof MODULES] : null;
-  const [originsText, setOriginsText] = useState((selected?.origins ?? ["OAK"]).join(", "));
-  const [destinationsText, setDestinationsText] = useState((selected?.destinations ?? ["LAX"]).join(", "));
+  const [originsText, setOriginsText] = useState((selected?.origins ?? ["DEN"]).join(", "));
+  const [destinationsText, setDestinationsText] = useState((selected?.destinations ?? ["MCO"]).join(", "));
   const [day, setDay] = useState(date);
   const [maxStops, setMaxStops] = useState(1);
   const [excludeRedEyes, setExcludeRedEyes] = useState(true);
   const [submitted, setSubmitted] = useState({
-    origins: selected?.origins ? [...selected.origins] : ["OAK"],
-    destinations: selected?.destinations ? [...selected.destinations] : ["LAX"],
+    origins: selected?.origins ? [...selected.origins] : ["DEN"],
+    destinations: selected?.destinations ? [...selected.destinations] : ["MCO"],
     date,
     maxStops: 1,
     excludeRedEyes: true,
@@ -109,7 +109,7 @@ export function PlannerView({
         </div>
         <div>
           <h2 className="mb-2 font-mono text-[11px] uppercase tracking-[0.16em] text-[#8b9790]">Paths</h2>
-          <p className="mb-2 text-xs text-[#8b9790]">These are chains of nonstops. They are not proof a connection operates on {submitted.date}.</p>
+          <p className="mb-2 text-xs text-[#8b9790]">A path without times is a possible network path, not a dated itinerary.</p>
           {planned.untimed.length === 0 ? <p className="text-sm text-[#8b9790]">No path connects these airports.</p> : planned.untimed.map((path) => (
             <div key={path.airports.join("-")} className="mb-2 font-mono text-xs">{path.airports.join(" → ")}</div>
           ))}

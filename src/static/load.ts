@@ -24,6 +24,11 @@ export function loadCatalog(): StaticCatalog {
     .filter(Boolean)
     .map((line) => JSON.parse(line) as PriceHistoryRow);
   const codes = referencedCodes(network, fares, changes);
+  for (const code of network.official?.airports ?? []) codes.add(code);
+  for (const route of network.official?.routes ?? []) {
+    codes.add(route.origin);
+    codes.add(route.destination);
+  }
   cached = {
     network,
     fares,
@@ -35,7 +40,7 @@ export function loadCatalog(): StaticCatalog {
 }
 
 function referencedCodes(network: NetworkArtifact, fares: BrowserFareRecord[], changes: RouteChangeFile) {
-  const codes = new Set(["OAK", "SFO", "LAS", "LAX", "BUR", "SAN", "ONT", "SNA", "MCO", "FLL", "MIA", "LGA", "JFK", "EWR", "SJC"]);
+  const codes = new Set<string>();
   for (const flight of network.observations) {
     codes.add(flight.origin);
     codes.add(flight.destination);

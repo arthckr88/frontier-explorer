@@ -19,7 +19,7 @@ export function ChangesView({
   scope: "all" | "mine";
 }) {
   const selected = WINDOWS.find((item) => item[0] === windowKey) ?? WINDOWS[2];
-  const rows = staticChanges(catalog, selected[2], scope);
+  const rows = staticChanges(catalog, selected[2], scope).filter((row) => row.consumer);
   return (
     <section className="space-y-4">
       <header>
@@ -46,10 +46,10 @@ export function ChangesView({
           {rows.map((row) => (
             <li key={row.id} className="py-3">
               <div className="font-mono text-[11px] uppercase text-[#8b9790]">
-                {row.recordedOn} · {row.type}
+                {row.recordedOn}
               </div>
               <AppLink href={`/routes/${row.origin}/${row.destination}`} className="text-sm hover:text-[#3dbe7a]">
-                {row.detail}
+                {row.consumer}
               </AppLink>
             </li>
           ))}

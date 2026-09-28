@@ -1,6 +1,6 @@
 import { greatCircleArc, reachable } from "@/lib/graph/arcs";
 import { searchItineraries, type FlightSegment } from "@/lib/graph/search";
-import { untimedPaths, type UntimedPath } from "@/lib/graph/untimed";
+import type { UntimedPath } from "@/lib/graph/untimed";
 import { isRedEyeSegment } from "@/lib/time/redeye";
 import type { BrowserFareRecord } from "@/site/network";
 import type { MapAirport, MapRoute } from "@/server/queries/read";
@@ -67,16 +67,37 @@ export function confirmedEdges(catalog: StaticCatalog) {
 export function staticNetworkAdapter(catalog: StaticCatalog): NetworkModel {
   const points = airportIndex(catalog);
   const edges = confirmedEdges(catalog);
-  const routes: MapRoute[] = [];
+  const confirmed = new Set(edges.map((edge) => pairKey(edge.origin, edge.destination)));
+  const official = catalog.network.official?.routes ?? [];
+  const officialKeys = new Set(official.map((route) => pairKey(route.origin, route.destination)));
+  const drawn = new Map<string, { origin: string; destination: string; status: string }>();
+  for (const route of official) {
+    drawn.set(pairKey(route.origin, route.destination), {
+      origin: route.origin,
+      destination: route.destination,
+      status: confirmed.has(pairKey(route.origin, route.destination)) ? "SCHEDULE_CONFIRMED" : "OFFICIAL_DIRECT",
+    });
+  }
   for (const edge of edges) {
+    const key = pairKey(edge.origin, edge.destination);
+    if (!drawn.has(key)) drawn.set(key, { origin: edge.origin, destination: edge.destination, status: "SCHEDULE_CONFIRMED" });
+  }
+  const used = new Set<string>([...drawn.values()].flatMap((route) => [route.origin, route.destination]));
+  for (const code of catalog.network.official?.airports ?? []) used.add(code);
+  const airports = [...used]
+    .map((code) => toMapAirport(points.get(code)))
+    .filter((airport): airport is MapAirport => Boolean(airport));
+  const graph = [...drawn.values()].map((edge) => ({ origin: edge.origin, destination: edge.destination, status: edge.status, frequency: null }));
+  const routes: MapRoute[] = [];
+  for (const edge of drawn.values()) {
     const origin = points.get(edge.origin);
     const destination = points.get(edge.destination);
     if (!origin || !destination) continue;
     routes.push({
       origin: edge.origin,
       destination: edge.destination,
-      status: "ACTIVE",
-      confidence: "HIGH",
+      status: edge.status,
+      confidence: edge.status === "SCHEDULE_CONFIRMED" ? "HIGH" : "OFFICIAL",
       frequency: null,
       announcedFrequency: null,
       endConfirmed: false,
@@ -84,16 +105,11 @@ export function staticNetworkAdapter(catalog: StaticCatalog): NetworkModel {
       destinationRegion: destination.region || "other",
       international: origin.country !== "US" || destination.country !== "US",
       coordinates: greatCircleArc([origin.lon, origin.lat], [destination.lon, destination.lat]),
+      nextDeparture: nextDeparture(catalog, edge.origin, edge.destination),
+      official: officialKeys.has(pairKey(edge.origin, edge.destination)),
     });
   }
-  const used = new Set(routes.flatMap((route) => [route.origin, route.destination]));
-  for (const code of INTEREST) used.add(code);
-  const airports = [...used]
-    .map((code) => toMapAirport(points.get(code)))
-    .filter((airport): airport is MapAirport => Boolean(airport));
-  const graph = edges.map((edge) => ({ origin: edge.origin, destination: edge.destination, status: "nonstop", frequency: null }));
   const scheduleThrough = catalog.network.observations.reduce((max, flight) => (flight.date > max ? flight.date : max), "");
-  const observedAirports = new Set(routes.flatMap((route) => [route.origin, route.destination]));
   const consumerChanges = travelerChanges(catalog);
   return {
     routes,
@@ -102,15 +118,15 @@ export function staticNetworkAdapter(catalog: StaticCatalog): NetworkModel {
     tileStyle: TILE_STYLE,
     confirmedPairs: edges.length,
     home: {
-      airports: [...observedAirports]
+      airports: [...used]
         .map((code) => points.get(code))
         .filter((airport): airport is AirportRecord => Boolean(airport))
-        .sort((a, b) => interestRank(a.iata) - interestRank(b.iata) || a.iata.localeCompare(b.iata))
+        .sort((a, b) => a.iata.localeCompare(b.iata))
         .map((airport) => ({ iata: airport.iata, city: airport.city })),
-      bayLa: presentPaths(orderedPaths(catalog, graph, ["OAK", "SFO", "SJC"], ["LAX", "BUR", "SNA", "ONT", "SAN"], 2, true)),
-      bayNy: orderedPaths(catalog, graph, ["OAK", "SFO"], ["LGA", "JFK"], 2).slice(0, 4),
-      florida: orderedPaths(catalog, graph, ["OAK", "SFO", "LAS"], ["MCO", "FLL", "MIA"], 2).slice(0, 4),
-      floridaAirports: ["MCO", "FLL", "MIA"]
+      bayLa: presentPaths(orderedPaths(catalog, graph, ["OAK", "SFO", "SJC"], ["LAX", "BUR", "ONT", "SNA", "SAN"], 2)),
+      bayNy: orderedPaths(catalog, graph, ["OAK", "SFO", "SJC"], newYorkAirports(points, used), 2).slice(0, 4),
+      florida: orderedPaths(catalog, graph, ["OAK", "SFO", "SJC"], floridaAirports(points, used), 2).slice(0, 4),
+      floridaAirports: floridaAirports(points, used)
         .map((code) => points.get(code))
         .filter((airport): airport is AirportRecord => {
           if (!airport) return false;
@@ -123,9 +139,23 @@ export function staticNetworkAdapter(catalog: StaticCatalog): NetworkModel {
   };
 }
 
-function interestRank(code: string) {
-  const index = INTEREST.indexOf(code);
-  return index === -1 ? INTEREST.length : index;
+function floridaAirports(points: Map<string, AirportRecord>, used: Set<string>) {
+  return [...points.values()]
+    .filter((airport) => used.has(airport.iata) && airport.country === "US" && airport.lat >= 24.5 && airport.lat <= 31.1 && airport.lon >= -87.7 && airport.lon <= -80)
+    .map((airport) => airport.iata)
+    .sort();
+}
+
+function newYorkAirports(points: Map<string, AirportRecord>, used: Set<string>) {
+  const area = new Set(["JFK", "LGA", "EWR", "SWF", "ISP", "HPN"]);
+  return [...area].filter((code) => used.has(code) && points.has(code)).sort();
+}
+
+function nextDeparture(catalog: StaticCatalog, origin: string, destination: string) {
+  const next = catalog.network.observations
+    .filter((flight) => flight.origin === origin && flight.destination === destination && flight.date >= (catalog.network.today || flight.date))
+    .sort((left, right) => left.departureLocal.localeCompare(right.departureLocal))[0];
+  return next ? `${formatDay(next.date)} ${clock(next.departureLocal)}` : null;
 }
 
 function toMapAirport(airport: AirportRecord | undefined): MapAirport | null {
@@ -146,7 +176,7 @@ export function staticChrome(catalog: StaticCatalog): { status: string; links: C
   const network = staticNetworkAdapter(catalog);
   const through = network.home.scheduleThrough;
   const links: ChromeLink[] = [{ href: "/", label: "Search" }];
-  if (network.confirmedPairs > 0) {
+  if (network.confirmedPairs > 0 || (catalog.network.official?.routes.length ?? 0) > 0) {
     links.push({ href: "/discover", label: "Discover" }, { href: "/planner", label: "Planner" });
   }
   if (catalog.changes.events.length > 0) links.push({ href: "/changes", label: "Changes" });
@@ -163,7 +193,7 @@ export function staticFareLookup(catalog: StaticCatalog, query: FareQuery): Fare
   const destination = query.destination.trim().toUpperCase();
   const date = query.date.trim();
   if (!/^[A-Z]{3}$/.test(origin) || !/^[A-Z]{3}$/.test(destination) || origin === destination || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-    return { flights: [], message: "Enter two different airport codes and a date." };
+    return { flights: [], paths: [], officialNonstop: false, message: "Enter two different airport codes and a date." };
   }
   const zones = airportIndex(catalog);
   const fares = catalog.fares.filter((fare) => fare.origin === origin && fare.destination === destination && fare.date === date);
@@ -181,13 +211,120 @@ export function staticFareLookup(catalog: StaticCatalog, query: FareQuery): Fare
     if (usedFares.has(fare)) continue;
     flights.push(fareToStoredFlight(fare, zones));
   }
-  if (flights.length === 0) {
-    return { flights: [], message: "No Frontier schedule for this date." };
-  }
+  const officialNonstop = isOfficialNonstop(catalog, origin, destination);
   const filtered = flights.filter((flight) => keepFlight(flight, query));
   filtered.sort((a, b) => compareFlights(a, b, query.sort));
-  if (filtered.length === 0) return { flights: [], message: "No flights match these filters." };
-  return { flights: filtered, message: null };
+  const paths = connectionPaths(catalog, query);
+  if (flights.length === 0 && officialNonstop) {
+    return {
+      flights: [],
+      paths,
+      officialNonstop: true,
+      message: "Frontier lists this nonstop route. Schedule for this date has not been captured yet.",
+    };
+  }
+  if (flights.length === 0) {
+    return { flights: [], paths, officialNonstop, message: paths.length ? null : "No Frontier schedule for this date." };
+  }
+  if (filtered.length === 0) return { flights: [], paths, officialNonstop, message: "No flights match these filters." };
+  return { flights: filtered, paths, officialNonstop, message: null };
+}
+
+function isOfficialNonstop(catalog: StaticCatalog, origin: string, destination: string) {
+  return (catalog.network.official?.routes ?? []).some((route) => route.origin === origin && route.destination === destination);
+}
+
+function connectionPaths(catalog: StaticCatalog, query: FareQuery) {
+  if (query.maxStops <= 0) return [];
+  const origin = query.origin.trim().toUpperCase();
+  const destination = query.destination.trim().toUpperCase();
+  const via = query.via?.trim().toUpperCase() ?? "";
+  const graph = networkGraph(catalog);
+  const timed = timedConnections(catalog, query).filter((path) => !via || path.airports.includes(via));
+  if (query.layover) return timed;
+  const timedKeys = new Set(timed.map((path) => path.airports.join(">")));
+  const possible = boundedPaths(graph, [origin], [destination], query.maxStops)
+    .filter((path) => path.stops > 0)
+    .filter((path) => !via || path.airports.includes(via))
+    .filter((path) => !timedKeys.has(path.airports.join(">")))
+    .slice(0, 6)
+    .map((path) => ({
+      airports: path.airports,
+      stops: path.stops,
+      kind: "possible" as const,
+      label: "possible network path",
+    }));
+  return [...timed, ...possible].sort((a, b) => a.stops - b.stops || a.airports.join(">").localeCompare(b.airports.join(">"))).slice(0, 8);
+}
+
+function timedConnections(catalog: StaticCatalog, query: FareQuery) {
+  const points = airportIndex(catalog);
+  const origin = query.origin.trim().toUpperCase();
+  const destination = query.destination.trim().toUpperCase();
+  const flights: FlightSegment[] = [];
+  for (const flight of catalog.network.observations) {
+    if (flight.date !== query.date) continue;
+    const from = points.get(flight.origin);
+    const to = points.get(flight.destination);
+    if (!from?.timezone || !to?.timezone) continue;
+    flights.push({
+      id: `${flight.origin}-${flight.destination}-${flight.departureLocal}-${flight.flightNumber}`,
+      origin: flight.origin,
+      destination: flight.destination,
+      departureLocal: flight.departureLocal,
+      arrivalLocal: flight.arrivalLocal,
+      originTimezone: from.timezone,
+      destinationTimezone: to.timezone,
+      flightNumber: flight.flightNumber,
+    });
+  }
+  if (flights.length === 0) return [];
+  return searchItineraries(flights, {
+    origins: [origin],
+    destinations: [destination],
+    date: query.date,
+    maxStops: query.maxStops,
+    minConnectionMinutes: layoverFloor(query.layover),
+    allowLongConnection: query.layover !== "short",
+    allowIntentionalStopover: !query.layover,
+    allowMultiDay: false,
+    excludeRedEyes: query.excludeRedEyes,
+    maxJourneyHours: 36,
+    preferVegasStopover: false,
+  })
+    .filter((itinerary) => itinerary.stops > 0)
+    .filter((itinerary) => layoverMatches(itinerary.connections, query.layover))
+    .map((itinerary) => ({
+      airports: [itinerary.segments[0]?.origin, ...itinerary.segments.map((segment) => segment.destination)].filter((code): code is string => Boolean(code)),
+      stops: itinerary.stops,
+      kind: "timed" as const,
+      label: itinerary.segments.map((segment) => `F9 ${segment.flightNumber ?? ""}`.trim()).join(" · "),
+    }));
+}
+
+function layoverFloor(layover: FareQuery["layover"]) {
+  if (layover === "normal") return 75;
+  if (layover === "long") return 120;
+  return 60;
+}
+
+function layoverMatches(connections: { minutes: number }[], layover: FareQuery["layover"]) {
+  if (!layover) return true;
+  return connections.every((connection) => {
+    if (layover === "short") return connection.minutes >= 60 && connection.minutes < 90;
+    if (layover === "normal") return connection.minutes >= 75 && connection.minutes <= 180;
+    return connection.minutes >= 120;
+  });
+}
+
+function networkGraph(catalog: StaticCatalog) {
+  const drawn = new Map<string, { origin: string; destination: string }>();
+  for (const route of catalog.network.official?.routes ?? []) drawn.set(pairKey(route.origin, route.destination), route);
+  for (const edge of confirmedEdges(catalog)) {
+    const key = pairKey(edge.origin, edge.destination);
+    if (!drawn.has(key)) drawn.set(key, edge);
+  }
+  return [...drawn.values()].map((edge) => ({ origin: edge.origin, destination: edge.destination, status: "nonstop", frequency: null }));
 }
 
 function sameNonstop(
@@ -279,15 +416,26 @@ export function staticAirportDetail(catalog: StaticCatalog, iata: string) {
   const code = iata.trim().toUpperCase();
   const airport = airportIndex(catalog).get(code);
   if (!airport) return null;
-  const outbound = confirmedEdges(catalog)
-    .filter((edge) => edge.origin === code)
+  const official = (catalog.network.official?.routes ?? []).filter((route) => route.origin === code);
+  const confirmed = confirmedEdges(catalog).filter((edge) => edge.origin === code);
+  const keys = new Map<string, { origin: string; destination: string; official: boolean; confirmed: boolean }>();
+  for (const route of official) keys.set(route.destination, { origin: code, destination: route.destination, official: true, confirmed: false });
+  for (const edge of confirmed) {
+    const current = keys.get(edge.destination) ?? { origin: code, destination: edge.destination, official: false, confirmed: false };
+    current.confirmed = true;
+    keys.set(edge.destination, current);
+  }
+  const outbound = [...keys.values()]
+    .sort((left, right) => Number(right.confirmed) - Number(left.confirmed) || left.destination.localeCompare(right.destination))
     .map((edge) => {
       const next = catalog.network.observations
-        .filter((flight) => flight.origin === edge.origin && flight.destination === edge.destination)
+        .filter((flight) => flight.origin === edge.origin && flight.destination === edge.destination && flight.date >= (catalog.network.today || ""))
         .sort((a, b) => a.departureLocal.localeCompare(b.departureLocal))[0];
       return {
         origin: edge.origin,
         destination: edge.destination,
+        official: edge.official,
+        confirmed: edge.confirmed,
         next: next ? `${formatDay(next.date)} · ${clock(next.departureLocal)}` : null,
       };
     });
@@ -299,7 +447,9 @@ export function staticRouteDetail(catalog: StaticCatalog, origin: string, destin
   const to = destination.trim().toUpperCase();
   if (!/^[A-Z]{3}$/.test(from) || !/^[A-Z]{3}$/.test(to)) return null;
   const points = airportIndex(catalog);
-  if (!points.has(from) || !points.has(to)) return null;
+  const official = isOfficialNonstop(catalog, from, to);
+  const known = points.has(from) && points.has(to);
+  if (!known && !official) return null;
   const observations = catalog.network.observations
     .filter((flight) => flight.origin === from && flight.destination === to)
     .sort((a, b) => a.departureLocal.localeCompare(b.departureLocal));
@@ -333,6 +483,8 @@ export function staticRouteDetail(catalog: StaticCatalog, origin: string, destin
     history,
     changes,
     hasSchedule: observations.length > 0,
+    official,
+    sourceUrl: catalog.network.official?.routes.find((route) => route.origin === from && route.destination === to)?.sourceUrl ?? null,
   };
 }
 
@@ -359,13 +511,8 @@ export function staticPlanner(
       flightNumber: flight.flightNumber,
     });
   }
-  const edges = confirmedEdges(catalog).map((edge) => ({
-    origin: edge.origin,
-    destination: edge.destination,
-    status: "nonstop",
-    frequency: null,
-  }));
-  const untimed = untimedPaths(edges, input.origins, input.destinations, input.maxStops).slice(0, 12);
+  const edges = networkGraph(catalog);
+  const untimed = boundedPaths(edges, input.origins, input.destinations, input.maxStops).slice(0, 12);
   if (flights.length === 0) {
     return { itineraries: [], untimed, notice: "No Frontier schedule for this date." };
   }
@@ -376,17 +523,15 @@ export function staticPlanner(
     maxStops: input.maxStops,
     minConnectionMinutes: 60,
     allowLongConnection: true,
-    allowIntentionalStopover: true,
+    allowIntentionalStopover: false,
     allowMultiDay: false,
     excludeRedEyes: input.excludeRedEyes,
     maxJourneyHours: 36,
-    preferVegasStopover: true,
-    preferredOrigins: ["OAK"],
-    preferredDestinations: ["LAX", "BUR", "LGA", "JFK", "MCO"],
-  });
+    preferVegasStopover: false,
+  }).sort((a, b) => a.stops - b.stops || a.elapsedMinutes - b.elapsedMinutes || a.segments[0]!.departureLocal.localeCompare(b.segments[0]!.departureLocal));
   return {
     itineraries,
-    untimed,
+    untimed: untimed.map((path) => ({ ...path, label: "possible network path" })),
     notice: itineraries.length === 0 ? "No flights connect these airports on this date." : null,
   };
 }
@@ -453,7 +598,7 @@ function orderedPaths(
   const future = futureNonstopKeys(catalog);
   const seen = new Set<string>();
   const paths: UntimedPath[] = [];
-  for (const path of untimedPaths(graph, origins, destinations, maxStops)) {
+  for (const path of boundedPaths(graph, origins, destinations, maxStops)) {
     const key = path.airports.join(">");
     if (seen.has(key)) continue;
     seen.add(key);
@@ -470,6 +615,62 @@ function orderedPaths(
     if (duration !== 0) return duration;
     return a.airports.join(">").localeCompare(b.airports.join(">"));
   });
+  return paths;
+}
+
+function boundedPaths(
+  edges: { origin: string; destination: string; status: string; frequency: number | null }[],
+  origins: string[],
+  destinations: string[],
+  maxStops: number,
+): UntimedPath[] {
+  const wanted = new Set(destinations);
+  const outbound = new Map<string, string[]>();
+  for (const edge of edges) {
+    const list = outbound.get(edge.origin) ?? [];
+    list.push(edge.destination);
+    outbound.set(edge.origin, list);
+  }
+  const paths: UntimedPath[] = [];
+  const seen = new Set<string>();
+  function add(airports: string[]) {
+    const key = airports.join(">");
+    if (seen.has(key)) return;
+    seen.add(key);
+    paths.push({ airports, statuses: [], stops: airports.length - 2 });
+  }
+  for (const origin of origins) {
+    for (const destination of outbound.get(origin) ?? []) {
+      if (wanted.has(destination)) add([origin, destination]);
+    }
+  }
+  if (maxStops >= 1) {
+    for (const origin of origins) {
+      for (const via of outbound.get(origin) ?? []) {
+        if (via === origin) continue;
+        for (const destination of outbound.get(via) ?? []) {
+          if (destination === origin || !wanted.has(destination)) continue;
+          add([origin, via, destination]);
+        }
+      }
+    }
+  }
+  if (maxStops >= 2) {
+    let added = 0;
+    for (const origin of origins) {
+      for (const first of outbound.get(origin) ?? []) {
+        for (const second of outbound.get(first) ?? []) {
+          if (second === origin || second === first) continue;
+          for (const destination of outbound.get(second) ?? []) {
+            if (!wanted.has(destination) || destination === origin || destination === first) continue;
+            add([origin, first, second, destination]);
+            added += 1;
+            if (added > 60) return paths;
+          }
+        }
+      }
+    }
+  }
   return paths;
 }
 
@@ -514,9 +715,87 @@ function pathMinutes(path: UntimedPath, legs: Map<string, number>) {
   return total;
 }
 
+export type DirectoryFilters = {
+  region: string;
+  country: string;
+  scope: "all" | "domestic" | "international";
+  origin: string;
+  destination: string;
+  officialOnly: boolean;
+  confirmedOnly: boolean;
+  faresOnly: boolean;
+  query: string;
+};
+
+export function staticDirectory(catalog: StaticCatalog, filters: DirectoryFilters) {
+  const points = airportIndex(catalog);
+  const confirmed = new Set(confirmedEdges(catalog).map((edge) => pairKey(edge.origin, edge.destination)));
+  const priced = new Set(catalog.fares.map((fare) => pairKey(fare.origin, fare.destination)));
+  const official = catalog.network.official?.routes ?? [];
+  const officialKeys = new Set(official.map((route) => pairKey(route.origin, route.destination)));
+  const rows = new Map<string, { origin: string; destination: string; official: boolean; confirmed: boolean; fares: boolean }>();
+  for (const route of official) {
+    const key = pairKey(route.origin, route.destination);
+    rows.set(key, { origin: route.origin, destination: route.destination, official: true, confirmed: confirmed.has(key), fares: priced.has(key) });
+  }
+  for (const edge of confirmedEdges(catalog)) {
+    const key = pairKey(edge.origin, edge.destination);
+    const current = rows.get(key);
+    if (current) current.confirmed = true;
+    else rows.set(key, { origin: edge.origin, destination: edge.destination, official: false, confirmed: true, fares: priced.has(key) });
+  }
+  const origin = filters.origin.trim().toUpperCase();
+  const destination = filters.destination.trim().toUpperCase();
+  const query = filters.query.trim().toLowerCase();
+  const routes = [...rows.values()]
+    .filter((route) => !filters.officialOnly || route.official)
+    .filter((route) => !filters.confirmedOnly || route.confirmed)
+    .filter((route) => !filters.faresOnly || route.fares)
+    .filter((route) => !origin || route.origin === origin)
+    .filter((route) => !destination || route.destination === destination)
+    .filter((route) => matchesScope(points, route.origin, route.destination, filters))
+    .filter((route) => !query || `${route.origin} ${route.destination} ${points.get(route.origin)?.city ?? ""} ${points.get(route.destination)?.city ?? ""}`.toLowerCase().includes(query))
+    .sort((a, b) => a.origin.localeCompare(b.origin) || a.destination.localeCompare(b.destination));
+  const airportCodes = new Set<string>(catalog.network.official?.airports ?? []);
+  for (const route of routes) {
+    airportCodes.add(route.origin);
+    airportCodes.add(route.destination);
+  }
+  const airports = [...airportCodes]
+    .map((code) => points.get(code))
+    .filter((airport): airport is AirportRecord => Boolean(airport))
+    .filter((airport) => !filters.region || filters.region === "all" || airport.region === filters.region)
+    .filter((airport) => !filters.country || airport.country === filters.country.toUpperCase())
+    .filter((airport) => !query || `${airport.iata} ${airport.city} ${airport.name}`.toLowerCase().includes(query))
+    .sort((a, b) => a.iata.localeCompare(b.iata));
+  return {
+    airports,
+    routes,
+    officialKeys: officialKeys.size,
+    countries: [...new Set([...points.values()].map((airport) => airport.country))].sort(),
+    regions: [...new Set([...points.values()].map((airport) => airport.region).filter(Boolean))].sort(),
+  };
+}
+
+function matchesScope(points: Map<string, AirportRecord>, origin: string, destination: string, filters: DirectoryFilters) {
+  if (filters.region && filters.region !== "all") {
+    const from = points.get(origin)?.region;
+    const to = points.get(destination)?.region;
+    if (from !== filters.region && to !== filters.region) return false;
+  }
+  if (filters.country) {
+    const country = filters.country.toUpperCase();
+    if (points.get(origin)?.country !== country && points.get(destination)?.country !== country) return false;
+  }
+  const international = points.get(origin)?.country !== "US" || points.get(destination)?.country !== "US";
+  if (filters.scope === "domestic" && international) return false;
+  if (filters.scope === "international" && !international) return false;
+  return true;
+}
+
 export function staticDiscover(catalog: StaticCatalog, from: string, maxStops: number) {
   const code = from.trim().toUpperCase();
-  const edges = confirmedEdges(catalog).map((edge) => ({ origin: edge.origin, destination: edge.destination, status: "nonstop" }));
+  const edges = networkGraph(catalog);
   const reached = reachable([code], edges, maxStops);
   const points = airportIndex(catalog);
   const groups = [0, 1, 2]
@@ -566,12 +845,13 @@ export function staticDiagnostics(catalog: StaticCatalog) {
   const checks = catalog.network.checks ?? [];
   const count = (state: string) => checks.filter((check) => check.state === state).length;
   const dates = catalog.network.observations.map((flight) => flight.date).sort();
+  const official = catalog.network.official;
   return {
     source: catalog.network.source,
     sourceUrl: catalog.network.sourceUrl,
     observations: catalog.network.observations.length,
     confirmedPairs: confirmedEdges(catalog).length,
-    listedCandidates: catalog.network.candidateCount,
+    listedCandidates: official?.candidateMarkets ?? catalog.network.candidateCount,
     fares: catalog.fares.length,
     priceHistory: catalog.priceHistory.length,
     scheduleStart: dates[0] ?? null,
@@ -581,6 +861,13 @@ export function staticDiagnostics(catalog: StaticCatalog) {
     blocked: count("blocked"),
     unchecked: count("unchecked"),
     changes: catalog.changes.events.length,
+    officialAirports: official?.airports.length ?? 0,
+    officialDirects: official?.routes.length ?? 0,
+    unresolved: official?.unresolved.length ?? 0,
+    checks: checks.length,
+    lastOfficialRefresh: official?.retrievedAt ?? null,
+    lastBrowserCollection: official?.lastBrowserCollection ?? null,
+    frequency: "Insufficient schedule coverage.",
   };
 }
 

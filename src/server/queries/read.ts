@@ -35,6 +35,8 @@ export type MapRoute = {
   destinationRegion: string;
   international: boolean;
   coordinates: [number, number][];
+  nextDeparture?: string | null;
+  official?: boolean;
 };
 
 export type MapAirport = {

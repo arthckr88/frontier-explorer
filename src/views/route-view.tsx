@@ -15,9 +15,22 @@ export function RouteView({ catalog, origin, destination }: { catalog: StaticCat
         <p className="mt-1 text-sm text-[#8b9790]">
           {data.originCity} to {data.destinationCity}. {data.destination} → {data.origin} is a different route.
         </p>
+        <p className="mt-2 text-sm">{data.official ? "Frontier direct route: yes." : "Frontier direct route: no."}</p>
+        {data.official && data.sourceUrl ? (
+          <p className="text-sm text-[#8b9790]">
+            Official source:{" "}
+            <a className="text-[#3dbe7a]" href={data.sourceUrl}>
+              Frontier flights-from page
+            </a>
+          </p>
+        ) : null}
       </header>
       {!data.hasSchedule ? (
-        <p className="text-sm text-[#8b9790]">No Frontier schedule for this route.</p>
+        <p className="text-sm text-[#8b9790]">
+          {data.official
+            ? "Frontier lists this as a direct route. A dated schedule has not been captured yet."
+            : "No Frontier schedule for this route."}
+        </p>
       ) : (
         data.schedule.map((day) => (
           <section key={day.date}>

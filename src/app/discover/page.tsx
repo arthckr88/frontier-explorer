@@ -7,5 +7,5 @@ export default async function DiscoverPage({
   searchParams: Promise<{ from?: string; stops?: string }>;
 }) {
   const params = await searchParams;
-  return <DiscoverView catalog={loadCatalog()} from={params.from || "OAK"} stops={Number(params.stops ?? "1")} />;
+  return <DiscoverView catalog={loadCatalog()} from={params.from || ""} stops={Number(params.stops ?? "0")} />;
 }

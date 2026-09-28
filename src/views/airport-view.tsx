@@ -16,8 +16,8 @@ export function AirportView({ catalog, iata }: { catalog: StaticCatalog; iata: s
       </header>
       <dl className="grid grid-cols-2 gap-3 text-sm">
         <div className="rounded border border-[#24302a] p-2">
-          <dt className="text-[#8b9790]">Nonstop destinations</dt>
-          <dd className="font-mono text-xl">{data.outbound.length}</dd>
+          <dt className="text-[#8b9790]">Official destinations</dt>
+          <dd className="font-mono text-xl">{data.outbound.filter((route) => route.official).length}</dd>
         </div>
         <div className="rounded border border-[#24302a] p-2">
           <dt className="text-[#8b9790]">Coordinates</dt>
@@ -36,7 +36,10 @@ export function AirportView({ catalog, iata }: { catalog: StaticCatalog; iata: s
                 <span>
                   {route.origin} → {route.destination}
                 </span>
-                <span className="font-mono text-[#8b9790]">{route.next ?? "Nonstop"}</span>
+                <span className="font-mono text-[#8b9790]">
+                  {route.confirmed ? "Dated schedule" : "Official direct"}
+                  {route.next ? ` · ${route.next}` : ""}
+                </span>
               </AppLink>
             </li>
           ))}

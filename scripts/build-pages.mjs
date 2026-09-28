@@ -85,7 +85,12 @@ function publishedAirports() {
   if (!Array.isArray(network.observations) || network.observations.length === 0) {
     throw new Error("data/network.json has no booking observations.");
   }
-  const codes = new Set(["OAK", "SFO", "LAS", "LAX", "BUR", "SAN", "ONT", "SNA", "MCO", "FLL", "MIA", "LGA", "JFK"]);
+  const codes = new Set();
+  for (const code of network.official?.airports ?? []) codes.add(code);
+  for (const route of network.official?.routes ?? []) {
+    codes.add(route.origin);
+    codes.add(route.destination);
+  }
   for (const flight of network.observations) {
     codes.add(flight.origin);
     codes.add(flight.destination);

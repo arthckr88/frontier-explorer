@@ -62,9 +62,11 @@ function App({ catalog }: { catalog: StaticCatalog }) {
   const { path, params } = route;
   let body: ReactNode = null;
   if (path === "/" || path === "/search") {
-    body = <HomeView catalog={catalog} network={network} initial={fareQuery(params)} />;
+    const initial = fareQuery(params);
+    const homeKey = `${initial?.origin ?? ""}|${initial?.destination ?? ""}|${initial?.date ?? ""}`;
+    body = <HomeView key={homeKey} catalog={catalog} network={network} initial={initial} />;
   } else if (path === "/discover") {
-    body = <DiscoverView catalog={catalog} from={params.get("from") || "OAK"} stops={Number(params.get("stops") ?? "1")} />;
+    body = <DiscoverView catalog={catalog} from={params.get("from") || ""} stops={Number(params.get("stops") ?? "0")} />;
   } else if (path === "/planner") {
     body = <PlannerView catalog={catalog} moduleKey={params.get("module")} date={params.get("date") || network.home.scheduleThrough || catalog.network.today} />;
   } else if (path === "/changes") {

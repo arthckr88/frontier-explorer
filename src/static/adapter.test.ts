@@ -74,7 +74,8 @@ describe("static fare lookup", () => {
   it("does not treat a missing date as an empty or unchecked explanation", () => {
     const result = staticFareLookup(catalog, { ...open, date: "2026-12-01" });
     expect(result.flights).toEqual([]);
-    expect(result.message).toBe("No Frontier schedule for this date.");
+    expect(result.officialNonstop).toBe(true);
+    expect(result.message).toBe("Frontier lists this nonstop route. Schedule for this date has not been captured yet.");
   });
 
   it("does not price GoWild -1", () => {
@@ -83,10 +84,11 @@ describe("static fare lookup", () => {
 });
 
 describe("static network", () => {
-  it("draws only stored nonstops", () => {
+  it("draws official directs and dated schedules", () => {
     const network = staticNetworkAdapter(catalog);
     expect(network.confirmedPairs).toBe(21);
-    expect(network.routes).toHaveLength(21);
+    expect(network.routes.length).toBeGreaterThan(21);
+    expect(network.routes.some((route) => route.origin === "DEN" && route.destination === "MCO" && route.status === "OFFICIAL_DIRECT")).toBe(true);
     expect(catalog.network.observations).toHaveLength(410);
     expect(catalog.network.observations.some((flight) => flight.date > "2026-10-25")).toBe(false);
     expect(catalog.network.observations.some((flight) => flight.date === "2026-10-25")).toBe(true);
@@ -94,24 +96,21 @@ describe("static network", () => {
     expect(catalog.priceHistory).toHaveLength(197);
   });
 
-  it("orders Bay Area to Los Angeles nonstops ahead of connections", () => {
+  it("orders Bay Area to Southern California nonstops ahead of connections", () => {
     const network = staticNetworkAdapter(catalog);
-    expect(network.home.bayLa.map((path) => `${path.airports.join("-")} ${path.stops}`)).toEqual([
-      "SFO-ONT 0",
-      "SFO-LAX 0",
-      "SFO-SNA 0",
-      "SFO-SAN 0",
-      "OAK-LAS-LAX 1",
-      "SFO-LAS-LAX 1",
-      "OAK-LAS-BUR 1",
-    ]);
+    const labels = network.home.bayLa.map((path) => `${path.airports.join("-")} ${path.stops}`);
+    expect(labels).toContain("SFO-LAX 0");
     const stops = network.home.bayLa.map((path) => path.stops);
     expect(stops).toEqual([...stops].sort((left, right) => left - right));
+    const firstConnection = stops.findIndex((stop) => stop > 0);
+    expect(firstConnection).toBeGreaterThan(0);
+    expect(labels.slice(0, firstConnection).every((label) => label.endsWith(" 0"))).toBe(true);
     for (const path of network.home.bayLa.filter((item) => item.stops === 0)) {
       expect(["OAK", "SFO", "SJC"]).toContain(path.airports[0]);
       expect(["LAX", "BUR", "SNA", "ONT", "SAN"]).toContain(path.airports.at(-1));
     }
-    expect(network.home.airports.map((airport) => airport.iata).slice(0, 5)).toEqual(["OAK", "SFO", "LAS", "LAX", "BUR"]);
+    expect(network.home.airports.some((airport) => airport.iata === "DEN")).toBe(true);
+    expect(network.home.airports.map((airport) => airport.iata)).toEqual([...network.home.airports.map((airport) => airport.iata)].sort());
   });
 
   it("keeps home changes in traveler language", () => {
@@ -155,6 +154,7 @@ describe("static network", () => {
         observations: [],
         summaries: [],
         candidateCount: 3,
+        official: undefined,
       },
       fares: [fare],
       changes: { windowDays: 90, events: [] },

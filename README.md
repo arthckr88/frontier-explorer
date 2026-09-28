@@ -1,49 +1,34 @@
 # Frontier Route Explorer
 
-A map-first viewer for Frontier Airlines routes that were actually returned by Frontier's public booking page. It does not sell tickets, store Frontier credentials, or invent routes, frequencies, passenger counts, or GoWild seat availability.
+Frontier Route Explorer is a static GitHub Pages site for Frontier's network. It does not sell tickets, use paid schedule data, or run a scheduled Frontier crawl. Search reads stored files. It does not launch a browser.
 
-The live site is GitHub Pages. It reads `data/network.json`, which is normalized from booking observations in `data/flights.json`. A listed market is a candidate for the updater. It is not a nonstop, and the map does not draw it. A confirmed arc requires a timed, dated nonstop. Future-only service is drawn differently from near-term service. Historical-only flights stay in storage and are not drawn as current routes.
+Three layers stay separate:
 
-Coverage is per route and date: flight found, checked empty, blocked, or not checked yet. A checked-empty date is negative evidence for that date only. Blocked and unchecked are unknown. A gap after observed flights is a possible gap, not a discontinuation.
+- An official direct route is an airport pair Frontier names on a public flights-from page. `npm run frontier:network` reads the city-to-city sitemap and those pages, writes `data/frontier-direct-routes.json`, and leaves city-to-city pairs in `data/frontier-markets.json` as candidate markets. A candidate market is not a nonstop.
+- A schedule observation is a dated nonstop already in `data/flights.json`. The map draws it only when that dated observation exists.
+- A fare observation is a Standard, Discount Den, or GoWild price in `data/browser-fares.json` for one route and one date. A missing fare is not a missing route. Price history is append-only in `data/price-history.jsonl`.
 
-The interface is dark and technical: a charcoal map, a green accent, and thin route arcs. It opens on Oakland, San Francisco, Las Vegas, and Southern California. The full confirmed network is still available. Personal watches are a fixed list of priority pairs. There are no accounts.
+`npm run normalize:network` composes `data/network.json` from the official routes plus observations, checks, summaries, and fares. Pages deploys from `main` only, through `.github/workflows/deploy.yml`. GitHub Actions does not call Frontier. There is no hourly crawl.
 
-## Live path
-
-```
-Frontier public booking observations
-  → data/flights.json
-  → data/network.json, data/route-summaries.json, data/route-changes.json
-  → GitHub Pages
-  → map and search
-```
-
-GitHub Actions does not call Frontier or FlightAware. There is no hourly booking check and no weekly schedule import. Observations already in `data/flights.json` stay there. A new fare check is the local command below, one route and one date. `npm run normalize:network` rebuilds `data/network.json` from those observations. See `data/RETENTION.md` before letting `flights.json` grow. Pages deploys from `main` through `.github/workflows/deploy.yml`.
-
-## Local Frontier browser fares
-
-`npm run frontier:browser -- --origin OAK --destination LAS --date 2026-09-28` opens headed Chrome on the public booking form, one route and one date. A fresh cache file is printed and Frontier is not opened again until it expires, or until `--force`. The queue command accepts at most five searches, waits 15 seconds between them, and stops if a search is blocked. It is not a crawl, and GitHub Actions does not run it. Pages does not launch a browser. When a sanitized fare exists, the results card shows Standard, Discount Den, and GoWild with the display dollar and the exact total. A missing fare or a negative sentinel is omitted. Seat counts are omitted when FlightData did not include them.
-
-## Frontier availability API
-
-`FrontierAvailabilityProvider` can ask Frontier's mobile availability endpoint for one origin, destination, and date. It runs on the server or at build time. It does not run in the browser, and GitHub Actions does not call it. An unauthenticated request for OAK→LAS on 2026-09-28 returned HTTP 406 with an empty body, so that call is `blocked` and supplied no fares. The provider does not copy subscription keys, device ids, or session headers from other projects, and it does not retry a rejection with a new identity. Pages build fails if those credential markers appear in `dist/`, `site/`, or `public/`.
-
-Route changes compare the new snapshot with `data/route-summaries.json`. The event list in `data/route-changes.json` keeps at most 80 events and drops events older than 90 days. An unchanged snapshot does not emit events. Event types are new observation, schedule extended, more flights, fewer flights, possible gap, data blocked, and service reappeared.
-
-`npm run build:pages` fails if `data/network.json` is missing, malformed, or out of date with `data/flights.json`, if a confirmed arc has no observation, if an arc comes only from a listed market, if a summary date has no observation, or if a timestamp is invalid. Partial coverage does not fail the build.
-
-Local commands:
+## Local commands
 
 ```bash
 npm install
-npm test
+npm run frontier:network
 npm run normalize:network
+npm test
 npm run check:integrity
 npm run build:pages
 npx serve dist
 ```
 
-Open the URL `serve` prints. `npm run dev` starts the Next.js app, which is not the Pages site. `npm run update:published` is a local booking check and is not run by GitHub Actions.
+`npm run frontier:browser -- --origin DEN --destination MCO --date 2026-10-01` opens headed Chrome for one pair and one date. Any airport pair is accepted. It parses FlightData, keeps fares separate from the schedule, and appends price history. A fresh cache is not queried again. The queue waits 15 seconds and stops when Frontier blocks the search.
+
+`npm run frontier:verify-network -- --date 2026-10-01 --limit 1 --official-only --unchecked-only` checks official directs only, one query at a time, and resumes at the next unchecked route. It is not a network-wide crawl.
+
+Search on the Pages site does not run either command. Frequency stays hidden unless schedule coverage is broad enough to be honest. One captured date is not a weekly frequency. Historical passenger totals, when present, are labeled with their period and do not create a current route.
+
+`npm run dev` starts the Next.js app. That app is not the Pages site. Pages build fails if credential markers appear in the output.
 
 A Next.js and Postgres app remains in this repo for reconciliation experiments. It is not what GitHub Pages runs, and production does not require Postgres.
 
@@ -55,7 +40,7 @@ Adapters only keep what a public source returned.
 | --- | --- | --- |
 | Frontier Newsroom tag feeds | Directional announcement rows parsed from “New service from” tables, plus a looser from/to sentence when a table is absent | A cartesian product of every IATA code mentioned in an article |
 | `flights.flyfrontier.com` flights-from pages | IATA-coded marketed samples (`Oakland (OAK) … Las Vegas (LAS) … Departing …`) | SEO city lists or sitemap pairs as confirmed nonstops |
-| Public booking search (`booking.flyfrontier.com` results HTML) | Nonstop F9 flights with number, local departure, and local arrival, for priority origins over a 7-day window | Connections, other carriers, or a network guessed from fare blurbs |
+| Public booking search (`booking.flyfrontier.com` results HTML) | Nonstop F9 flights with number, local departure, and local arrival for the pair that was searched | Connections, other carriers, or a network guessed from fare blurbs |
 | Timetable API | Schedule snapshots, only when `TIMETABLE_API_URL` is set | Anything, when the variable is empty. The run is recorded as skipped |
 | Airport press URLs | Announcements, only for URLs in `AIRPORT_PRESS_URLS` | A guessed press corpus |
 | GoWild and Discount Den public pages | Sentences that match a booking window, the $0.01 base fare, a dated blackout, or an explicit do-not-stack line | Seat inventory, blackout dates that were not printed, or stacked fares |

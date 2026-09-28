@@ -1,48 +1,75 @@
 "use client";
 
+import { useState } from "react";
 import { AppLink } from "@/components/app-link";
-import { staticDiscover } from "@/static/adapter";
+import { staticDirectory, type DirectoryFilters } from "@/static/adapter";
 import type { StaticCatalog } from "@/static/types";
 
-export function DiscoverView({ catalog, from, stops }: { catalog: StaticCatalog; from: string; stops: number }) {
-  const maxStops = stops === 0 || stops === 2 ? stops : 1;
-  const data = staticDiscover(catalog, from || "OAK", maxStops);
+const EMPTY: DirectoryFilters = {
+  region: "all",
+  country: "",
+  scope: "all",
+  origin: "",
+  destination: "",
+  officialOnly: false,
+  confirmedOnly: false,
+  faresOnly: false,
+  query: "",
+};
+
+export function DiscoverView({ catalog, from = "" }: { catalog: StaticCatalog; from?: string; stops?: number }) {
+  const [filters, setFilters] = useState<DirectoryFilters>({ ...EMPTY, origin: from.trim().toUpperCase() });
+  const data = staticDirectory(catalog, filters);
   return (
     <section className="space-y-4">
       <header>
-        <h1 className="text-2xl font-medium">Discover from {data.from}</h1>
-        <p className="max-w-2xl text-sm text-[#8b9790]">Airports you can reach on Frontier nonstops. A connection here is not drawn as its own nonstop.</p>
+        <h1 className="text-2xl font-medium">Discover</h1>
+        <p className="max-w-2xl text-sm text-[#8b9790]">
+          Every Frontier airport and direct route in the official catalogue. A candidate market is not listed here as a nonstop.
+        </p>
       </header>
+      <form className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+        <input aria-label="Search airports and routes" value={filters.query} placeholder="City or airport" onChange={(event) => setFilters({ ...filters, query: event.target.value })} className={field} />
+        <select aria-label="Region" value={filters.region} onChange={(event) => setFilters({ ...filters, region: event.target.value })} className={field}>
+          <option value="all">All regions</option>
+          {data.regions.map((region) => (
+            <option key={region} value={region}>{region.replaceAll("_", " ")}</option>
+          ))}
+        </select>
+        <input aria-label="Country" value={filters.country} placeholder="Country (US)" maxLength={2} onChange={(event) => setFilters({ ...filters, country: event.target.value.toUpperCase() })} className={field} />
+        <select aria-label="Domestic or international" value={filters.scope} onChange={(event) => setFilters({ ...filters, scope: event.target.value as DirectoryFilters["scope"] })} className={field}>
+          <option value="all">Domestic and international</option>
+          <option value="domestic">Domestic</option>
+          <option value="international">International</option>
+        </select>
+        <input aria-label="Origin" value={filters.origin} placeholder="Origin" maxLength={3} onChange={(event) => setFilters({ ...filters, origin: event.target.value.toUpperCase() })} className={field} />
+        <input aria-label="Destination" value={filters.destination} placeholder="Destination" maxLength={3} onChange={(event) => setFilters({ ...filters, destination: event.target.value.toUpperCase() })} className={field} />
+        <label className="flex items-center gap-2 text-sm text-[#8b9790]"><input type="checkbox" checked={filters.officialOnly} onChange={(event) => setFilters({ ...filters, officialOnly: event.target.checked })} /> Official only</label>
+        <label className="flex items-center gap-2 text-sm text-[#8b9790]"><input type="checkbox" checked={filters.confirmedOnly} onChange={(event) => setFilters({ ...filters, confirmedOnly: event.target.checked })} /> Schedule-confirmed</label>
+        <label className="flex items-center gap-2 text-sm text-[#8b9790]"><input type="checkbox" checked={filters.faresOnly} onChange={(event) => setFilters({ ...filters, faresOnly: event.target.checked })} /> Routes with fares</label>
+      </form>
+      <p className="font-mono text-xs text-[#8b9790]">{data.airports.length} airports · {data.routes.length} directs</p>
       <div className="flex flex-wrap gap-2">
-        {["OAK", "SFO", "LAS"].map((code) => (
-          <AppLink key={code} href={`/discover?from=${code}&stops=${maxStops}`} className="rounded border border-[#24302a] px-2 py-1 text-sm">
-            {code}
-          </AppLink>
-        ))}
-        {[0, 1, 2].map((value) => (
-          <AppLink key={value} href={`/discover?from=${data.from}&stops=${value}`} className="rounded border border-[#24302a] px-2 py-1 text-sm">
-            {value === 0 ? "Nonstop" : `Within ${value} stop${value === 1 ? "" : "s"}`}
+        {data.airports.map((airport) => (
+          <AppLink key={airport.iata} href={`/airports/${airport.iata}`} className="rounded border border-[#24302a] px-2 py-1 text-sm">
+            {airport.iata} <span className="text-[#8b9790]">{airport.city}</span>
           </AppLink>
         ))}
       </div>
-      {data.groups.every((group) => group.items.length === 0) ? (
-        <p className="text-sm text-[#8b9790]">No route leaves {data.from}.</p>
-      ) : (
-        data.groups.map((group) => (
-          <div key={group.stop}>
-            <h2 className="mb-2 font-mono text-[11px] uppercase tracking-[0.16em] text-[#8b9790]">
-              {group.stop === 0 ? "Nonstop" : `${group.stop} stop`}
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {group.items.map((airport) => (
-                <AppLink key={airport.iata} href={`/airports/${airport.iata}`} className="rounded border border-[#24302a] px-2 py-1 text-sm">
-                  {airport.iata} <span className="text-[#8b9790]">{airport.city}</span>
-                </AppLink>
-              ))}
-            </div>
-          </div>
-        ))
-      )}
+      <div className="max-h-[480px] space-y-1 overflow-auto">
+        {data.routes.map((route) => (
+          <AppLink key={`${route.origin}${route.destination}`} href={`/routes/${route.origin}/${route.destination}`} className="flex justify-between gap-3 rounded border border-[#24302a] px-2 py-1 text-sm hover:text-[#3dbe7a]">
+            <span>{route.origin} → {route.destination}</span>
+            <span className="font-mono text-[11px] text-[#8b9790]">
+              {route.official ? "Official direct" : "Dated schedule"}
+              {route.confirmed ? " · dated schedule" : ""}
+              {route.fares ? " · fares" : ""}
+            </span>
+          </AppLink>
+        ))}
+      </div>
     </section>
   );
 }
+
+const field = "rounded-md border border-[#24302a] bg-[#090b0d] px-3 py-2 text-sm";

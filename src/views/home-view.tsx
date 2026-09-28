@@ -18,16 +18,18 @@ export function HomeView({
   network: NetworkModel;
   initial: FareQuery | null;
 }) {
-  const [query, setQuery] = useState<FareQuery | null>(initial);
+  const routeKey = `${initial?.origin ?? ""}|${initial?.destination ?? ""}|${initial?.date ?? ""}`;
+  const [submitted, setSubmitted] = useState<{ key: string; query: FareQuery } | null>(null);
+  const query = submitted?.key === routeKey ? submitted.query : initial;
   const searching = Boolean(query?.origin && query?.destination && query?.date);
   return (
     <div className="space-y-3 sm:space-y-4">
-      <SearchPanel catalog={catalog} initial={query} onSearch={setQuery} />
+      <SearchPanel key={routeKey} catalog={catalog} initial={query} onSearch={(next) => setSubmitted({ key: routeKey, query: next })} />
       {searching ? null : (
         <>
           <ExplorerMap tileStyle={network.tileStyle} routes={network.routes} airports={network.airports} interest={network.interest} />
           <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-            <Card title="My network" href="/discover">
+            <Card title="Airports" href="/discover">
               {network.home.airports.length === 0 ? (
                 <Empty>No airports on this network.</Empty>
               ) : (
@@ -40,8 +42,8 @@ export function HomeView({
                 </div>
               )}
             </Card>
-            <Card title="Bay Area → Los Angeles" href="/planner?module=bay-la" id="bay-area-los-angeles">
-              <PathList paths={network.home.bayLa} empty="No path from the Bay Area to Los Angeles." />
+            <Card title="Bay Area → Southern California" href="/planner?module=bay-la" id="bay-area-southern-california">
+              <PathList paths={network.home.bayLa} empty="No path from the Bay Area to Southern California." />
             </Card>
             <Card title="Bay Area → New York" href="/planner?module=bay-ny">
               <PathList paths={network.home.bayNy} empty="No path from the Bay Area to New York." />

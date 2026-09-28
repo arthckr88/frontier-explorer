@@ -63,10 +63,21 @@ export type FareQuery = {
   arrive: "" | "morning" | "afternoon" | "evening";
   sort: "stops" | "duration" | "depart";
   excludeRedEyes: boolean;
+  via?: string;
+  layover?: "" | "short" | "normal" | "long";
+};
+
+export type NetworkPath = {
+  airports: string[];
+  stops: number;
+  kind: "timed" | "possible";
+  label: string;
 };
 
 export type FareLookupResult = {
   flights: StoredFlight[];
+  paths: NetworkPath[];
+  officialNonstop: boolean;
   message: string | null;
 };
 

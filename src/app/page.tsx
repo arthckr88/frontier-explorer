@@ -25,5 +25,6 @@ export default async function HomePage({
           excludeRedEyes: true,
         }
       : null;
-  return <HomeView catalog={catalog} network={network} initial={initial} />;
+  const homeKey = `${initial?.origin ?? ""}|${initial?.destination ?? ""}|${initial?.date ?? ""}`;
+  return <HomeView key={homeKey} catalog={catalog} network={network} initial={initial} />;
 }

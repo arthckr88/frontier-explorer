@@ -64,6 +64,25 @@ export type NetworkArtifact = {
   confirmedPairCount: number;
   coveragePartial: boolean;
   fares?: BrowserFareRecord[];
+  official?: OfficialNetwork;
+};
+
+export type OfficialNetwork = {
+  retrievedAt: string;
+  source: "Frontier official direct routes";
+  sourceUrl: string;
+  airports: string[];
+  routes: {
+    origin: string;
+    destination: string;
+    originCity: string;
+    destinationCity: string;
+    sourceUrl: string;
+    provenance: "frontier_official_direct_route";
+  }[];
+  unresolved: { originSlug: string; destinationSlug: string; originCity: string | null; destinationLabel: string; reason: string }[];
+  candidateMarkets: number;
+  lastBrowserCollection: string | null;
 };
 
 export type ScheduleInput = {
@@ -119,7 +138,7 @@ export type Diagnostic = {
 
 const UTC_STAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
 
-export function buildNetwork(schedule: ScheduleInput, today: string): NetworkArtifact {
+export function buildNetwork(schedule: ScheduleInput, today: string, official?: OfficialNetwork | null): NetworkArtifact {
   const refreshedAt = schedule.refreshedAt ?? null;
   const observations = normalizeObservations(schedule, refreshedAt);
   const checks = buildChecks(schedule, observations);
@@ -148,6 +167,7 @@ export function buildNetwork(schedule: ScheduleInput, today: string): NetworkArt
     confirmedPairCount: confirmed.size,
     coveragePartial: watches.some((watch) => watch.signal !== "observed"),
     ...(fares.length ? { fares } : {}),
+    ...(official && official.routes.length ? { official } : {}),
   };
 }
 
