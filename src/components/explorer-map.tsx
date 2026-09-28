@@ -1,135 +1,101 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { GeoJSONSource, Map as MapLibreMap, NavigationControl } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { AppLink } from "@/components/app-link";
 import type { MapAirport, MapRoute } from "@/server/queries/read";
-
-const STATUS_COLOR: Record<string, string> = {
-  SCHEDULE_CONFIRMED: "#3dbe7a",
-  SCHEDULE_CONFIRMED_ONLY: "#e2a84a",
-  OFFICIAL_DIRECT: "#7ea2c4",
-  FUTURE_ONLY: "#3ec6d4",
-  ACTIVE: "#3dbe7a",
-  UPCOMING: "#3ec6d4",
-  ANNOUNCED: "#7eb6ff",
-  SEASONAL: "#6aa6ff",
-  ENDING_SOON: "#e2a84a",
-  POSSIBLY_ENDING: "#e07a3d",
-  STALE: "#e07a3d",
-  PAUSED: "#8b939c",
-  ENDED: "#6b7280",
-};
-
-const REGIONS = [
-  ["all", "All"],
-  ["united_states", "United States"],
-  ["mexico", "Mexico"],
-  ["caribbean", "Caribbean"],
-  ["central_america", "Central America"],
-  ["south_america", "South America"],
-  ["canada", "Canada"],
-] as const;
 
 type Props = {
   tileStyle: string;
   routes: MapRoute[];
   airports: MapAirport[];
   interest: string[];
+  focusAirport?: string | null;
+  selected?: { origin: string; destination: string } | null;
 };
 
-export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
+export function ExplorerMap({ tileStyle, routes, airports, interest, focusAirport = null, selected = null }: Props) {
   const container = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
-  const [region, setRegion] = useState<(typeof REGIONS)[number][0]>("all");
-  const [statuses, setStatuses] = useState<string[]>(["SCHEDULE_CONFIRMED", "OFFICIAL_DIRECT", "FUTURE_ONLY", "ACTIVE", "UPCOMING", "ANNOUNCED"]);
-  const [scope, setScope] = useState<"all" | "domestic" | "international">("all");
-  const [origin, setOrigin] = useState<string | null>(null);
-  const [hover, setHover] = useState<string | null>(null);
-  const [stops, setStops] = useState<0 | 1 | 2 | null>(null);
+  const fitRef = useRef<() => void>(() => {});
 
-  const reachable = useMemo(() => {
-    if (stops == null || !origin) return null;
-    const seeds = [origin];
-    const adjacency = new Map<string, string[]>();
-    for (const route of routes.filter((item) => statuses.includes(item.status))) {
-      const list = adjacency.get(route.origin) ?? [];
-      list.push(route.destination);
-      adjacency.set(route.origin, list);
-    }
-    const maxStops = stops ?? 2;
-    const best = new Map<string, number>();
-    const queue = seeds.map((airport) => ({ airport, depth: 0 }));
-    while (queue.length) {
-      const current = queue.shift();
-      if (!current || current.depth > maxStops + 1) continue;
-      const seen = best.get(current.airport);
-      if (seen != null && seen <= current.depth) continue;
-      best.set(current.airport, current.depth);
-      for (const next of adjacency.get(current.airport) ?? []) {
-        queue.push({ airport: next, depth: current.depth + 1 });
-      }
-    }
-    return best;
-  }, [origin, routes, statuses, stops]);
-
-  const visible = useMemo(() => {
-    return routes.filter((route) => {
-      if (!statuses.includes(route.status)) return false;
-      if (region !== "all" && route.originRegion !== region && route.destinationRegion !== region) return false;
-      if (scope === "domestic" && route.international) return false;
-      if (scope === "international" && !route.international) return false;
-      if (reachable && !reachable.has(route.destination) && !reachable.has(route.origin)) return false;
-      if (origin && route.origin !== origin && route.destination !== origin) return false;
-      return true;
-    });
-  }, [origin, reachable, region, routes, scope, statuses]);
-
-  const presentStatuses = useMemo(() => new Set(routes.map((route) => route.status)), [routes]);
-
-  const routeData = useMemo(
-    () => ({
-      type: "FeatureCollection" as const,
-      features: visible.map((route) => ({
+  const routeData = useMemo(() => {
+    const selectedKey = selected ? `${selected.origin}|${selected.destination}` : "";
+    const marking = Boolean(focusAirport) || Boolean(selectedKey);
+    const features = routes.map((route) => {
+      const key = `${route.origin}|${route.destination}`;
+      const scheduled = route.status === "SCHEDULE_CONFIRMED" || route.status === "SCHEDULE_CONFIRMED_ONLY";
+      let active = 0;
+      if (selectedKey && key === selectedKey) active = 2;
+      else if (focusAirport && (route.origin === focusAirport || route.destination === focusAirport)) active = 1;
+      return {
         type: "Feature" as const,
         properties: {
           origin: route.origin,
           destination: route.destination,
-          status: route.status,
-          color: origin && (route.origin === origin || route.destination === origin) ? "#e8ffb0" : (STATUS_COLOR[route.status] ?? "#8b939c"),
-          pair: `${route.origin}-${route.destination}`,
+          active,
+          dim: marking && active === 0 ? 1 : 0,
+          scheduled: scheduled ? 1 : 0,
         },
         geometry: { type: "LineString" as const, coordinates: route.coordinates },
-      })),
-    }),
-    [origin, visible],
-  );
+      };
+    });
+    features.sort((left, right) => left.properties.active - right.properties.active);
+    return { type: "FeatureCollection" as const, features };
+  }, [focusAirport, routes, selected]);
 
   const airportData = useMemo(() => {
-    const visibleCodes = new Set(visible.flatMap((route) => [route.origin, route.destination]));
-    for (const code of interest) visibleCodes.add(code);
+    const hot = new Set<string>();
+    if (focusAirport) hot.add(focusAirport);
+    if (selected?.origin) hot.add(selected.origin);
+    if (selected?.destination) hot.add(selected.destination);
     return {
       type: "FeatureCollection" as const,
-      features: airports
-        .filter((airport) => visibleCodes.has(airport.iata) || routes.length === 0)
-        .map((airport) => ({
-          type: "Feature" as const,
-          properties: {
-            iata: airport.iata,
-            title: `${airport.iata} · ${airport.city}`,
-            mine: interest.includes(airport.iata),
-          },
-          geometry: { type: "Point" as const, coordinates: [airport.longitude, airport.latitude] },
-        })),
+      features: airports.map((airport) => ({
+        type: "Feature" as const,
+        properties: {
+          iata: airport.iata,
+          hot: hot.has(airport.iata),
+          mine: interest.includes(airport.iata),
+        },
+        geometry: { type: "Point" as const, coordinates: [airport.longitude, airport.latitude] },
+      })),
     };
-  }, [airports, interest, routes.length, visible]);
+  }, [airports, focusAirport, interest, selected]);
 
-  const dataRef = useRef({ routeData, airportData });
+  const frame = useMemo(() => frameAirports(routes, airports, focusAirport, selected), [airports, focusAirport, routes, selected]);
+
+  const dataRef = useRef({ routeData, airportData, frame });
+  useEffect(() => {
+    dataRef.current = { routeData, airportData, frame };
+  }, [airportData, frame, routeData]);
 
   useEffect(() => {
-    dataRef.current = { routeData, airportData };
-  }, [airportData, routeData]);
+    fitRef.current = () => {
+      const map = mapRef.current;
+      const points = dataRef.current.frame;
+      if (!map || points.length === 0) return;
+      let west = 180;
+      let south = 90;
+      let east = -180;
+      let north = -90;
+      for (const airport of points) {
+        west = Math.min(west, airport.longitude);
+        east = Math.max(east, airport.longitude);
+        south = Math.min(south, airport.latitude);
+        north = Math.max(north, airport.latitude);
+      }
+      if (west > east || south > north) return;
+      const focused = Boolean(dataRef.current.routeData.features.some((feature) => feature.properties.active > 0));
+      map.fitBounds(
+        [
+          [west, south],
+          [east, north],
+        ],
+        { padding: 36, maxZoom: focused ? 6.2 : 5.4, duration: 0 },
+      );
+    };
+  }, []);
 
   useEffect(() => {
     if (!container.current || mapRef.current) return;
@@ -138,6 +104,7 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
       style: tileStyle,
       center: [-98.5, 37.5],
       zoom: 3.1,
+      attributionControl: { compact: true },
     });
     map.addControl(new NavigationControl({ showCompass: false }), "top-right");
     const paint = () => {
@@ -147,28 +114,7 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
       const airportSource = map.getSource("airports");
       if (routeSource instanceof GeoJSONSource) routeSource.setData(current.routeData);
       if (airportSource instanceof GeoJSONSource) airportSource.setData(current.airportData);
-      const coordinates = current.routeData.features.flatMap((feature) => feature.geometry.coordinates);
-      if (coordinates.length === 0) return;
-      let west = 180;
-      let south = 90;
-      let east = -180;
-      let north = -90;
-      for (const [lon, lat] of coordinates) {
-        if (!lon || !lat) continue;
-        west = Math.min(west, lon);
-        east = Math.max(east, lon);
-        south = Math.min(south, lat);
-        north = Math.max(north, lat);
-      }
-      if (west <= east && south <= north) {
-        map.fitBounds(
-          [
-            [west, south],
-            [east, north],
-          ],
-          { padding: 48, maxZoom: 5.4, duration: 0 },
-        );
-      }
+      fitRef.current();
     };
     map.on("load", () => {
       map.addSource("routes", { type: "geojson", data: dataRef.current.routeData });
@@ -177,9 +123,9 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
         type: "line",
         source: "routes",
         paint: {
-          "line-color": ["get", "color"],
-          "line-width": ["match", ["get", "status"], "SCHEDULE_CONFIRMED", 2.4, "SCHEDULE_CONFIRMED_ONLY", 2.1, 1.15],
-          "line-opacity": ["match", ["get", "status"], "OFFICIAL_DIRECT", 0.28, "SCHEDULE_CONFIRMED_ONLY", 0.85, "SCHEDULE_CONFIRMED", 0.95, 0.8],
+          "line-color": ["case", [">", ["get", "active"], 0], "#e8ffb0", ["==", ["get", "scheduled"], 1], "#3dbe7a", "#2f6b49"],
+          "line-width": ["case", ["==", ["get", "active"], 2], 2.6, ["==", ["get", "active"], 1], 1.7, ["==", ["get", "scheduled"], 1], 1.35, 0.85],
+          "line-opacity": ["case", ["==", ["get", "active"], 2], 0.95, ["==", ["get", "active"], 1], 0.88, ["==", ["get", "dim"], 1], 0.14, ["==", ["get", "scheduled"], 1], 0.8, 0.42],
         },
       });
       map.addSource("airports", { type: "geojson", data: dataRef.current.airportData });
@@ -188,25 +134,18 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
         type: "circle",
         source: "airports",
         paint: {
-          "circle-radius": ["case", ["get", "mine"], 5.5, 3.5],
-          "circle-color": ["case", ["get", "mine"], "#e8ffb0", "#d5ddd8"],
+          "circle-radius": ["case", ["get", "hot"], 5.5, ["get", "mine"], 4.2, 3.2],
+          "circle-color": ["case", ["get", "hot"], "#e8ffb0", "#d5ddd8"],
           "circle-stroke-width": 1,
           "circle-stroke-color": "#090b0d",
         },
       });
-      map.on("mousemove", "airport-dots", (event) => {
-        const feature = event.features?.[0];
-        const iata = feature?.properties?.iata;
-        if (typeof iata === "string") setHover(iata);
-      });
-      map.on("mouseleave", "airport-dots", () => setHover(null));
-      map.on("click", "airport-dots", (event) => {
-        const iata = event.features?.[0]?.properties?.iata;
-        if (typeof iata === "string") setOrigin(iata);
-      });
       paint();
     });
-    const observer = new ResizeObserver(() => map.resize());
+    const observer = new ResizeObserver(() => {
+      map.resize();
+      if (map.isStyleLoaded() && map.getSource("routes")) fitRef.current();
+    });
     observer.observe(container.current);
     mapRef.current = map;
     return () => {
@@ -223,141 +162,37 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
     const airportSource = map.getSource("airports");
     if (routeSource instanceof GeoJSONSource) routeSource.setData(routeData);
     if (airportSource instanceof GeoJSONSource) airportSource.setData(airportData);
-    const coordinates = routeData.features.flatMap((feature) => feature.geometry.coordinates);
-    if (coordinates.length === 0) return;
-    let west = 180;
-    let south = 90;
-    let east = -180;
-    let north = -90;
-    for (const [lon, lat] of coordinates) {
-      if (lon == null || lat == null) continue;
-      west = Math.min(west, lon);
-      east = Math.max(east, lon);
-      south = Math.min(south, lat);
-      north = Math.max(north, lat);
-    }
-    if (west <= east && south <= north) {
-      map.fitBounds(
-        [
-          [west, south],
-          [east, north],
-        ],
-        { padding: 48, maxZoom: origin ? 6 : 5.4, duration: 0 },
-      );
-    }
-  }, [airportData, origin, routeData]);
-
-  const hovered = airports.find((airport) => airport.iata === hover);
-  const outbound = origin ? visible.filter((route) => route.origin === origin) : [];
+    fitRef.current();
+  }, [airportData, routeData]);
 
   return (
-    <div className="grid gap-3 lg:grid-cols-[220px_1fr]">
-      <aside className="space-y-4 rounded-md border border-[#24302a] bg-[#12161b] p-3 text-sm">
-        <FilterGroup label="Region">
-          {REGIONS.map(([id, label]) => (
-            <button key={id} className={chip(region === id)} onClick={() => setRegion(id)} type="button">
-              {label}
-            </button>
-          ))}
-        </FilterGroup>
-        <FilterGroup label="Status">
-          {Object.keys(STATUS_COLOR).filter((status) => presentStatuses.has(status)).map((status) => (
-            <button
-              key={status}
-              type="button"
-              className={chip(statuses.includes(status))}
-              onClick={() =>
-                setStatuses((current) =>
-                  current.includes(status) ? current.filter((item) => item !== status) : [...current, status],
-                )
-              }
-            >
-              <span className="mr-1 inline-block h-2 w-2 rounded-full" style={{ background: STATUS_COLOR[status] }} />
-              {status.replaceAll("_", " ").toLowerCase()}
-            </button>
-          ))}
-        </FilterGroup>
-        <FilterGroup label="Scope">
-          {(["all", "domestic", "international"] as const).map((item) => (
-            <button key={item} className={chip(scope === item)} onClick={() => setScope(item)} type="button">
-              {item}
-            </button>
-          ))}
-        </FilterGroup>
-        <FilterGroup label="Reach">
-          <button className={chip(stops === 0)} onClick={() => setStops(stops === 0 ? null : 0)} type="button">
-            Nonstop
-          </button>
-          <button className={chip(stops === 1)} onClick={() => setStops(stops === 1 ? null : 1)} type="button">
-            Within 1 stop
-          </button>
-          <button className={chip(stops === 2)} onClick={() => setStops(stops === 2 ? null : 2)} type="button">
-            Within 2 stops
-          </button>
-        </FilterGroup>
-      </aside>
-      <div className="relative h-[420px] overflow-hidden rounded-md border border-[#24302a] lg:h-[640px]">
-        <div ref={container} className="h-full w-full" />
-        <div className="pointer-events-none absolute bottom-3 left-3 right-3 flex flex-col gap-2 sm:right-auto sm:max-w-sm">
-          <div className="pointer-events-auto rounded-md border border-[#24302a] bg-[#090b0d]/90 p-3 text-xs">
-            {routes.length === 0 ? (
-              <p>No nonstop routes to draw.</p>
-            ) : (
-              <p>
-                {routes.filter((route) => route.official).length} official directs. Green routes have a dated schedule.
-              </p>
-            )}
-            {hovered ? (
-              <p className="mt-2 font-mono text-[#e7ece8]">
-                {hovered.iata} · {hovered.city}
-                <br />
-                {visible.filter((route) => route.origin === hovered.iata).length} destinations
-              </p>
-            ) : null}
-          </div>
-          {origin ? (
-            <div className="pointer-events-auto max-h-56 overflow-auto rounded-md border border-[#24302a] bg-[#12161b] p-3 text-xs">
-              <div className="mb-2 flex items-center justify-between">
-                <AppLink href={`/airports/${origin}`} className="font-mono text-sm text-[#e8ffb0]">
-                  {origin} {airports.find((airport) => airport.iata === origin)?.city ?? ""}
-                </AppLink>
-                <button type="button" className="text-[#8b9790]" onClick={() => setOrigin(null)}>
-                  Clear
-                </button>
-              </div>
-              {outbound.length === 0 ? <p className="text-[#8b9790]">No destinations in the current filters.</p> : null}
-              <ul className="space-y-1">
-                {outbound.map((route) => (
-                  <li key={`${route.origin}-${route.destination}`}>
-                    <AppLink href={`/routes/${route.origin}/${route.destination}`} className="flex justify-between gap-3 hover:text-[#3dbe7a]">
-                      <span>
-                        {route.origin} → {route.destination}
-                      </span>
-                      <span className="font-mono text-[#8b9790]">
-                        {route.status === "SCHEDULE_CONFIRMED" || route.status === "ACTIVE" ? "Dated schedule" : "Official direct"}
-                        {route.nextDeparture ? ` · ${route.nextDeparture}` : ""}
-                      </span>
-                    </AppLink>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-        </div>
-      </div>
+    <div className="h-full min-h-0 w-full overflow-hidden rounded-md border border-[#24302a]">
+      <div ref={container} className="h-full w-full" />
     </div>
   );
 }
 
-function chip(active: boolean) {
-  return `rounded border px-2 py-1 text-left text-xs ${active ? "border-[#3dbe7a] text-[#e7ece8]" : "border-[#24302a] text-[#8b9790]"}`;
-}
-
-function FilterGroup({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <div className="mb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-[#8b9790]">{label}</div>
-      <div className="flex flex-wrap gap-1">{children}</div>
-    </div>
-  );
+function frameAirports(
+  routes: MapRoute[],
+  airports: MapAirport[],
+  focusAirport: string | null,
+  selected: { origin: string; destination: string } | null,
+) {
+  const byCode = new Map(airports.map((airport) => [airport.iata, airport]));
+  if (selected?.origin && selected.destination) {
+    const pair = [byCode.get(selected.origin), byCode.get(selected.destination)].filter((airport): airport is MapAirport => Boolean(airport));
+    if (pair.length > 0) return pair;
+  }
+  if (focusAirport) {
+    const codes = new Set<string>([focusAirport]);
+    for (const route of routes) {
+      if (route.origin === focusAirport || route.destination === focusAirport) {
+        codes.add(route.origin);
+        codes.add(route.destination);
+      }
+    }
+    const focused = [...codes].map((code) => byCode.get(code)).filter((airport): airport is MapAirport => Boolean(airport));
+    if (focused.length > 0) return focused;
+  }
+  return airports;
 }

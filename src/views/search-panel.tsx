@@ -19,14 +19,18 @@ const EMPTY: FareQuery = {
   layover: "",
 };
 
+const control = "h-7 w-full min-w-0 rounded border border-[#24302a] bg-[#090b0d] px-1 text-xs text-[#e7ece8]";
+
 export function SearchPanel({
   catalog,
   initial,
   onSearch,
+  onFromChange,
 }: {
   catalog: StaticCatalog;
   initial?: Partial<FareQuery> | null;
   onSearch: (query: FareQuery) => void;
+  onFromChange?: (code: string) => void;
 }) {
   const [from, setFrom] = useState(initial?.origin ?? "");
   const [to, setTo] = useState(initial?.destination ?? "");
@@ -40,6 +44,7 @@ export function SearchPanel({
   const [via, setVia] = useState(initial?.via ?? "");
   const [layover, setLayover] = useState<FareQuery["layover"]>(initial?.layover ?? "");
   const airports = [...catalog.airports].sort((a, b) => a.iata.localeCompare(b.iata));
+  const activeQuery = initial?.origin && initial.destination && initial.date ? ({ ...EMPTY, ...initial } as FareQuery) : null;
 
   function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -60,154 +65,143 @@ export function SearchPanel({
   }
 
   return (
-    <section className="mx-auto max-w-3xl space-y-3 sm:space-y-4">
-      <header className="space-y-1">
-        <h1 className="text-2xl font-medium">Frontier Route Explorer</h1>
-        <p className="text-sm text-[#8b9790]">Any Frontier origin, destination, and date. This searches schedules and fares already on this site.</p>
-      </header>
-      <form className="grid gap-2 sm:gap-3" onSubmit={submit}>
-        <div className="grid gap-2 sm:grid-cols-3 sm:gap-3">
-          <Field label="From">
-            <input
-              name="from"
-              required
-              minLength={3}
-              maxLength={3}
-              pattern="[A-Za-z]{3}"
-              autoCapitalize="characters"
-              autoCorrect="off"
-              spellCheck={false}
-              enterKeyHint="next"
-              list="frontier-airports"
-              value={from}
-              onChange={(event) => setFrom(event.target.value.toUpperCase())}
-              placeholder="DEN"
-              aria-label="From"
-              className="w-full rounded-md border border-[#24302a] bg-[#090b0d] px-3 py-3 text-base uppercase"
-            />
-          </Field>
-          <Field label="To">
-            <input
-              name="to"
-              required
-              minLength={3}
-              maxLength={3}
-              pattern="[A-Za-z]{3}"
-              autoCapitalize="characters"
-              autoCorrect="off"
-              spellCheck={false}
-              enterKeyHint="next"
-              list="frontier-airports"
-              value={to}
-              onChange={(event) => setTo(event.target.value.toUpperCase())}
-              placeholder="MCO"
-              aria-label="To"
-              className="w-full rounded-md border border-[#24302a] bg-[#090b0d] px-3 py-3 text-base uppercase"
-            />
-          </Field>
-          <Field label="Date">
-            <input
-              name="date"
-              type="date"
-              required
-              value={date}
-              onChange={(event) => setDate(event.target.value)}
-              aria-label="Date"
-              className="w-full rounded-md border border-[#24302a] bg-[#090b0d] px-3 py-3 text-base"
-            />
-          </Field>
-        </div>
-        <div className="grid gap-2 sm:grid-cols-2 sm:gap-3 lg:grid-cols-3">
-          <Field label="Stops">
-            <select aria-label="Stops" value={maxStops} onChange={(event) => setMaxStops(Number(event.target.value))} className={selectClass}>
-              <option value={0}>Nonstop only</option>
-              <option value={1}>Up to 1 stop</option>
-              <option value={2}>Up to 2 stops</option>
-            </select>
-          </Field>
-          <Field label="Duration">
-            <select
-              aria-label="Duration"
-              value={maxDuration ?? ""}
-              onChange={(event) => setMaxDuration(event.target.value ? Number(event.target.value) : null)}
-              className={selectClass}
-            >
-              <option value="">Any</option>
-              <option value={300}>Under 5 hours</option>
-              <option value={480}>Under 8 hours</option>
-              <option value={720}>Under 12 hours</option>
-            </select>
-          </Field>
-          <Field label="Departure">
-            <select aria-label="Departure time" value={depart} onChange={(event) => setDepart(event.target.value as FareQuery["depart"])} className={selectClass}>
-              <option value="">Any</option>
-              <option value="morning">Morning (5 AM–12 PM)</option>
-              <option value="afternoon">Afternoon (12–5 PM)</option>
-              <option value="evening">Evening (5–10 PM)</option>
-            </select>
-          </Field>
-          <Field label="Arrival">
-            <select aria-label="Arrival time" value={arrive} onChange={(event) => setArrive(event.target.value as FareQuery["arrive"])} className={selectClass}>
-              <option value="">Any</option>
-              <option value="morning">Morning (5 AM–12 PM)</option>
-              <option value="afternoon">Afternoon (12–5 PM)</option>
-              <option value="evening">Evening (5–10 PM)</option>
-            </select>
-          </Field>
-          <Field label="Sort">
-            <select aria-label="Sort" value={sort} onChange={(event) => setSort(event.target.value as FareQuery["sort"])} className={selectClass}>
-              <option value="stops">Fewest stops</option>
-              <option value="duration">Shortest trip</option>
-              <option value="depart">Earliest departure</option>
-            </select>
-          </Field>
-          <Field label="Layover">
-            <select aria-label="Layover" value={layover} onChange={(event) => setLayover(event.target.value as FareQuery["layover"])} className={selectClass}>
-              <option value="">Any</option>
-              <option value="short">Short (60–90 min)</option>
-              <option value="normal">Normal (75–180 min)</option>
-              <option value="long">Long (2 hours or more)</option>
-            </select>
-          </Field>
-          <Field label="Connecting airport">
-            <input
-              aria-label="Connecting airport"
-              list="frontier-airports"
-              maxLength={3}
-              value={via}
-              onChange={(event) => setVia(event.target.value.toUpperCase())}
-              placeholder="Any"
-              className="w-full rounded-md border border-[#24302a] bg-[#090b0d] px-3 py-3 text-base uppercase"
-            />
-          </Field>
-          <label className="flex items-end gap-2 pb-3 text-sm text-[#8b9790]">
-            <input type="checkbox" checked={excludeRedEyes} onChange={(event) => setExcludeRedEyes(event.target.checked)} />
-            Exclude red-eyes
-          </label>
-        </div>
-        <button className="rounded-md bg-[#3dbe7a] px-4 py-3 text-base font-medium text-[#090b0d]" type="submit">
+    <>
+      <form className="grid shrink-0 grid-cols-2 gap-1 rounded-[10px] border border-[#24302a] bg-[#090b0d]/95 p-1.5 lg:flex lg:flex-nowrap lg:items-end lg:gap-1 lg:overflow-x-auto" onSubmit={submit}>
+        <Field label="From" className="lg:w-[4.6rem] lg:shrink-0">
+          <input
+            name="from"
+            required
+            minLength={3}
+            maxLength={3}
+            pattern="[A-Za-z]{3}"
+            autoCapitalize="characters"
+            autoCorrect="off"
+            spellCheck={false}
+            enterKeyHint="next"
+            list="frontier-airports"
+            value={from}
+            onChange={(event) => {
+              const next = event.target.value.toUpperCase();
+              setFrom(next);
+              onFromChange?.(next);
+            }}
+            placeholder="DEN"
+            aria-label="From"
+            className={`${control} uppercase`}
+          />
+        </Field>
+        <Field label="To" className="lg:w-[4.6rem] lg:shrink-0">
+          <input
+            name="to"
+            required
+            minLength={3}
+            maxLength={3}
+            pattern="[A-Za-z]{3}"
+            autoCapitalize="characters"
+            autoCorrect="off"
+            spellCheck={false}
+            enterKeyHint="next"
+            list="frontier-airports"
+            value={to}
+            onChange={(event) => setTo(event.target.value.toUpperCase())}
+            placeholder="MCO"
+            aria-label="To"
+            className={`${control} uppercase`}
+          />
+        </Field>
+        <Field label="Date" className="lg:w-[8.6rem] lg:shrink-0">
+          <input name="date" type="date" required value={date} onChange={(event) => setDate(event.target.value)} aria-label="Date" className={control} />
+        </Field>
+        <Field label="Stops" className="lg:w-[6.4rem] lg:shrink-0">
+          <select aria-label="Stops" value={maxStops} onChange={(event) => setMaxStops(Number(event.target.value))} className={control}>
+            <option value={0}>Nonstop only</option>
+            <option value={1}>Up to 1 stop</option>
+            <option value={2}>Up to 2 stops</option>
+          </select>
+        </Field>
+        <Field label="Duration" className="lg:w-[6.6rem] lg:shrink-0">
+          <select aria-label="Duration" value={maxDuration ?? ""} onChange={(event) => setMaxDuration(event.target.value ? Number(event.target.value) : null)} className={control}>
+            <option value="">Any</option>
+            <option value={300}>Under 5 hours</option>
+            <option value={480}>Under 8 hours</option>
+            <option value={720}>Under 12 hours</option>
+          </select>
+        </Field>
+        <Field label="Departure" className="lg:w-[7rem] lg:shrink-0">
+          <select aria-label="Departure time" value={depart} onChange={(event) => setDepart(event.target.value as FareQuery["depart"])} className={control}>
+            <option value="">Any</option>
+            <option value="morning">Morning (5 AM–12 PM)</option>
+            <option value="afternoon">Afternoon (12–5 PM)</option>
+            <option value="evening">Evening (5–10 PM)</option>
+          </select>
+        </Field>
+        <Field label="Arrival" className="lg:w-[7rem] lg:shrink-0">
+          <select aria-label="Arrival time" value={arrive} onChange={(event) => setArrive(event.target.value as FareQuery["arrive"])} className={control}>
+            <option value="">Any</option>
+            <option value="morning">Morning (5 AM–12 PM)</option>
+            <option value="afternoon">Afternoon (12–5 PM)</option>
+            <option value="evening">Evening (5–10 PM)</option>
+          </select>
+        </Field>
+        <Field label="Layover" className="lg:w-[6.4rem] lg:shrink-0">
+          <select aria-label="Layover" value={layover} onChange={(event) => setLayover(event.target.value as FareQuery["layover"])} className={control}>
+            <option value="">Any</option>
+            <option value="short">Short (60–90 min)</option>
+            <option value="normal">Normal (75–180 min)</option>
+            <option value="long">Long (2 hours or more)</option>
+          </select>
+        </Field>
+        <Field label="Connecting airport" className="lg:w-[7.2rem] lg:shrink-0">
+          <input
+            aria-label="Connecting airport"
+            list="frontier-airports"
+            maxLength={3}
+            value={via}
+            onChange={(event) => setVia(event.target.value.toUpperCase())}
+            placeholder="Any"
+            className={`${control} uppercase`}
+          />
+        </Field>
+        <Field label="Sort" className="lg:w-[6.6rem] lg:shrink-0">
+          <select aria-label="Sort" value={sort} onChange={(event) => setSort(event.target.value as FareQuery["sort"])} className={control}>
+            <option value="stops">Fewest stops</option>
+            <option value="duration">Shortest trip</option>
+            <option value="depart">Earliest departure</option>
+          </select>
+        </Field>
+        <label className="col-span-2 flex h-7 items-center gap-1 text-[11px] text-[#8b9790] lg:w-auto lg:shrink-0">
+          <input name="redeye" type="checkbox" role="switch" checked={excludeRedEyes} onChange={(event) => setExcludeRedEyes(event.target.checked)} />
+          Exclude red-eyes
+        </label>
+        <button className="col-span-2 h-7 rounded bg-[#3dbe7a] px-2 text-xs font-medium text-[#090b0d] lg:w-auto lg:shrink-0" type="submit">
           Search
         </button>
         <datalist id="frontier-airports">
           {airports.map((airport) => (
-            <option key={airport.iata} value={airport.iata}>{airport.city}</option>
+            <option key={airport.iata} value={airport.iata}>
+              {airport.city}
+            </option>
           ))}
         </datalist>
       </form>
-      <ResultList catalog={catalog} query={initial?.origin && initial.destination && initial.date ? ({ ...EMPTY, ...initial } as FareQuery) : null} />
-    </section>
+      {activeQuery ? (
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 max-h-[42%] overflow-auto px-1 pb-1">
+          <div className="pointer-events-auto">
+            <ResultList catalog={catalog} query={activeQuery} />
+          </div>
+        </div>
+      ) : null}
+    </>
   );
 }
 
-function ResultList({ catalog, query }: { catalog: StaticCatalog; query: FareQuery | null }) {
-  if (!query) return null;
+function ResultList({ catalog, query }: { catalog: StaticCatalog; query: FareQuery }) {
   const result = staticFareLookup(catalog, query);
   return (
-    <div id="results" className="space-y-3">
-      {result.officialNonstop ? <p className="text-sm">Frontier direct route.</p> : <p className="text-sm text-[#8b9790]">Frontier direct route: no.</p>}
-      {result.message ? <p className="rounded-md border border-[#e2a84a]/40 bg-[#181e24] px-3 py-3 text-sm">{result.message}</p> : null}
+    <div id="results" className="space-y-1">
+      {result.message ? <p className="rounded border border-[#24302a] bg-[#12161b]/95 px-2 py-1 text-xs text-[#8b9790]">{result.message}</p> : null}
       {result.officialNonstop && result.flights.length === 0 ? (
-        <p className="text-sm">
+        <p className="rounded border border-[#24302a] bg-[#12161b]/95 px-2 py-1 text-xs">
           <AppLink className="text-[#3dbe7a]" href={`/routes/${query.origin}/${query.destination}`}>
             Open {query.origin} → {query.destination}
           </AppLink>
@@ -217,7 +211,7 @@ function ResultList({ catalog, query }: { catalog: StaticCatalog; query: FareQue
         <FlightCard key={flight.id} flight={flight} />
       ))}
       {result.paths.map((path) => (
-        <p key={path.airports.join("-")} className="rounded-md border border-[#24302a] px-3 py-2 text-sm">
+        <p key={path.airports.join("-")} className="rounded border border-[#24302a] bg-[#12161b]/95 px-2 py-1 text-xs">
           {path.airports.join(" → ")} · {path.stops} stop{path.stops === 1 ? "" : "s"} · {path.kind === "timed" ? path.label : "Possible network path"}
         </p>
       ))}
@@ -233,34 +227,34 @@ function FlightCard({ flight }: { flight: StoredFlight }) {
   const via = segments.slice(0, -1).map((segment) => segment.destination);
   if (flight.legacyPartial) {
     return (
-      <article className="rounded-md border border-dashed border-[#24302a] bg-[#12161b] p-3" data-date={flight.date}>
-        <p className="text-base font-medium">
+      <article className="rounded border border-dashed border-[#24302a] bg-[#12161b]/95 px-2 py-1.5" data-date={flight.date}>
+        <p className="text-xs font-medium">
           {flight.origin} → {flight.destination}
         </p>
-        <p className="mt-1 text-sm text-[#8b9790]">Legacy partial fare observation. The full path was not retained.</p>
+        <p className="text-[11px] text-[#8b9790]">Legacy partial fare observation. The full path was not retained.</p>
         {priced.length === 0 ? (
-          <p className="mt-3 text-sm text-[#8b9790]">Fare not checked for this date.</p>
+          <p className="text-[11px] text-[#8b9790]">Fare not checked for this date.</p>
         ) : (
           <>
-            <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-3">
+            <dl className="mt-1 grid grid-cols-3 gap-1 text-xs">
               {priced.map((item) => (
                 <Fare key={item.label} label={item.label} value={fareText(item.fare)} />
               ))}
             </dl>
-            <p className="mt-3 text-sm text-[#8b9790]">{checked ? `Fares checked ${checked}. ` : null}Source: Frontier.</p>
+            <p className="mt-1 text-[11px] text-[#8b9790]">{checked ? `Fares checked ${checked}. ` : null}Source: Frontier.</p>
           </>
         )}
       </article>
     );
   }
   return (
-    <article className="rounded-md border border-[#24302a] bg-[#12161b] p-3" data-flight={flight.flightNumber} data-date={flight.date}>
-      <div className="mb-2 flex flex-wrap items-center gap-2 text-sm">
-        <span className="rounded bg-[#181e24] px-2 py-1 font-medium">{segments.length > 1 ? segments.map((segment) => `F9 ${segment.flightNumber}`).join(" + ") : `F9 ${flight.flightNumber}`}</span>
-        <span className="rounded bg-[#181e24] px-2 py-1">{stops}</span>
+    <article className="rounded border border-[#24302a] bg-[#12161b]/95 px-2 py-1.5" data-flight={flight.flightNumber} data-date={flight.date}>
+      <div className="flex flex-wrap items-center gap-1 text-[11px]">
+        <span className="rounded bg-[#181e24] px-1.5 py-0.5 font-medium">{segments.length > 1 ? segments.map((segment) => `F9 ${segment.flightNumber}`).join(" + ") : `F9 ${flight.flightNumber}`}</span>
+        <span className="rounded bg-[#181e24] px-1.5 py-0.5">{stops}</span>
         <span className="text-[#8b9790]">{formatElapsed(flight.durationMinutes)}</span>
       </div>
-      <div className="text-base font-medium">
+      <div className="text-xs font-medium">
         {flight.stops === 0 ? (
           <>
             {flight.origin} {clock(flight.departureLocal)} → {flight.destination} {clock(flight.arrivalLocal)}
@@ -273,22 +267,20 @@ function FlightCard({ flight }: { flight: StoredFlight }) {
         )}
       </div>
       {segments.length > 1 ? (
-        <p className="mt-1 text-sm text-[#8b9790]">
+        <p className="text-[11px] text-[#8b9790]">
           {segments.map((segment) => `F9 ${segment.flightNumber} ${clock(segment.departureLocal)}–${clock(segment.arrivalLocal)}`).join(" · ")}
         </p>
       ) : null}
       {priced.length === 0 ? (
-        <p className="mt-3 text-sm text-[#8b9790]">Fare not checked for this date.</p>
+        <p className="text-[11px] text-[#8b9790]">Fare not checked for this date.</p>
       ) : (
         <>
-          <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-3">
+          <dl className="mt-1 grid grid-cols-3 gap-1 text-xs">
             {priced.map((item) => (
               <Fare key={item.label} label={item.label} value={fareText(item.fare)} />
             ))}
           </dl>
-          <p className="mt-3 text-sm text-[#8b9790]">
-            {checked ? `Fares checked ${checked}. ` : null}Source: Frontier.
-          </p>
+          <p className="mt-1 text-[11px] text-[#8b9790]">{checked ? `Fares checked ${checked}. ` : null}Source: Frontier.</p>
         </>
       )}
     </article>
@@ -306,23 +298,21 @@ function pricedFares(flight: StoredFlight) {
 function Fare({ label, value }: { label: string; value: string }) {
   const [frontier, exact] = value.split(" · ");
   return (
-    <div className="rounded border border-[#24302a] px-2 py-2">
-      <dt className="font-mono text-[10px] uppercase tracking-wide text-[#8b9790]">{label}</dt>
-      <dd className="font-mono">
+    <div className="rounded border border-[#24302a] px-1.5 py-0.5">
+      <dt className="font-mono text-[9px] uppercase tracking-wide text-[#8b9790]">{label}</dt>
+      <dd className="font-mono text-[11px]">
         <div>{frontier}</div>
-        {exact ? <div className="text-xs text-[#8b9790]">{exact}</div> : null}
+        {exact ? <div className="text-[10px] text-[#8b9790]">{exact}</div> : null}
       </dd>
     </div>
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, children, className = "" }: { label: string; children: React.ReactNode; className?: string }) {
   return (
-    <label className="grid gap-1 text-sm">
-      <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#8b9790]">{label}</span>
+    <label className={`grid min-w-0 gap-0.5 ${className}`}>
+      <span className="truncate font-mono text-[9px] uppercase tracking-[0.08em] text-[#8b9790]">{label}</span>
       {children}
     </label>
   );
 }
-
-const selectClass = "w-full rounded-md border border-[#24302a] bg-[#090b0d] px-3 py-3 text-base";
