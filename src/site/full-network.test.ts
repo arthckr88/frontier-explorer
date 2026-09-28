@@ -3,7 +3,8 @@ import { describe, expect, it } from "vitest";
 import { untimedPaths } from "@/lib/graph/untimed";
 import { findForbiddenMarkers } from "../../scripts/pages-secret-scan.mjs";
 import { UNRESOLVED_MAPPING_THRESHOLD } from "@/site/direct-routes";
-import { staticAirportDetail, staticDirectory, staticFareLookup, staticNetworkAdapter, staticRouteDetail, storedGoWild } from "@/static/adapter";
+import { normalizeFareItinerary } from "@/site/itinerary";
+import { legacyPartialGoWild, staticAirportDetail, staticDirectory, staticFareLookup, staticNetworkAdapter, staticRouteDetail, storedGoWild } from "@/static/adapter";
 import { loadCatalog } from "@/static/load";
 
 const catalog = loadCatalog();
@@ -140,10 +141,30 @@ describe("full network integrity", () => {
     );
     expect(avoided?.stops).toBeGreaterThan(0);
     const rows = storedGoWild(catalog);
-    const keys = rows.map((row) => `${row.flightNumber}|${row.departureLocal}|${row.arrivalLocal}`);
+    const keys = rows.map((row) => row.itineraryId);
     expect(new Set(keys).size).toBe(keys.length);
     expect(rows.some((row) => row.stops === 0)).toBe(true);
-    expect(rows.some((row) => row.stops > 0)).toBe(true);
+    expect(rows.every((row) => !row.legacy && row.segments.length === row.stops + 1)).toBe(true);
+    const legacy = legacyPartialGoWild(catalog);
+    expect(legacy.length).toBeGreaterThan(0);
+    expect(legacy.every((row) => row.legacy && row.segments.length === 0)).toBe(true);
+    expect(new Set(legacy.map((row) => row.itineraryId)).size).toBe(legacy.length);
+    expect(catalog.fares).toHaveLength(82);
+    expect(catalog.priceHistory).toHaveLength(197);
+    for (const fare of catalog.fares) {
+      const normalized = normalizeFareItinerary(fare);
+      expect(fare.completeness).toBe(normalized.completeness);
+      expect(fare.itineraryId).toBe(normalized.itineraryId);
+      if ((fare.stops ?? 0) > 0) {
+        expect(fare.completeness).toBe("legacy_partial_itinerary");
+        expect(fare.segments).toEqual([]);
+      } else {
+        expect(fare.completeness).toBe("complete");
+        expect(fare.segments).toHaveLength(1);
+      }
+    }
+    expect(readFileSync("src/views/gowild-view.tsx", "utf8")).not.toContain("first flight");
+    expect(readFileSync("src/views/search-panel.tsx", "utf8")).not.toContain("first flight");
   });
 });
 

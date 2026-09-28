@@ -2,15 +2,29 @@
   "source": "frontier_browser",
   "fares": [
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "BUR",
       "origin": "LAS",
       "destination": "BUR",
       "date": "2026-09-28",
+      "itineraryId": "LAS|BUR|2026-09-28|LAS>BUR|4107|2026-09-28T11:20:00|2026-09-28T12:39:00",
       "carrier": "F9",
       "flightNumber": "4107",
       "departureLocal": "2026-09-28T11:20:00",
       "arrivalLocal": "2026-09-28T12:39:00",
       "durationMinutes": 79,
       "stops": 0,
+      "segments": [
+        {
+          "carrier": "F9",
+          "flightNumber": "4107",
+          "origin": "LAS",
+          "destination": "BUR",
+          "departureLocal": "2026-09-28T11:20:00",
+          "arrivalLocal": "2026-09-28T12:39:00"
+        }
+      ],
+      "completeness": "complete",
       "standard": {
         "available": true,
         "total": 161.98,
@@ -29,15 +43,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|3019|2026-09-28T06:30:00|2026-09-28T10:37:00",
       "carrier": "F9",
       "flightNumber": "3019",
       "departureLocal": "2026-09-28T06:30:00",
       "arrivalLocal": "2026-09-28T10:37:00",
       "durationMinutes": 247,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 247.36,
@@ -56,15 +75,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|3019|2026-09-28T06:30:00|2026-09-28T13:43:00",
       "carrier": "F9",
       "flightNumber": "3019",
       "departureLocal": "2026-09-28T06:30:00",
       "arrivalLocal": "2026-09-28T13:43:00",
       "durationMinutes": 433,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 267.36,
@@ -83,15 +107,29 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "LAS|LAX|2026-09-28|LAS>LAX|3291|2026-09-28T06:30:00|2026-09-28T07:47:00",
       "carrier": "F9",
       "flightNumber": "3291",
       "departureLocal": "2026-09-28T06:30:00",
       "arrivalLocal": "2026-09-28T07:47:00",
       "durationMinutes": 77,
       "stops": 0,
+      "segments": [
+        {
+          "carrier": "F9",
+          "flightNumber": "3291",
+          "origin": "LAS",
+          "destination": "LAX",
+          "departureLocal": "2026-09-28T06:30:00",
+          "arrivalLocal": "2026-09-28T07:47:00"
+        }
+      ],
+      "completeness": "complete",
       "standard": {
         "available": true,
         "total": 145.98,
@@ -115,15 +153,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|4968|2026-09-28T06:45:00|2026-09-28T14:39:00",
       "carrier": "F9",
       "flightNumber": "4968",
       "departureLocal": "2026-09-28T06:45:00",
       "arrivalLocal": "2026-09-28T14:39:00",
       "durationMinutes": 474,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 185.98,
@@ -142,15 +185,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|4968|2026-09-28T06:45:00|2026-09-29T00:10:00",
       "carrier": "F9",
       "flightNumber": "4968",
       "departureLocal": "2026-09-28T06:45:00",
       "arrivalLocal": "2026-09-29T00:10:00",
       "durationMinutes": 1045,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 191.58,
@@ -169,15 +217,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|1849|2026-09-28T09:00:00|2026-09-28T13:43:00",
       "carrier": "F9",
       "flightNumber": "1849",
       "departureLocal": "2026-09-28T09:00:00",
       "arrivalLocal": "2026-09-28T13:43:00",
       "durationMinutes": 283,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 296.36,
@@ -196,15 +249,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|1849|2026-09-28T09:00:00|2026-09-29T10:37:00",
       "carrier": "F9",
       "flightNumber": "1849",
       "departureLocal": "2026-09-28T09:00:00",
       "arrivalLocal": "2026-09-29T10:37:00",
       "durationMinutes": 1537,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 251.96,
@@ -223,15 +281,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|1766|2026-09-28T09:45:00|2026-09-29T00:10:00",
       "carrier": "F9",
       "flightNumber": "1766",
       "departureLocal": "2026-09-28T09:45:00",
       "arrivalLocal": "2026-09-29T00:10:00",
       "durationMinutes": 865,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 191.58,
@@ -250,15 +313,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|3016|2026-09-28T10:05:00|2026-09-28T20:07:00",
       "carrier": "F9",
       "flightNumber": "3016",
       "departureLocal": "2026-09-28T10:05:00",
       "arrivalLocal": "2026-09-28T20:07:00",
       "durationMinutes": 602,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 191.58,
@@ -282,15 +350,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|3016|2026-09-28T10:05:00|2026-09-29T13:06:00",
       "carrier": "F9",
       "flightNumber": "3016",
       "departureLocal": "2026-09-28T10:05:00",
       "arrivalLocal": "2026-09-29T13:06:00",
       "durationMinutes": 1621,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 191.58,
@@ -314,15 +387,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|4048|2026-09-28T10:58:00|2026-09-28T17:45:00",
       "carrier": "F9",
       "flightNumber": "4048",
       "departureLocal": "2026-09-28T10:58:00",
       "arrivalLocal": "2026-09-28T17:45:00",
       "durationMinutes": 407,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 185.98,
@@ -341,15 +419,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|4401|2026-09-28T11:23:00|2026-09-29T10:37:00",
       "carrier": "F9",
       "flightNumber": "4401",
       "departureLocal": "2026-09-28T11:23:00",
       "arrivalLocal": "2026-09-29T10:37:00",
       "durationMinutes": 1394,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 251.96,
@@ -368,15 +451,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|2350|2026-09-28T11:52:00|2026-09-29T00:10:00",
       "carrier": "F9",
       "flightNumber": "2350",
       "departureLocal": "2026-09-28T11:52:00",
       "arrivalLocal": "2026-09-29T00:10:00",
       "durationMinutes": 738,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 191.58,
@@ -395,15 +483,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|2350|2026-09-28T11:52:00|2026-09-29T14:39:00",
       "carrier": "F9",
       "flightNumber": "2350",
       "departureLocal": "2026-09-28T11:52:00",
       "arrivalLocal": "2026-09-29T14:39:00",
       "durationMinutes": 1607,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 191.58,
@@ -422,15 +515,29 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "LAS|LAX|2026-09-28|LAS>LAX|2263|2026-09-28T13:34:00|2026-09-28T15:01:00",
       "carrier": "F9",
       "flightNumber": "2263",
       "departureLocal": "2026-09-28T13:34:00",
       "arrivalLocal": "2026-09-28T15:01:00",
       "durationMinutes": 87,
       "stops": 0,
+      "segments": [
+        {
+          "carrier": "F9",
+          "flightNumber": "2263",
+          "origin": "LAS",
+          "destination": "LAX",
+          "departureLocal": "2026-09-28T13:34:00",
+          "arrivalLocal": "2026-09-28T15:01:00"
+        }
+      ],
+      "completeness": "complete",
       "standard": {
         "available": true,
         "total": 145.98,
@@ -454,15 +561,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|3540|2026-09-28T15:10:00|2026-09-29T00:10:00",
       "carrier": "F9",
       "flightNumber": "3540",
       "departureLocal": "2026-09-28T15:10:00",
       "arrivalLocal": "2026-09-29T00:10:00",
       "durationMinutes": 540,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 191.58,
@@ -481,15 +593,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|3540|2026-09-28T15:10:00|2026-09-29T14:39:00",
       "carrier": "F9",
       "flightNumber": "3540",
       "departureLocal": "2026-09-28T15:10:00",
       "arrivalLocal": "2026-09-29T14:39:00",
       "durationMinutes": 1409,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 191.58,
@@ -508,15 +625,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|4157|2026-09-28T15:17:00|2026-09-29T10:37:00",
       "carrier": "F9",
       "flightNumber": "4157",
       "departureLocal": "2026-09-28T15:17:00",
       "arrivalLocal": "2026-09-29T10:37:00",
       "durationMinutes": 1160,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 251.96,
@@ -535,15 +657,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|4696|2026-09-28T16:50:00|2026-09-29T13:06:00",
       "carrier": "F9",
       "flightNumber": "4696",
       "departureLocal": "2026-09-28T16:50:00",
       "arrivalLocal": "2026-09-29T13:06:00",
       "durationMinutes": 1216,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 191.58,
@@ -567,15 +694,29 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "LAS|LAX|2026-09-28|LAS>LAX|1183|2026-09-28T17:20:00|2026-09-28T18:44:00",
       "carrier": "F9",
       "flightNumber": "1183",
       "departureLocal": "2026-09-28T17:20:00",
       "arrivalLocal": "2026-09-28T18:44:00",
       "durationMinutes": 84,
       "stops": 0,
+      "segments": [
+        {
+          "carrier": "F9",
+          "flightNumber": "1183",
+          "origin": "LAS",
+          "destination": "LAX",
+          "departureLocal": "2026-09-28T17:20:00",
+          "arrivalLocal": "2026-09-28T18:44:00"
+        }
+      ],
+      "completeness": "complete",
       "standard": {
         "available": true,
         "total": 145.98,
@@ -599,15 +740,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|4612|2026-09-28T20:44:00|2026-09-29T14:39:00",
       "carrier": "F9",
       "flightNumber": "4612",
       "departureLocal": "2026-09-28T20:44:00",
       "arrivalLocal": "2026-09-29T14:39:00",
       "durationMinutes": 1075,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 191.58,
@@ -631,15 +777,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "LAX",
       "origin": "LAS",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|LAS|LAX|2026-09-28|4612|2026-09-28T20:44:00|2026-09-30T00:10:00",
       "carrier": "F9",
       "flightNumber": "4612",
       "departureLocal": "2026-09-28T20:44:00",
       "arrivalLocal": "2026-09-30T00:10:00",
       "durationMinutes": 1646,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 191.58,
@@ -663,15 +814,29 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "OAK",
       "origin": "LAS",
       "destination": "OAK",
       "date": "2026-09-28",
+      "itineraryId": "LAS|OAK|2026-09-28|LAS>OAK|2045|2026-09-28T07:46:00|2026-09-28T09:22:00",
       "carrier": "F9",
       "flightNumber": "2045",
       "departureLocal": "2026-09-28T07:46:00",
       "arrivalLocal": "2026-09-28T09:22:00",
       "durationMinutes": 96,
       "stops": 0,
+      "segments": [
+        {
+          "carrier": "F9",
+          "flightNumber": "2045",
+          "origin": "LAS",
+          "destination": "OAK",
+          "departureLocal": "2026-09-28T07:46:00",
+          "arrivalLocal": "2026-09-28T09:22:00"
+        }
+      ],
+      "completeness": "complete",
       "standard": {
         "available": true,
         "total": 50.98,
@@ -695,15 +860,29 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "LAS",
+      "queryDestination": "OAK",
       "origin": "LAS",
       "destination": "OAK",
       "date": "2026-09-28",
+      "itineraryId": "LAS|OAK|2026-09-28|LAS>OAK|3837|2026-09-28T16:20:00|2026-09-28T17:56:00",
       "carrier": "F9",
       "flightNumber": "3837",
       "departureLocal": "2026-09-28T16:20:00",
       "arrivalLocal": "2026-09-28T17:56:00",
       "durationMinutes": 96,
       "stops": 0,
+      "segments": [
+        {
+          "carrier": "F9",
+          "flightNumber": "3837",
+          "origin": "LAS",
+          "destination": "OAK",
+          "departureLocal": "2026-09-28T16:20:00",
+          "arrivalLocal": "2026-09-28T17:56:00"
+        }
+      ],
+      "completeness": "complete",
       "standard": {
         "available": true,
         "total": 80.98,
@@ -722,15 +901,29 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "OAK",
+      "queryDestination": "LAS",
       "origin": "OAK",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "OAK|LAS|2026-09-28|OAK>LAS|2046|2026-09-28T10:17:00|2026-09-28T11:58:00",
       "carrier": "F9",
       "flightNumber": "2046",
       "departureLocal": "2026-09-28T10:17:00",
       "arrivalLocal": "2026-09-28T11:58:00",
       "durationMinutes": 101,
       "stops": 0,
+      "segments": [
+        {
+          "carrier": "F9",
+          "flightNumber": "2046",
+          "origin": "OAK",
+          "destination": "LAS",
+          "departureLocal": "2026-09-28T10:17:00",
+          "arrivalLocal": "2026-09-28T11:58:00"
+        }
+      ],
+      "completeness": "complete",
       "standard": {
         "available": true,
         "total": 50.98,
@@ -754,15 +947,29 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "OAK",
+      "queryDestination": "LAS",
       "origin": "OAK",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "OAK|LAS|2026-09-28|OAK>LAS|3838|2026-09-28T18:51:00|2026-09-28T20:32:00",
       "carrier": "F9",
       "flightNumber": "3838",
       "departureLocal": "2026-09-28T18:51:00",
       "arrivalLocal": "2026-09-28T20:32:00",
       "durationMinutes": 101,
       "stops": 0,
+      "segments": [
+        {
+          "carrier": "F9",
+          "flightNumber": "3838",
+          "origin": "OAK",
+          "destination": "LAS",
+          "departureLocal": "2026-09-28T18:51:00",
+          "arrivalLocal": "2026-09-28T20:32:00"
+        }
+      ],
+      "completeness": "complete",
       "standard": {
         "available": true,
         "total": 50.98,
@@ -786,15 +993,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SAN",
+      "queryDestination": "LAS",
       "origin": "SAN",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SAN|LAS|2026-09-28|2818|2026-09-28T06:25:00|2026-09-28T14:07:00",
       "carrier": "F9",
       "flightNumber": "2818",
       "departureLocal": "2026-09-28T06:25:00",
       "arrivalLocal": "2026-09-28T14:07:00",
       "durationMinutes": 462,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 208.98,
@@ -813,15 +1025,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SAN",
+      "queryDestination": "LAS",
       "origin": "SAN",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SAN|LAS|2026-09-28|2818|2026-09-28T06:25:00|2026-09-28T19:38:00",
       "carrier": "F9",
       "flightNumber": "2818",
       "departureLocal": "2026-09-28T06:25:00",
       "arrivalLocal": "2026-09-28T19:38:00",
       "durationMinutes": 793,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 214.58,
@@ -845,15 +1062,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SAN",
+      "queryDestination": "LAS",
       "origin": "SAN",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SAN|LAS|2026-09-28|2818|2026-09-28T06:25:00|2026-09-28T23:44:00",
       "carrier": "F9",
       "flightNumber": "2818",
       "departureLocal": "2026-09-28T06:25:00",
       "arrivalLocal": "2026-09-28T23:44:00",
       "durationMinutes": 1039,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 214.58,
@@ -877,15 +1099,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SAN",
+      "queryDestination": "LAS",
       "origin": "SAN",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SAN|LAS|2026-09-28|2818|2026-09-28T06:25:00|2026-09-29T08:28:00",
       "carrier": "F9",
       "flightNumber": "2818",
       "departureLocal": "2026-09-28T06:25:00",
       "arrivalLocal": "2026-09-29T08:28:00",
       "durationMinutes": 1563,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 214.58,
@@ -909,15 +1136,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SAN",
+      "queryDestination": "LAS",
       "origin": "SAN",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SAN|LAS|2026-09-28|3381|2026-09-28T10:28:00|2026-09-28T16:18:00",
       "carrier": "F9",
       "flightNumber": "3381",
       "departureLocal": "2026-09-28T10:28:00",
       "arrivalLocal": "2026-09-28T16:18:00",
       "durationMinutes": 350,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 173.36,
@@ -936,15 +1168,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SAN",
+      "queryDestination": "LAS",
       "origin": "SAN",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SAN|LAS|2026-09-28|3381|2026-09-28T10:28:00|2026-09-28T22:10:00",
       "carrier": "F9",
       "flightNumber": "3381",
       "departureLocal": "2026-09-28T10:28:00",
       "arrivalLocal": "2026-09-28T22:10:00",
       "durationMinutes": 702,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 130.96,
@@ -963,15 +1200,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SAN",
+      "queryDestination": "LAS",
       "origin": "SAN",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SAN|LAS|2026-09-28|3381|2026-09-28T10:28:00|2026-09-28T23:59:00",
       "carrier": "F9",
       "flightNumber": "3381",
       "departureLocal": "2026-09-28T10:28:00",
       "arrivalLocal": "2026-09-28T23:59:00",
       "durationMinutes": 811,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 130.96,
@@ -990,15 +1232,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SAN",
+      "queryDestination": "LAS",
       "origin": "SAN",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SAN|LAS|2026-09-28|3381|2026-09-28T10:28:00|2026-09-29T13:11:00",
       "carrier": "F9",
       "flightNumber": "3381",
       "departureLocal": "2026-09-28T10:28:00",
       "arrivalLocal": "2026-09-29T13:11:00",
       "durationMinutes": 1603,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 130.96,
@@ -1017,15 +1264,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SAN",
+      "queryDestination": "LAS",
       "origin": "SAN",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SAN|LAS|2026-09-28|4990|2026-09-28T16:54:00|2026-09-28T23:44:00",
       "carrier": "F9",
       "flightNumber": "4990",
       "departureLocal": "2026-09-28T16:54:00",
       "arrivalLocal": "2026-09-28T23:44:00",
       "durationMinutes": 410,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 208.98,
@@ -1049,15 +1301,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SAN",
+      "queryDestination": "LAS",
       "origin": "SAN",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SAN|LAS|2026-09-28|4990|2026-09-28T16:54:00|2026-09-29T08:28:00",
       "carrier": "F9",
       "flightNumber": "4990",
       "departureLocal": "2026-09-28T16:54:00",
       "arrivalLocal": "2026-09-29T08:28:00",
       "durationMinutes": 934,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 214.58,
@@ -1081,15 +1338,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SAN",
+      "queryDestination": "LAS",
       "origin": "SAN",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SAN|LAS|2026-09-28|4990|2026-09-28T16:54:00|2026-09-29T14:07:00",
       "carrier": "F9",
       "flightNumber": "4990",
       "departureLocal": "2026-09-28T16:54:00",
       "arrivalLocal": "2026-09-29T14:07:00",
       "durationMinutes": 1273,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 214.58,
@@ -1113,15 +1375,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SAN",
+      "queryDestination": "LAS",
       "origin": "SAN",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SAN|LAS|2026-09-28|4990|2026-09-28T16:54:00|2026-09-29T19:38:00",
       "carrier": "F9",
       "flightNumber": "4990",
       "departureLocal": "2026-09-28T16:54:00",
       "arrivalLocal": "2026-09-29T19:38:00",
       "durationMinutes": 1604,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 214.58,
@@ -1145,15 +1412,29 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SAN",
+      "queryDestination": "LAS",
       "origin": "SAN",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "SAN|LAS|2026-09-28|SAN>LAS|1326|2026-09-28T21:03:00|2026-09-28T22:32:00",
       "carrier": "F9",
       "flightNumber": "1326",
       "departureLocal": "2026-09-28T21:03:00",
       "arrivalLocal": "2026-09-28T22:32:00",
       "durationMinutes": 89,
       "stops": 0,
+      "segments": [
+        {
+          "carrier": "F9",
+          "flightNumber": "1326",
+          "origin": "SAN",
+          "destination": "LAS",
+          "departureLocal": "2026-09-28T21:03:00",
+          "arrivalLocal": "2026-09-28T22:32:00"
+        }
+      ],
+      "completeness": "complete",
       "standard": {
         "available": true,
         "total": 177.98,
@@ -1177,15 +1458,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|1230|2026-09-28T06:04:00|2026-09-28T14:07:00",
       "carrier": "F9",
       "flightNumber": "1230",
       "departureLocal": "2026-09-28T06:04:00",
       "arrivalLocal": "2026-09-28T14:07:00",
       "durationMinutes": 483,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 195.98,
@@ -1204,15 +1490,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|1230|2026-09-28T06:04:00|2026-09-28T19:38:00",
       "carrier": "F9",
       "flightNumber": "1230",
       "departureLocal": "2026-09-28T06:04:00",
       "arrivalLocal": "2026-09-28T19:38:00",
       "durationMinutes": 814,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 201.58,
@@ -1236,15 +1527,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|1230|2026-09-28T06:04:00|2026-09-28T23:44:00",
       "carrier": "F9",
       "flightNumber": "1230",
       "departureLocal": "2026-09-28T06:04:00",
       "arrivalLocal": "2026-09-28T23:44:00",
       "durationMinutes": 1060,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 201.58,
@@ -1268,15 +1564,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|3308|2026-09-28T09:00:00|2026-09-28T12:53:00",
       "carrier": "F9",
       "flightNumber": "3308",
       "departureLocal": "2026-09-28T09:00:00",
       "arrivalLocal": "2026-09-28T12:53:00",
       "durationMinutes": 233,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 350.36,
@@ -1295,15 +1596,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|3308|2026-09-28T09:00:00|2026-09-28T16:12:00",
       "carrier": "F9",
       "flightNumber": "3308",
       "departureLocal": "2026-09-28T09:00:00",
       "arrivalLocal": "2026-09-28T16:12:00",
       "durationMinutes": 432,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 355.96,
@@ -1322,15 +1628,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|3308|2026-09-28T09:00:00|2026-09-28T23:28:00",
       "carrier": "F9",
       "flightNumber": "3308",
       "departureLocal": "2026-09-28T09:00:00",
       "arrivalLocal": "2026-09-28T23:28:00",
       "durationMinutes": 868,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 355.96,
@@ -1349,15 +1660,29 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "SFO|LAS|2026-09-28|SFO>LAS|4158|2026-09-28T11:17:00|2026-09-28T13:11:00",
       "carrier": "F9",
       "flightNumber": "4158",
       "departureLocal": "2026-09-28T11:17:00",
       "arrivalLocal": "2026-09-28T13:11:00",
       "durationMinutes": 114,
       "stops": 0,
+      "segments": [
+        {
+          "carrier": "F9",
+          "flightNumber": "4158",
+          "origin": "SFO",
+          "destination": "LAS",
+          "departureLocal": "2026-09-28T11:17:00",
+          "arrivalLocal": "2026-09-28T13:11:00"
+        }
+      ],
+      "completeness": "complete",
       "standard": {
         "available": true,
         "total": 82.98,
@@ -1376,15 +1701,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|1094|2026-09-28T11:42:00|2026-09-28T19:38:00",
       "carrier": "F9",
       "flightNumber": "1094",
       "departureLocal": "2026-09-28T11:42:00",
       "arrivalLocal": "2026-09-28T19:38:00",
       "durationMinutes": 476,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 603.98,
@@ -1403,15 +1733,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|1094|2026-09-28T11:42:00|2026-09-28T23:44:00",
       "carrier": "F9",
       "flightNumber": "1094",
       "departureLocal": "2026-09-28T11:42:00",
       "arrivalLocal": "2026-09-28T23:44:00",
       "durationMinutes": 722,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 609.58,
@@ -1430,15 +1765,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|1094|2026-09-28T11:42:00|2026-09-29T08:28:00",
       "carrier": "F9",
       "flightNumber": "1094",
       "departureLocal": "2026-09-28T11:42:00",
       "arrivalLocal": "2026-09-29T08:28:00",
       "durationMinutes": 1246,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 609.58,
@@ -1457,15 +1797,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|2858|2026-09-28T12:07:00|2026-09-28T16:12:00",
       "carrier": "F9",
       "flightNumber": "2858",
       "departureLocal": "2026-09-28T12:07:00",
       "arrivalLocal": "2026-09-28T16:12:00",
       "durationMinutes": 245,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 370.36,
@@ -1484,15 +1829,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|2858|2026-09-28T12:07:00|2026-09-28T23:28:00",
       "carrier": "F9",
       "flightNumber": "2858",
       "departureLocal": "2026-09-28T12:07:00",
       "arrivalLocal": "2026-09-28T23:28:00",
       "durationMinutes": 681,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 375.96,
@@ -1511,15 +1861,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|2858|2026-09-28T12:07:00|2026-09-29T12:53:00",
       "carrier": "F9",
       "flightNumber": "2858",
       "departureLocal": "2026-09-28T12:07:00",
       "arrivalLocal": "2026-09-29T12:53:00",
       "durationMinutes": 1486,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 336.96,
@@ -1538,15 +1893,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|2638|2026-09-28T13:10:00|2026-09-28T18:36:00",
       "carrier": "F9",
       "flightNumber": "2638",
       "departureLocal": "2026-09-28T13:10:00",
       "arrivalLocal": "2026-09-28T18:36:00",
       "durationMinutes": 326,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 195.98,
@@ -1565,15 +1925,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|2638|2026-09-28T13:10:00|2026-09-28T20:35:00",
       "carrier": "F9",
       "flightNumber": "2638",
       "departureLocal": "2026-09-28T13:10:00",
       "arrivalLocal": "2026-09-28T20:35:00",
       "durationMinutes": 445,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 201.58,
@@ -1592,15 +1957,29 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "SFO|LAS|2026-09-28|SFO>LAS|2486|2026-09-28T14:28:00|2026-09-28T16:18:00",
       "carrier": "F9",
       "flightNumber": "2486",
       "departureLocal": "2026-09-28T14:28:00",
       "arrivalLocal": "2026-09-28T16:18:00",
       "durationMinutes": 110,
       "stops": 0,
+      "segments": [
+        {
+          "carrier": "F9",
+          "flightNumber": "2486",
+          "origin": "SFO",
+          "destination": "LAS",
+          "departureLocal": "2026-09-28T14:28:00",
+          "arrivalLocal": "2026-09-28T16:18:00"
+        }
+      ],
+      "completeness": "complete",
       "standard": {
         "available": true,
         "total": 96.98,
@@ -1619,15 +1998,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|3382|2026-09-28T16:31:00|2026-09-28T22:32:00",
       "carrier": "F9",
       "flightNumber": "3382",
       "departureLocal": "2026-09-28T16:31:00",
       "arrivalLocal": "2026-09-28T22:32:00",
       "durationMinutes": 361,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 195.98,
@@ -1646,15 +2030,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|3440|2026-09-28T16:34:00|2026-09-28T23:44:00",
       "carrier": "F9",
       "flightNumber": "3440",
       "departureLocal": "2026-09-28T16:34:00",
       "arrivalLocal": "2026-09-28T23:44:00",
       "durationMinutes": 430,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 195.98,
@@ -1678,15 +2067,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|3440|2026-09-28T16:34:00|2026-09-29T08:28:00",
       "carrier": "F9",
       "flightNumber": "3440",
       "departureLocal": "2026-09-28T16:34:00",
       "arrivalLocal": "2026-09-29T08:28:00",
       "durationMinutes": 954,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 201.58,
@@ -1710,15 +2104,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|3440|2026-09-28T16:34:00|2026-09-29T14:07:00",
       "carrier": "F9",
       "flightNumber": "3440",
       "departureLocal": "2026-09-28T16:34:00",
       "arrivalLocal": "2026-09-29T14:07:00",
       "durationMinutes": 1293,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 201.58,
@@ -1742,15 +2141,29 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "SFO|LAS|2026-09-28|SFO>LAS|4156|2026-09-28T20:24:00|2026-09-28T22:10:00",
       "carrier": "F9",
       "flightNumber": "4156",
       "departureLocal": "2026-09-28T20:24:00",
       "arrivalLocal": "2026-09-28T22:10:00",
       "durationMinutes": 106,
       "stops": 0,
+      "segments": [
+        {
+          "carrier": "F9",
+          "flightNumber": "4156",
+          "origin": "SFO",
+          "destination": "LAS",
+          "departureLocal": "2026-09-28T20:24:00",
+          "arrivalLocal": "2026-09-28T22:10:00"
+        }
+      ],
+      "completeness": "complete",
       "standard": {
         "available": true,
         "total": 48.98,
@@ -1774,15 +2187,29 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "SFO|LAS|2026-09-28|SFO>LAS|4402|2026-09-28T22:24:00|2026-09-28T23:59:00",
       "carrier": "F9",
       "flightNumber": "4402",
       "departureLocal": "2026-09-28T22:24:00",
       "arrivalLocal": "2026-09-28T23:59:00",
       "durationMinutes": 95,
       "stops": 0,
+      "segments": [
+        {
+          "carrier": "F9",
+          "flightNumber": "4402",
+          "origin": "SFO",
+          "destination": "LAS",
+          "departureLocal": "2026-09-28T22:24:00",
+          "arrivalLocal": "2026-09-28T23:59:00"
+        }
+      ],
+      "completeness": "complete",
       "standard": {
         "available": true,
         "total": 48.98,
@@ -1806,15 +2233,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|2930|2026-09-28T23:58:00|2026-09-29T07:33:00",
       "carrier": "F9",
       "flightNumber": "2930",
       "departureLocal": "2026-09-28T23:58:00",
       "arrivalLocal": "2026-09-29T07:33:00",
       "durationMinutes": 455,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 195.98,
@@ -1838,15 +2270,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAS",
       "origin": "SFO",
       "destination": "LAS",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAS|2026-09-28|2930|2026-09-28T23:58:00|2026-09-29T11:40:00",
       "carrier": "F9",
       "flightNumber": "2930",
       "departureLocal": "2026-09-28T23:58:00",
       "arrivalLocal": "2026-09-29T11:40:00",
       "durationMinutes": 702,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 201.58,
@@ -1870,15 +2307,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAX|2026-09-28|1230|2026-09-28T06:04:00|2026-09-28T14:39:00",
       "carrier": "F9",
       "flightNumber": "1230",
       "departureLocal": "2026-09-28T06:04:00",
       "arrivalLocal": "2026-09-28T14:39:00",
       "durationMinutes": 515,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 174.98,
@@ -1897,15 +2339,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAX|2026-09-28|1230|2026-09-28T06:04:00|2026-09-29T00:10:00",
       "carrier": "F9",
       "flightNumber": "1230",
       "departureLocal": "2026-09-28T06:04:00",
       "arrivalLocal": "2026-09-29T00:10:00",
       "durationMinutes": 1086,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 162.58,
@@ -1924,15 +2371,29 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "SFO|LAX|2026-09-28|SFO>LAX|3308|2026-09-28T09:00:00|2026-09-28T10:37:00",
       "carrier": "F9",
       "flightNumber": "3308",
       "departureLocal": "2026-09-28T09:00:00",
       "arrivalLocal": "2026-09-28T10:37:00",
       "durationMinutes": 97,
       "stops": 0,
+      "segments": [
+        {
+          "carrier": "F9",
+          "flightNumber": "3308",
+          "origin": "SFO",
+          "destination": "LAX",
+          "departureLocal": "2026-09-28T09:00:00",
+          "arrivalLocal": "2026-09-28T10:37:00"
+        }
+      ],
+      "completeness": "complete",
       "standard": {
         "available": true,
         "total": 169.98,
@@ -1951,15 +2412,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAX|2026-09-28|4158|2026-09-28T11:17:00|2026-09-28T18:44:00",
       "carrier": "F9",
       "flightNumber": "4158",
       "departureLocal": "2026-09-28T11:17:00",
       "arrivalLocal": "2026-09-28T18:44:00",
       "durationMinutes": 447,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 162.58,
@@ -1978,15 +2444,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAX|2026-09-28|4158|2026-09-28T11:17:00|2026-09-29T07:47:00",
       "carrier": "F9",
       "flightNumber": "4158",
       "departureLocal": "2026-09-28T11:17:00",
       "arrivalLocal": "2026-09-29T07:47:00",
       "durationMinutes": 1230,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 162.58,
@@ -2005,15 +2476,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAX|2026-09-28|1094|2026-09-28T11:42:00|2026-09-29T00:10:00",
       "carrier": "F9",
       "flightNumber": "1094",
       "departureLocal": "2026-09-28T11:42:00",
       "arrivalLocal": "2026-09-29T00:10:00",
       "durationMinutes": 748,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 576.96,
@@ -2032,15 +2508,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAX|2026-09-28|1094|2026-09-28T11:42:00|2026-09-29T14:39:00",
       "carrier": "F9",
       "flightNumber": "1094",
       "departureLocal": "2026-09-28T11:42:00",
       "arrivalLocal": "2026-09-29T14:39:00",
       "durationMinutes": 1617,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 526.96,
@@ -2059,15 +2540,29 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "SFO|LAX|2026-09-28|SFO>LAX|2858|2026-09-28T12:07:00|2026-09-28T13:43:00",
       "carrier": "F9",
       "flightNumber": "2858",
       "departureLocal": "2026-09-28T12:07:00",
       "arrivalLocal": "2026-09-28T13:43:00",
       "durationMinutes": 96,
       "stops": 0,
+      "segments": [
+        {
+          "carrier": "F9",
+          "flightNumber": "2858",
+          "origin": "SFO",
+          "destination": "LAX",
+          "departureLocal": "2026-09-28T12:07:00",
+          "arrivalLocal": "2026-09-28T13:43:00"
+        }
+      ],
+      "completeness": "complete",
       "standard": {
         "available": true,
         "total": 189.98,
@@ -2086,15 +2581,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAX|2026-09-28|2638|2026-09-28T13:10:00|2026-09-28T17:45:00",
       "carrier": "F9",
       "flightNumber": "2638",
       "departureLocal": "2026-09-28T13:10:00",
       "arrivalLocal": "2026-09-28T17:45:00",
       "durationMinutes": 275,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 156.98,
@@ -2113,15 +2613,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAX|2026-09-28|2486|2026-09-28T14:28:00|2026-09-28T18:44:00",
       "carrier": "F9",
       "flightNumber": "2486",
       "departureLocal": "2026-09-28T14:28:00",
       "arrivalLocal": "2026-09-28T18:44:00",
       "durationMinutes": 256,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 156.98,
@@ -2140,15 +2645,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAX|2026-09-28|2486|2026-09-28T14:28:00|2026-09-29T07:47:00",
       "carrier": "F9",
       "flightNumber": "2486",
       "departureLocal": "2026-09-28T14:28:00",
       "arrivalLocal": "2026-09-29T07:47:00",
       "durationMinutes": 1039,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 162.58,
@@ -2167,15 +2677,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAX|2026-09-28|2486|2026-09-28T14:28:00|2026-09-29T16:23:00",
       "carrier": "F9",
       "flightNumber": "2486",
       "departureLocal": "2026-09-28T14:28:00",
       "arrivalLocal": "2026-09-29T16:23:00",
       "durationMinutes": 1555,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 162.58,
@@ -2194,15 +2709,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAX|2026-09-28|3440|2026-09-28T16:34:00|2026-09-29T00:10:00",
       "carrier": "F9",
       "flightNumber": "3440",
       "departureLocal": "2026-09-28T16:34:00",
       "arrivalLocal": "2026-09-29T00:10:00",
       "durationMinutes": 456,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 156.98,
@@ -2221,15 +2741,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAX|2026-09-28|3440|2026-09-28T16:34:00|2026-09-29T14:39:00",
       "carrier": "F9",
       "flightNumber": "3440",
       "departureLocal": "2026-09-28T16:34:00",
       "arrivalLocal": "2026-09-29T14:39:00",
       "durationMinutes": 1325,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 162.58,
@@ -2253,15 +2778,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAX|2026-09-28|4156|2026-09-28T20:24:00|2026-09-29T07:47:00",
       "carrier": "F9",
       "flightNumber": "4156",
       "departureLocal": "2026-09-28T20:24:00",
       "arrivalLocal": "2026-09-29T07:47:00",
       "durationMinutes": 683,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 162.58,
@@ -2285,15 +2815,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAX|2026-09-28|4156|2026-09-28T20:24:00|2026-09-29T16:23:00",
       "carrier": "F9",
       "flightNumber": "4156",
       "departureLocal": "2026-09-28T20:24:00",
       "arrivalLocal": "2026-09-29T16:23:00",
       "durationMinutes": 1199,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 162.58,
@@ -2317,15 +2852,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAX|2026-09-28|4402|2026-09-28T22:24:00|2026-09-29T07:47:00",
       "carrier": "F9",
       "flightNumber": "4402",
       "departureLocal": "2026-09-28T22:24:00",
       "arrivalLocal": "2026-09-29T07:47:00",
       "durationMinutes": 563,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 162.58,
@@ -2349,15 +2889,20 @@
       "source": "frontier_browser"
     },
     {
+      "queryOrigin": "SFO",
+      "queryDestination": "LAX",
       "origin": "SFO",
       "destination": "LAX",
       "date": "2026-09-28",
+      "itineraryId": "legacy_partial_itinerary|SFO|LAX|2026-09-28|4402|2026-09-28T22:24:00|2026-09-29T16:23:00",
       "carrier": "F9",
       "flightNumber": "4402",
       "departureLocal": "2026-09-28T22:24:00",
       "arrivalLocal": "2026-09-29T16:23:00",
       "durationMinutes": 1079,
       "stops": 1,
+      "segments": [],
+      "completeness": "legacy_partial_itinerary",
       "standard": {
         "available": true,
         "total": 162.58,

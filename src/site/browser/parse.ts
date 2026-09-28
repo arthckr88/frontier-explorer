@@ -1,3 +1,4 @@
+import type { FareSegment } from "@/site/itinerary";
 import type { BrowserFare, BrowserFlight, BrowserQuery, BrowserResult, BrowserStatus, PageCapture } from "@/site/browser/types";
 import { BROWSER_SOURCE } from "@/site/browser/types";
 
@@ -91,7 +92,10 @@ function normalizeItinerary(itinerary: Record<string, unknown>, query: BrowserQu
   const arrivalLocal = localTimestamp(text(itinerary.arrivalDate) ?? text(last?.arrivalDate));
   if (!flightNumber || !departureLocal || !arrivalLocal) return null;
   if (origin !== query.origin || destination !== query.destination) return null;
-  const stops = readStops(itinerary, legs.length);
+  const segments = readSegments(legs);
+  let stops = readStops(itinerary, legs.length);
+  if (segments.length > 1) stops = segments.length - 1;
+  const keptSegments = stops != null && segments.length === stops + 1 ? segments : [];
   return {
     carrier: carrier ? carrier.toUpperCase() : null,
     flightNumber,
@@ -101,6 +105,7 @@ function normalizeItinerary(itinerary: Record<string, unknown>, query: BrowserQu
     arrivalLocal,
     durationMinutes: minutesBetween(departureLocal, arrivalLocal),
     stops,
+    segments: keptSegments,
     fares: {
       standard: readFare(itinerary.standardFare ?? first?.standardFare),
       discountDen: readFare(itinerary.discountDenFare ?? first?.discountDenFare),
@@ -108,6 +113,22 @@ function normalizeItinerary(itinerary: Record<string, unknown>, query: BrowserQu
     },
     seatsRemaining: readSeats(itinerary) ?? (first ? readSeats(first) : null),
   };
+}
+
+function readSegments(legs: Record<string, unknown>[]): FareSegment[] {
+  const segments: FareSegment[] = [];
+  for (const leg of legs) {
+    const flightNumber = numberText(leg.flightNumber);
+    const origin = text(leg.departureStation)?.toUpperCase() ?? "";
+    const destination = text(leg.arrivalStation)?.toUpperCase() ?? "";
+    const departureLocal = localTimestamp(text(leg.departureDate));
+    const arrivalLocal = localTimestamp(text(leg.arrivalDate));
+    const carrierText = text(leg.carrierCode)?.toUpperCase() ?? null;
+    if (carrierText && carrierText !== "F9") return [];
+    if (!flightNumber || origin.length !== 3 || destination.length !== 3 || !departureLocal || !arrivalLocal) return [];
+    segments.push({ carrier: carrierText, flightNumber, origin, destination, departureLocal, arrivalLocal });
+  }
+  return segments;
 }
 
 function readFare(value: unknown): BrowserFare | null {

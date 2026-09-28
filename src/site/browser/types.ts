@@ -1,3 +1,5 @@
+import type { FareSegment } from "@/site/itinerary";
+
 export type BrowserStatus = "ok" | "blocked" | "no_flights" | "parse_error" | "navigation_error";
 
 export type BrowserQuery = {
@@ -22,6 +24,7 @@ export type BrowserFlight = {
   arrivalLocal: string;
   durationMinutes: number | null;
   stops: number | null;
+  segments: FareSegment[];
   fares: {
     standard: BrowserFare | null;
     discountDen: BrowserFare | null;

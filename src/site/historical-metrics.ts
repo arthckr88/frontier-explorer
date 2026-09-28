@@ -1,6 +1,8 @@
 import { readFileSync, writeFileSync } from "node:fs";
+import { passengerRoutesAreRanked, rankPassengerRoutes, type PassengerRoute } from "@/site/popularity-metrics";
 
 const outputPath = new URL("../../data/historical-metrics.json", import.meta.url);
+const passengersPath = new URL("../../data/t100-passengers.json", import.meta.url);
 
 type OperatingDays = {
   daily: {
@@ -12,16 +14,16 @@ type OperatingDays = {
   };
 };
 
-type Nonstops = {
-  sourceName: string;
+type PassengerExtract = {
+  source: string;
   sourceUrl: string;
   periodStart: string;
   periodEnd: string;
-  pairs: { origin: string; destination: string }[];
+  routes: PassengerRoute[];
 };
 
 const operating = JSON.parse(readFileSync(new URL("../../data/operating-days.json", import.meta.url), "utf8")) as OperatingDays;
-const nonstops = JSON.parse(readFileSync(new URL("../../data/nonstops.json", import.meta.url), "utf8")) as Nonstops;
+const passengers = JSON.parse(readFileSync(passengersPath, "utf8")) as PassengerExtract;
 const periodWeeks = weeksBetween(operating.daily.periodStart, operating.daily.periodEnd);
 const frequency = Object.entries(operating.daily.flights)
   .map(([pair, rows]) => {
@@ -37,6 +39,11 @@ const frequency = Object.entries(operating.daily.flights)
   .filter((row) => row.origin && row.destination && row.departures > 0)
   .sort((left, right) => right.departures - left.departures || left.origin.localeCompare(right.origin) || left.destination.localeCompare(right.destination));
 
+const routes = rankPassengerRoutes(passengers.routes);
+if (!routes.length || !passengerRoutesAreRanked(routes)) {
+  throw new Error("T-100 passenger totals are missing or unsorted.");
+}
+
 const metrics = {
   frequency: {
     current: "Insufficient schedule coverage.",
@@ -48,12 +55,14 @@ const metrics = {
     routes: frequency.slice(0, 40),
   },
   popularity: {
-    source: nonstops.sourceName,
-    sourceUrl: nonstops.sourceUrl,
-    period: `${nonstops.periodStart} through ${nonstops.periodEnd}`,
-    passengersStored: false,
-    note: "Passenger totals are not in the stored T-100 extract. These city pairs had passengers greater than zero. They are historical volume evidence only and do not create a current route.",
-    pairs: nonstops.pairs,
+    source: passengers.source,
+    sourceUrl: passengers.sourceUrl,
+    period: `${passengers.periodStart} through ${passengers.periodEnd}`,
+    periodStart: passengers.periodStart,
+    periodEnd: passengers.periodEnd,
+    passengersStored: true,
+    note: "Historical DOT/BTS data. Not proof of current Frontier service.",
+    routes,
   },
 };
 
@@ -62,8 +71,9 @@ console.log(
   JSON.stringify(
     {
       historicalFrequencyRoutes: metrics.frequency.routes.length,
-      historicalPairs: metrics.popularity.pairs.length,
-      passengersStored: false,
+      passengerRoutes: metrics.popularity.routes.length,
+      passengersStored: metrics.popularity.passengersStored,
+      period: metrics.popularity.period,
     },
     null,
     2,

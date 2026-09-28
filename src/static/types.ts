@@ -1,3 +1,4 @@
+import type { FareSegment } from "@/site/itinerary";
 import type { BrowserFareRecord, NetworkArtifact, RouteChange, RouteChangeFile } from "@/site/network";
 
 export type AirportRecord = {
@@ -36,9 +37,11 @@ export type HistoricalMetrics = {
     source: string;
     sourceUrl: string;
     period: string;
+    periodStart: string;
+    periodEnd: string;
     passengersStored: boolean;
     note: string;
-    pairs: { origin: string; destination: string }[];
+    routes: { origin: string; destination: string; passengers: number; departuresPerformed: number }[];
   };
 };
 
@@ -67,6 +70,8 @@ export type StoredFlight = {
   arrivalLocal: string;
   durationMinutes: number;
   stops: number;
+  segments?: FareSegment[];
+  legacyPartial?: boolean;
   standard: DisplayFare | null;
   discountDen: DisplayFare | null;
   goWild: DisplayFare | null;

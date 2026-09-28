@@ -57,8 +57,107 @@ describe("FlightData fare parser", () => {
     expect(parsed.flights[1]?.fares.goWild).toBeNull();
     expect(parsed.flights[2]?.stops).toBe(1);
     expect(parsed.flights[2]?.arrivalLocal).toBe("2026-09-28T14:10:00");
+    expect(parsed.flights[2]?.destination).toBe("LAS");
+    expect(parsed.flights[2]?.segments.map((segment) => [segment.flightNumber, segment.origin, segment.destination])).toEqual([
+      ["100", "OAK", "DEN"],
+      ["200", "DEN", "LAS"],
+    ]);
+    expect(parsed.flights[0]?.segments).toEqual([
+      {
+        carrier: "F9",
+        flightNumber: "2046",
+        origin: "OAK",
+        destination: "LAS",
+        departureLocal: "2026-09-28T10:17:00",
+        arrivalLocal: "2026-09-28T11:58:00",
+      },
+    ]);
+    expect(parsed.flights[0]?.stops).toBe(0);
     expect(displayDollars(15.41)).toBe(16);
     expect(displayDollars(50.98)).toBe(51);
+  });
+
+  it("does not let the first leg of a connection stand in for the route", () => {
+    const normalized = normalizeFlightData(
+      {
+        journeys: [
+          {
+            flights: [
+              {
+                stopCount: 1,
+                standardFare: 80,
+                departureStation: "SFO",
+                arrivalStation: "LAX",
+                departureDate: "2026-09-28T06:04:00",
+                arrivalDate: "2026-09-28T14:39:00",
+                legs: [leg("1230", "SFO", "DEN", "2026-09-28T06:04:00", "2026-09-28T09:00:00")],
+              },
+            ],
+          },
+        ],
+      },
+      { origin: "SFO", destination: "LAX", date: "2026-09-28" },
+    );
+    expect(normalized.ok).toBe(true);
+    if (!normalized.ok) return;
+    expect(normalized.flights[0]?.stops).toBe(1);
+    expect(normalized.flights[0]?.segments).toEqual([]);
+    expect(normalized.flights[0]?.destination).toBe("LAX");
+    const published = publishableFares([
+      classifyBookingPage(
+        {
+          url: SELECT_URL,
+          html: resultsPage({
+            journeys: [
+              {
+                flights: [
+                  {
+                    stopCount: 1,
+                    standardFare: 80,
+                    departureStation: "SFO",
+                    arrivalStation: "LAX",
+                    departureDate: "2026-09-28T06:04:00",
+                    arrivalDate: "2026-09-28T14:39:00",
+                    legs: [leg("1230", "SFO", "DEN", "2026-09-28T06:04:00", "2026-09-28T09:00:00")],
+                  },
+                ],
+              },
+            ],
+          }),
+          httpStatus: 200,
+        },
+        { origin: "SFO", destination: "LAX", date: "2026-09-28" },
+        "2026-09-27T19:00:00.000Z",
+      ),
+    ]);
+    expect(published[0]?.completeness).toBe("legacy_partial_itinerary");
+    expect(published[0]?.segments).toEqual([]);
+    expect(mergeBrowserNonstops({ flights: [] }, [
+      classifyBookingPage(
+        {
+          url: SELECT_URL,
+          html: resultsPage({
+            journeys: [
+              {
+                flights: [
+                  {
+                    stopCount: 1,
+                    departureStation: "SFO",
+                    arrivalStation: "LAX",
+                    departureDate: "2026-09-28T06:04:00",
+                    arrivalDate: "2026-09-28T14:39:00",
+                    legs: [leg("1230", "SFO", "DEN", "2026-09-28T06:04:00", "2026-09-28T09:00:00")],
+                  },
+                ],
+              },
+            ],
+          }),
+          httpStatus: 200,
+        },
+        { origin: "SFO", destination: "LAX", date: "2026-09-28" },
+        "2026-09-27T19:00:00.000Z",
+      ),
+    ]).flights).toEqual([]);
   });
 
   it("reads seats only when FlightData has them", () => {
@@ -207,6 +306,20 @@ describe("browser observations stay beside booking evidence", () => {
     const fares = publishableFares([unavailable]);
     expect(fares.some((fare) => fare.stops !== 0)).toBe(true);
     expect(fares.some((fare) => fare.goWild)).toBe(false);
+    const connection = fares.find((fare) => fare.stops === 1);
+    expect(connection?.segments?.map((segment) => segment.flightNumber)).toEqual(["1230", "200"]);
+    expect(connection?.destination).toBe("LAX");
+    expect(connection?.segments?.[0]?.destination).toBe("DEN");
+    expect(connection?.completeness).toBe("complete");
+    expect(connection?.itineraryId).toContain("SFO>DEN>LAX");
+    expect(connection?.itineraryId).toContain("1230+200");
+    const onlyConnection = mergeBrowserNonstops({ flights: [] }, [
+      {
+        ...unavailable,
+        flights: unavailable.flights.filter((flight) => flight.stops !== 0),
+      },
+    ]);
+    expect(onlyConnection.flights).toEqual([]);
     const network = buildNetwork(
       { ...merged, browserFares: fares, routes: [{ origin: "OAK", destination: "BUR", provenance: "listed" }] },
       TODAY,

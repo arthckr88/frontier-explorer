@@ -229,10 +229,34 @@ function FlightCard({ flight }: { flight: StoredFlight }) {
   const stops = flight.stops === 0 ? "Nonstop" : `${flight.stops} stop${flight.stops === 1 ? "" : "s"}`;
   const priced = pricedFares(flight);
   const checked = formatChecked(flight.checkedAt);
+  const segments = flight.segments ?? [];
+  const via = segments.slice(0, -1).map((segment) => segment.destination);
+  if (flight.legacyPartial) {
+    return (
+      <article className="rounded-md border border-dashed border-[#24302a] bg-[#12161b] p-3" data-date={flight.date}>
+        <p className="text-base font-medium">
+          {flight.origin} → {flight.destination}
+        </p>
+        <p className="mt-1 text-sm text-[#8b9790]">Legacy partial fare observation. The full path was not retained.</p>
+        {priced.length === 0 ? (
+          <p className="mt-3 text-sm text-[#8b9790]">Fare not checked for this date.</p>
+        ) : (
+          <>
+            <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-3">
+              {priced.map((item) => (
+                <Fare key={item.label} label={item.label} value={fareText(item.fare)} />
+              ))}
+            </dl>
+            <p className="mt-3 text-sm text-[#8b9790]">{checked ? `Fares checked ${checked}. ` : null}Source: Frontier.</p>
+          </>
+        )}
+      </article>
+    );
+  }
   return (
     <article className="rounded-md border border-[#24302a] bg-[#12161b] p-3" data-flight={flight.flightNumber} data-date={flight.date}>
       <div className="mb-2 flex flex-wrap items-center gap-2 text-sm">
-        <span className="rounded bg-[#181e24] px-2 py-1 font-medium">F9 {flight.flightNumber}</span>
+        <span className="rounded bg-[#181e24] px-2 py-1 font-medium">{segments.length > 1 ? segments.map((segment) => `F9 ${segment.flightNumber}`).join(" + ") : `F9 ${flight.flightNumber}`}</span>
         <span className="rounded bg-[#181e24] px-2 py-1">{stops}</span>
         <span className="text-[#8b9790]">{formatElapsed(flight.durationMinutes)}</span>
       </div>
@@ -243,12 +267,15 @@ function FlightCard({ flight }: { flight: StoredFlight }) {
           </>
         ) : (
           <>
-            Departs {flight.origin} {clock(flight.departureLocal)}. Arrives {flight.destination} {clock(flight.arrivalLocal)}.
+            {flight.origin} → {flight.destination}, {flight.stops} stop{flight.stops === 1 ? "" : "s"}
+            {via.length ? ` via ${via.join(", ")}` : ""}, {segments.map((segment) => `F9 ${segment.flightNumber}`).join(" + ")}
           </>
         )}
       </div>
-      {flight.stops > 0 ? (
-        <p className="mt-1 text-sm text-[#8b9790]">F9 {flight.flightNumber} is the first flight. The connecting flight was not included with this fare.</p>
+      {segments.length > 1 ? (
+        <p className="mt-1 text-sm text-[#8b9790]">
+          {segments.map((segment) => `F9 ${segment.flightNumber} ${clock(segment.departureLocal)}–${clock(segment.arrivalLocal)}`).join(" · ")}
+        </p>
       ) : null}
       {priced.length === 0 ? (
         <p className="mt-3 text-sm text-[#8b9790]">Fare not checked for this date.</p>

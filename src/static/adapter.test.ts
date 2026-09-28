@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { displayFare, fareText, staticFareLookup, staticNetworkAdapter } from "@/static/adapter";
+import { displayFare, fareText, legacyPartialGoWild, staticFareLookup, staticNetworkAdapter, storedGoWild } from "@/static/adapter";
 import { loadCatalog } from "@/static/load";
 import type { BrowserFareRecord } from "@/site/network";
 import type { FareQuery, StaticCatalog } from "@/static/types";
@@ -165,8 +165,61 @@ describe("static network", () => {
     const lookup = staticFareLookup(synthetic, { ...open, destination: "BUR" });
     expect(lookup.flights[0]?.stops).toBe(1);
     expect(lookup.flights[0]?.goWild).toBeNull();
+    expect(lookup.flights[0]?.legacyPartial).toBe(true);
+    expect(lookup.flights[0]?.segments).toEqual([]);
+  });
+
+  it("collapses duplicate itineraries and keeps a partial connection out of the complete list", () => {
+    const complete = {
+      ...openFare("2046", "2026-09-28T10:17:00", "2026-09-28T11:58:00", 0),
+      goWild: { available: true, total: 15.41, display: 16, currency: "USD" },
+      retrievedAt: "2026-09-27T01:00:00.000Z",
+    } satisfies BrowserFareRecord;
+    const newer = { ...complete, retrievedAt: "2026-09-27T02:00:00.000Z", goWild: { available: true, total: 20, display: 20, currency: "USD" } };
+    const partial = {
+      ...openFare("3019", "2026-09-28T06:30:00", "2026-09-28T10:37:00", 1),
+      destination: "BUR",
+      goWild: { available: true, total: 40, display: 40, currency: "USD" },
+    } satisfies BrowserFareRecord;
+    const synthetic = {
+      network: catalog.network,
+      fares: [complete, newer, partial],
+      changes: { windowDays: 90, events: [] },
+      priceHistory: [],
+      airports: catalog.airports,
+    };
+    const rows = storedGoWild(synthetic);
+    expect(rows).toHaveLength(1);
+    expect(rows[0]?.goWild.total).toBe(20);
+    expect(rows[0]?.stops).toBe(0);
+    expect(rows[0]?.segments).toHaveLength(1);
+    const legacy = legacyPartialGoWild(synthetic);
+    expect(legacy).toHaveLength(1);
+    expect(legacy[0]?.legacy).toBe(true);
+    expect(legacy[0]?.segments).toEqual([]);
+    expect(rows.some((row) => row.itineraryId === legacy[0]?.itineraryId)).toBe(false);
   });
 });
+
+function openFare(flightNumber: string, departureLocal: string, arrivalLocal: string, stops: number): BrowserFareRecord {
+  return {
+    origin: "OAK",
+    destination: "LAS",
+    date: "2026-09-28",
+    carrier: "F9",
+    flightNumber,
+    departureLocal,
+    arrivalLocal,
+    durationMinutes: 60,
+    stops,
+    standard: { available: true, total: 10, display: 10, currency: "USD" },
+    discountDen: null,
+    goWild: null,
+    seatsRemaining: null,
+    retrievedAt: "2026-09-27T00:00:00.000Z",
+    source: "frontier_browser",
+  };
+}
 
 describe("consumer copy", () => {
   it("keeps diagnostic phrases out of the consumer screens", () => {

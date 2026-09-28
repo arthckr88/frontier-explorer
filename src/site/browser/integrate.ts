@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { normalizeFareItinerary } from "@/site/itinerary";
 import type { BrowserFareRecord, ScheduleInput } from "@/site/network";
 import { localToUtc, SCHEDULE_ZONE } from "@/site/time";
 import { sanitizeBrowserResult } from "@/site/browser/sanitize";
@@ -15,23 +16,28 @@ export function publishableFares(results: BrowserResult[]): BrowserFareRecord[] 
     const clean = sanitizeBrowserResult(result, "USD");
     if (clean.status !== "ok") continue;
     for (const flight of clean.flights) {
-      fares.push({
-        origin: flight.origin,
-        destination: flight.destination,
-        date: clean.query.date,
-        carrier: flight.carrier,
-        flightNumber: flight.flightNumber,
-        departureLocal: flight.departureLocal,
-        arrivalLocal: flight.arrivalLocal,
-        durationMinutes: flight.durationMinutes,
-        stops: flight.stops,
-        standard: flight.fares.standard,
-        discountDen: flight.fares.discountDen,
-        goWild: flight.fares.goWild,
-        seatsRemaining: flight.seatsRemaining,
-        retrievedAt: clean.retrievedAt,
-        source: "frontier_browser",
-      });
+      fares.push(
+        normalizeFareItinerary({
+          queryOrigin: clean.query.origin,
+          queryDestination: clean.query.destination,
+          origin: flight.origin,
+          destination: flight.destination,
+          date: clean.query.date,
+          carrier: flight.carrier,
+          flightNumber: flight.flightNumber,
+          departureLocal: flight.departureLocal,
+          arrivalLocal: flight.arrivalLocal,
+          durationMinutes: flight.durationMinutes,
+          stops: flight.stops,
+          segments: flight.segments,
+          standard: flight.fares.standard,
+          discountDen: flight.fares.discountDen,
+          goWild: flight.fares.goWild,
+          seatsRemaining: flight.seatsRemaining,
+          retrievedAt: clean.retrievedAt,
+          source: "frontier_browser",
+        }),
+      );
     }
   }
   return fares.sort(compareFares);
@@ -76,7 +82,7 @@ export function mergeBrowserNonstops(schedule: ScheduleInput, results: BrowserRe
 export function readBrowserFareFile(text: string): BrowserFareRecord[] {
   const parsed = JSON.parse(text) as BrowserFareFile;
   if (parsed.source !== "frontier_browser" || !Array.isArray(parsed.fares)) return [];
-  return parsed.fares;
+  return parsed.fares.map((fare) => normalizeFareItinerary(fare));
 }
 
 export function upsertFareResults(existing: BrowserFareRecord[], result: BrowserResult): BrowserFareRecord[] {

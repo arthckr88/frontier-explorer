@@ -2,6 +2,7 @@ import { greatCircleArc, reachable } from "@/lib/graph/arcs";
 import { searchItineraries, type FlightSegment } from "@/lib/graph/search";
 import type { UntimedPath } from "@/lib/graph/untimed";
 import { isRedEyeSegment } from "@/lib/time/redeye";
+import { normalizeFareItinerary, viaAirports, type FareSegment } from "@/site/itinerary";
 import type { BrowserFareRecord } from "@/site/network";
 import type { MapAirport, MapRoute } from "@/server/queries/read";
 import type {
@@ -182,7 +183,7 @@ export function staticChrome(catalog: StaticCatalog): { status: string; links: C
   if (catalog.changes.events.length > 0) links.push({ href: "/changes", label: "Changes" });
   if (catalog.historical?.frequency) links.push({ href: "/frequency", label: "Frequency" });
   if (catalog.historical?.popularity) links.push({ href: "/popularity", label: "Popularity" });
-  if (storedGoWild(catalog).length > 0) links.push({ href: "/gowild", label: "GoWild" });
+  if (storedGoWild(catalog).length > 0 || legacyPartialGoWild(catalog).length > 0) links.push({ href: "/gowild", label: "GoWild" });
   links.push({ href: "/system/data", label: "Data" }, { href: "/settings", label: "Settings" });
   return {
     status: through ? `Schedule through ${formatDay(through)}.` : "No schedule yet.",
@@ -353,6 +354,8 @@ function toStoredFlight(
     arrivalLocal: flight.arrivalLocal,
     durationMinutes: duration,
     stops: 0,
+    segments: fare && (fare.stops ?? 0) === 0 ? normalizeFareItinerary(fare).segments : [],
+    legacyPartial: false,
     standard: displayFare(fare?.standard ?? null),
     discountDen: displayFare(fare?.discountDen ?? null),
     goWild: displayFare(fare?.goWild ?? null),
@@ -362,21 +365,24 @@ function toStoredFlight(
 }
 
 function fareToStoredFlight(fare: BrowserFareRecord, zones: Map<string, AirportRecord>): StoredFlight {
+  const itinerary = normalizeFareItinerary(fare);
   return {
-    id: `${fare.date}|${fare.flightNumber}|${fare.departureLocal}|${fare.arrivalLocal}|${fare.stops ?? 0}`,
-    origin: fare.origin,
-    destination: fare.destination,
-    date: fare.date,
-    flightNumber: fare.flightNumber,
-    departureLocal: fare.departureLocal,
-    arrivalLocal: fare.arrivalLocal,
-    durationMinutes: fare.durationMinutes ?? 0,
-    stops: fare.stops ?? 0,
-    standard: displayFare(fare.standard),
-    discountDen: displayFare(fare.discountDen),
-    goWild: displayFare(fare.goWild),
-    checkedAt: fare.retrievedAt,
-    redEye: redEye(fare.departureLocal, fare.arrivalLocal, zones.get(fare.origin)?.timezone, zones.get(fare.destination)?.timezone),
+    id: itinerary.itineraryId,
+    origin: itinerary.origin,
+    destination: itinerary.destination,
+    date: itinerary.date,
+    flightNumber: itinerary.flightNumber,
+    departureLocal: itinerary.departureLocal,
+    arrivalLocal: itinerary.arrivalLocal,
+    durationMinutes: itinerary.durationMinutes ?? 0,
+    stops: itinerary.stops ?? 0,
+    segments: itinerary.segments,
+    legacyPartial: itinerary.completeness === "legacy_partial_itinerary",
+    standard: displayFare(itinerary.standard),
+    discountDen: displayFare(itinerary.discountDen),
+    goWild: displayFare(itinerary.goWild),
+    checkedAt: itinerary.retrievedAt,
+    redEye: redEye(itinerary.departureLocal, itinerary.arrivalLocal, zones.get(itinerary.origin)?.timezone, zones.get(itinerary.destination)?.timezone),
   };
 }
 
@@ -825,33 +831,51 @@ export type GoWildFare = {
   arrivalLocal: string;
   stops: number;
   durationMinutes: number | null;
+  segments: FareSegment[];
+  via: string[];
+  itineraryId: string;
+  legacy: boolean;
   goWild: DisplayFare;
   checkedAt: string;
 };
 
-export function storedGoWild(catalog: StaticCatalog): GoWildFare[] {
+function goWildRows(catalog: StaticCatalog, legacy: boolean): GoWildFare[] {
   const latest = new Map<string, GoWildFare>();
   for (const fare of catalog.fares) {
     const goWild = displayFare(fare.goWild);
     if (!goWild || goWild.total < 0) continue;
     if (!fare.origin || !fare.destination || !fare.date || !fare.flightNumber || !fare.departureLocal || !fare.arrivalLocal) continue;
+    const itinerary = normalizeFareItinerary(fare);
+    const rowLegacy = itinerary.completeness === "legacy_partial_itinerary";
+    if (rowLegacy !== legacy) continue;
     const row: GoWildFare = {
-      origin: fare.origin,
-      destination: fare.destination,
-      date: fare.date,
-      flightNumber: fare.flightNumber,
-      departureLocal: fare.departureLocal,
-      arrivalLocal: fare.arrivalLocal,
-      stops: fare.stops ?? 0,
-      durationMinutes: fare.durationMinutes,
+      origin: itinerary.origin,
+      destination: itinerary.destination,
+      date: itinerary.date,
+      flightNumber: itinerary.flightNumber,
+      departureLocal: itinerary.departureLocal,
+      arrivalLocal: itinerary.arrivalLocal,
+      stops: itinerary.stops ?? 0,
+      durationMinutes: itinerary.durationMinutes,
+      segments: itinerary.segments,
+      via: viaAirports(itinerary.segments),
+      itineraryId: itinerary.itineraryId,
+      legacy: rowLegacy,
       goWild,
-      checkedAt: fare.retrievedAt,
+      checkedAt: itinerary.retrievedAt,
     };
-    const key = `${row.origin}|${row.destination}|${row.date}|${row.stops}|${row.flightNumber}|${row.departureLocal}|${row.arrivalLocal}`;
-    const current = latest.get(key);
-    if (!current || row.checkedAt > current.checkedAt) latest.set(key, row);
+    const current = latest.get(row.itineraryId);
+    if (!current || row.checkedAt > current.checkedAt) latest.set(row.itineraryId, row);
   }
   return [...latest.values()].sort((a, b) => a.departureLocal.localeCompare(b.departureLocal) || a.arrivalLocal.localeCompare(b.arrivalLocal) || a.flightNumber.localeCompare(b.flightNumber));
+}
+
+export function storedGoWild(catalog: StaticCatalog): GoWildFare[] {
+  return goWildRows(catalog, false);
+}
+
+export function legacyPartialGoWild(catalog: StaticCatalog): GoWildFare[] {
+  return goWildRows(catalog, true);
 }
 
 export function staticDiagnostics(catalog: StaticCatalog) {

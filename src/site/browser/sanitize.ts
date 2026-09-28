@@ -28,6 +28,14 @@ export function sanitizeFlight(flight: BrowserFlight, currency: string | null): 
     arrivalLocal: flight.arrivalLocal,
     durationMinutes: flight.durationMinutes,
     stops: flight.stops,
+    segments: (flight.segments ?? []).map((segment) => ({
+      carrier: segment.carrier,
+      flightNumber: segment.flightNumber,
+      origin: airport(segment.origin),
+      destination: airport(segment.destination),
+      departureLocal: segment.departureLocal,
+      arrivalLocal: segment.arrivalLocal,
+    })),
     fares: {
       standard: withCurrency(flight.fares.standard, currency),
       discountDen: withCurrency(flight.fares.discountDen, currency),

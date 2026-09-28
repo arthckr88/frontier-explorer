@@ -40,11 +40,25 @@ export function DataView({ catalog }: { catalog: StaticCatalog }) {
         <Fact label="Connection fares" value={String(connectionFares)} />
         <Fact label="Price history" value={String(data.priceHistory)} />
       </Layer>
-      <Layer title="Historical DOT/BTS" detail={historical?.popularity.note ?? "Historical metrics are not loaded."}>
+      <Layer
+        title="Historical DOT/BTS"
+        detail={
+          historical?.popularity.passengersStored
+            ? `DOT/BTS passenger totals are loaded. ${historical.popularity.periodStart} through ${historical.popularity.periodEnd}. ${historical.popularity.routes.length} directed routes. ${historical.popularity.note}`
+            : (historical?.popularity.note ?? "Historical metrics are not loaded.")
+        }
+      >
         <Fact label="Historical frequency period" value={historical?.frequency.historicalPeriod ?? "—"} />
         <Fact label="Historical popularity period" value={historical?.popularity.period ?? "—"} />
-        <Fact label="Historical city pairs" value={String(historical?.popularity.pairs.length ?? 0)} />
-        <Fact label="Passenger totals stored" value={historical?.popularity.passengersStored ? "yes" : "no"} />
+        <Fact label="Passenger routes" value={String(historical?.popularity.routes.length ?? 0)} />
+        <Fact
+          label="Passenger totals"
+          value={
+            historical?.popularity.passengersStored
+              ? `DOT/BTS passenger totals are loaded. ${historical.popularity.periodStart} through ${historical.popularity.periodEnd}. ${historical.popularity.routes.length} directed routes.`
+              : "not loaded"
+          }
+        />
       </Layer>
       <Layer title="GitHub research" detail="Schema only. GWsearch is CC BY-NC-ND and is not copied. FrontierWildWatch is not a runtime after HTTP 406. No tokens. No GoWild-then-Standard fallback.">
         <Fact label="Runtime dependence" value="none" />

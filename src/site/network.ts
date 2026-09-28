@@ -13,6 +13,7 @@ import {
   type RouteSummary,
   type Watch,
 } from "@/site/view";
+import type { FareSegment, ItineraryCompleteness } from "@/site/itinerary";
 
 const CHANGE_WINDOW_DAYS = 90;
 const CHANGE_CAP = 80;
@@ -109,15 +110,20 @@ export type ScheduleInput = {
 };
 
 export type BrowserFareRecord = {
+  queryOrigin?: string;
+  queryDestination?: string;
   origin: string;
   destination: string;
   date: string;
+  itineraryId?: string;
   carrier: string | null;
   flightNumber: string;
   departureLocal: string;
   arrivalLocal: string;
   durationMinutes: number | null;
   stops: number | null;
+  segments?: FareSegment[];
+  completeness?: ItineraryCompleteness;
   standard: { available: boolean; total: number; display: number; currency: string | null } | null;
   discountDen: { available: boolean; total: number; display: number; currency: string | null } | null;
   goWild: { available: boolean; total: number; display: number; currency: string | null } | null;

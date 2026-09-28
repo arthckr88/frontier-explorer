@@ -26,7 +26,7 @@ npx serve dist
 
 `npm run frontier:verify-network -- --date 2026-10-01 --limit 1 --official-only --unchecked-only` checks official directs only, one query at a time, and resumes at the next unchecked route. It is not a network-wide crawl.
 
-Search on the Pages site does not run either command. Current frequency stays “Insufficient schedule coverage” unless dated coverage is broad enough. One captured date is not a weekly frequency. Historical DOT/BTS frequency and T-100 city pairs are labeled with their period. Passenger totals are not in the stored extract, and historical pairs do not create a current route. Source rules are in `docs/source-contract.md`. GitHub repos are schema research only: `docs/github-source-integration.md`.
+Search on the Pages site does not run either command. Current frequency stays “Insufficient schedule coverage” unless dated coverage is broad enough. One captured date is not a weekly frequency. Historical DOT/BTS frequency and T-100 city pairs are labeled with their period. Passenger totals for July 2025 through June 2026 are loaded from US DOT T-100 Segment, and historical pairs do not create a current route. Source rules are in `docs/source-contract.md`. GitHub repos are schema research only: `docs/github-source-integration.md`.
 
 `npm run dev` starts the Next.js app. That app is not the Pages site. Pages build fails if credential markers appear in the output.
 
