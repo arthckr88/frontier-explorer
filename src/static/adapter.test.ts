@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { displayFare, staticFareLookup, staticNetworkAdapter } from "@/static/adapter";
+import { displayFare, fareText, staticFareLookup, staticNetworkAdapter } from "@/static/adapter";
 import { loadCatalog } from "@/static/load";
 import type { BrowserFareRecord } from "@/site/network";
 import type { FareQuery, StaticCatalog } from "@/static/types";
@@ -74,7 +74,7 @@ describe("static fare lookup", () => {
   it("does not treat a missing date as an empty or unchecked explanation", () => {
     const result = staticFareLookup(catalog, { ...open, date: "2026-12-01" });
     expect(result.flights).toEqual([]);
-    expect(result.message).toBe("No stored Frontier schedule for this date.");
+    expect(result.message).toBe("No Frontier schedule for this date.");
   });
 
   it("does not price GoWild -1", () => {
@@ -90,6 +90,45 @@ describe("static network", () => {
     expect(catalog.network.observations).toHaveLength(410);
     expect(catalog.network.observations.some((flight) => flight.date > "2026-10-25")).toBe(false);
     expect(catalog.network.observations.some((flight) => flight.date === "2026-10-25")).toBe(true);
+    expect(catalog.fares).toHaveLength(82);
+    expect(catalog.priceHistory).toHaveLength(197);
+  });
+
+  it("orders Bay Area to Los Angeles nonstops ahead of connections", () => {
+    const network = staticNetworkAdapter(catalog);
+    expect(network.home.bayLa.map((path) => `${path.airports.join("-")} ${path.stops}`)).toEqual([
+      "SFO-ONT 0",
+      "SFO-LAX 0",
+      "SFO-SNA 0",
+      "SFO-SAN 0",
+      "OAK-LAS-LAX 1",
+      "SFO-LAS-LAX 1",
+      "OAK-LAS-BUR 1",
+    ]);
+    const stops = network.home.bayLa.map((path) => path.stops);
+    expect(stops).toEqual([...stops].sort((left, right) => left - right));
+    for (const path of network.home.bayLa.filter((item) => item.stops === 0)) {
+      expect(["OAK", "SFO", "SJC"]).toContain(path.airports[0]);
+      expect(["LAX", "BUR", "SNA", "ONT", "SAN"]).toContain(path.airports.at(-1));
+    }
+    expect(network.home.airports.map((airport) => airport.iata).slice(0, 5)).toEqual(["OAK", "SFO", "LAS", "LAX", "BUR"]);
+  });
+
+  it("keeps home changes in traveler language", () => {
+    const network = staticNetworkAdapter(catalog);
+    expect(network.home.changes.length).toBeGreaterThan(0);
+    for (const change of network.home.changes) {
+      expect(change.summary).toMatch(/^(New nonstop |Service resumes |Schedule extended through |Additional daily flight )/);
+      expect(change.summary.toLowerCase()).not.toMatch(/stored|observations|\bdisplay\b|more departures/);
+    }
+    expect(network.home.changes.some((change) => change.summary === "New nonstop SAN → LAS")).toBe(true);
+  });
+
+  it("shows the Frontier price before the exact cents", () => {
+    expect(fareText({ total: 50.98, display: 51, currency: "USD" })).toBe("$51 · $50.98 exact");
+    expect(fareText({ total: 49.98, display: 50, currency: "USD" })).toBe("$50 · $49.98 exact");
+    expect(fareText({ total: 15.41, display: 16, currency: "USD" })).toBe("$16 · $15.41 exact");
+    expect(fareText(null)).toBe("");
   });
 
   it("does not turn a connection fare or a listed market into a nonstop arc", () => {
@@ -143,7 +182,22 @@ describe("consumer copy", () => {
       "src/components/shell.tsx",
       "src/components/explorer-map.tsx",
     ];
-    const forbidden = [/not checked yet/i, /booking observations/i, /weekly frequency/i, /\bunchecked\b/i, /\bcoverage\b/i, /\bunknown\b/i];
+    const forbidden = [
+      /not checked yet/i,
+      /booking observations/i,
+      /weekly frequency/i,
+      /\bunchecked\b/i,
+      /\bcoverage\b/i,
+      /\bunknown\b/i,
+      /\bstored\b/i,
+      /\bobservations\b/i,
+      /\bdisplay\b/i,
+      /checked dates/i,
+      /blocked checks/i,
+      /watched corridors/i,
+      /more departures stored/i,
+      /nothing stored/i,
+    ];
     for (const file of files) {
       const text = readFileSync(file, "utf8");
       for (const pattern of forbidden) expect(text, file).not.toMatch(pattern);

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { clock, fareText, formatChecked, formatElapsed, staticFareLookup } from "@/static/adapter";
+import { calendarToday, clock, fareText, formatChecked, formatElapsed, staticFareLookup } from "@/static/adapter";
 import type { FareQuery, StaticCatalog, StoredFlight } from "@/static/types";
 
 const EMPTY: FareQuery = {
@@ -27,7 +27,7 @@ export function SearchPanel({
 }) {
   const [from, setFrom] = useState(initial?.origin ?? "");
   const [to, setTo] = useState(initial?.destination ?? "");
-  const [date, setDate] = useState(initial?.date ?? "");
+  const [date, setDate] = useState(initial?.date || calendarToday());
   const [maxStops, setMaxStops] = useState(initial?.maxStops ?? 0);
   const [maxDuration, setMaxDuration] = useState(initial?.maxDuration ?? null);
   const [depart, setDepart] = useState<FareQuery["depart"]>(initial?.depart ?? "");
@@ -52,13 +52,13 @@ export function SearchPanel({
   }
 
   return (
-    <section className="mx-auto max-w-3xl space-y-4">
+    <section className="mx-auto max-w-3xl space-y-3 sm:space-y-4">
       <header className="space-y-1">
         <h1 className="text-2xl font-medium">Search Frontier</h1>
-        <p className="text-sm text-[#8b9790]">One origin, one destination, one date. Results come from the stored Frontier schedule and fares.</p>
+        <p className="text-sm text-[#8b9790]">One origin, one destination, one date.</p>
       </header>
-      <form className="grid gap-3" onSubmit={submit}>
-        <div className="grid gap-3 sm:grid-cols-3">
+      <form className="grid gap-2 sm:gap-3" onSubmit={submit}>
+        <div className="grid gap-2 sm:grid-cols-3 sm:gap-3">
           <Field label="From">
             <input
               name="from"
@@ -107,7 +107,7 @@ export function SearchPanel({
             />
           </Field>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-2 sm:grid-cols-2 sm:gap-3 lg:grid-cols-3">
           <Field label="Stops">
             <select aria-label="Stops" value={maxStops} onChange={(event) => setMaxStops(Number(event.target.value))} className={selectClass}>
               <option value={0}>Nonstop only</option>
@@ -180,6 +180,7 @@ function ResultList({ catalog, query }: { catalog: StaticCatalog; query: FareQue
 
 function FlightCard({ flight }: { flight: StoredFlight }) {
   const stops = flight.stops === 0 ? "Nonstop" : `${flight.stops} stop${flight.stops === 1 ? "" : "s"}`;
+  const priced = pricedFares(flight);
   const checked = formatChecked(flight.checkedAt);
   return (
     <article className="rounded-md border border-[#24302a] bg-[#12161b] p-3" data-flight={flight.flightNumber} data-date={flight.date}>
@@ -191,23 +192,41 @@ function FlightCard({ flight }: { flight: StoredFlight }) {
       <div className="text-base font-medium">
         {flight.origin} {clock(flight.departureLocal)} → {flight.destination} {clock(flight.arrivalLocal)}
       </div>
-      <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-3">
-        <Fare label="Standard" value={fareText(flight.standard)} />
-        <Fare label="Discount Den" value={fareText(flight.discountDen)} />
-        <Fare label="GoWild" value={fareText(flight.goWild)} />
-      </dl>
-      <p className="mt-3 text-sm text-[#8b9790]">
-        {checked ? `Fares checked ${checked}.` : "Fare not stored for this date."} Source: Frontier.
-      </p>
+      {priced.length === 0 ? (
+        <p className="mt-3 text-sm text-[#8b9790]">Fare not checked for this date.</p>
+      ) : (
+        <>
+          <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-3">
+            {priced.map((item) => (
+              <Fare key={item.label} label={item.label} value={fareText(item.fare)} />
+            ))}
+          </dl>
+          <p className="mt-3 text-sm text-[#8b9790]">
+            {checked ? `Fares checked ${checked}. ` : null}Source: Frontier.
+          </p>
+        </>
+      )}
     </article>
   );
 }
 
+function pricedFares(flight: StoredFlight) {
+  return [
+    flight.standard ? { label: "Standard", fare: flight.standard } : null,
+    flight.discountDen ? { label: "Discount Den", fare: flight.discountDen } : null,
+    flight.goWild ? { label: "GoWild", fare: flight.goWild } : null,
+  ].filter((item): item is { label: string; fare: NonNullable<StoredFlight["standard"]> } => Boolean(item));
+}
+
 function Fare({ label, value }: { label: string; value: string }) {
+  const [frontier, exact] = value.split(" · ");
   return (
     <div className="rounded border border-[#24302a] px-2 py-2">
       <dt className="font-mono text-[10px] uppercase tracking-wide text-[#8b9790]">{label}</dt>
-      <dd className="font-mono">{value}</dd>
+      <dd className="font-mono">
+        <div>{frontier}</div>
+        {exact ? <div className="text-xs text-[#8b9790]">{exact}</div> : null}
+      </dd>
     </div>
   );
 }

@@ -11,7 +11,7 @@ export function DiscoverView({ catalog, from, stops }: { catalog: StaticCatalog;
     <section className="space-y-4">
       <header>
         <h1 className="text-2xl font-medium">Discover from {data.from}</h1>
-        <p className="max-w-2xl text-sm text-[#8b9790]">Airports you can reach on stored nonstop routes. A connection here is not drawn as its own nonstop.</p>
+        <p className="max-w-2xl text-sm text-[#8b9790]">Airports you can reach on Frontier nonstops. A connection here is not drawn as its own nonstop.</p>
       </header>
       <div className="flex flex-wrap gap-2">
         {["OAK", "SFO", "LAS"].map((code) => (
@@ -26,7 +26,7 @@ export function DiscoverView({ catalog, from, stops }: { catalog: StaticCatalog;
         ))}
       </div>
       {data.groups.every((group) => group.items.length === 0) ? (
-        <p className="text-sm text-[#8b9790]">No stored route leaves {data.from}.</p>
+        <p className="text-sm text-[#8b9790]">No route leaves {data.from}.</p>
       ) : (
         data.groups.map((group) => (
           <div key={group.stop}>

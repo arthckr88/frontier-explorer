@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Frontier Route Explorer",
-  description: "Search a stored Frontier route and date.",
+  description: "Search a Frontier route and date.",
 };
 
 export const viewport: Viewport = {

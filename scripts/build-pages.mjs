@@ -48,7 +48,7 @@ const html = `<!doctype html>
   <body>
     <div id="root"></div>
     <script type="module" src="app.js"></script>
-    <noscript>The map and search need JavaScript to read the stored Frontier schedule.</noscript>
+    <noscript>The map and search need JavaScript.</noscript>
   </body>
 </html>
 `;

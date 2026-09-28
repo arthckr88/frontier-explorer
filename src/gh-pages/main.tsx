@@ -108,7 +108,7 @@ function BrowserApp() {
   useEffect(() => {
     loadCatalogBrowser().then(setCatalog).catch(() => setFailed(true));
   }, []);
-  if (failed) return <p className="p-4 text-sm text-[#e2a84a]">The stored schedule could not be loaded.</p>;
-  if (!catalog) return <p className="p-4 text-sm text-[#8b9790]">Loading stored Frontier schedule.</p>;
+  if (failed) return <p className="p-4 text-sm text-[#e2a84a]">The schedule could not be loaded.</p>;
+  if (!catalog) return <p className="p-4 text-sm text-[#8b9790]">Loading Frontier schedule.</p>;
   return <App catalog={catalog} />;
 }

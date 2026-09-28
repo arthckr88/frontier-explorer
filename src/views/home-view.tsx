@@ -21,32 +21,35 @@ export function HomeView({
   const [query, setQuery] = useState<FareQuery | null>(initial);
   const searching = Boolean(query?.origin && query?.destination && query?.date);
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 sm:space-y-4">
       <SearchPanel catalog={catalog} initial={query} onSearch={setQuery} />
       {searching ? null : (
         <>
           <ExplorerMap tileStyle={network.tileStyle} routes={network.routes} airports={network.airports} interest={network.interest} />
           <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
             <Card title="My network" href="/discover">
-              <p className="text-sm text-[#8b9790]">OAK, SFO, LAS, LAX, and BUR, plus the other airports on stored nonstops.</p>
-              <div className="mt-2 flex flex-wrap gap-2 font-mono text-xs">
-                {network.home.airports.map((airport) => (
-                  <AppLink key={airport.iata} href={`/airports/${airport.iata}`} className="rounded border border-[#24302a] px-2 py-1 hover:border-[#3dbe7a]">
-                    {airport.iata}
-                  </AppLink>
-                ))}
-              </div>
+              {network.home.airports.length === 0 ? (
+                <Empty>No airports on this network.</Empty>
+              ) : (
+                <div className="flex flex-wrap gap-2 font-mono text-xs">
+                  {network.home.airports.map((airport) => (
+                    <AppLink key={airport.iata} href={`/airports/${airport.iata}`} className="rounded border border-[#24302a] px-2 py-1 hover:border-[#3dbe7a]">
+                      {airport.iata}
+                    </AppLink>
+                  ))}
+                </div>
+              )}
             </Card>
-            <Card title="Bay Area → Los Angeles" href="/planner?module=bay-la">
-              <PathList paths={network.home.bayLa} empty="No stored path from the Bay Area to Los Angeles." />
+            <Card title="Bay Area → Los Angeles" href="/planner?module=bay-la" id="bay-area-los-angeles">
+              <PathList paths={network.home.bayLa} empty="No path from the Bay Area to Los Angeles." />
             </Card>
             <Card title="Bay Area → New York" href="/planner?module=bay-ny">
-              <PathList paths={network.home.bayNy} empty="No stored path from the Bay Area to New York." />
+              <PathList paths={network.home.bayNy} empty="No path from the Bay Area to New York." />
             </Card>
             <Card title="Florida" href="/airports/MCO">
-              {network.home.floridaAirports.length === 0 ? (
-                <Empty>No stored Florida airport on this network.</Empty>
-              ) : (
+              {network.home.florida.length > 0 ? (
+                <PathList paths={network.home.florida} empty="" />
+              ) : network.home.floridaAirports.length > 0 ? (
                 <div className="flex flex-wrap gap-2 font-mono text-sm">
                   {network.home.floridaAirports.map((airport) => (
                     <AppLink key={airport.iata} href={`/airports/${airport.iata}`}>
@@ -54,8 +57,9 @@ export function HomeView({
                     </AppLink>
                   ))}
                 </div>
+              ) : (
+                <Empty>No path into Florida.</Empty>
               )}
-              <PathList paths={network.home.florida} empty="No stored path into Florida." />
             </Card>
             {network.home.changes.length > 0 ? (
               <Card title="New and changing" href="/changes">
@@ -68,7 +72,7 @@ export function HomeView({
             ) : null}
           </section>
           <p className="font-mono text-[11px] text-[#8b9790]">
-            {network.home.scheduleThrough ? `Schedule stored through ${formatDay(network.home.scheduleThrough)}.` : "No schedule is stored."}{" "}
+            {network.home.scheduleThrough ? `Schedule through ${formatDay(network.home.scheduleThrough)}.` : "No schedule yet."}{" "}
             A fare stays on the date it was checked.{" "}
             <AppLink href="/routes/LAS/BUR" className="text-[#e7ece8] underline">
               LAS → BUR
@@ -80,9 +84,9 @@ export function HomeView({
   );
 }
 
-function Card({ title, href, children }: { title: string; href: string; children: React.ReactNode }) {
+function Card({ title, href, id, children }: { title: string; href: string; id?: string; children: React.ReactNode }) {
   return (
-    <section className="rounded-md border border-[#24302a] bg-[#12161b] p-3">
+    <section id={id} className="rounded-md border border-[#24302a] bg-[#12161b] p-3">
       <div className="mb-2 flex items-center justify-between">
         <h2 className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#8b9790]">{title}</h2>
         <AppLink href={href} className="text-xs text-[#3dbe7a]">
@@ -104,7 +108,7 @@ function PathList({ paths, empty }: { paths: UntimedPath[]; empty: string }) {
     <ul className="space-y-1 text-sm">
       {paths.map((path) => (
         <li key={path.airports.join("-")} className="font-mono text-xs">
-          {path.airports.join(" → ")} · {path.stops} stop{path.stops === 1 ? "" : "s"}
+          {path.airports.join(" → ")} · {path.stops === 0 ? "Nonstop" : `${path.stops} stop${path.stops === 1 ? "" : "s"}`}
         </li>
       ))}
     </ul>

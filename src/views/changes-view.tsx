@@ -24,7 +24,7 @@ export function ChangesView({
     <section className="space-y-4">
       <header>
         <h1 className="text-2xl font-medium">Route changes</h1>
-        <p className="text-sm text-[#8b9790]">Stored change events. A blocked check stays blocked. An empty check is a different result.</p>
+        <p className="text-sm text-[#8b9790]">Recent changes on Frontier routes.</p>
       </header>
       <div className="flex flex-wrap gap-2 text-sm">
         {WINDOWS.map(([id, label]) => (

@@ -52,7 +52,7 @@ export function PlannerView({
       <header>
         <h1 className="text-2xl font-medium">Planner</h1>
         <p className="max-w-2xl text-sm text-[#8b9790]">
-          Timed options use stored Frontier flights only. A path without times is a chain of stored nonstops, not a guarantee for this date.
+          Timed options use Frontier flights only. A path without times is a chain of nonstops, not a guarantee for this date.
         </p>
       </header>
       <form className="grid gap-2 rounded-md border border-[#24302a] bg-[#12161b] p-3 md:grid-cols-2" onSubmit={submit}>
@@ -108,9 +108,9 @@ export function PlannerView({
           ))}
         </div>
         <div>
-          <h2 className="mb-2 font-mono text-[11px] uppercase tracking-[0.16em] text-[#8b9790]">Stored paths</h2>
-          <p className="mb-2 text-xs text-[#8b9790]">These are chains of stored nonstops. They are not proof a connection operates on {submitted.date}.</p>
-          {planned.untimed.length === 0 ? <p className="text-sm text-[#8b9790]">No stored path connects these airports.</p> : planned.untimed.map((path) => (
+          <h2 className="mb-2 font-mono text-[11px] uppercase tracking-[0.16em] text-[#8b9790]">Paths</h2>
+          <p className="mb-2 text-xs text-[#8b9790]">These are chains of nonstops. They are not proof a connection operates on {submitted.date}.</p>
+          {planned.untimed.length === 0 ? <p className="text-sm text-[#8b9790]">No path connects these airports.</p> : planned.untimed.map((path) => (
             <div key={path.airports.join("-")} className="mb-2 font-mono text-xs">{path.airports.join(" → ")}</div>
           ))}
         </div>

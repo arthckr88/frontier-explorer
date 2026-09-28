@@ -4,7 +4,7 @@ import type { StaticCatalog } from "@/static/types";
 
 export function AirportView({ catalog, iata }: { catalog: StaticCatalog; iata: string }) {
   const data = staticAirportDetail(catalog, iata);
-  if (!data) return <p className="text-sm text-[#8b9790]">That airport is not in the stored network.</p>;
+  if (!data) return <p className="text-sm text-[#8b9790]">That airport is not on this network.</p>;
   return (
     <article className="mx-auto max-w-3xl space-y-4">
       <header>
@@ -16,7 +16,7 @@ export function AirportView({ catalog, iata }: { catalog: StaticCatalog; iata: s
       </header>
       <dl className="grid grid-cols-2 gap-3 text-sm">
         <div className="rounded border border-[#24302a] p-2">
-          <dt className="text-[#8b9790]">Stored destinations</dt>
+          <dt className="text-[#8b9790]">Nonstop destinations</dt>
           <dd className="font-mono text-xl">{data.outbound.length}</dd>
         </div>
         <div className="rounded border border-[#24302a] p-2">
@@ -27,7 +27,7 @@ export function AirportView({ catalog, iata }: { catalog: StaticCatalog; iata: s
         </div>
       </dl>
       {data.outbound.length === 0 ? (
-        <p className="text-sm text-[#8b9790]">No stored Frontier departures from this airport.</p>
+        <p className="text-sm text-[#8b9790]">No Frontier departures from this airport.</p>
       ) : (
         <ul className="divide-y divide-[#24302a] border-y border-[#24302a]">
           {data.outbound.map((route) => (

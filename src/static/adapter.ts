@@ -93,10 +93,8 @@ export function staticNetworkAdapter(catalog: StaticCatalog): NetworkModel {
     .filter((airport): airport is MapAirport => Boolean(airport));
   const graph = edges.map((edge) => ({ origin: edge.origin, destination: edge.destination, status: "nonstop", frequency: null }));
   const scheduleThrough = catalog.network.observations.reduce((max, flight) => (flight.date > max ? flight.date : max), "");
-  const consumerChanges = staticChanges(catalog, null, "all")
-    .filter((change) => change.consumer)
-    .slice(0, 5)
-    .map((change) => ({ href: `/routes/${change.origin}/${change.destination}`, summary: change.consumer as string }));
+  const observedAirports = new Set(routes.flatMap((route) => [route.origin, route.destination]));
+  const consumerChanges = travelerChanges(catalog);
   return {
     routes,
     airports,
@@ -104,14 +102,14 @@ export function staticNetworkAdapter(catalog: StaticCatalog): NetworkModel {
     tileStyle: TILE_STYLE,
     confirmedPairs: edges.length,
     home: {
-      airports: [...used]
+      airports: [...observedAirports]
         .map((code) => points.get(code))
         .filter((airport): airport is AirportRecord => Boolean(airport))
         .sort((a, b) => interestRank(a.iata) - interestRank(b.iata) || a.iata.localeCompare(b.iata))
         .map((airport) => ({ iata: airport.iata, city: airport.city })),
-      bayLa: untimedPaths(graph, ["OAK", "SFO"], ["LAX", "BUR"], 1).slice(0, 4),
-      bayNy: untimedPaths(graph, ["OAK", "SFO"], ["LGA", "JFK"], 2).slice(0, 4),
-      florida: untimedPaths(graph, ["OAK", "SFO", "LAS"], ["MCO", "FLL", "MIA"], 2).slice(0, 4),
+      bayLa: presentPaths(orderedPaths(catalog, graph, ["OAK", "SFO", "SJC"], ["LAX", "BUR", "SNA", "ONT", "SAN"], 2, true)),
+      bayNy: orderedPaths(catalog, graph, ["OAK", "SFO"], ["LGA", "JFK"], 2).slice(0, 4),
+      florida: orderedPaths(catalog, graph, ["OAK", "SFO", "LAS"], ["MCO", "FLL", "MIA"], 2).slice(0, 4),
       floridaAirports: ["MCO", "FLL", "MIA"]
         .map((code) => points.get(code))
         .filter((airport): airport is AirportRecord => {
@@ -155,7 +153,7 @@ export function staticChrome(catalog: StaticCatalog): { status: string; links: C
   if (storedGoWild(catalog).length > 0) links.push({ href: "/gowild", label: "GoWild" });
   links.push({ href: "/system/data", label: "Data" }, { href: "/settings", label: "Settings" });
   return {
-    status: through ? `Schedule stored through ${formatDay(through)}.` : "No schedule is stored.",
+    status: through ? `Schedule through ${formatDay(through)}.` : "No schedule yet.",
     links,
   };
 }
@@ -184,11 +182,11 @@ export function staticFareLookup(catalog: StaticCatalog, query: FareQuery): Fare
     flights.push(fareToStoredFlight(fare, zones));
   }
   if (flights.length === 0) {
-    return { flights: [], message: "No stored Frontier schedule for this date." };
+    return { flights: [], message: "No Frontier schedule for this date." };
   }
   const filtered = flights.filter((flight) => keepFlight(flight, query));
   filtered.sort((a, b) => compareFlights(a, b, query.sort));
-  if (filtered.length === 0) return { flights: [], message: "No stored flights match these filters." };
+  if (filtered.length === 0) return { flights: [], message: "No flights match these filters." };
   return { flights: filtered, message: null };
 }
 
@@ -369,7 +367,7 @@ export function staticPlanner(
   }));
   const untimed = untimedPaths(edges, input.origins, input.destinations, input.maxStops).slice(0, 12);
   if (flights.length === 0) {
-    return { itineraries: [], untimed, notice: "No stored Frontier schedule for this date." };
+    return { itineraries: [], untimed, notice: "No Frontier schedule for this date." };
   }
   const itineraries = searchItineraries(flights, {
     origins: input.origins,
@@ -389,7 +387,7 @@ export function staticPlanner(
   return {
     itineraries,
     untimed,
-    notice: itineraries.length === 0 ? "No stored flights connect these airports on this date." : null,
+    notice: itineraries.length === 0 ? "No flights connect these airports on this date." : null,
   };
 }
 
@@ -407,18 +405,113 @@ export function staticChanges(catalog: StaticCatalog, windowDays: number | null,
     })
     .map((event) => ({
       ...event,
-      consumer: consumerChange(event.type, event.origin, event.destination),
+      consumer: travelerChange(event),
     }));
 }
 
-function consumerChange(type: string, origin: string, destination: string) {
-  const route = `${origin} → ${destination}`;
-  if (type === "more_flights") return `More departures stored on ${route}.`;
-  if (type === "fewer_flights") return `Fewer departures stored on ${route}.`;
-  if (type === "schedule_extended") return `Later dates are now stored on ${route}.`;
-  if (type === "new_observation") return `New nonstop stored on ${route}.`;
-  if (type === "service_reappeared") return `Service is stored again on ${route}.`;
+const CHANGE_RANK: Record<string, number> = {
+  new_observation: 0,
+  service_reappeared: 1,
+  schedule_extended: 2,
+};
+
+function travelerChanges(catalog: StaticCatalog) {
+  return staticChanges(catalog, null, "all")
+    .filter((change) => change.consumer)
+    .sort(
+      (a, b) =>
+        (CHANGE_RANK[a.type] ?? 9) - (CHANGE_RANK[b.type] ?? 9) ||
+        a.origin.localeCompare(b.origin) ||
+        a.destination.localeCompare(b.destination),
+    )
+    .slice(0, 5)
+    .map((change) => ({ href: `/routes/${change.origin}/${change.destination}`, summary: change.consumer as string }));
+}
+
+function travelerChange(event: { type: string; origin: string; destination: string; detail: string }) {
+  const route = `${event.origin} → ${event.destination}`;
+  if (event.type === "new_observation") return `New nonstop ${route}`;
+  if (event.type === "service_reappeared") return `Service resumes ${route}`;
+  if (event.type === "schedule_extended") {
+    const match = /to (\d{4}-\d{2}-\d{2})/.exec(event.detail);
+    const through = match?.[1];
+    if (!through) return null;
+    return `Schedule extended through ${formatDay(through)} · ${route}`;
+  }
   return null;
+}
+
+function orderedPaths(
+  catalog: StaticCatalog,
+  graph: { origin: string; destination: string; status: string; frequency: number | null }[],
+  origins: string[],
+  destinations: string[],
+  maxStops: number,
+  futureNonstopsOnly = false,
+) {
+  const legs = shortestLegMinutes(catalog);
+  const future = futureNonstopKeys(catalog);
+  const seen = new Set<string>();
+  const paths: UntimedPath[] = [];
+  for (const path of untimedPaths(graph, origins, destinations, maxStops)) {
+    const key = path.airports.join(">");
+    if (seen.has(key)) continue;
+    seen.add(key);
+    if (futureNonstopsOnly && path.stops === 0) {
+      const origin = path.airports[0];
+      const destination = path.airports[1];
+      if (!origin || !destination || !future.has(pairKey(origin, destination))) continue;
+    }
+    paths.push(path);
+  }
+  paths.sort((a, b) => {
+    if (a.stops !== b.stops) return a.stops - b.stops;
+    const duration = pathMinutes(a, legs) - pathMinutes(b, legs);
+    if (duration !== 0) return duration;
+    return a.airports.join(">").localeCompare(b.airports.join(">"));
+  });
+  return paths;
+}
+
+function presentPaths(paths: UntimedPath[], connectionLimit = 3) {
+  const nonstops = paths.filter((path) => path.stops === 0);
+  const connections = paths.filter((path) => path.stops > 0).slice(0, connectionLimit);
+  return [...nonstops, ...connections];
+}
+
+function futureNonstopKeys(catalog: StaticCatalog) {
+  const today = catalog.network.today || "";
+  const keys = new Set<string>();
+  for (const flight of catalog.network.observations) {
+    if (today && flight.date < today) continue;
+    keys.add(pairKey(flight.origin, flight.destination));
+  }
+  return keys;
+}
+
+function shortestLegMinutes(catalog: StaticCatalog) {
+  const minutes = new Map<string, number>();
+  for (const flight of catalog.network.observations) {
+    const elapsed = durationMinutes(flight.departureUtc, flight.arrivalUtc);
+    if (elapsed <= 0) continue;
+    const key = pairKey(flight.origin, flight.destination);
+    const current = minutes.get(key);
+    if (current == null || elapsed < current) minutes.set(key, elapsed);
+  }
+  return minutes;
+}
+
+function pathMinutes(path: UntimedPath, legs: Map<string, number>) {
+  let total = 0;
+  for (let index = 0; index < path.airports.length - 1; index += 1) {
+    const origin = path.airports[index];
+    const destination = path.airports[index + 1];
+    if (!origin || !destination) return Number.MAX_SAFE_INTEGER;
+    const minutes = legs.get(pairKey(origin, destination));
+    if (minutes == null) return Number.MAX_SAFE_INTEGER;
+    total += minutes;
+  }
+  return total;
 }
 
 export function staticDiscover(catalog: StaticCatalog, from: string, maxStops: number) {
@@ -533,8 +626,12 @@ export function formatChecked(iso: string | null) {
 }
 
 export function fareText(fare: DisplayFare | null) {
-  if (!fare) return "—";
-  return `${fare.total.toFixed(2)} · display ${fare.display}`;
+  if (!fare) return "";
+  return `$${fare.display} · $${fare.total.toFixed(2)} exact`;
+}
+
+export function calendarToday(timeZone = "America/Los_Angeles", now = new Date()) {
+  return new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).format(now);
 }
 
 function addDays(iso: string, days: number) {

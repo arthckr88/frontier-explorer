@@ -311,9 +311,9 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
         <div className="pointer-events-none absolute bottom-3 left-3 right-3 flex flex-col gap-2 sm:right-auto sm:max-w-sm">
           <div className="pointer-events-auto rounded-md border border-[#24302a] bg-[#090b0d]/90 p-3 text-xs">
             {routes.length === 0 ? (
-              <p>No stored nonstop routes to draw.</p>
+              <p>No nonstop routes to draw.</p>
             ) : (
-              <p>{visible.length} nonstop routes. Green routes were stored from Frontier.</p>
+              <p>{visible.length} nonstop routes. Green routes are Frontier nonstops.</p>
             )}
             {hovered ? (
               <p className="mt-2 font-mono text-[#e7ece8]">
@@ -333,7 +333,7 @@ export function ExplorerMap({ tileStyle, routes, airports, interest }: Props) {
                   Clear
                 </button>
               </div>
-              {outbound.length === 0 ? <p className="text-[#8b9790]">No stored destinations in the current filters.</p> : null}
+              {outbound.length === 0 ? <p className="text-[#8b9790]">No destinations in the current filters.</p> : null}
               <ul className="space-y-1">
                 {outbound.map((route) => (
                   <li key={`${route.origin}-${route.destination}`}>
