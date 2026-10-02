@@ -32,7 +32,7 @@ export function ExplorerMap({ tileStyle, routes, airports, interest, focusAirpor
       const key = `${route.origin}|${route.destination}`;
       const scheduled = route.status === "SCHEDULE_CONFIRMED" || route.status === "SCHEDULE_CONFIRMED_ONLY";
       let active = 0;
-      if (selectedKeys.has(key) || (selectedKeys.size === 0 && selectedKey && key === selectedKey)) active = 2;
+      if (selectedKeys.has(key)) active = 2;
       else if (focusAirport && route.origin === focusAirport) active = 1;
       return {
         type: "Feature" as const,
@@ -207,7 +207,7 @@ export function ExplorerMap({ tileStyle, routes, airports, interest, focusAirpor
       <div ref={container} className="h-full w-full" />
       <button type="button" onClick={() => fitRef.current(true)} className="absolute left-2 top-2 rounded border border-[#304037] bg-[#12161b]/95 px-3 py-2 text-xs">Reset network</button>
       <div className="absolute bottom-20 left-2 rounded border border-[#304037] bg-[#12161b]/95 px-2 py-1.5 text-[10px] text-[#c5d0c9] sm:bottom-8" aria-label="Map legend">
-        <span className="mr-3"><span className="text-[#5e9274]">━</span> Listed route</span><span className="mr-3"><span className="text-[#3dbe7a]">━</span> Flight times captured</span><span><span className="text-[#e8ffb0]">━</span> Selected path</span>
+        <span className="mr-3"><span className="text-[#5e9274]">━</span> Verified route</span><span className="mr-3"><span className="text-[#3dbe7a]">━</span> Flight times captured</span><span><span className="text-[#e8ffb0]">━</span> Selected flight</span>
       </div>
     </div>
   );

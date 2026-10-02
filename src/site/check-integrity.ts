@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { attachBrowserFares, loadBrowserFareText } from "@/site/browser/integrate";
-import { UNRESOLVED_MAPPING_THRESHOLD } from "@/site/direct-routes";
+import { UNRESOLVED_MAPPING_THRESHOLD, hasNonstopEvidence } from "@/site/direct-routes";
 import { buildNetwork, diagnostics, integrityErrors, type NetworkArtifact, type ScheduleInput } from "@/site/network";
 
 const flightsPath = new URL("../../data/flights.json", import.meta.url);
@@ -37,6 +37,7 @@ if (JSON.stringify(rebuilt) !== JSON.stringify(network)) {
 if (!network.observations?.length) errors.push("The production artifact has no booking observations.");
 const officialAirports = new Set(network.official?.airports ?? []);
 for (const route of network.official?.routes ?? []) {
+  if (!hasNonstopEvidence(route)) errors.push(`Official route ${route.origin}-${route.destination} has no explicit nonstop evidence.`);
   if (route.provenance !== "frontier_official_direct_route") errors.push(`Official route ${route.origin}-${route.destination} has no official provenance.`);
   if (!officialAirports.has(route.origin) || !officialAirports.has(route.destination)) {
     errors.push(`Official route ${route.origin}-${route.destination} references a missing airport.`);

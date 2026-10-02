@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { untimedPaths } from "@/lib/graph/untimed";
 import { findForbiddenMarkers } from "../../scripts/pages-secret-scan.mjs";
-import { UNRESOLVED_MAPPING_THRESHOLD } from "@/site/direct-routes";
+import { UNRESOLVED_MAPPING_THRESHOLD, hasNonstopEvidence } from "@/site/direct-routes";
 import { normalizeFareItinerary } from "@/site/itinerary";
 import { legacyPartialGoWild, staticAirportDetail, staticDirectory, staticFareLookup, staticNetworkAdapter, staticRouteDetail, storedGoWild } from "@/static/adapter";
 import { loadCatalog } from "@/static/load";
@@ -33,11 +33,10 @@ describe("full network integrity", () => {
       }
     }
     const graph = network.routes.map((route) => ({ origin: route.origin, destination: route.destination, status: route.status, frequency: null }));
-    const viaDen = untimedPaths(graph, ["OAK"], ["MCO"], 2).find((path) => path.airports.includes("DEN"));
-    expect(viaDen?.airports[1]).toBe("DEN");
-    for (let index = 0; viaDen && index < viaDen.airports.length - 1; index += 1) {
-      expect(edges.has(`${viaDen.airports[index]}|${viaDen.airports[index + 1]}`)).toBe(true);
-    }
+    const viaLas = untimedPaths(graph, ["OAK"], ["MCO"], 2).find((path) => path.airports.includes("LAS"));
+    expect(viaLas?.airports[1]).toBe("LAS");
+    expect(edges.has("OAK|PDX")).toBe(false);
+    for (const route of official?.routes ?? []) expect(hasNonstopEvidence(route)).toBe(true);
   });
 
   it("keeps personal corridors and does not invent a route from a missing fare", () => {
@@ -56,9 +55,9 @@ describe("full network integrity", () => {
     const denver = staticAirportDetail(catalog, "DEN");
     const route = staticRouteDetail(catalog, "DEN", "MCO");
     expect(denver?.airport.city).toMatch(/Denver/);
-    expect(route?.official).toBe(true);
-    expect(route?.hasSchedule).toBe(false);
-    expect(route?.fareDates).toEqual([]);
+    expect(route?.official ?? false).toBe(false);
+    expect(route?.hasSchedule ?? false).toBe(false);
+    expect(route?.fareDates ?? []).toEqual([]);
     expect(staticAirportDetail(catalog, "ZZZ")).toBeNull();
     const directory = staticDirectory(catalog, {
       region: "all",
@@ -71,54 +70,16 @@ describe("full network integrity", () => {
       faresOnly: false,
       query: "",
     });
-    expect(directory.routes.some((item) => item.origin === "DEN" && item.destination === "MCO" && item.official && !item.fares)).toBe(true);
+    expect(directory.routes.some((item) => item.origin === "DEN" && item.destination === "MCO" && item.official)).toBe(false);
   });
 
-  it("covers twenty official routes across the network and skips a code the file does not contain", () => {
-    const points = new Map(catalog.airports.map((airport) => [airport.iata, airport]));
-    const wanted = ["JFK"];
-    for (const code of wanted) {
-      if (!catalog.network.official?.airports.includes(code)) continue;
-      expect(staticAirportDetail(catalog, code)).not.toBeNull();
-    }
-    const bands = new Map<string, string[]>();
-    for (const route of catalog.network.official?.routes ?? []) {
-      const airport = points.get(route.origin);
-      if (!airport) continue;
-      const band = bandOf(airport.lat, airport.lon, airport.country, airport.region);
-      const list = bands.get(band) ?? [];
-      if (list.length < 4) list.push(`${route.origin}-${route.destination}`);
-      bands.set(band, list);
-    }
-    expect([...bands.keys()].sort()).toEqual([
-      "caribbean_international",
-      "florida",
-      "midwest",
-      "mountain_central",
-      "northeast",
-      "south",
-      "west",
-    ]);
-    const lists = [...bands.values()];
-    const matrix: string[] = [];
-    for (let index = 0; matrix.length < 20; index += 1) {
-      const item = lists[index % lists.length]?.[Math.floor(index / lists.length)];
-      if (item) matrix.push(item);
-    }
-    expect(matrix.length).toBeGreaterThanOrEqual(20);
-    for (const pair of matrix) {
-      const [origin, destination] = pair.split("-");
-      expect(staticRouteDetail(catalog, origin ?? "", destination ?? "")?.official).toBe(true);
-    }
-    expect(findForbiddenMarkers(JSON.stringify(catalog.network.official)).length).toBe(0);
-    const sample = (catalog.network.official?.routes ?? []).filter((_, index) => index % 30 === 0).slice(0, 30);
-    expect(sample.length).toBeGreaterThanOrEqual(20);
-    for (const route of sample) expect(route.provenance).toBe("frontier_official_direct_route");
-    const denRoutes = (catalog.network.official?.routes ?? []).filter((route) => route.origin === "DEN");
-    const denModule = catalog.network.official?.fareModules?.find((sample) => sample.origin === "DEN");
-    expect(denRoutes.length).toBeGreaterThan(20);
-    expect(denModule?.status).toBe("complete");
-    expect(denRoutes.length).toBe(denModule?.named);
+  it("keeps marketed destinations out of direct routes throughout the published app", () => {
+    expect(staticRouteDetail(catalog, "OAK", "PDX")?.official ?? false).toBe(false);
+    expect(staticDirectory(catalog, { region: "all", country: "", scope: "all", origin: "OAK", destination: "PDX", officialOnly: false, confirmedOnly: false, faresOnly: false, query: "" }).routes).toEqual([]);
+    expect(findForbiddenMarkers(JSON.stringify(catalog.network.official))).toEqual([]);
+    const routes = catalog.network.official?.routes ?? [];
+    expect(routes.length).toBeGreaterThan(0);
+    expect(routes.every(hasNonstopEvidence)).toBe(true);
   });
 
   it("classifies dated nonstops missing from the official layer and keeps connection fares off the nonstop graph", () => {
@@ -139,7 +100,7 @@ describe("full network integrity", () => {
     const avoided = untimedPaths(graph, ["BOS", "PHL", "MCO", "TPA", "FLL"], ["SJU", "CUN", "PUJ", "MBJ"], 2).find(
       (path) => path.stops > 0 && path.airports.every((code) => !["LAS", "DEN", "ATL"].includes(code)),
     );
-    expect(avoided?.stops).toBeGreaterThan(0);
+    expect(avoided).toBeUndefined(); // No supported path remains after avoiding all captured hubs.
     const rows = storedGoWild(catalog);
     const keys = rows.map((row) => row.itineraryId);
     expect(new Set(keys).size).toBe(keys.length);
@@ -165,23 +126,5 @@ describe("full network integrity", () => {
     }
     expect(readFileSync("src/views/gowild-view.tsx", "utf8")).not.toContain("first flight");
     expect(readFileSync("src/views/search-panel.tsx", "utf8")).not.toContain("first flight");
-  });
-});
-
-function bandOf(lat: number, lon: number, country: string, region: string) {
-  if (country !== "US" || region === "caribbean") return "caribbean_international";
-  if (lat >= 24.4 && lat <= 31.1 && lon >= -87.7 && lon <= -80) return "florida";
-  if (lon <= -115) return "west";
-  if (lon <= -100) return "mountain_central";
-  if (lat >= 39 && lon >= -83) return "northeast";
-  if (lon <= -85) return "midwest";
-  return "south";
-}
-
-describe("secret scan fixture", () => {
-  it("reads the published catalogue from disk", () => {
-    const text = readFileSync(new URL("../../data/frontier-direct-routes.json", import.meta.url), "utf8");
-    expect(findForbiddenMarkers(text)).toEqual([]);
-    expect(text).toContain("Frontier official direct routes");
   });
 });

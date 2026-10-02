@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { loadCatalog } from "@/static/load";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { FlightResults } from "@/views/flight-results";
 import { dateStatus, EMPTY_QUERY, flightResults, flightDates, parseSearchQuery, searchUrl, resolveAirport, scheduleSourceUrl } from "@/static/search";
 const catalog = loadCatalog();
 const query = { ...EMPTY_QUERY, origin: "OAK", destination: "LAX", date: "2026-09-28", maxStops: 1, excludeRedEyes: false };
@@ -44,6 +47,17 @@ describe("usable flight search", () => {
     expect(flights[0]?.connections).toMatchObject([{ airport: "LAS", minutes: 120 }]);
     expect(flightResults(synthetic, { ...overnight, excludeRedEyes: true }).flights).toHaveLength(0);
     expect(dateStatus(synthetic, { ...overnight, maxDuration: 100 })).toBe("captured");
+  });
+  it("does not claim OAK–PDX is a Frontier nonstop when the schedule is unknown", () => {
+    const q = { ...EMPTY_QUERY, origin: "OAK", destination: "PDX", date: "2026-10-02" };
+    expect(flightResults(catalog, q).officialNonstop).toBe(false);
+    expect(flightResults(catalog, q).flights).toEqual([]);
+    expect(dateStatus(catalog, q)).toBe("missing");
+    const html = renderToStaticMarkup(createElement(FlightResults, { catalog, query: q, selectedId: null, onSelect: () => {}, onSearch: () => {}, settings: { fareMode: "standard", excludeRedEyes: true, maxStops: 0 } }));
+    expect(html).toContain("Schedule unavailable");
+    expect(html).not.toContain("0 flight options");
+    expect(html).not.toContain("Frontier lists this as a nonstop route");
+    expect(html).toContain("Include connections");
   });
   it("round trips all search filters through a shareable URL", () => {
     const original = { ...query, maxDuration: 300, sort: "duration" as const, depart: "morning" as const, arrive: "afternoon" as const, via: "LAS", layover: "normal" as const };

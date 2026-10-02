@@ -1,0 +1,15 @@
+[
+  {
+    "origin": "OAK",
+    "destination": "LAS",
+    "originCity": "Oakland",
+    "destinationCity": "Las Vegas",
+    "sourceUrl": "https://news.flyfrontier.com/oakland-san-francisco-bay-airport-celebrates-frontier-airlines-return-with-inaugural-las-vegas-service/",
+    "provenance": "frontier_official_direct_route",
+    "nonstopEvidence": {
+      "kind": "explicit_nonstop",
+      "sourceUrl": "https://news.flyfrontier.com/oakland-san-francisco-bay-airport-celebrates-frontier-airlines-return-with-inaugural-las-vegas-service/",
+      "retrievedAt": "2026-10-02T21:53:21.968655Z"
+    }
+  }
+]

@@ -67,7 +67,7 @@ console.log(
     2,
   ),
 );
-if (catalogue.routes.length === 0) process.exit(1);
+if (catalogue.airports.length === 0) process.exit(1);
 }
 
 async function fetchText(url: string) {

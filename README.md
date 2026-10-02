@@ -4,7 +4,7 @@ Frontier Route Explorer is a static GitHub Pages site for Frontier's network. It
 
 Three layers stay separate:
 
-- An official direct route is an airport pair Frontier names on a public flights-from page. `npm run frontier:network` is local and manual. It reads the flights-from sitemap and those pages, writes `data/frontier-direct-routes.json`, leaves city-to-city pairs in `data/frontier-markets.json` as candidate markets, rebuilds `data/network.json`, and runs the integrity check. It does not fetch booking fares, crawl dates, or run in GitHub Actions. A candidate market is not a nonstop. A fare module that reports another page is read in a normal browser with Clear filter and Show more. A challenge stops that page. The importer does not copy an authorization header.
+- An official direct route requires explicit Frontier nonstop evidence with a source URL and retrieval date. Reviewed evidence lives in `data/verified-direct-routes.json`. The older flights-from fare catalogue is retained as raw research; marketed pairs and missing layover metadata do not establish nonstop service and are excluded from the direct graph. The map also shows dated nonstop observations. Coverage is partial, not the full Frontier network.
 - A schedule observation is a dated nonstop already in `data/flights.json`. The map draws it only when that dated observation exists.
 - A fare observation is a Standard, Discount Den, or GoWild price in `data/browser-fares.json` for one route and one date. A missing fare is not a missing route. Price history is append-only in `data/price-history.jsonl`.
 

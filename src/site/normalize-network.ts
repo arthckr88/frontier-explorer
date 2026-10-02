@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { attachBrowserFares, loadBrowserFareText } from "@/site/browser/integrate";
-import { classifyScheduleGap, type OfficialCatalogue } from "@/site/direct-routes";
+import { classifyScheduleGap, hasNonstopEvidence, type OfficialCatalogue, type OfficialRoute } from "@/site/direct-routes";
 import { buildNetwork, diagnostics, diffSnapshots, emptyChangeFile, mergeChanges, snapshotsFrom, type OfficialNetwork, type RouteChangeFile, type RouteSnapshotFile, type ScheduleInput } from "@/site/network";
 import { scheduleToday } from "@/site/view";
 
@@ -38,7 +38,10 @@ function officialNetwork(fares: { retrievedAt?: string }[]): OfficialNetwork {
   }
   const lastBrowserCollection = fares.map((fare) => fare.retrievedAt ?? "").filter(Boolean).sort().at(-1) ?? null;
   const modules = new Map((catalogue.fareModules ?? []).map((sample) => [sample.origin, sample]));
-  const officialKeys = new Set(catalogue.routes.map((route) => `${route.origin}|${route.destination}`));
+  const reviewed = readJson<OfficialRoute[]>(new URL("../../data/verified-direct-routes.json", import.meta.url)) ?? [];
+  const verified = [...new Map([...catalogue.routes, ...reviewed].filter(hasNonstopEvidence).map((route) => [`${route.origin}|${route.destination}`, route])).values()];
+  candidateMarkets += catalogue.routes.filter((route) => !hasNonstopEvidence(route)).length;
+  const officialKeys = new Set(verified.map((route) => `${route.origin}|${route.destination}`));
   const seen = new Set<string>();
   const discrepancies = [];
   for (const flight of stored.flights ?? []) {
@@ -53,7 +56,7 @@ function officialNetwork(fares: { retrievedAt?: string }[]): OfficialNetwork {
     source: "Frontier official direct routes",
     sourceUrl: catalogue.sourceUrl,
     airports: catalogue.airports.map((airport) => airport.iata),
-    routes: catalogue.routes,
+    routes: verified,
     unresolved: catalogue.unresolved,
     candidateMarkets,
     lastBrowserCollection,

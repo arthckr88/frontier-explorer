@@ -24,7 +24,7 @@ export function HomeView({ catalog, network, initial }: { catalog: StaticCatalog
   }, [initial]);
   const options = useMemo(() => query?.destination && query.date ? flightResults(catalog, query).flights : [], [catalog, query]);
   const flight = selectedFlight && options.some((option) => option.id === selectedFlight.id) ? selectedFlight : options[0] ?? null;
-  const selectedAirports = flight ? [flight.origin, ...(flight.segments ?? []).map((segment) => segment.destination)] : query?.destination ? [query.origin, query.destination] : [];
+  const selectedAirports = flight ? [flight.origin, ...(flight.segments ?? []).map((segment) => segment.destination)] : query?.destination && !query.date && network.routes.some((route) => route.origin === query.origin && route.destination === query.destination) ? [query.origin, query.destination] : [];
   function search(next: FareQuery) {
     setQuery(next); setSelectedFlight(null); setFocusAirport(next.origin); setMobileView("results");
     const url = searchUrl(next);

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { classifyScheduleGap, composeCandidateMarkets, composeOfficialCatalogue, parseFlightsFromPage } from "@/site/direct-routes";
+import { classifyScheduleGap, composeCandidateMarkets, composeOfficialCatalogue, parseFlightsFromPage, applyFareModuleReads, hasNonstopEvidence } from "@/site/direct-routes";
 
 const html = `<script id="__NEXT_DATA__" type="application/json">${JSON.stringify({
   props: {
@@ -7,8 +7,8 @@ const html = `<script id="__NEXT_DATA__" type="application/json">${JSON.stringif
       queryParams: { user_input_origin_airport_code: "DEN" },
       apolloState: {
         data: {
-          fare: { originAirportCode: "DEN", destinationAirportCode: "MCO", originCity: "Denver, CO", destinationCity: "Orlando, FL", layovers: null },
-          other: { originAirportCode: "DEN", destinationAirportCode: "LAS", originCity: "Denver, CO", destinationCity: "Las Vegas, NV" },
+          fare: { originAirportCode: "DEN", destinationAirportCode: "MCO", originCity: "Denver, CO", destinationCity: "Orlando, FL", stops: 0, layovers: null },
+          other: { originAirportCode: "DEN", destinationAirportCode: "LAS", originCity: "Denver, CO", destinationCity: "Las Vegas, NV", nonstop: true },
           link: { __typename: "InterlinkRoutes", title: "More flights from Denver, CO", links: [{ name: "Denver, CO - Anchorage", url: "flights-from-denver-to-anchorage" }] },
         },
       },
@@ -32,6 +32,22 @@ describe("official direct routes", () => {
     );
     expect(markets).toHaveLength(1);
     expect(markets[0]?.provenance).toBe("frontier_candidate_market");
+  });
+
+  it("does not infer nonstop service from absent, null, or empty layovers", () => {
+    const html = `<script id="__NEXT_DATA__">${JSON.stringify({ fares: [
+      { originAirportCode: "OAK", destinationAirportCode: "PDX" },
+      { originAirportCode: "OAK", destinationAirportCode: "DEN", layovers: null },
+      { originAirportCode: "OAK", destinationAirportCode: "ONT", layovers: [] },
+      { originAirportCode: "OAK", destinationAirportCode: "LAS", stops: 0 },
+    ], user_input_origin_airport_code: "OAK" })}</script>`;
+    const page = parseFlightsFromPage(html, "https://flights.flyfrontier.com/en/flights-from-oakland");
+    const catalog = composeOfficialCatalogue([page], "2026-10-02T00:00:00Z");
+    expect(catalog.routes.map((route) => route.destination)).toEqual(["LAS"]);
+    expect(catalog.routes.every(hasNonstopEvidence)).toBe(true);
+    const expanded = applyFareModuleReads(catalog, [{ origin: "OAK", status: "complete", destinations: ["PDX"], currentPage: 1, lastPage: 1, total: 1, detail: "Read marketed fares" }]);
+    expect(expanded.routes.map((route) => route.destination)).toEqual(["LAS"]);
+    expect(hasNonstopEvidence({ ...catalog.routes[0]!, nonstopEvidence: undefined })).toBe(false);
   });
 
   it("records a partial fare module and classifies a dated gap", () => {

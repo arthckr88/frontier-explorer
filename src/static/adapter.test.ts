@@ -87,8 +87,8 @@ describe("static network", () => {
   it("draws official directs and dated schedules", () => {
     const network = staticNetworkAdapter(catalog);
     expect(network.confirmedPairs).toBe(21);
-    expect(network.routes.length).toBeGreaterThan(21);
-    expect(network.routes.some((route) => route.origin === "DEN" && route.destination === "MCO" && route.status === "OFFICIAL_DIRECT")).toBe(true);
+    expect(network.routes).toHaveLength(21);
+    expect(network.routes.some((route) => route.origin === "OAK" && route.destination === "PDX")).toBe(false);
     expect(catalog.network.observations).toHaveLength(410);
     expect(catalog.network.observations.some((flight) => flight.date > "2026-10-25")).toBe(false);
     expect(catalog.network.observations.some((flight) => flight.date === "2026-10-25")).toBe(true);

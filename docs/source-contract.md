@@ -4,7 +4,7 @@ Frontier Route Explorer keeps these sources separate. A later source does not re
 
 ## A. Current direct network
 
-Frontier-owned explicit direct or nonstop evidence only. The flights-from fare module names both airport codes and has no layover. When that module reports another page, a normal browser opens the public flights-from page and uses Clear filter and Show more. Pairs named on those rows become official directs. A challenge stops that page and is recorded as blocked. The importer does not copy an authorization header or call a private key. A generic bookable market, a city-to-city sitemap URL, a “More flights from” link, or a popularity link is not a nonstop.
+Frontier-owned explicit nonstop evidence only, with a source URL and retrieval date, or a dated nonstop schedule observation. A fare-market card with two airport codes does not prove a nonstop: missing, null, or empty layover metadata is unknown. Reading additional fare-module pages does not change that. Legacy fare-market pairs are retained as raw research in `data/frontier-direct-routes.json` but excluded from the published direct graph. Reviewed explicit evidence lives in `data/verified-direct-routes.json`. The integrity check rejects direct routes without that evidence. Generic bookable markets, city-to-city sitemap URLs, and popularity links are not nonstops. A challenge stops collection; no private keys or copied authorization headers are used.
 
 ## B. Dated schedule and fares
 

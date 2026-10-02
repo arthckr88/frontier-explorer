@@ -24,6 +24,7 @@ export type OfficialRoute = {
   destinationCity: string;
   sourceUrl: string;
   provenance: "frontier_official_direct_route";
+  nonstopEvidence?: { kind: "explicit_nonstop"; sourceUrl: string; retrievedAt: string };
 };
 
 export type UnresolvedMapping = {
@@ -88,7 +89,17 @@ export type ParsedFarePair = {
   destination: string;
   originCity: string | null;
   destinationCity: string | null;
+  explicitNonstop?: boolean;
 };
+
+export function hasNonstopEvidence(route: OfficialRoute): boolean {
+  const evidence = route.nonstopEvidence;
+  if (evidence?.kind !== "explicit_nonstop" || !Number.isFinite(Date.parse(evidence.retrievedAt))) return false;
+  try {
+    const url = new URL(evidence.sourceUrl);
+    return url.protocol === "https:" && (url.hostname === "flyfrontier.com" || url.hostname.endsWith(".flyfrontier.com"));
+  } catch { return false; }
+}
 
 export type ParsedFlightsFromPage = {
   slug: string;
@@ -196,6 +207,8 @@ export function composeOfficialCatalogue(
       fareModules.push({ origin, ...page.fareModule, sourceUrl: page.sourceUrl });
     }
     for (const pair of page.farePairs) {
+      // A marketed fare pair can include connections. Missing layovers is not proof.
+      if (!pair.explicitNonstop) continue;
       const known = reference.size === 0 || (reference.has(pair.origin) && reference.has(pair.destination));
       if (!known) {
         unresolved.push({
@@ -217,6 +230,7 @@ export function composeOfficialCatalogue(
         destinationCity: cityName(pair.destinationCity, pair.destination, reference),
         sourceUrl: page.sourceUrl,
         provenance: "frontier_official_direct_route",
+        nonstopEvidence: { kind: "explicit_nonstop", sourceUrl: page.sourceUrl, retrievedAt },
       });
     }
   }
@@ -292,52 +306,15 @@ export function classifyScheduleGap(
 export function applyFareModuleReads(
   catalogue: OfficialCatalogue,
   reads: FareModuleRead[],
-  reference: Map<string, { name: string; city: string; country: string }> = new Map(),
+  _reference: Map<string, { name: string; city: string; country: string }> = new Map(),
 ): OfficialCatalogue {
   const readByOrigin = new Map(reads.map((read) => [read.origin, read]));
+  void _reference; // Retained for existing importer callers; market names are not promoted.
   const routes = [...catalogue.routes];
-  const seen = new Set(routes.map((route) => `${route.origin}|${route.destination}`));
   const airports = [...catalogue.airports];
-  const airportCodes = new Set(airports.map((airport) => airport.iata));
   const unresolved = [...catalogue.unresolved];
-  for (const read of reads) {
-    if (read.status !== "complete") continue;
-    const sample = catalogue.fareModules.find((item) => item.origin === read.origin);
-    const sourceUrl = sample?.sourceUrl ?? "";
-    const originCity = cityName(null, read.origin, reference);
-    for (const destination of read.destinations) {
-      if (!/^[A-Z]{3}$/.test(destination) || destination === read.origin) continue;
-      const known = reference.size === 0 || (reference.has(read.origin) && reference.has(destination));
-      if (!known) {
-        unresolved.push({
-          originSlug: read.origin.toLowerCase(),
-          destinationSlug: destination.toLowerCase(),
-          originCity,
-          destinationLabel: `${read.origin}-${destination}`,
-          reason: "Fare named an airport code that is not in the airport reference.",
-        });
-        continue;
-      }
-      for (const code of [read.origin, destination]) {
-        if (airportCodes.has(code)) continue;
-        const airport = reference.get(code);
-        if (!airport) continue;
-        airportCodes.add(code);
-        airports.push({ iata: code, city: airport.city, name: airport.name, country: airport.country });
-      }
-      const key = `${read.origin}|${destination}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      routes.push({
-        origin: read.origin,
-        destination,
-        originCity,
-        destinationCity: cityName(null, destination, reference),
-        sourceUrl,
-        provenance: "frontier_official_direct_route",
-      });
-    }
-  }
+  // Fare-module destination names do not identify the number of stops.
+  // Keep pagination metadata, but never promote those markets to direct arcs.
   routes.sort((left, right) => left.origin.localeCompare(right.origin) || left.destination.localeCompare(right.destination));
   airports.sort((left, right) => left.iata.localeCompare(right.iata));
   const fareModules = catalogue.fareModules.map((sample) => {
@@ -477,6 +454,7 @@ function farePairs(value: unknown): ParsedFarePair[] {
       destination,
       originCity: typeof record.originCity === "string" ? record.originCity : null,
       destinationCity: typeof record.destinationCity === "string" ? record.destinationCity : null,
+      explicitNonstop: record.nonstop === true || record.stops === 0,
     });
   });
   return pairs;
