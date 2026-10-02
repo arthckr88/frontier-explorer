@@ -12,10 +12,10 @@ const workflows = readdirSync(new URL("../../.github/workflows", import.meta.url
 
 describe("GitHub Pages reads the booking observation artifact", () => {
   it("loads network.json and not the legacy schedule files", () => {
-    expect(loader).toContain('fetch("network.json")');
-    expect(loader).toContain('fetch("browser-fares.json")');
-    expect(loader).toContain('fetch("route-changes.json")');
-    expect(loader).toContain('fetch("price-history.jsonl")');
+    expect(loader).toContain('fetch(dataUrl("network.json"))');
+    expect(loader).toContain('fetch(dataUrl("browser-fares.json"))');
+    expect(loader).toContain('fetch(dataUrl("route-changes.json"))');
+    expect(loader).toContain('fetch(dataUrl("price-history.jsonl"))');
     expect(loader).not.toContain("upcoming.json");
     expect(loader).not.toContain("operating-days.json");
     expect(pages).toContain("network.json");

@@ -3,8 +3,8 @@
 import { useMemo } from "react";
 import { AppLink } from "@/components/app-link";
 import { calendarToday, clock, formatChecked, formatDay, formatElapsed, staticDiscover } from "@/static/adapter";
-import { dateStatus, EMPTY_QUERY, flightDates, flightResults, frontierSearchUrl, scheduleSourceUrl, suggestedFlights, type SearchSettings } from "@/static/search";
-import type { FareQuery, StaticCatalog, StoredFlight } from "@/static/types";
+import { airportRoutesUrl, dateStatus, EMPTY_QUERY, flightDates, flightResults, frontierSearchUrl, scheduleSourceUrl, suggestedFlights, type SearchSettings } from "@/static/search";
+import type { AirportDeparture, FareQuery, StaticCatalog, StoredFlight } from "@/static/types";
 
 export function FlightResults({ catalog, query, selectedId, onSelect, onSearch, settings }: {
   catalog: StaticCatalog; query: FareQuery | null; selectedId: string | null; onSelect: (flight: StoredFlight) => void;
@@ -20,22 +20,22 @@ export function FlightResults({ catalog, query, selectedId, onSelect, onSearch, 
   </div>;
   const from = catalog.airports.find((airport) => airport.iata === query.origin);
   const to = catalog.airports.find((airport) => airport.iata === query.destination);
-  if (!query.date || !query.destination) {
-    const groups = staticDiscover(catalog, query.origin, query.maxStops).groups;
-    return <div className="space-y-4 p-4"><header><h2 className="text-lg font-medium">From {from?.city || query.origin}</h2><p className="text-xs text-[#8b9790]">Explore routes, then choose a destination and date to find flights.</p></header>{groups.map((group) => <section key={group.stop}><h3 className="mb-2 text-xs font-medium text-[#8b9790]">{group.stop === 0 ? "Nonstop destinations" : `Reachable with ${group.stop} stop${group.stop > 1 ? "s" : ""}`}</h3><div className="space-y-1">{group.items.filter((item) => !query.destination || item.iata === query.destination).map((item) => <button type="button" key={item.iata} onClick={() => onSearch({ ...query, destination: item.iata, date: today })} className="flex w-full justify-between rounded border border-[#24302a] px-3 py-2 text-left text-sm hover:border-[#3dbe7a]"><span>{item.city}</span><span className="font-mono text-[#3dbe7a]">{item.iata}</span></button>)}</div></section>)}{query.destination ? <a href={scheduleSourceUrl(query.origin, query.destination)} target="_blank" rel="noopener noreferrer" className="block rounded bg-[#3dbe7a] px-3 py-2 text-center text-sm text-[#090b0d]">Check airlines serving this route ↗</a> : null}<AppLink href={`/airports/${query.origin}`} className="block text-sm text-[#3dbe7a]">Airport details →</AppLink></div>;
-  }
+  if (!query.date || !query.destination) return <RouteResults catalog={catalog} query={query} onSearch={onSearch} />;
   const flights = result?.flights ?? [];
+  const departures = result?.departures ?? [];
+  const hasResults = flights.length > 0 || departures.length > 0;
   const state = dateStatus(catalog, query);
   const legs = [...new Map(flights.flatMap((flight) => flight.segments ?? []).map((leg) => [`${leg.origin}|${leg.destination}`, leg])).values()];
   const upcoming = dates.filter((date) => date >= today);
   const past = dates.filter((date) => date < today);
-  const emptyMessage = state === "captured" ? "No complete flights match these filters." : state === "empty" ? "Frontier returned no nonstop flights when this date was checked. Try another date or allow connections." : state === "unavailable" ? "The last flight check could not be completed. Check this date directly with Frontier." : query.maxStops === 0 && !result?.officialNonstop ? "No Frontier nonstop has been verified for this route. Flight schedules for this date are unavailable here." : "No verified flight schedule is available here for this route and date. Check Frontier for current flights.";
+  const emptyMessage = state === "captured" ? "No complete flights match these filters." : state === "departure_only" ? "The airport supplies departure times, but no arrival times or trip durations. Clear filters to see the available departures." : state === "empty" ? "Frontier returned no nonstop flights when this date was checked. Try another date or allow connections." : state === "unavailable" ? "The last flight check could not be completed. Check this date directly with Frontier." : query.maxStops === 0 && !result?.officialNonstop ? "No Frontier nonstop has been verified for this route. Flight schedules for this date are unavailable here." : "No verified flight schedule is available here for this route and date. Check Frontier for current flights.";
   return <div id="results" className="space-y-3 p-3" aria-live="polite">
     <header><h2 className="text-lg font-medium">{query.origin} → {query.destination}</h2><p className="text-xs text-[#8b9790]">{from?.city} to {to?.city} · {formatDay(query.date)}</p></header>
     {query.date < today ? <p className="rounded border border-[#e2a84a]/40 bg-[#e2a84a]/5 px-2 py-1.5 text-xs text-[#e2a84a]">Past flight date · prices below are historical.</p> : null}
-    <div className="flex items-center justify-between gap-2"><p className="text-xs text-[#aab6ae]">{flights.length ? `${flights.length} flight option${flights.length === 1 ? "" : "s"}` : state === "missing" || state === "unavailable" ? "Schedule unavailable" : "No matching captured flights"}</p><select aria-label="Sort results" value={query.sort} onChange={(event) => onSearch({ ...query, sort: event.target.value as FareQuery["sort"] })} className="min-w-0 rounded border border-[#304037] bg-[#090b0d] px-2 py-1.5 text-xs"><option value="stops">Fewest stops</option><option value="duration">Shortest trip</option><option value="depart">Earliest departure</option></select></div>
-    {flights.length === 0 ? <div className="space-y-2 rounded-md border border-[#24302a] p-3 text-sm"><p>{emptyMessage}</p>{result?.officialNonstop ? <p className="text-xs text-[#8b9790]">Frontier has explicit nonstop service evidence for this route, but no flight is confirmed here for your date.</p> : null}{query.maxStops === 0 ? <button type="button" className="block text-[#3dbe7a]" onClick={() => onSearch({ ...query, maxStops: 1 })}>Include connections</button> : null}{state === "captured" ? <button type="button" className="text-[#3dbe7a]" onClick={() => onSearch({ ...EMPTY_QUERY, origin: query.origin, destination: query.destination, date: query.date, maxStops: query.maxStops, excludeRedEyes: false })}>Clear flight filters</button> : null}</div> : null}
+    <div className="flex items-center justify-between gap-2"><p className="text-xs text-[#aab6ae]">{(flights.length + departures.length) ? `${flights.length + departures.length} captured flight${flights.length + departures.length === 1 ? "" : "s"}` : state === "missing" || state === "unavailable" ? "Schedule unavailable" : "No matching captured flights"}</p><select aria-label="Sort results" value={query.sort} onChange={(event) => onSearch({ ...query, sort: event.target.value as FareQuery["sort"] })} className="min-w-0 rounded border border-[#304037] bg-[#090b0d] px-2 py-1.5 text-xs"><option value="stops">Fewest stops</option><option value="duration">Shortest trip</option><option value="depart">Earliest departure</option></select></div>
+    {!hasResults ? <div className="space-y-2 rounded-md border border-[#24302a] p-3 text-sm"><p>{emptyMessage}</p>{result?.officialNonstop ? <p className="text-xs text-[#8b9790]">An official source lists this nonstop route, but no flight is confirmed here for your date.</p> : null}{query.maxStops === 0 ? <button type="button" className="block text-[#3dbe7a]" onClick={() => onSearch({ ...query, maxStops: 1 })}>Include connections</button> : null}{state === "captured" || state === "departure_only" ? <button type="button" className="text-[#3dbe7a]" onClick={() => onSearch({ ...EMPTY_QUERY, origin: query.origin, destination: query.destination, date: query.date, maxStops: query.maxStops, excludeRedEyes: false })}>Clear flight filters</button> : null}</div> : null}
     {flights.map((flight) => <FlightCard key={flight.id} flight={flight} selected={selectedId === flight.id} onSelect={() => onSelect(flight)} fareMode={settings.fareMode} />)}
+    {departures.length ? <div className="space-y-2"><p className="text-xs text-[#8b9790]">Departure times from the official airport flight board. Arrival times and prices are not supplied.</p>{departures.map((departure) => <DepartureCard key={`${departure.flightNumber}${departure.departureLocal}`} departure={departure} />)}</div> : null}
     {upcoming.length ? <div><h3 className="mb-1.5 text-xs text-[#8b9790]">Other dates with matching flight times</h3><div className="flex flex-wrap gap-1.5">{upcoming.slice(0, 12).map((date) => <button type="button" key={date} aria-pressed={date === query.date} onClick={() => onSearch({ ...query, date })} className={`rounded border px-2 py-1.5 text-xs ${date === query.date ? "border-[#3dbe7a] text-[#3dbe7a]" : "border-[#304037]"}`}>{formatDay(date).replace(/, \d{4}$/, "")}</button>)}</div></div> : null}
     {past.length ? <details className="text-xs text-[#8b9790]"><summary className="cursor-pointer py-1">Past dates with flight times</summary><div className="mt-1 flex flex-wrap gap-1.5">{past.map((date) => <button type="button" key={date} onClick={() => onSearch({ ...query, date })} className="rounded border border-[#304037] px-2 py-1.5">{formatDay(date)}</button>)}</div></details> : null}
     {result?.paths.length ? <details className="rounded border border-[#24302a] p-2 text-xs"><summary className="cursor-pointer">Possible network paths ({result.paths.length})</summary><p className="my-2 text-[#8b9790]">These paths have no verified flight times for this date.</p>{result.paths.map((path) => <p className="py-1" key={path.airports.join("-")}>{path.airports.join(" → ")}</p>)}</details> : null}
@@ -45,6 +45,44 @@ export function FlightResults({ catalog, query, selectedId, onSelect, onSearch, 
     <a href={frontierSearchUrl()} target="_blank" rel="noopener noreferrer" className="block rounded-md border border-[#3dbe7a]/50 px-3 py-2 text-center text-sm text-[#3dbe7a]">Confirm prices on Frontier ↗</a>
     <p className="text-[11px] leading-relaxed text-[#8b9790]">Local airport times. Flight options use captured schedules; prices apply only to the date shown. Confirm the flight and any connection with Frontier.</p>
   </div>;
+}
+
+function RouteResults({ catalog, query, onSearch }: { catalog: StaticCatalog; query: FareQuery; onSearch: (query: FareQuery) => void }) {
+  const today = calendarToday();
+  const from = catalog.airports.find((airport) => airport.iata === query.origin);
+  const groups = staticDiscover(catalog, query.origin, query.maxStops).groups.map((group) => ({ ...group, items: group.items.filter((item) => !query.destination || item.iata === query.destination) })).filter((group) => group.items.length);
+  const count = groups.reduce((sum, group) => sum + group.items.length, 0);
+  const evidence = (catalog.network.official?.routes ?? []).filter((route) => route.origin === query.origin);
+  const sources = [...new Set(evidence.map((route) => route.sourceUrl))];
+  return <div className="space-y-4 p-4">
+    <header><h2 className="text-lg font-medium">From {from?.city || query.origin}</h2><p className="mt-1 text-xs text-[#8b9790]">{count ? `${count} destination${count === 1 ? "" : "s"} with route data. Select a destination to see its route.` : "Routes for this airport aren’t available in this app yet. This does not mean Frontier has no routes."}</p></header>
+    {groups.map((group) => <section key={group.stop}><h3 className="mb-2 text-xs font-medium text-[#8b9790]">{group.stop === 0 ? "Nonstop destinations" : `Possible paths with ${group.stop} stop${group.stop > 1 ? "s" : ""}`}</h3><div className="space-y-2">{group.items.map((item) => {
+      const route = evidence.find((route) => route.destination === item.iata);
+      const next = flightDates(catalog, { ...query, destination: item.iata, date: today }).find((date) => date >= today);
+      return <article key={item.iata} className="rounded border border-[#24302a] p-2.5">
+        <button type="button" aria-label={`Explore ${query.origin} to ${item.iata}`} onClick={() => onSearch({ ...query, destination: item.iata, date: "" })} className="flex w-full justify-between text-left text-sm"><span>{item.city}</span><span className="font-mono text-[#3dbe7a]">{item.iata}</span></button>
+        {route?.seasonal ? <p className="mt-1 text-[11px] text-[#e2a84a]">Seasonal service · check your date</p> : null}
+        <div className="mt-2 flex flex-wrap gap-3 text-xs">
+          {next ? <button type="button" onClick={() => onSearch({ ...query, destination: item.iata, date: next })} className="text-[#3dbe7a]">Show {formatDay(next).replace(/, \d{4}$/, "")} departures</button> : null}
+          <a href={scheduleSourceUrl(query.origin, item.iata)} target="_blank" rel="noopener noreferrer" className="text-[#aab6ae]">Check timetable ↗</a>
+        </div>
+      </article>;
+    })}</div></section>)}
+    {!count ? <a href={airportRoutesUrl(query.origin)} target="_blank" rel="noopener noreferrer" className="block rounded bg-[#3dbe7a] px-3 py-2.5 text-center text-sm font-medium text-[#090b0d]">Check Frontier’s full route map ↗</a> : null}
+    {count ? <p className="text-[11px] leading-relaxed text-[#8b9790]">Routes are separate from flights on a specific date. Connection paths require each leg’s timetable to line up.</p> : null}
+    {sources.map((source) => <a key={source} href={source} target="_blank" rel="noopener noreferrer" className="block text-xs text-[#3dbe7a]">{source.includes("flypdx.com") ? "Source: Portland airport’s nonstop map" : "Source: official nonstop listing"} ↗</a>)}
+    <AppLink href={`/airports/${query.origin}`} className="block text-sm text-[#3dbe7a]">Airport details →</AppLink>
+  </div>;
+}
+
+function DepartureCard({ departure }: { departure: AirportDeparture }) {
+  return <article data-flight={departure.flightNumber} data-date={departure.date} className="rounded-lg border border-[#24302a] bg-[#12161b] p-3">
+    <div className="flex justify-between text-xs text-[#8b9790]"><span>F9 {departure.flightNumber}</span><span>{departure.status === "departed" ? "Departed" : "Scheduled departure"}</span></div>
+    <p className="mt-1 text-lg font-medium">{clock(departure.departureLocal)} <span className="text-xs font-normal text-[#8b9790]">departure</span></p>
+    <p className="font-mono text-xs text-[#8b9790]">{departure.origin} → {departure.destination}</p>
+    <p className="mt-2 text-xs text-[#8b9790]">Arrival time and price unavailable.</p>
+    <a href={departure.sourceUrl} target="_blank" rel="noopener noreferrer" className="mt-2 block text-[11px] text-[#3dbe7a]">Official airport flight board · checked {formatChecked(departure.retrievedAt)} ↗</a>
+  </article>;
 }
 
 function FlightCard({ flight, selected, onSelect, fareMode }: { flight: StoredFlight; selected: boolean; onSelect: () => void; fareMode: SearchSettings["fareMode"] }) {

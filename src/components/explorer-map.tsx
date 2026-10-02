@@ -13,11 +13,12 @@ type Props = {
   focusAirport?: string | null;
   selected?: { origin: string; destination: string } | null;
   selectedPath?: string[];
+  selectionLabel?: string;
   onAirportClick?: (code: string) => void;
   onRouteClick?: (origin: string, destination: string) => void;
 };
 
-export function ExplorerMap({ tileStyle, routes, airports, interest, focusAirport = null, selected = null, selectedPath = [], onAirportClick, onRouteClick }: Props) {
+export function ExplorerMap({ tileStyle, routes, airports, interest, focusAirport = null, selected = null, selectedPath = [], selectionLabel = "Selected flight", onAirportClick, onRouteClick }: Props) {
   const container = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const fitRef = useRef<(all?: boolean) => void>(() => {});
@@ -207,7 +208,7 @@ export function ExplorerMap({ tileStyle, routes, airports, interest, focusAirpor
       <div ref={container} className="h-full w-full" />
       <button type="button" onClick={() => fitRef.current(true)} className="absolute left-2 top-2 rounded border border-[#304037] bg-[#12161b]/95 px-3 py-2 text-xs">Reset network</button>
       <div className="absolute bottom-20 left-2 rounded border border-[#304037] bg-[#12161b]/95 px-2 py-1.5 text-[10px] text-[#c5d0c9] sm:bottom-8" aria-label="Map legend">
-        <span className="mr-3"><span className="text-[#5e9274]">━</span> Verified route</span><span className="mr-3"><span className="text-[#3dbe7a]">━</span> Flight times captured</span><span><span className="text-[#e8ffb0]">━</span> Selected flight</span>
+        <span className="mr-3"><span className="text-[#5e9274]">━</span> Verified route</span><span className="mr-3"><span className="text-[#3dbe7a]">━</span> Flight times captured</span><span><span className="text-[#e8ffb0]">━</span> {selectionLabel}</span>
       </div>
     </div>
   );

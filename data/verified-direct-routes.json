@@ -11,5 +11,47 @@
       "sourceUrl": "https://news.flyfrontier.com/oakland-san-francisco-bay-airport-celebrates-frontier-airlines-return-with-inaugural-las-vegas-service/",
       "retrievedAt": "2026-10-02T21:53:21.968655Z"
     }
+  },
+  {
+    "origin": "PDX",
+    "destination": "DEN",
+    "originCity": "Portland",
+    "destinationCity": "Denver",
+    "sourceUrl": "https://www.flypdx.com/NonstopDestinations",
+    "provenance": "frontier_official_direct_route",
+    "seasonal": true,
+    "nonstopEvidence": {
+      "kind": "airport_nonstop",
+      "sourceUrl": "https://www.flypdx.com/NonstopDestinations",
+      "retrievedAt": "2026-10-02T22:33:38.677Z"
+    }
+  },
+  {
+    "origin": "PDX",
+    "destination": "LAS",
+    "originCity": "Portland",
+    "destinationCity": "Las Vegas",
+    "sourceUrl": "https://www.flypdx.com/NonstopDestinations",
+    "provenance": "frontier_official_direct_route",
+    "seasonal": false,
+    "nonstopEvidence": {
+      "kind": "airport_nonstop",
+      "sourceUrl": "https://www.flypdx.com/NonstopDestinations",
+      "retrievedAt": "2026-10-02T22:33:38.677Z"
+    }
+  },
+  {
+    "origin": "PDX",
+    "destination": "LAX",
+    "originCity": "Portland",
+    "destinationCity": "Los Angeles",
+    "sourceUrl": "https://www.flypdx.com/NonstopDestinations",
+    "provenance": "frontier_official_direct_route",
+    "seasonal": false,
+    "nonstopEvidence": {
+      "kind": "airport_nonstop",
+      "sourceUrl": "https://www.flypdx.com/NonstopDestinations",
+      "retrievedAt": "2026-10-02T22:33:38.677Z"
+    }
   }
 ]

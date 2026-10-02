@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync, copyFileSync, rmSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 import esbuild from "esbuild";
 import postcss from "postcss";
 import tailwind from "@tailwindcss/postcss";
@@ -28,6 +29,7 @@ const css = readFileSync(path.join(root, "src/app/globals.css"), "utf8");
 const processed = await postcss([tailwind()]).process(css, { from: path.join(root, "src/app/globals.css") });
 writeFileSync(path.join(dist, "styles.css"), processed.css);
 
+copyFileSync(path.join(root, "data/airport-departures.json"), path.join(dist, "airport-departures.json"));
 copyFileSync(path.join(root, "data/network.json"), path.join(dist, "network.json"));
 copyFileSync(path.join(root, "data/browser-fares.json"), path.join(dist, "browser-fares.json"));
 copyFileSync(path.join(root, "data/route-changes.json"), path.join(dist, "route-changes.json"));
@@ -37,18 +39,19 @@ writeFileSync(path.join(dist, "airports.json"), JSON.stringify(publishedAirports
 copyFileSync(path.join(root, "node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs"), path.join(dist, "maplibre-gl-worker.mjs"));
 copyFileSync(path.join(root, "node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs"), path.join(dist, "maplibre-gl-shared.mjs"));
 
+const version = createHash("sha256").update(readFileSync(path.join(dist, "app.js"))).update(readFileSync(path.join(dist, "network.json"))).update(readFileSync(path.join(dist, "airport-departures.json"))).digest("hex").slice(0, 12);
 const html = `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Frontier Route Explorer</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="styles.css?v=${version}" />
+    <link rel="stylesheet" href="app.css?v=${version}" />
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="app.js"></script>
+    <script type="module" src="app.js?v=${version}"></script>
     <noscript>The map and search need JavaScript.</noscript>
   </body>
 </html>

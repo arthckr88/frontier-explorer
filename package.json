@@ -26,7 +26,8 @@
     "sync:schedules": "tsx src/server/jobs/cli.ts schedules",
     "sync:announcements": "tsx src/server/jobs/cli.ts announcements",
     "sync:programs": "tsx src/server/jobs/cli.ts programs",
-    "reconcile": "tsx src/server/jobs/cli.ts reconcile"
+    "reconcile": "tsx src/server/jobs/cli.ts reconcile",
+    "refresh:airports": "node --import tsx src/site/refresh-airport-sources.ts && node --import tsx src/site/normalize-network.ts && node --import tsx src/site/check-integrity.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.23",

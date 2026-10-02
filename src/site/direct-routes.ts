@@ -24,7 +24,8 @@ export type OfficialRoute = {
   destinationCity: string;
   sourceUrl: string;
   provenance: "frontier_official_direct_route";
-  nonstopEvidence?: { kind: "explicit_nonstop"; sourceUrl: string; retrievedAt: string };
+  seasonal?: boolean;
+  nonstopEvidence?: { kind: "explicit_nonstop" | "airport_nonstop"; sourceUrl: string; retrievedAt: string };
 };
 
 export type UnresolvedMapping = {
@@ -94,10 +95,12 @@ export type ParsedFarePair = {
 
 export function hasNonstopEvidence(route: OfficialRoute): boolean {
   const evidence = route.nonstopEvidence;
-  if (evidence?.kind !== "explicit_nonstop" || !Number.isFinite(Date.parse(evidence.retrievedAt))) return false;
+  if (!evidence || !Number.isFinite(Date.parse(evidence.retrievedAt))) return false;
   try {
     const url = new URL(evidence.sourceUrl);
-    return url.protocol === "https:" && (url.hostname === "flyfrontier.com" || url.hostname.endsWith(".flyfrontier.com"));
+    if (url.protocol !== "https:") return false;
+    if (evidence.kind === "airport_nonstop") return route.origin === "PDX" && url.hostname === "www.flypdx.com" && url.pathname === "/NonstopDestinations";
+    return evidence.kind === "explicit_nonstop" && (url.hostname === "flyfrontier.com" || url.hostname.endsWith(".flyfrontier.com"));
   } catch { return false; }
 }
 

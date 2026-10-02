@@ -25,7 +25,7 @@ export function DiscoverView({ catalog, from = "" }: { catalog: StaticCatalog; f
       <header>
         <h1 className="text-2xl font-medium">Discover</h1>
         <p className="max-w-2xl text-sm text-[#8b9790]">
-          Every Frontier airport and direct route in the official catalogue. A candidate market is not listed here as a nonstop.
+          Verified Frontier nonstops and captured flight times. The route list is incomplete; use the full route map for airports without results.
         </p>
       </header>
       <form className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">

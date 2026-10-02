@@ -80,7 +80,8 @@ export type OfficialNetwork = {
     destinationCity: string;
     sourceUrl: string;
     provenance: "frontier_official_direct_route";
-    nonstopEvidence?: { kind: "explicit_nonstop"; sourceUrl: string; retrievedAt: string };
+    seasonal?: boolean;
+    nonstopEvidence?: { kind: "explicit_nonstop" | "airport_nonstop"; sourceUrl: string; retrievedAt: string };
   }[];
   unresolved: { originSlug: string; destinationSlug: string; originCity: string | null; destinationLabel: string; reason: string }[];
   candidateMarkets: number;

@@ -1,14 +1,17 @@
 import type { BrowserFareRecord, NetworkArtifact, RouteChangeFile } from "@/site/network";
-import type { AirportRecord, HistoricalMetrics, PriceHistoryRow, StaticCatalog } from "@/static/types";
+import type { AirportRecord, HistoricalMetrics, PriceHistoryRow, StaticCatalog, AirportDeparture } from "@/static/types";
 
 export async function loadCatalogBrowser(): Promise<StaticCatalog> {
-  const [network, fareFile, changes, historyText, airports, historical] = await Promise.all([
-    fetch("network.json").then((response) => response.json() as Promise<NetworkArtifact>),
-    fetch("browser-fares.json").then((response) => response.json() as Promise<{ fares?: BrowserFareRecord[] }>),
-    fetch("route-changes.json").then((response) => response.json() as Promise<RouteChangeFile>),
-    fetch("price-history.jsonl").then((response) => response.text()),
-    fetch("airports.json").then((response) => response.json() as Promise<AirportRecord[]>),
-    fetch("historical-metrics.json").then((response) => (response.ok ? (response.json() as Promise<HistoricalMetrics>) : null)),
+  const version = new URL(import.meta.url).searchParams.get("v");
+  const dataUrl = (name: string) => version ? `${name}?v=${encodeURIComponent(version)}` : name;
+  const [network, fareFile, changes, historyText, airports, historical, airportDepartures] = await Promise.all([
+    fetch(dataUrl("network.json")).then((response) => response.json() as Promise<NetworkArtifact>),
+    fetch(dataUrl("browser-fares.json")).then((response) => response.json() as Promise<{ fares?: BrowserFareRecord[] }>),
+    fetch(dataUrl("route-changes.json")).then((response) => response.json() as Promise<RouteChangeFile>),
+    fetch(dataUrl("price-history.jsonl")).then((response) => response.text()),
+    fetch(dataUrl("airports.json")).then((response) => response.json() as Promise<AirportRecord[]>),
+    fetch(dataUrl("historical-metrics.json")).then((response) => (response.ok ? (response.json() as Promise<HistoricalMetrics>) : null)),
+    fetch(dataUrl("airport-departures.json")).then((response) => response.json() as Promise<AirportDeparture[]>),
   ]);
   const priceHistory = historyText
     .split("\n")
@@ -22,5 +25,6 @@ export async function loadCatalogBrowser(): Promise<StaticCatalog> {
     priceHistory,
     airports,
     historical,
+    airportDepartures,
   };
 }

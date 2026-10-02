@@ -37,6 +37,7 @@ export function loadCatalog(): StaticCatalog {
     priceHistory,
     airports: airports.filter((airport) => codes.has(airport.iata)),
     historical,
+    airportDepartures: JSON.parse(readDataFile("airport-departures.json")),
   };
   return cached;
 }

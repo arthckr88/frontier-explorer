@@ -52,6 +52,12 @@ export type StaticCatalog = {
   priceHistory: PriceHistoryRow[];
   airports: AirportRecord[];
   historical?: HistoricalMetrics | null;
+  airportDepartures?: AirportDeparture[];
+};
+
+export type AirportDeparture = {
+  origin: string; destination: string; date: string; departureLocal: string; flightNumber: string;
+  status: "scheduled" | "departed"; sourceUrl: string; retrievedAt: string;
 };
 
 export type DisplayFare = {

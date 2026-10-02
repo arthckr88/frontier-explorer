@@ -1,0 +1,72 @@
+[
+  {
+    "origin": "PDX",
+    "destination": "LAX",
+    "date": "2026-10-01",
+    "departureLocal": "2026-10-01T11:02:00",
+    "flightNumber": "4500",
+    "status": "departed",
+    "sourceUrl": "https://www.flypdx.com/Flights",
+    "retrievedAt": "2026-10-02T22:33:38.677Z"
+  },
+  {
+    "origin": "PDX",
+    "destination": "LAS",
+    "date": "2026-10-01",
+    "departureLocal": "2026-10-01T12:24:00",
+    "flightNumber": "1106",
+    "status": "departed",
+    "sourceUrl": "https://www.flypdx.com/Flights",
+    "retrievedAt": "2026-10-02T22:33:38.677Z"
+  },
+  {
+    "origin": "PDX",
+    "destination": "DEN",
+    "date": "2026-10-01",
+    "departureLocal": "2026-10-01T12:38:00",
+    "flightNumber": "1790",
+    "status": "departed",
+    "sourceUrl": "https://www.flypdx.com/Flights",
+    "retrievedAt": "2026-10-02T22:33:38.677Z"
+  },
+  {
+    "origin": "PDX",
+    "destination": "LAX",
+    "date": "2026-10-02",
+    "departureLocal": "2026-10-02T11:02:00",
+    "flightNumber": "4500",
+    "status": "departed",
+    "sourceUrl": "https://www.flypdx.com/Flights",
+    "retrievedAt": "2026-10-02T22:33:38.677Z"
+  },
+  {
+    "origin": "PDX",
+    "destination": "DEN",
+    "date": "2026-10-02",
+    "departureLocal": "2026-10-02T12:38:00",
+    "flightNumber": "1790",
+    "status": "departed",
+    "sourceUrl": "https://www.flypdx.com/Flights",
+    "retrievedAt": "2026-10-02T22:33:38.677Z"
+  },
+  {
+    "origin": "PDX",
+    "destination": "LAS",
+    "date": "2026-10-02",
+    "departureLocal": "2026-10-02T12:39:00",
+    "flightNumber": "1106",
+    "status": "departed",
+    "sourceUrl": "https://www.flypdx.com/Flights",
+    "retrievedAt": "2026-10-02T22:33:38.677Z"
+  },
+  {
+    "origin": "PDX",
+    "destination": "LAS",
+    "date": "2026-10-03",
+    "departureLocal": "2026-10-03T12:24:00",
+    "flightNumber": "1106",
+    "status": "scheduled",
+    "sourceUrl": "https://www.flypdx.com/Flights",
+    "retrievedAt": "2026-10-02T22:33:38.677Z"
+  }
+]

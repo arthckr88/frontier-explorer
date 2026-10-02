@@ -10,13 +10,17 @@ Three layers stay separate:
 
 `npm run normalize:network` composes `data/network.json` from the official routes plus observations, checks, summaries, and fares. Pages deploys from `main` only, through `.github/workflows/deploy.yml`. GitHub Actions does not call Frontier. There is no hourly crawl.
 
+## Official airport data
+
+`npm run refresh:airports` imports active Frontier nonstops and dated departures from Portland airport's public pages, then rebuilds and validates the network. PDX currently lists DEN (seasonal), LAS, and LAX. The October 2 snapshot includes seven departures for October 1–3. Airport departure records display real flight numbers and local departure times; unavailable arrivals and fares stay unknown. They cannot form timed connections or satisfy duration/arrival filters. Route exploration keeps route selection separate from choosing a flight date, shows source links, and provides a full Frontier map lookup when an airport has no imported routes.
+
 ## Flight search
 
 Search accepts a city or airport, departure date, stops, duration, local departure/arrival windows, connecting airport, layover length, and red-eye preference. Timed connections retain every leg and show total elapsed time. URL filters survive reload/back/navigation; browser preferences apply to new searches. Mobile has separate Results and Map views. Past fares and incomplete legacy connections are kept out of current flight offers.
 
 Every route search includes a FlightConnections public timetable link, filtered to Frontier's calendar when that route is served. This supports free, current schedule lookup beyond the small local dataset. DEN–MCO's October 15, 2026 calendar was verified on October 2 (F9 4646, 3312, 2520). Users select their date on that external page; the link does not imply that every historical official route still has current Frontier flights. Frontier remains the price/booking confirmation source.
 
-**A complete free schedule import is not established.** Embedded search still reads 410 dated observations across 21 pairs, with gaps in dates, plus separately dated fares. FlightConnections is an external lookup, not an imported feed. Flightmapper's DEN–MCO schedules ended April 13, 2026 when checked, so they were rejected. No marketing fare date, route edge, or expired timetable creates a flight observation. No network-wide collection, signed mobile handshake, or paid source was added.
+**A complete free schedule import is not established.** Embedded complete-itinerary search still reads 410 dated observations across 21 pairs, plus the separately maintained airport departure-board snapshot, with gaps in dates, plus separately dated fares. FlightConnections is an external lookup, not an imported feed. Flightmapper's DEN–MCO schedules ended April 13, 2026 when checked, so they were rejected. No marketing fare date, route edge, or expired timetable creates a flight observation. No network-wide collection, signed mobile handshake, or paid source was added.
 
 ## Local commands
 

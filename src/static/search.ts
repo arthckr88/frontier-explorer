@@ -57,18 +57,39 @@ export function flightResults(catalog: StaticCatalog, query: FareQuery) {
     if (!old || flight.standard || flight.discountDen || flight.goWild) unique.set(key, flight);
   }
   const flights = [...unique.values()].sort((a, b) => query.sort === "duration" ? a.durationMinutes - b.durationMinutes || a.departureLocal.localeCompare(b.departureLocal) : query.sort === "depart" ? a.departureLocal.localeCompare(b.departureLocal) : a.stops - b.stops || a.departureLocal.localeCompare(b.departureLocal));
-  return { ...found, flights, paths: found.paths.filter((path) => path.kind === "possible") };
+  const completeKeys = new Set(flights.filter((flight) => flight.stops === 0).map((flight) => `${flight.flightNumber}|${flight.departureLocal.slice(0, 16)}`));
+  const departures = airportDepartures(catalog, query).filter((flight) => !completeKeys.has(`${flight.flightNumber}|${flight.departureLocal.slice(0, 16)}`));
+  return { ...found, flights, departures, paths: found.paths.filter((path) => path.kind === "possible") };
+}
+
+// Airport departure boards are useful evidence, but cannot create timed connections.
+export function airportDepartures(catalog: StaticCatalog, query: FareQuery) {
+  if (query.maxDuration != null || query.arrive || query.via || query.layover) return [];
+  return (catalog.airportDepartures ?? []).filter((flight) => {
+    if (flight.origin !== query.origin || flight.destination !== query.destination || flight.date !== query.date) return false;
+    const hour = Number(flight.departureLocal.slice(11, 13));
+    const bucket = hour >= 5 && hour < 12 ? "morning" : hour >= 12 && hour < 17 ? "afternoon" : hour >= 17 && hour < 22 ? "evening" : "";
+    if (query.depart && query.depart !== bucket) return false;
+    // With no arrival time, do not promise an overnight flight meets this preference.
+    return !query.excludeRedEyes || Boolean(bucket);
+  });
+}
+
+export function airportRoutesUrl(origin: string) {
+  return origin === "PDX" ? "https://www.flypdx.com/NonstopDestinations" : "https://www.flightconnections.com/route-map-frontier-airlines-f9";
 }
 
 export function flightDates(catalog: StaticCatalog, query: FareQuery): string[] {
   const candidates = new Set(catalog.network.observations.filter((flight) => flight.origin === query.origin && (query.maxStops > 0 || flight.destination === query.destination)).map((flight) => flight.date));
   for (const fare of catalog.fares) if (fare.origin === query.origin && fare.destination === query.destination && normalizeFareItinerary(fare).completeness === "complete") candidates.add(fare.date);
-  return [...candidates].sort().filter((date) => flightResults(catalog, { ...query, date }).flights.length > 0);
+  for (const flight of catalog.airportDepartures ?? []) if (flight.origin === query.origin && flight.destination === query.destination) candidates.add(flight.date);
+  return [...candidates].sort().filter((date) => { const result = flightResults(catalog, { ...query, date }); return result.flights.length > 0 || result.departures.length > 0; });
 }
 
-export function dateStatus(catalog: StaticCatalog, query: FareQuery): "captured" | "empty" | "unavailable" | "missing" {
+export function dateStatus(catalog: StaticCatalog, query: FareQuery): "captured" | "departure_only" | "empty" | "unavailable" | "missing" {
   if (query.maxStops > 0 && flightResults(catalog, { ...EMPTY_QUERY, origin: query.origin, destination: query.destination, date: query.date, maxStops: query.maxStops, excludeRedEyes: false }).flights.length) return "captured";
   if (catalog.network.observations.some((flight) => flight.origin === query.origin && flight.destination === query.destination && flight.date === query.date) || catalog.fares.some((fare) => fare.origin === query.origin && fare.destination === query.destination && fare.date === query.date && normalizeFareItinerary(fare).completeness === "complete")) return "captured";
+  if ((catalog.airportDepartures ?? []).some((flight) => flight.origin === query.origin && flight.destination === query.destination && flight.date === query.date)) return "departure_only";
   const checks = catalog.network.checks.filter((check) => check.origin === query.origin && check.destination === query.destination && check.date === query.date);
   if (checks.some((check) => check.state === "checked_empty")) return "empty";
   if (checks.some((check) => check.state === "blocked")) return "unavailable";
@@ -78,7 +99,8 @@ export function dateStatus(catalog: StaticCatalog, query: FareQuery): "captured"
 export function suggestedFlights(catalog: StaticCatalog, today = calendarToday()) {
   const pairs = new Map<string, { origin: string; destination: string; date: string }>();
   for (const flight of [...catalog.network.observations].sort((a, b) => a.date.localeCompare(b.date))) if (flight.date >= today && !pairs.has(`${flight.origin}|${flight.destination}`)) pairs.set(`${flight.origin}|${flight.destination}`, { origin: flight.origin, destination: flight.destination, date: flight.date });
-  const preferred = ["OAK", "SFO", "LAS", "DEN"];
+  for (const flight of catalog.airportDepartures ?? []) if (flight.date > today && !pairs.has(`${flight.origin}|${flight.destination}`)) pairs.set(`${flight.origin}|${flight.destination}`, { origin: flight.origin, destination: flight.destination, date: flight.date });
+  const preferred = ["PDX", "OAK", "SFO", "LAS", "DEN"];
   return [...pairs.values()].sort((a, b) => (preferred.indexOf(a.origin) < 0 ? 99 : preferred.indexOf(a.origin)) - (preferred.indexOf(b.origin) < 0 ? 99 : preferred.indexOf(b.origin))).slice(0, 6);
 }
 

@@ -22,9 +22,11 @@ export function HomeView({ catalog, network, initial }: { catalog: StaticCatalog
     try { window.sessionStorage.setItem(LAST_SEARCH_KEY, searchUrl(initial)); } catch { /* Storage is optional. */ }
     window.dispatchEvent(new Event("frontier-search"));
   }, [initial]);
-  const options = useMemo(() => query?.destination && query.date ? flightResults(catalog, query).flights : [], [catalog, query]);
+  const result = useMemo(() => query?.destination && query.date ? flightResults(catalog, query) : null, [catalog, query]);
+  const options = result?.flights ?? [];
   const flight = selectedFlight && options.some((option) => option.id === selectedFlight.id) ? selectedFlight : options[0] ?? null;
-  const selectedAirports = flight ? [flight.origin, ...(flight.segments ?? []).map((segment) => segment.destination)] : query?.destination && !query.date && network.routes.some((route) => route.origin === query.origin && route.destination === query.destination) ? [query.origin, query.destination] : [];
+  const departure = !flight ? result?.departures[0] : null;
+  const selectedAirports = flight ? [flight.origin, ...(flight.segments ?? []).map((segment) => segment.destination)] : departure ? [departure.origin, departure.destination] : query?.destination && !query.date && network.routes.some((route) => route.origin === query.origin && route.destination === query.destination) ? [query.origin, query.destination] : [];
   function search(next: FareQuery) {
     setQuery(next); setSelectedFlight(null); setFocusAirport(next.origin); setMobileView("results");
     const url = searchUrl(next);
@@ -43,7 +45,7 @@ export function HomeView({ catalog, network, initial }: { catalog: StaticCatalog
         <FlightResults catalog={catalog} query={query} settings={settings} selectedId={flight?.id ?? null} onSelect={(next) => { setSelectedFlight(next); setMobileView("map"); }} onSearch={search} />
       </section>
       <div className={`${mobileView === "map" ? "block" : "hidden"} h-[max(24rem,calc(100dvh-22rem))] min-w-0 lg:block lg:h-[calc(100dvh-16rem)] lg:min-h-[20rem]`}>
-        <ExplorerMap tileStyle={network.tileStyle} routes={network.routes} airports={network.airports} interest={network.interest} focusAirport={focusAirport} selected={query?.destination ? { origin: query.origin, destination: query.destination } : null} selectedPath={selectedAirports} onAirportClick={airportClick} onRouteClick={(origin, destination) => search({ ...EMPTY_QUERY, origin, destination, date: query?.date || "", maxStops: settings.maxStops })} />
+        <ExplorerMap tileStyle={network.tileStyle} routes={network.routes} airports={network.airports} interest={network.interest} focusAirport={focusAirport} selected={query?.destination ? { origin: query.origin, destination: query.destination } : null} selectedPath={selectedAirports} selectionLabel={query?.date ? departure ? "Selected departure" : "Selected flight" : "Selected route"} onAirportClick={airportClick} onRouteClick={(origin, destination) => search({ ...EMPTY_QUERY, origin, destination, date: query?.date || "", maxStops: settings.maxStops })} />
       </div>
     </div>
   </div>;

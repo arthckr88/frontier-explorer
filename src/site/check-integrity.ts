@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+import type { AirportDeparture } from "@/static/types";
 import { readFileSync } from "node:fs";
 import { attachBrowserFares, loadBrowserFareText } from "@/site/browser/integrate";
 import { UNRESOLVED_MAPPING_THRESHOLD, hasNonstopEvidence } from "@/site/direct-routes";
@@ -88,6 +90,15 @@ for (const fare of fares) {
   );
   if (matching.length && !observationKeys.has(key)) errors.push(`Connection fare ${key} became a nonstop.`);
   if (matching.length) errors.push(`Connection fare ${fare.origin}-${fare.destination} ${fare.flightNumber} is stored as a nonstop with the connection arrival.`);
+}
+const departures = JSON.parse(readFileSync(new URL("../../data/airport-departures.json", import.meta.url), "utf8")) as AirportDeparture[];
+const departureKeys = new Set<string>();
+for (const departure of departures) {
+  const key = `${departure.origin}|${departure.destination}|${departure.departureLocal}|${departure.flightNumber}`;
+  if (departureKeys.has(key)) errors.push(`Duplicate airport departure ${key}.`);
+  departureKeys.add(key);
+  if (departure.origin !== "PDX" || departure.sourceUrl !== "https://www.flypdx.com/Flights" || !DateTime.fromISO(departure.departureLocal).isValid || departure.date !== departure.departureLocal.slice(0, 10) || !/^\d+$/.test(departure.flightNumber)) errors.push(`Invalid airport departure ${key}.`);
+  if (!network.official?.routes.some((route) => route.origin === departure.origin && route.destination === departure.destination && hasNonstopEvidence(route))) errors.push(`Airport departure ${key} has no official nonstop route.`);
 }
 if (errors.length) {
   for (const error of errors) console.error(error);
