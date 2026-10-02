@@ -1,5 +1,6 @@
 import { AppLink } from "@/components/app-link";
-import { clock, fareText, formatChecked, formatDay, formatElapsed, staticRouteDetail } from "@/static/adapter";
+import { calendarToday, clock, fareText, formatChecked, formatDay, formatElapsed, staticRouteDetail } from "@/static/adapter";
+import { EMPTY_QUERY, scheduleSourceUrl, searchUrl } from "@/static/search";
 import type { StaticCatalog } from "@/static/types";
 
 export function RouteView({ catalog, origin, destination }: { catalog: StaticCatalog; origin: string; destination: string }) {
@@ -25,6 +26,10 @@ export function RouteView({ catalog, origin, destination }: { catalog: StaticCat
           </p>
         ) : null}
       </header>
+      <div className="flex flex-wrap gap-2 text-sm">
+        <AppLink href={searchUrl({ ...EMPTY_QUERY, origin: data.origin, destination: data.destination, date: calendarToday() })} className="rounded bg-[#3dbe7a] px-3 py-2 text-[#090b0d]">Search flights</AppLink>
+        <a href={scheduleSourceUrl(data.origin, data.destination)} target="_blank" rel="noopener noreferrer" className="rounded border border-[#304037] px-3 py-2">Free route timetable ↗</a>
+      </div>
       {!data.hasSchedule ? (
         <p className="text-sm text-[#8b9790]">
           {data.official
@@ -35,6 +40,7 @@ export function RouteView({ catalog, origin, destination }: { catalog: StaticCat
         data.schedule.map((day) => (
           <section key={day.date}>
             <h2 className="mb-2 font-mono text-[11px] uppercase tracking-[0.16em] text-[#8b9790]">{formatDay(day.date)}</h2>
+            {day.date < calendarToday() ? <p className="mb-2 text-xs text-[#e2a84a]">Past flight date · historical prices.</p> : null}
             <div className="space-y-2">
               {day.flights.map((flight) => (
                 <article key={flight.id} className="rounded border border-[#24302a] p-3 text-sm">

@@ -1,30 +1,17 @@
 import { staticNetworkAdapter } from "@/static/adapter";
 import { loadCatalog } from "@/static/load";
-import type { FareQuery } from "@/static/types";
+import { parseSearchQuery } from "@/static/search";
 import { HomeView } from "@/views/home-view";
 
 export default async function HomePage({
   searchParams,
 }: {
-  searchParams: Promise<{ from?: string; to?: string; date?: string; stops?: string }>;
+  searchParams: Promise<Record<string, string | undefined>>;
 }) {
   const params = await searchParams;
   const catalog = loadCatalog();
   const network = staticNetworkAdapter(catalog);
-  const initial: FareQuery | null =
-    params.from && params.to && params.date
-      ? {
-          origin: params.from.toUpperCase(),
-          destination: params.to.toUpperCase(),
-          date: params.date,
-          maxStops: Number(params.stops ?? "0"),
-          maxDuration: null,
-          depart: "",
-          arrive: "",
-          sort: "stops",
-          excludeRedEyes: true,
-        }
-      : null;
-  const homeKey = `${initial?.origin ?? ""}|${initial?.destination ?? ""}|${initial?.date ?? ""}`;
+  const initial = parseSearchQuery(new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string")));
+  const homeKey = JSON.stringify(initial);
   return <HomeView key={homeKey} catalog={catalog} network={network} initial={initial} />;
 }

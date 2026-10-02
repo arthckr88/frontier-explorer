@@ -1,11 +1,12 @@
-import { StrictMode, useEffect, useState, type ReactNode } from "react";
+import { StrictMode, useEffect, useMemo, useState, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import { setWorkerUrl } from "maplibre-gl";
 import { LinkModeContext } from "@/components/app-link";
 import { Shell } from "@/components/shell";
 import { loadCatalogBrowser } from "@/gh-pages/load-browser";
-import { staticChrome, staticNetworkAdapter } from "@/static/adapter";
-import type { FareQuery, StaticCatalog } from "@/static/types";
+import { calendarToday, staticChrome, staticNetworkAdapter } from "@/static/adapter";
+import { parseSearchQuery } from "@/static/search";
+import type { StaticCatalog } from "@/static/types";
 import { AirportView } from "@/views/airport-view";
 import { ChangesView } from "@/views/changes-view";
 import { DataView } from "@/views/data-view";
@@ -30,24 +31,6 @@ function readRoute() {
   return { path: "/", params: new URLSearchParams(window.location.search) };
 }
 
-function fareQuery(params: URLSearchParams): FareQuery | null {
-  const origin = params.get("from")?.trim().toUpperCase() ?? "";
-  const destination = params.get("to")?.trim().toUpperCase() ?? "";
-  const date = params.get("date")?.trim() ?? "";
-  if (!origin || !destination || !date) return null;
-  return {
-    origin,
-    destination,
-    date,
-    maxStops: Number(params.get("stops") ?? "0"),
-    maxDuration: params.get("duration") ? Number(params.get("duration")) : null,
-    depart: (params.get("depart") as FareQuery["depart"]) || "",
-    arrive: (params.get("arrive") as FareQuery["arrive"]) || "",
-    sort: (params.get("sort") as FareQuery["sort"]) || "stops",
-    excludeRedEyes: params.get("redeye") !== "0",
-  };
-}
-
 function App({ catalog }: { catalog: StaticCatalog }) {
   const [route, setRoute] = useState(readRoute);
   useEffect(() => {
@@ -59,18 +42,18 @@ function App({ catalog }: { catalog: StaticCatalog }) {
       window.removeEventListener("popstate", sync);
     };
   }, []);
-  const chrome = staticChrome(catalog);
-  const network = staticNetworkAdapter(catalog);
+  const chrome = useMemo(() => staticChrome(catalog), [catalog]);
+  const network = useMemo(() => staticNetworkAdapter(catalog), [catalog]);
   const { path, params } = route;
   let body: ReactNode = null;
   if (path === "/" || path === "/search") {
-    const initial = fareQuery(params);
-    const homeKey = `${initial?.origin ?? ""}|${initial?.destination ?? ""}|${initial?.date ?? ""}`;
+    const initial = parseSearchQuery(params);
+    const homeKey = JSON.stringify(initial);
     body = <HomeView key={homeKey} catalog={catalog} network={network} initial={initial} />;
   } else if (path === "/discover") {
     body = <DiscoverView catalog={catalog} from={params.get("from") || ""} stops={Number(params.get("stops") ?? "0")} />;
   } else if (path === "/planner") {
-    body = <PlannerView catalog={catalog} moduleKey={params.get("module")} date={params.get("date") || network.home.scheduleThrough || catalog.network.today} />;
+    body = <PlannerView key={`${params.get("module")}|${params.get("date")}`} catalog={catalog} moduleKey={params.get("module")} date={params.get("date") || calendarToday()} />;
   } else if (path === "/changes") {
     const scope = params.get("scope") === "mine" ? "mine" : "all";
     body = <ChangesView catalog={catalog} windowKey={params.get("window") || "30d"} scope={scope} />;

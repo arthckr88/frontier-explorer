@@ -351,7 +351,7 @@ describe("price history", () => {
     expect(lines).toHaveLength(4);
     expect(lines[0]).toContain("2026-09-01");
     expect(JSON.parse(lines[3]).price).toBe(15.41);
-    const search = readFileSync("src/views/search-panel.tsx", "utf8");
+    const search = readFileSync("src/views/flight-results.tsx", "utf8");
     expect(search).toContain("GoWild");
     expect(search).toContain("Source: Frontier.");
     expect(search).not.toContain("seats remaining");

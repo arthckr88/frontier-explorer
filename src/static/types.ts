@@ -77,6 +77,7 @@ export type StoredFlight = {
   goWild: DisplayFare | null;
   checkedAt: string | null;
   redEye: boolean;
+  connections?: { airport: string; minutes: number }[];
 };
 
 export type FareQuery = {
@@ -98,6 +99,8 @@ export type NetworkPath = {
   stops: number;
   kind: "timed" | "possible";
   label: string;
+  id?: string;
+  itinerary?: StoredFlight;
 };
 
 export type FareLookupResult = {

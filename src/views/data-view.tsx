@@ -1,8 +1,9 @@
-import { formatDay, staticDiagnostics } from "@/static/adapter";
+import { formatDay, formatChecked, fareText, legacyPartialGoWild, staticDiagnostics } from "@/static/adapter";
 import type { StaticCatalog } from "@/static/types";
 
 export function DataView({ catalog }: { catalog: StaticCatalog }) {
   const data = staticDiagnostics(catalog);
+  const partial = legacyPartialGoWild(catalog);
   const fares = catalog.fares;
   const nonstopFares = fares.filter((fare) => (fare.stops ?? 0) === 0).length;
   const connectionFares = fares.filter((fare) => (fare.stops ?? 0) > 0).length;
@@ -60,6 +61,10 @@ export function DataView({ catalog }: { catalog: StaticCatalog }) {
           }
         />
       </Layer>
+      <Layer title="Free schedule lookup" detail="FlightConnections public route calendars show dated Frontier timetables. Verified DEN–MCO on 2026-10-15: F9 4646 at 06:40–12:19, F9 3312 at 10:40–16:23, F9 2520 at 19:02–00:43 the next day. Checked 2026-10-02. This is an external lookup, not a complete imported feed.">
+        <a href="https://www.flightconnections.com/flights-from-den-to-mco#F9" target="_blank" rel="noopener noreferrer" className="text-sm text-[#3dbe7a]">Verified source example ↗</a>
+      </Layer>
+      {partial.length ? <details className="text-sm"><summary className="cursor-pointer py-2">Incomplete historical fare records ({partial.length})</summary><p className="mb-3 text-[#8b9790]">Full connecting paths were not retained. These records are excluded from flight search.</p><ul className="space-y-2">{partial.map((row) => <li key={row.itineraryId} className="rounded border border-dashed border-[#24302a] p-3">{row.origin} → {row.destination} · {formatDay(row.date)} · GoWild {fareText(row.goWild)}<p className="text-xs text-[#8b9790]">Checked {formatChecked(row.checkedAt)}. Source: Frontier. Full path unavailable.</p></li>)}</ul></details> : null}
       <Layer title="GitHub research" detail="Schema only. GWsearch is CC BY-NC-ND and is not copied. FrontierWildWatch is not a runtime after HTTP 406. No tokens. No GoWild-then-Standard fallback.">
         <Fact label="Runtime dependence" value="none" />
       </Layer>

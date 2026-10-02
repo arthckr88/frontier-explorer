@@ -10,6 +10,14 @@ Three layers stay separate:
 
 `npm run normalize:network` composes `data/network.json` from the official routes plus observations, checks, summaries, and fares. Pages deploys from `main` only, through `.github/workflows/deploy.yml`. GitHub Actions does not call Frontier. There is no hourly crawl.
 
+## Flight search
+
+Search accepts a city or airport, departure date, stops, duration, local departure/arrival windows, connecting airport, layover length, and red-eye preference. Timed connections retain every leg and show total elapsed time. URL filters survive reload/back/navigation; browser preferences apply to new searches. Mobile has separate Results and Map views. Past fares and incomplete legacy connections are kept out of current flight offers.
+
+Every route search includes a FlightConnections public timetable link, filtered to Frontier's calendar when that route is served. This supports free, current schedule lookup beyond the small local dataset. DEN–MCO's October 15, 2026 calendar was verified on October 2 (F9 4646, 3312, 2520). Users select their date on that external page; the link does not imply that every historical official route still has current Frontier flights. Frontier remains the price/booking confirmation source.
+
+**A complete free schedule import is not established.** Embedded search still reads 410 dated observations across 21 pairs, with gaps in dates, plus separately dated fares. FlightConnections is an external lookup, not an imported feed. Flightmapper's DEN–MCO schedules ended April 13, 2026 when checked, so they were rejected. No marketing fare date, route edge, or expired timetable creates a flight observation. No network-wide collection, signed mobile handshake, or paid source was added.
+
 ## Local commands
 
 ```bash

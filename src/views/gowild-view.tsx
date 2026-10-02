@@ -1,10 +1,12 @@
 import { AppLink } from "@/components/app-link";
-import { clock, fareText, formatChecked, formatDay, formatElapsed, legacyPartialGoWild, storedGoWild, type GoWildFare } from "@/static/adapter";
+import { calendarToday, clock, fareText, formatChecked, formatDay, formatElapsed, storedGoWild, type GoWildFare } from "@/static/adapter";
 import type { StaticCatalog } from "@/static/types";
 
 export function GoWildView({ catalog }: { catalog: StaticCatalog }) {
-  const rows = storedGoWild(catalog);
-  const legacy = legacyPartialGoWild(catalog);
+  const all = storedGoWild(catalog);
+  const today = calendarToday();
+  const rows = all.filter((row) => row.date >= today);
+  const past = all.filter((row) => row.date < today);
   const cheapest = [...rows].sort((a, b) => a.goWild.total - b.goWild.total)[0] ?? null;
   const recent: string[] = [];
   for (const row of [...rows].sort((a, b) => b.checkedAt.localeCompare(a.checkedAt))) {
@@ -25,7 +27,7 @@ export function GoWildView({ catalog }: { catalog: StaticCatalog }) {
         <div className="rounded border border-[#24302a] p-3"><dt className="text-[#8b9790]">Recently observed</dt><dd className="font-mono">{recent.join(", ") || "—"}</dd></div>
       </dl>
       {rows.length === 0 ? (
-        <p className="text-sm text-[#8b9790]">No GoWild fare on these flights.</p>
+        <p className="text-sm text-[#8b9790]">No future GoWild prices have been captured. Check current prices with Frontier.</p>
       ) : (
         <ul className="space-y-3">
           {rows.map((row) => (
@@ -35,25 +37,8 @@ export function GoWildView({ catalog }: { catalog: StaticCatalog }) {
           ))}
         </ul>
       )}
-      {legacy.length > 0 ? (
-        <section className="space-y-3">
-          <h2 className="text-lg font-medium">Legacy partial fare observation</h2>
-          <p className="text-sm text-[#8b9790]">The full path was not retained. These are not bookable trips.</p>
-          <ul className="space-y-3">
-            {legacy.map((row) => (
-              <li key={row.itineraryId} className="rounded border border-dashed border-[#24302a] p-3 text-sm">
-                <p className="font-medium">
-                  {row.origin} → {row.destination}
-                </p>
-                <p className="mt-1">{formatDay(row.date)}</p>
-                <p className="mt-1 text-[#8b9790]">Legacy partial fare observation. The full path was not retained.</p>
-                <div className="mt-1 font-mono">GoWild {fareText(row.goWild)}</div>
-                <p className="mt-1 text-xs text-[#8b9790]">Fares checked {formatChecked(row.checkedAt)}. Source: Frontier.</p>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+      {past.length ? <details className="space-y-3 text-sm"><summary className="cursor-pointer py-2 text-[#8b9790]">Past fare checks ({past.length})</summary><p className="text-xs text-[#e2a84a]">Historical prices for past flight dates. These are not current offers.</p><ul className="space-y-3">{past.map((row) => <li key={row.itineraryId} className="rounded border border-[#24302a] p-3"><ItineraryRow row={row} /></li>)}</ul></details> : null}
+      <AppLink href="/system/data" className="block text-xs text-[#8b9790]">Source details and incomplete fare records →</AppLink>
     </section>
   );
 }

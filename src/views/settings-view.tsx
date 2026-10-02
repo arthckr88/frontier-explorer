@@ -1,52 +1,35 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-const KEY = "frontier-explorer-settings";
-
-type Settings = {
-  fareMode: "standard" | "discount_den" | "gowild";
-  excludeRedEyes: boolean;
-  maxStops: number;
-};
-
-const DEFAULTS: Settings = { fareMode: "standard", excludeRedEyes: true, maxStops: 0 };
+import { DEFAULT_SETTINGS, readSettings, SETTINGS_KEY, type SearchSettings } from "@/static/search";
 
 export function SettingsView() {
-  const [settings, setSettings] = useState<Settings>(DEFAULTS);
+  const [settings, setSettings] = useState<SearchSettings>(DEFAULT_SETTINGS);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    const raw = window.localStorage.getItem(KEY);
-    if (!raw) return;
-    let next = DEFAULTS;
-    try {
-      next = { ...DEFAULTS, ...JSON.parse(raw) };
-    } catch {
-      next = DEFAULTS;
-    }
-    queueMicrotask(() => setSettings(next));
+    queueMicrotask(() => setSettings(readSettings()));
   }, []);
 
   function save(event: React.FormEvent) {
     event.preventDefault();
-    window.localStorage.setItem(KEY, JSON.stringify(settings));
-    setSaved(true);
+    try { window.localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); setSaved(true); } catch { setSaved(false); }
   }
 
   return (
     <section className="mx-auto max-w-xl space-y-4">
       <header>
         <h1 className="text-2xl font-medium">Preferences</h1>
-        <p className="text-sm text-[#8b9790]">Personal planning defaults saved in this browser. They are not Frontier route facts. Home airports stay OAK, then SFO.</p>
+        <p className="text-sm text-[#8b9790]">New searches use these defaults. Fare mode highlights your preferred fare; all fare types remain visible. Saved in this browser.</p>
       </header>
       <form onSubmit={save} className="space-y-3 rounded-md border border-[#24302a] bg-[#12161b] p-4 text-sm">
         <label className="block">
           Fare mode
           <select
             name="fareMode"
+            aria-label="Fare mode"
             value={settings.fareMode}
-            onChange={(event) => setSettings({ ...settings, fareMode: event.target.value as Settings["fareMode"] })}
+            onChange={(event) => setSettings({ ...settings, fareMode: event.target.value as SearchSettings["fareMode"] })}
             className="mt-1 w-full rounded border border-[#24302a] bg-[#090b0d] px-2 py-2"
           >
             <option value="standard">Standard</option>
@@ -66,6 +49,7 @@ export function SettingsView() {
           Max stops
           <input
             type="number"
+            aria-label="Max stops"
             min={0}
             max={2}
             value={settings.maxStops}

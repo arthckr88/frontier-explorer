@@ -1,318 +1,92 @@
 "use client";
 
-import { useState } from "react";
-import { AppLink } from "@/components/app-link";
-import { calendarToday, clock, fareText, formatChecked, formatElapsed, staticFareLookup } from "@/static/adapter";
-import type { FareQuery, StaticCatalog, StoredFlight } from "@/static/types";
+import { useId, useState } from "react";
+import { calendarToday } from "@/static/adapter";
+import { DEFAULT_SETTINGS, EMPTY_QUERY, resolveAirport, type SearchSettings } from "@/static/search";
+import type { FareQuery, StaticCatalog } from "@/static/types";
 
-const EMPTY: FareQuery = {
-  origin: "",
-  destination: "",
-  date: "",
-  maxStops: 0,
-  maxDuration: null,
-  depart: "",
-  arrive: "",
-  sort: "stops",
-  excludeRedEyes: true,
-  via: "",
-  layover: "",
-};
+const control = "h-10 w-full min-w-0 rounded-md border border-[#304037] bg-[#090b0d] px-2.5 text-sm text-[#e7ece8] focus:border-[#3dbe7a] focus:outline-none focus:ring-1 focus:ring-[#3dbe7a]";
 
-const control = "h-7 w-full min-w-0 rounded border border-[#24302a] bg-[#090b0d] px-1 text-xs text-[#e7ece8]";
-
-export function SearchPanel({
-  catalog,
-  initial,
-  onSearch,
-  onFromChange,
-}: {
-  catalog: StaticCatalog;
-  initial?: Partial<FareQuery> | null;
-  onSearch: (query: FareQuery) => void;
-  onFromChange?: (code: string) => void;
+export function SearchPanel({ catalog, initial, onSearch, onFromChange, settings = DEFAULT_SETTINGS }: {
+  catalog: StaticCatalog; initial?: Partial<FareQuery> | null; onSearch: (query: FareQuery) => void;
+  onFromChange?: (code: string) => void; settings?: SearchSettings;
 }) {
-  const [from, setFrom] = useState(initial?.origin ?? "");
-  const [to, setTo] = useState(initial?.destination ?? "");
-  const [date, setDate] = useState(initial?.date || calendarToday());
-  const [maxStops, setMaxStops] = useState(initial?.maxStops ?? 0);
-  const [maxDuration, setMaxDuration] = useState(initial?.maxDuration ?? null);
-  const [depart, setDepart] = useState<FareQuery["depart"]>(initial?.depart ?? "");
-  const [arrive, setArrive] = useState<FareQuery["arrive"]>(initial?.arrive ?? "");
-  const [sort, setSort] = useState<FareQuery["sort"]>(initial?.sort ?? "stops");
-  const [excludeRedEyes, setExcludeRedEyes] = useState(initial?.excludeRedEyes ?? true);
-  const [via, setVia] = useState(initial?.via ?? "");
-  const [layover, setLayover] = useState<FareQuery["layover"]>(initial?.layover ?? "");
-  const airports = [...catalog.airports].sort((a, b) => a.iata.localeCompare(b.iata));
-  const activeQuery = initial?.origin && initial.destination && initial.date ? ({ ...EMPTY, ...initial } as FareQuery) : null;
-
+  const [draft, setDraft] = useState<FareQuery>({ ...EMPTY_QUERY, maxStops: settings.maxStops, excludeRedEyes: settings.excludeRedEyes, ...initial, date: initial?.date || calendarToday() });
+  const [mode, setMode] = useState(initial && !initial.date ? "explore" : "flights");
+  const [advanced, setAdvanced] = useState(false);
+  const [error, setError] = useState("");
+  const activeFilters = Number(draft.maxDuration != null) + Number(Boolean(draft.depart)) + Number(Boolean(draft.arrive)) + Number(Boolean(draft.via)) + Number(Boolean(draft.layover)) + Number(draft.excludeRedEyes);
+  function change<T extends keyof FareQuery>(key: T, value: FareQuery[T]) { setDraft((current) => ({ ...current, [key]: value })); setError(""); }
   function submit(event: React.FormEvent) {
     event.preventDefault();
-    onSearch({
-      ...EMPTY,
-      origin: from.trim().toUpperCase(),
-      destination: to.trim().toUpperCase(),
-      date,
-      maxStops,
-      maxDuration,
-      depart,
-      arrive,
-      sort,
-      excludeRedEyes,
-      via,
-      layover,
-    });
+    const origin = resolveAirport(catalog, draft.origin);
+    const destination = draft.destination.trim() ? resolveAirport(catalog, draft.destination) : "";
+    const via = draft.via?.trim() ? resolveAirport(catalog, draft.via) : "";
+    if (!origin || (draft.destination.trim() && !destination) || (draft.via?.trim() && !via)) { setError("Choose an airport from the suggestions."); return; }
+    if (origin === destination) { setError("Choose two different airports."); return; }
+    if (mode === "flights" && !destination) { setError("Choose a destination, or use Explore routes to see where you can fly."); return; }
+    onSearch({ ...draft, origin, destination, via, date: mode === "flights" ? draft.date : "" });
+    setAdvanced(false);
   }
-
   return (
-    <>
-      <form className="grid shrink-0 grid-cols-2 gap-1 rounded-[10px] border border-[#24302a] bg-[#090b0d]/95 p-1.5 lg:flex lg:flex-nowrap lg:items-end lg:gap-1 lg:overflow-x-auto" onSubmit={submit}>
-        <Field label="From" className="lg:w-[4.6rem] lg:shrink-0">
-          <input
-            name="from"
-            required
-            minLength={3}
-            maxLength={3}
-            pattern="[A-Za-z]{3}"
-            autoCapitalize="characters"
-            autoCorrect="off"
-            spellCheck={false}
-            enterKeyHint="next"
-            list="frontier-airports"
-            value={from}
-            onChange={(event) => {
-              const next = event.target.value.toUpperCase();
-              setFrom(next);
-              onFromChange?.(next);
-            }}
-            placeholder="DEN"
-            aria-label="From"
-            className={`${control} uppercase`}
-          />
-        </Field>
-        <Field label="To" className="lg:w-[4.6rem] lg:shrink-0">
-          <input
-            name="to"
-            required
-            minLength={3}
-            maxLength={3}
-            pattern="[A-Za-z]{3}"
-            autoCapitalize="characters"
-            autoCorrect="off"
-            spellCheck={false}
-            enterKeyHint="next"
-            list="frontier-airports"
-            value={to}
-            onChange={(event) => setTo(event.target.value.toUpperCase())}
-            placeholder="MCO"
-            aria-label="To"
-            className={`${control} uppercase`}
-          />
-        </Field>
-        <Field label="Date" className="lg:w-[8.6rem] lg:shrink-0">
-          <input name="date" type="date" required value={date} onChange={(event) => setDate(event.target.value)} aria-label="Date" className={control} />
-        </Field>
-        <Field label="Stops" className="lg:w-[6.4rem] lg:shrink-0">
-          <select aria-label="Stops" value={maxStops} onChange={(event) => setMaxStops(Number(event.target.value))} className={control}>
-            <option value={0}>Nonstop only</option>
-            <option value={1}>Up to 1 stop</option>
-            <option value={2}>Up to 2 stops</option>
-          </select>
-        </Field>
-        <Field label="Duration" className="lg:w-[6.6rem] lg:shrink-0">
-          <select aria-label="Duration" value={maxDuration ?? ""} onChange={(event) => setMaxDuration(event.target.value ? Number(event.target.value) : null)} className={control}>
-            <option value="">Any</option>
-            <option value={300}>Under 5 hours</option>
-            <option value={480}>Under 8 hours</option>
-            <option value={720}>Under 12 hours</option>
-          </select>
-        </Field>
-        <Field label="Departure" className="lg:w-[7rem] lg:shrink-0">
-          <select aria-label="Departure time" value={depart} onChange={(event) => setDepart(event.target.value as FareQuery["depart"])} className={control}>
-            <option value="">Any</option>
-            <option value="morning">Morning (5 AM–12 PM)</option>
-            <option value="afternoon">Afternoon (12–5 PM)</option>
-            <option value="evening">Evening (5–10 PM)</option>
-          </select>
-        </Field>
-        <Field label="Arrival" className="lg:w-[7rem] lg:shrink-0">
-          <select aria-label="Arrival time" value={arrive} onChange={(event) => setArrive(event.target.value as FareQuery["arrive"])} className={control}>
-            <option value="">Any</option>
-            <option value="morning">Morning (5 AM–12 PM)</option>
-            <option value="afternoon">Afternoon (12–5 PM)</option>
-            <option value="evening">Evening (5–10 PM)</option>
-          </select>
-        </Field>
-        <Field label="Layover" className="lg:w-[6.4rem] lg:shrink-0">
-          <select aria-label="Layover" value={layover} onChange={(event) => setLayover(event.target.value as FareQuery["layover"])} className={control}>
-            <option value="">Any</option>
-            <option value="short">Short (60–90 min)</option>
-            <option value="normal">Normal (75–180 min)</option>
-            <option value="long">Long (2 hours or more)</option>
-          </select>
-        </Field>
-        <Field label="Connecting airport" className="lg:w-[7.2rem] lg:shrink-0">
-          <input
-            aria-label="Connecting airport"
-            list="frontier-airports"
-            maxLength={3}
-            value={via}
-            onChange={(event) => setVia(event.target.value.toUpperCase())}
-            placeholder="Any"
-            className={`${control} uppercase`}
-          />
-        </Field>
-        <Field label="Sort" className="lg:w-[6.6rem] lg:shrink-0">
-          <select aria-label="Sort" value={sort} onChange={(event) => setSort(event.target.value as FareQuery["sort"])} className={control}>
-            <option value="stops">Fewest stops</option>
-            <option value="duration">Shortest trip</option>
-            <option value="depart">Earliest departure</option>
-          </select>
-        </Field>
-        <label className="col-span-2 flex h-7 items-center gap-1 text-[11px] text-[#8b9790] lg:w-auto lg:shrink-0">
-          <input name="redeye" type="checkbox" role="switch" checked={excludeRedEyes} onChange={(event) => setExcludeRedEyes(event.target.checked)} />
-          Exclude red-eyes
-        </label>
-        <button className="col-span-2 h-7 rounded bg-[#3dbe7a] px-2 text-xs font-medium text-[#090b0d] lg:w-auto lg:shrink-0" type="submit">
-          Search
-        </button>
-        <datalist id="frontier-airports">
-          {airports.map((airport) => (
-            <option key={airport.iata} value={airport.iata}>
-              {airport.city}
-            </option>
-          ))}
-        </datalist>
-      </form>
-      {activeQuery ? (
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 max-h-[42%] overflow-auto px-1 pb-1">
-          <div className="pointer-events-auto">
-            <ResultList catalog={catalog} query={activeQuery} />
-          </div>
+    <form className="relative z-20 shrink-0 rounded-lg border border-[#24302a] bg-[#12161b] p-3" onSubmit={submit}>
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <div className="flex gap-1 text-xs" aria-label="Search mode">
+          <button type="button" aria-pressed={mode === "flights"} onClick={() => setMode("flights")} className={`rounded px-3 py-1.5 ${mode === "flights" ? "bg-[#24302a] text-[#e7ece8]" : "text-[#8b9790]"}`}>Find flights</button>
+          <button type="button" aria-pressed={mode === "explore"} onClick={() => setMode("explore")} className={`rounded px-3 py-1.5 ${mode === "explore" ? "bg-[#24302a] text-[#e7ece8]" : "text-[#8b9790]"}`}>Explore routes</button>
         </div>
-      ) : null}
-    </>
-  );
-}
-
-function ResultList({ catalog, query }: { catalog: StaticCatalog; query: FareQuery }) {
-  const result = staticFareLookup(catalog, query);
-  return (
-    <div id="results" className="space-y-1">
-      {result.message ? <p className="rounded border border-[#24302a] bg-[#12161b]/95 px-2 py-1 text-xs text-[#8b9790]">{result.message}</p> : null}
-      {result.officialNonstop && result.flights.length === 0 ? (
-        <p className="rounded border border-[#24302a] bg-[#12161b]/95 px-2 py-1 text-xs">
-          <AppLink className="text-[#3dbe7a]" href={`/routes/${query.origin}/${query.destination}`}>
-            Open {query.origin} → {query.destination}
-          </AppLink>
-        </p>
-      ) : null}
-      {result.flights.map((flight) => (
-        <FlightCard key={flight.id} flight={flight} />
-      ))}
-      {result.paths.map((path) => (
-        <p key={path.airports.join("-")} className="rounded border border-[#24302a] bg-[#12161b]/95 px-2 py-1 text-xs">
-          {path.airports.join(" → ")} · {path.stops} stop{path.stops === 1 ? "" : "s"} · {path.kind === "timed" ? path.label : "Possible network path"}
-        </p>
-      ))}
-    </div>
-  );
-}
-
-function FlightCard({ flight }: { flight: StoredFlight }) {
-  const stops = flight.stops === 0 ? "Nonstop" : `${flight.stops} stop${flight.stops === 1 ? "" : "s"}`;
-  const priced = pricedFares(flight);
-  const checked = formatChecked(flight.checkedAt);
-  const segments = flight.segments ?? [];
-  const via = segments.slice(0, -1).map((segment) => segment.destination);
-  if (flight.legacyPartial) {
-    return (
-      <article className="rounded border border-dashed border-[#24302a] bg-[#12161b]/95 px-2 py-1.5" data-date={flight.date}>
-        <p className="text-xs font-medium">
-          {flight.origin} → {flight.destination}
-        </p>
-        <p className="text-[11px] text-[#8b9790]">Legacy partial fare observation. The full path was not retained.</p>
-        {priced.length === 0 ? (
-          <p className="text-[11px] text-[#8b9790]">Fare not checked for this date.</p>
-        ) : (
-          <>
-            <dl className="mt-1 grid grid-cols-3 gap-1 text-xs">
-              {priced.map((item) => (
-                <Fare key={item.label} label={item.label} value={fareText(item.fare)} />
-              ))}
-            </dl>
-            <p className="mt-1 text-[11px] text-[#8b9790]">{checked ? `Fares checked ${checked}. ` : null}Source: Frontier.</p>
-          </>
-        )}
-      </article>
-    );
-  }
-  return (
-    <article className="rounded border border-[#24302a] bg-[#12161b]/95 px-2 py-1.5" data-flight={flight.flightNumber} data-date={flight.date}>
-      <div className="flex flex-wrap items-center gap-1 text-[11px]">
-        <span className="rounded bg-[#181e24] px-1.5 py-0.5 font-medium">{segments.length > 1 ? segments.map((segment) => `F9 ${segment.flightNumber}`).join(" + ") : `F9 ${flight.flightNumber}`}</span>
-        <span className="rounded bg-[#181e24] px-1.5 py-0.5">{stops}</span>
-        <span className="text-[#8b9790]">{formatElapsed(flight.durationMinutes)}</span>
+        <button type="button" aria-expanded={advanced} aria-controls="advanced-filters" onClick={() => setAdvanced(!advanced)} className="rounded border border-[#304037] px-2.5 py-1.5 text-xs">Filters{activeFilters ? ` (${activeFilters})` : ""}</button>
       </div>
-      <div className="text-xs font-medium">
-        {flight.stops === 0 ? (
-          <>
-            {flight.origin} {clock(flight.departureLocal)} → {flight.destination} {clock(flight.arrivalLocal)}
-          </>
-        ) : (
-          <>
-            {flight.origin} → {flight.destination}, {flight.stops} stop{flight.stops === 1 ? "" : "s"}
-            {via.length ? ` via ${via.join(", ")}` : ""}, {segments.map((segment) => `F9 ${segment.flightNumber}`).join(" + ")}
-          </>
-        )}
+      <div className="grid grid-cols-[1fr_2.25rem_1fr] items-end gap-2 md:grid-cols-[minmax(0,1fr)_2.25rem_minmax(0,1fr)_9rem_8rem_6rem]">
+        <AirportInput catalog={catalog} label="From" value={draft.origin} onChange={(value) => { change("origin", value); onFromChange?.(resolveAirport(catalog, value)); }} placeholder="City or airport" />
+        <button type="button" aria-label="Swap airports" className="h-10 rounded border border-[#304037] text-lg" onClick={() => { setDraft((current) => ({ ...current, origin: current.destination, destination: current.origin })); onFromChange?.(resolveAirport(catalog, draft.destination)); }}>⇄</button>
+        <AirportInput catalog={catalog} label={mode === "flights" ? "To" : "To (optional)"} value={draft.destination} onChange={(value) => change("destination", value)} placeholder={mode === "flights" ? "City or airport" : "Anywhere"} />
+        <Field label="Date" className="col-span-2 md:col-span-1">
+          <input type="date" aria-label="Date" disabled={mode === "explore"} required={mode === "flights"} value={draft.date} onInput={(event) => change("date", event.currentTarget.value)} className={`${control} disabled:opacity-40`} />
+        </Field>
+        <Field label="Stops">
+          <select aria-label="Stops" value={draft.maxStops} onChange={(event) => change("maxStops", Number(event.target.value))} className={control}><option value={0}>Nonstop</option><option value={1}>Up to 1 stop</option><option value={2}>Up to 2 stops</option></select>
+        </Field>
+        <button className="col-span-3 h-10 rounded-md bg-[#3dbe7a] px-4 text-sm font-semibold text-[#090b0d] hover:bg-[#62d797] md:col-span-1" type="submit">{mode === "flights" ? "Search" : "Explore"}</button>
       </div>
-      {segments.length > 1 ? (
-        <p className="text-[11px] text-[#8b9790]">
-          {segments.map((segment) => `F9 ${segment.flightNumber} ${clock(segment.departureLocal)}–${clock(segment.arrivalLocal)}`).join(" · ")}
-        </p>
-      ) : null}
-      {priced.length === 0 ? (
-        <p className="text-[11px] text-[#8b9790]">Fare not checked for this date.</p>
-      ) : (
-        <>
-          <dl className="mt-1 grid grid-cols-3 gap-1 text-xs">
-            {priced.map((item) => (
-              <Fare key={item.label} label={item.label} value={fareText(item.fare)} />
-            ))}
-          </dl>
-          <p className="mt-1 text-[11px] text-[#8b9790]">{checked ? `Fares checked ${checked}. ` : null}Source: Frontier.</p>
-        </>
-      )}
-    </article>
+      {advanced ? <div id="advanced-filters" className="mt-3 grid gap-3 border-t border-[#24302a] pt-3 sm:grid-cols-2 lg:grid-cols-4">
+        <Field label="Total duration"><select aria-label="Duration" value={draft.maxDuration ?? ""} onChange={(event) => change("maxDuration", event.target.value ? Number(event.target.value) : null)} className={control}><option value="">Any duration</option><option value={300}>Under 5 hours</option><option value={480}>Under 8 hours</option><option value={720}>Under 12 hours</option></select></Field>
+        <TimeField label="Departure" value={draft.depart} onChange={(value) => change("depart", value)} />
+        <TimeField label="Arrival" value={draft.arrive} onChange={(value) => change("arrive", value)} />
+        <Field label="Layover"><select aria-label="Layover" value={draft.layover} onChange={(event) => change("layover", event.target.value as FareQuery["layover"])} className={control}><option value="">Any layover</option><option value="short">60–89 minutes</option><option value="normal">75–180 minutes</option><option value="long">2 hours or more</option></select></Field>
+        <AirportInput catalog={catalog} label="Connecting airport" value={draft.via || ""} onChange={(value) => change("via", value)} placeholder="Any" />
+        <label className="flex min-h-10 items-center gap-2 text-sm"><input type="checkbox" role="switch" checked={draft.excludeRedEyes} onChange={(event) => change("excludeRedEyes", event.target.checked)} />Exclude red-eyes</label>
+        <button type="button" onClick={() => setDraft((current) => ({ ...current, maxDuration: null, depart: "", arrive: "", via: "", layover: "", excludeRedEyes: false }))} className="text-left text-sm text-[#3dbe7a]">Clear filters</button>
+      </div> : null}
+      {error ? <p role="alert" className="mt-2 text-sm text-[#e2a84a]">{error}</p> : null}
+    </form>
   );
 }
 
-function pricedFares(flight: StoredFlight) {
-  return [
-    flight.standard ? { label: "Standard", fare: flight.standard } : null,
-    flight.discountDen ? { label: "Discount Den", fare: flight.discountDen } : null,
-    flight.goWild ? { label: "GoWild", fare: flight.goWild } : null,
-  ].filter((item): item is { label: string; fare: NonNullable<StoredFlight["standard"]> } => Boolean(item));
+function TimeField({ label, value, onChange }: { label: string; value: FareQuery["depart"]; onChange: (value: FareQuery["depart"]) => void }) {
+  return <Field label={label}><select aria-label={`${label} time`} value={value} onChange={(event) => onChange(event.target.value as FareQuery["depart"])} className={control}><option value="">Any time</option><option value="morning">Morning · 5 AM–noon</option><option value="afternoon">Afternoon · noon–5 PM</option><option value="evening">Evening · 5–10 PM</option></select></Field>;
 }
 
-function Fare({ label, value }: { label: string; value: string }) {
-  const [frontier, exact] = value.split(" · ");
-  return (
-    <div className="rounded border border-[#24302a] px-1.5 py-0.5">
-      <dt className="font-mono text-[9px] uppercase tracking-wide text-[#8b9790]">{label}</dt>
-      <dd className="font-mono text-[11px]">
-        <div>{frontier}</div>
-        {exact ? <div className="text-[10px] text-[#8b9790]">{exact}</div> : null}
-      </dd>
-    </div>
-  );
+export function AirportInput({ catalog, label, value, onChange, placeholder }: { catalog: StaticCatalog; label: string; value: string; onChange: (value: string) => void; placeholder: string }) {
+  const id = useId();
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState(0);
+  const text = value.toLowerCase().trim();
+  const preferred = ["OAK", "SFO", "LAS", "DEN", "MCO", "LAX"];
+  const options = catalog.airports.filter((airport) => !text || `${airport.iata} ${airport.city} ${airport.name}`.toLowerCase().includes(text)).sort((a, b) => !text ? (preferred.indexOf(a.iata) < 0 ? 99 : preferred.indexOf(a.iata)) - (preferred.indexOf(b.iata) < 0 ? 99 : preferred.indexOf(b.iata)) : Number(b.iata.toLowerCase() === text) - Number(a.iata.toLowerCase() === text)).slice(0, 7);
+  function choose(code: string) { onChange(code); setOpen(false); }
+  return <Field label={label} className="relative">
+    <input aria-label={label} role="combobox" aria-autocomplete="list" aria-expanded={open} aria-controls={id} aria-activedescendant={open && options[active] ? `${id}-${active}` : undefined} value={value} placeholder={placeholder} autoComplete="off" spellCheck={false} onFocus={() => setOpen(true)} onBlur={() => setOpen(false)} onChange={(event) => { onChange(event.target.value); setOpen(true); setActive(0); }} onKeyDown={(event) => {
+      if (event.key === "Escape") setOpen(false);
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); setOpen(true); setActive((current) => options.length ? (current + (event.key === "ArrowDown" ? 1 : options.length - 1)) % options.length : 0); }
+      if (event.key === "Enter" && open && options[active]) { event.preventDefault(); choose(options[active]!.iata); }
+    }} className={control} />
+    {open ? <div id={id} role="listbox" className="absolute inset-x-0 top-full z-50 mt-1 max-h-72 overflow-auto rounded-md border border-[#304037] bg-[#12161b] p-1 shadow-xl">
+      {options.length ? options.map((airport, index) => <button key={airport.iata} id={`${id}-${index}`} type="button" role="option" aria-selected={active === index} onMouseDown={(event) => event.preventDefault()} onClick={() => choose(airport.iata)} className={`flex w-full items-center gap-2 rounded px-2 py-2 text-left text-sm ${active === index ? "bg-[#24302a]" : "hover:bg-[#181e24]"}`}><span className="font-mono text-[#3dbe7a]">{airport.iata}</span><span className="min-w-0 truncate">{airport.city}<span className="block truncate text-[10px] text-[#8b9790]">{airport.name}</span></span></button>) : <p className="p-2 text-xs text-[#8b9790]">No matching airport. Try a city or airport code.</p>}
+    </div> : null}
+  </Field>;
 }
 
 function Field({ label, children, className = "" }: { label: string; children: React.ReactNode; className?: string }) {
-  return (
-    <label className={`grid min-w-0 gap-0.5 ${className}`}>
-      <span className="truncate font-mono text-[9px] uppercase tracking-[0.08em] text-[#8b9790]">{label}</span>
-      {children}
-    </label>
-  );
+  return <label className={`grid min-w-0 gap-1 ${className}`}><span className="text-[11px] font-medium text-[#aab6ae]">{label}</span>{children}</label>;
 }

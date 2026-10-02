@@ -66,7 +66,7 @@ export function PlannerView({
         </label>
         <label className="text-sm text-[#8b9790]">
           Date
-          <input type="date" value={day} onChange={(event) => setDay(event.target.value)} className="mt-1 w-full rounded border border-[#24302a] bg-[#090b0d] px-3 py-2 text-sm text-[#e7ece8]" aria-label="Date" />
+          <input type="date" value={day} onInput={(event) => setDay(event.currentTarget.value)} className="mt-1 w-full rounded border border-[#24302a] bg-[#090b0d] px-3 py-2 text-sm text-[#e7ece8]" aria-label="Date" />
         </label>
         <label className="text-sm text-[#8b9790]">
           Stops

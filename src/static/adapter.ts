@@ -2,6 +2,7 @@ import { greatCircleArc, reachable } from "@/lib/graph/arcs";
 import { searchItineraries, type FlightSegment } from "@/lib/graph/search";
 import type { UntimedPath } from "@/lib/graph/untimed";
 import { isRedEyeSegment } from "@/lib/time/redeye";
+import { connectionMinutes } from "@/lib/time/connection";
 import { normalizeFareItinerary, viaAirports, type FareSegment } from "@/site/itinerary";
 import type { BrowserFareRecord } from "@/site/network";
 import type { MapAirport, MapRoute } from "@/server/queries/read";
@@ -186,7 +187,7 @@ export function staticChrome(catalog: StaticCatalog): { status: string; links: C
   if (storedGoWild(catalog).length > 0 || legacyPartialGoWild(catalog).length > 0) links.push({ href: "/gowild", label: "GoWild" });
   links.push({ href: "/system/data", label: "Data" }, { href: "/settings", label: "Settings" });
   return {
-    status: through ? `Schedule through ${formatDay(through)}.` : "No schedule yet.",
+    status: through ? "Explore Frontier routes. Flight times and prices are available for selected dates." : "Explore Frontier routes. Check flight times with Frontier.",
     links,
   };
 }
@@ -243,12 +244,13 @@ function connectionPaths(catalog: StaticCatalog, query: FareQuery) {
   const destination = query.destination.trim().toUpperCase();
   const via = query.via?.trim().toUpperCase() ?? "";
   const graph = networkGraph(catalog);
-  const timed = timedConnections(catalog, query).filter((path) => !via || path.airports.includes(via));
-  if (query.layover) return timed;
+  const timed = timedConnections(catalog, query).filter((path) => !via || path.airports.slice(1, -1).includes(via));
+  timed.sort((a, b) => a.itinerary && b.itinerary ? compareFlights(a.itinerary, b.itinerary, query.sort) : 0);
+  if (query.layover) return timed.slice(0, 50);
   const timedKeys = new Set(timed.map((path) => path.airports.join(">")));
   const possible = boundedPaths(graph, [origin], [destination], query.maxStops)
     .filter((path) => path.stops > 0)
-    .filter((path) => !via || path.airports.includes(via))
+    .filter((path) => !via || path.airports.slice(1, -1).includes(via))
     .filter((path) => !timedKeys.has(path.airports.join(">")))
     .slice(0, 6)
     .map((path) => ({
@@ -257,7 +259,7 @@ function connectionPaths(catalog: StaticCatalog, query: FareQuery) {
       kind: "possible" as const,
       label: "Possible network path",
     }));
-  return [...timed, ...possible].sort((a, b) => a.stops - b.stops || a.airports.join(">").localeCompare(b.airports.join(">"))).slice(0, 8);
+  return [...timed.slice(0, 50), ...possible];
 }
 
 function timedConnections(catalog: StaticCatalog, query: FareQuery) {
@@ -266,7 +268,7 @@ function timedConnections(catalog: StaticCatalog, query: FareQuery) {
   const destination = query.destination.trim().toUpperCase();
   const flights: FlightSegment[] = [];
   for (const flight of catalog.network.observations) {
-    if (flight.date !== query.date) continue;
+    if (flight.date < query.date || flight.date > (addDays(query.date, 2) ?? query.date)) continue;
     const from = points.get(flight.origin);
     const to = points.get(flight.destination);
     if (!from?.timezone || !to?.timezone) continue;
@@ -292,17 +294,29 @@ function timedConnections(catalog: StaticCatalog, query: FareQuery) {
     allowIntentionalStopover: !query.layover,
     allowMultiDay: false,
     excludeRedEyes: query.excludeRedEyes,
-    maxJourneyHours: 36,
+    maxJourneyHours: query.maxDuration != null ? Math.min(36, query.maxDuration / 60) : 36,
     preferVegasStopover: false,
   })
     .filter((itinerary) => itinerary.stops > 0)
     .filter((itinerary) => layoverMatches(itinerary.connections, query.layover))
-    .map((itinerary) => ({
-      airports: [itinerary.segments[0]?.origin, ...itinerary.segments.map((segment) => segment.destination)].filter((code): code is string => Boolean(code)),
-      stops: itinerary.stops,
-      kind: "timed" as const,
-      label: itinerary.segments.map((segment) => `F9 ${segment.flightNumber ?? ""}`.trim()).join(" · "),
-    }));
+    .map((itinerary) => {
+      const segments: FareSegment[] = itinerary.segments.map((segment) => ({
+        carrier: "F9", flightNumber: segment.flightNumber ?? "", origin: segment.origin, destination: segment.destination,
+        departureLocal: segment.departureLocal, arrivalLocal: segment.arrivalLocal,
+      }));
+      const first = segments[0]!;
+      const last = segments[segments.length - 1]!;
+      const fare = catalog.fares.find((item) => item.date === query.date && normalizeFareItinerary(item).completeness === "complete" && normalizeFareItinerary(item).segments.map((segment) => `${segment.origin}|${segment.destination}|${segment.flightNumber}|${segment.departureLocal.slice(0,16)}|${segment.arrivalLocal.slice(0,16)}`).join(">") === segments.map((segment) => `${segment.origin}|${segment.destination}|${segment.flightNumber}|${segment.departureLocal.slice(0,16)}|${segment.arrivalLocal.slice(0,16)}`).join(">"));
+      const flight: StoredFlight = {
+        id: itinerary.id, origin, destination, date: query.date, flightNumber: first.flightNumber,
+        departureLocal: first.departureLocal, arrivalLocal: last.arrivalLocal, durationMinutes: Math.round(itinerary.elapsedMinutes),
+        stops: itinerary.stops, segments, connections: itinerary.connections, legacyPartial: false,
+        standard: displayFare(fare?.standard ?? null), discountDen: displayFare(fare?.discountDen ?? null), goWild: displayFare(fare?.goWild ?? null),
+        checkedAt: fare?.retrievedAt ?? null, redEye: itinerary.hasRedEye,
+      };
+      return { id: itinerary.id, airports: [origin, ...segments.map((segment) => segment.destination)], stops: itinerary.stops,
+        kind: "timed" as const, label: segments.map((segment) => `F9 ${segment.flightNumber}`).join(" · "), itinerary: flight };
+    }).filter((path) => keepFlight(path.itinerary, query));
 }
 
 function layoverFloor(layover: FareQuery["layover"]) {
@@ -354,7 +368,7 @@ function toStoredFlight(
     arrivalLocal: flight.arrivalLocal,
     durationMinutes: duration,
     stops: 0,
-    segments: fare && (fare.stops ?? 0) === 0 ? normalizeFareItinerary(fare).segments : [],
+    segments: [{ carrier: "F9", flightNumber: flight.flightNumber, origin: flight.origin, destination: flight.destination, departureLocal: flight.departureLocal, arrivalLocal: flight.arrivalLocal }],
     legacyPartial: false,
     standard: displayFare(fare?.standard ?? null),
     discountDen: displayFare(fare?.discountDen ?? null),
@@ -378,11 +392,12 @@ function fareToStoredFlight(fare: BrowserFareRecord, zones: Map<string, AirportR
     stops: itinerary.stops ?? 0,
     segments: itinerary.segments,
     legacyPartial: itinerary.completeness === "legacy_partial_itinerary",
+    connections: itinerary.segments.slice(0, -1).map((segment, index) => ({ airport: segment.destination, minutes: connectionMinutes(segment.arrivalLocal, zones.get(segment.destination)?.timezone ?? "UTC", itinerary.segments[index + 1]!.departureLocal, zones.get(segment.destination)?.timezone ?? "UTC") })),
     standard: displayFare(itinerary.standard),
     discountDen: displayFare(itinerary.discountDen),
     goWild: displayFare(itinerary.goWild),
     checkedAt: itinerary.retrievedAt,
-    redEye: redEye(itinerary.departureLocal, itinerary.arrivalLocal, zones.get(itinerary.origin)?.timezone, zones.get(itinerary.destination)?.timezone),
+    redEye: itinerary.segments.length ? itinerary.segments.some((segment) => redEye(segment.departureLocal, segment.arrivalLocal, zones.get(segment.origin)?.timezone, zones.get(segment.destination)?.timezone)) : redEye(itinerary.departureLocal, itinerary.arrivalLocal, zones.get(itinerary.origin)?.timezone, zones.get(itinerary.destination)?.timezone),
   };
 }
 
@@ -403,6 +418,12 @@ function keepFlight(flight: StoredFlight, query: FareQuery) {
   if (query.depart && bucket(flight.departureLocal) !== query.depart) return false;
   if (query.arrive && bucket(flight.arrivalLocal) !== query.arrive) return false;
   if (query.excludeRedEyes && flight.redEye) return false;
+  if (query.via && !(flight.segments ?? []).slice(0, -1).some((segment) => segment.destination === query.via?.trim().toUpperCase())) return false;
+  if (query.layover) {
+    if (flight.stops === 0 || flight.legacyPartial) return false;
+    const points = flight.connections ?? [];
+    if (!points.length || !layoverMatches(points, query.layover)) return false;
+  }
   return true;
 }
 
