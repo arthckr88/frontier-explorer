@@ -1,0 +1,22 @@
+import fs from 'fs';
+import * as topo from 'topojson-client';
+import { geoConicConformal, geoPath } from 'd3-geo';
+const W = 1000, H = 760;
+const world = JSON.parse(fs.readFileSync('node_modules/world-atlas/countries-50m.json'));
+const us = JSON.parse(fs.readFileSync('node_modules/us-atlas/states-10m.json'));
+const countries = topo.feature(world, world.objects.countries);
+const keep = new Set(['840','124','484','320','084','222','340','558','188','591','170','862','192','044','332','214','630','388','780','052','533','659','662','670','028','212','308','660','796','136','850','092','474','312','531','534','652','663','218','604','328','740','218']);
+const region = { type: 'FeatureCollection', features: countries.features.filter(f => keep.has(String(f.id).padStart(3,'0'))) };
+const proj = geoConicConformal().parallels([20, 45]).rotate([96, 0]).center([0, 0]);
+const frame = { type: 'MultiPoint', coordinates: [[-124.5, 48.8], [-66.8, 47.5], [-80, 5.5], [-104, 17.5], [-61, 18]] };
+proj.fitExtent([[24, 24], [W - 24, H - 24]], frame); proj.clipExtent([[-5,-5],[W+5,H+5]]);
+const path = geoPath(proj).digits(1);
+const land = path(region);
+const states = path(topo.mesh(us, us.objects.states, (a, b) => a !== b));
+const nation = path(topo.mesh(us, us.objects.nation));
+const borders = path(topo.mesh(world, world.objects.countries, (a, b) => a !== b && (keep.has(String(a.id).padStart(3,'0')) || keep.has(String(b.id).padStart(3,'0')))));
+const net = JSON.parse(fs.readFileSync(process.argv[2]));
+const xy = {};
+for (const [c, [lat, lon]] of Object.entries(net.airports)) { const p = proj([lon, lat]); if (p && p[0] > -50 && p[0] < W + 50 && p[1] > -50 && p[1] < H + 50) xy[c] = [Math.round(p[0] * 10) / 10, Math.round(p[1] * 10) / 10]; else xy[c] = null; }
+fs.writeFileSync('basemap.json', JSON.stringify({ W, H, land, states, borders, xy }));
+console.log('land', land.length, 'states', states.length, 'borders', borders.length, 'offmap', Object.entries(xy).filter(([k, v]) => !v).map(([k]) => k).join(','));

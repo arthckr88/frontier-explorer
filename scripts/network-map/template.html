@@ -1,0 +1,353 @@
+<title>Frontier Network Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: enroute-chart map left, flight-planning panel right; stacks on phones. */
+:root{
+  --water:#DCE6EC; --land:#F6F8F4; --state:#C9D3D6; --border:#A9B6BA;
+  --ink:#16252E; --muted:#56656D; --line:#D4DCDF; --panel:#FFFFFF; --chip:#EEF2F3;
+  --now:#0F6E63; --soon:#C2410C; --seas:#6D4AA8; --july:#8C979C;
+  --same:#1D64D8; --long:#9A6A00; --over:#B4233A; --sel:#16252E; --focus:#2563EB;
+  --display:'Archivo Narrow','Arial Narrow',Arial,sans-serif;
+  --body:'Source Sans 3',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --water:#0B141A; --land:#16222A; --state:#26343D; --border:#34444E;
+  --ink:#E4ECEF; --muted:#9AA9B0; --line:#2A3A43; --panel:#111B21; --chip:#1C2A32;
+  --now:#3CC7B4; --soon:#FB8B4B; --seas:#B394F0; --july:#64737A;
+  --same:#6AA8FF; --long:#FACC15; --over:#FB7185; --sel:#FFFFFF; --focus:#7CA8FF; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --water:#0B141A; --land:#16222A; --state:#26343D; --border:#34444E;
+  --ink:#E4ECEF; --muted:#9AA9B0; --line:#2A3A43; --panel:#111B21; --chip:#1C2A32;
+  --now:#3CC7B4; --soon:#FB8B4B; --seas:#B394F0; --july:#64737A;
+  --same:#6AA8FF; --long:#FACC15; --over:#FB7185; --sel:#FFFFFF; --focus:#7CA8FF; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--panel);color:var(--ink);font:15px/1.45 var(--body)}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.app{display:grid;grid-template-columns:minmax(0,1fr) 400px;grid-template-rows:auto minmax(0,1fr);height:100%}
+header{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line)}
+.brand{font:700 21px/1 var(--display);letter-spacing:.3px;white-space:nowrap}
+.brand small{display:block;font:500 12px/1.3 var(--body);color:var(--muted);letter-spacing:0}
+.pick{display:flex;flex-wrap:wrap;gap:8px;align-items:center;flex:1;min-width:0}
+.field{position:relative;flex:1 1 180px;min-width:0;max-width:300px}
+.field label{position:absolute;left:10px;top:5px;font:600 10.5px/1 var(--body);letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}
+.field input{width:100%;height:46px;padding:16px 30px 2px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+.field .x{position:absolute;right:4px;top:9px;width:28px;height:28px;border:0;background:none;color:var(--muted);cursor:pointer;border-radius:6px}
+.list{position:absolute;z-index:20;left:0;right:0;top:48px;max-height:320px;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgb(0 0 0/.18);padding:4px}
+.list button{display:flex;gap:10px;width:100%;text-align:left;border:0;background:none;padding:8px;border-radius:6px;cursor:pointer}
+.list button:hover,.list button.on{background:var(--chip)}
+.list b{font:700 15px var(--display);width:36px}
+.swap{height:46px;width:40px;border:1px solid var(--line);border-radius:8px;background:none;cursor:pointer}
+.mapwrap{position:relative;background:var(--water);overflow:hidden;min-height:0;touch-action:none}
+svg#map{width:100%;height:100%;display:block;cursor:grab}
+svg#map.drag{cursor:grabbing}
+.land{fill:var(--land)} .states{fill:none;stroke:var(--state);stroke-width:.6} .borders{fill:none;stroke:var(--border);stroke-width:.8}
+.r{fill:none;stroke-linecap:round}
+.r.now{stroke:var(--now)} .r.soon{stroke:var(--soon);stroke-dasharray:5 4} .r.seasonal{stroke:var(--seas);stroke-dasharray:1.5 3.5} .r.july_only{stroke:var(--july);stroke-dasharray:1 4}
+.ap{cursor:pointer}
+.ap circle{fill:var(--panel);stroke:var(--ink);stroke-width:1.2}
+.ap text{font:600 10px var(--display);fill:var(--ink);paint-order:stroke;stroke:var(--land);stroke-width:3px;stroke-linejoin:round;pointer-events:none}
+.ap.dim{opacity:.28}
+.ap.same circle{fill:var(--same);stroke:var(--same)} .ap.long circle{fill:var(--long);stroke:var(--long)} .ap.over circle{fill:var(--over);stroke:var(--over)}
+.ap.non circle{fill:var(--now);stroke:var(--now)} .ap.nsoon circle{fill:var(--soon);stroke:var(--soon)} .ap.nseas circle{fill:var(--seas);stroke:var(--seas)}
+.ap.org circle{fill:var(--sel);stroke:var(--sel)} .ap.dst circle{fill:var(--panel);stroke:var(--sel);stroke-width:3}
+.zoom{position:absolute;right:12px;top:12px;display:grid;gap:6px}
+.zoom button{width:40px;height:40px;border-radius:8px;border:1px solid var(--line);background:var(--panel);cursor:pointer;font-size:18px}
+.key{position:absolute;left:12px;bottom:12px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:12.5px;display:grid;gap:3px;max-width:calc(100% - 24px)}
+.key span{display:flex;align-items:center;gap:7px;white-space:nowrap}
+.key i{display:inline-block;width:10px;height:10px;border-radius:50%}
+aside{border-left:1px solid var(--line);overflow:auto;min-height:0;padding:16px;display:flex;flex-direction:column;gap:16px}
+h1{font:700 26px/1.05 var(--display);margin:0;text-wrap:balance}
+h2{font:700 15px/1.2 var(--display);letter-spacing:.7px;text-transform:uppercase;margin:0 0 6px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+h2 em{font-style:normal;color:var(--ink)}
+.lede{margin:4px 0 0;color:var(--muted)}
+.stats{display:flex;flex-wrap:wrap;gap:6px}
+.stat{background:var(--chip);border-radius:6px;padding:6px 10px;font-size:13px}
+.stat b{font:700 18px var(--display);margin-right:4px}
+.rows{display:grid;gap:2px}
+.row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:8px;align-items:baseline;padding:7px 6px;border-radius:6px;cursor:pointer;border:0;background:none;text-align:left;width:100%}
+.row:hover{background:var(--chip)}
+.row .c{font:700 16px var(--display)}
+.row .n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .t{font:12.5px var(--mono);color:var(--muted);white-space:nowrap}
+.tag{display:inline-block;font:600 11.5px var(--body);padding:1px 6px;border-radius:4px;margin-left:4px;vertical-align:1px}
+.tag.soon{background:color-mix(in srgb,var(--soon) 16%,transparent);color:var(--soon)}
+.tag.seas{background:color-mix(in srgb,var(--seas) 16%,transparent);color:var(--seas)}
+.tag.end{background:color-mix(in srgb,var(--over) 14%,transparent);color:var(--over)}
+.tag.july{background:var(--chip);color:var(--muted)}
+.trip{border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:6px}
+.trip .k{font:700 12px var(--body);letter-spacing:.6px;text-transform:uppercase}
+.trip .k.same{color:var(--same)} .trip .k.long{color:var(--long)} .trip .k.over{color:var(--over)} .trip .k.non{color:var(--now)} .trip .k.soon{color:var(--soon)}
+.leg{font:13.5px var(--mono);display:flex;flex-wrap:wrap;gap:4px 10px}
+.gap{font-size:13.5px;color:var(--muted);padding-left:10px;border-left:2px solid var(--line)}
+.gap.over{color:var(--over);border-color:var(--over)}
+.note{font-size:12.5px;color:var(--muted)}
+.plus{font:600 10.5px var(--body);color:var(--over);margin-left:1px}
+details summary{cursor:pointer;font-weight:600}
+.more{border:0;background:none;color:var(--now);font-weight:600;cursor:pointer;padding:4px 6px}
+.empty{color:var(--muted);font-size:14px}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr;grid-template-rows:auto auto auto;height:auto}
+  .pick{flex-basis:100%}
+  .field{flex:1 1 120px}
+  .mapwrap{display:flex;flex-direction:column}
+  svg#map{height:52vh;min-height:300px}
+  .key{position:static;border:0;border-top:1px solid var(--line);border-radius:0;display:flex;flex-wrap:wrap;gap:4px 14px;background:var(--panel);max-width:none;padding:8px 16px}
+  aside{border-left:0;border-top:1px solid var(--line);overflow:visible}
+  .field{max-width:none}
+}
+@media (prefers-reduced-motion:no-preference){svg#map g.vp{transition:none}}
+</style>
+
+<div class="app">
+  <header>
+    <div class="brand">Frontier Network<small>Nonstops, new routes, and 1-stop reach</small></div>
+    <div class="pick">
+      <div class="field"><label for="from">From</label><input id="from" autocomplete="off" placeholder="City or airport"><button class="x" id="fromX" aria-label="Clear From" hidden>✕</button><div class="list" id="fromList" hidden></div></div>
+      <button class="swap" id="swap" aria-label="Swap From and To" title="Swap">⇄</button>
+      <div class="field"><label for="to">To</label><input id="to" autocomplete="off" placeholder="Anywhere"><button class="x" id="toX" aria-label="Clear To" hidden>✕</button><div class="list" id="toList" hidden></div></div>
+    </div>
+  </header>
+  <div class="mapwrap" id="mapwrap">
+    <svg id="map" role="img" aria-label="Map of Frontier routes. Every route on the map is also listed in the panel."><g class="vp" id="vp"><path class="land" id="land"></path><path class="borders" id="borders"></path><path class="states" id="states"></path><g id="routes"></g><g id="aps"></g></g></svg>
+    <div class="zoom"><button id="zin" aria-label="Zoom in">+</button><button id="zout" aria-label="Zoom out">−</button><button id="zfit" aria-label="Fit map" title="Fit">⤢</button></div>
+    <div class="key" id="key"></div>
+  </div>
+  <aside id="panel" aria-live="polite"></aside>
+</div>
+
+<script>
+const NET = __DATA__;
+const BASE = __BASE__;
+const $ = s => document.querySelector(s);
+const SVGNS = 'http://www.w3.org/2000/svg';
+const A = NET.airports, XY = BASE.xy;
+const TODAY = NET.builtFor;
+const julyLabel = (NET.sources.bts.months || []).map(m => new Date(m + '-15').toLocaleString('en-US', { month: 'long', year: 'numeric' })).join(' + ');
+
+// ---------- data shaping ----------
+const R = NET.routes.map(([o, d, s, start, ends, seas, july, resume]) => ({ o, d, s, start, ends, seas: !!seas, july, resume: !!resume }));
+const out = {}; for (const r of R) (out[r.o] ||= []).push(r);
+const deg = {}; for (const r of R) if (r.s !== 'soon') deg[r.o] = (deg[r.o] || 0) + 1;
+const codes = Object.keys(A).filter(c => XY[c]);
+const cityName = c => A[c] ? A[c][2] : c;
+const fmtDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const fmtT = hhmm => { let h = +hhmm.slice(0, 2) % 24, m = hhmm.slice(2); const ap = h < 12 ? 'a' : 'p'; h = h % 12 || 12; return `${h}:${m}${ap}`; };
+const plus = n => n > 0 ? `<sup class="plus">+${n}</sup>` : '';
+const fmtDur = m => `${Math.floor(m / 60)}h ${String(m % 60).padStart(2, '0')}m`;
+const statusRank = { now: 0, seasonal: 1, soon: 2, july_only: 3 };
+
+// ---------- map drawing ----------
+const svg = $('#map');
+svg.setAttribute('viewBox', `0 0 ${BASE.W} ${BASE.H}`);
+$('#land').setAttribute('d', BASE.land); $('#states').setAttribute('d', BASE.states); $('#borders').setAttribute('d', BASE.borders);
+let vb = { x: 0, y: 0, w: BASE.W, h: BASE.H };
+function setVB() { svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`); const k = BASE.W / vb.w; document.querySelectorAll('.ap').forEach(g => g.setAttribute('transform', `translate(${g.dataset.x} ${g.dataset.y}) scale(${1 / Math.sqrt(k)})`)); document.querySelectorAll('.r').forEach(p => p.style.strokeWidth = (+p.dataset.w) / Math.sqrt(k)); }
+function curve(a, b) { const [x1, y1] = XY[a], [x2, y2] = XY[b]; const dx = x2 - x1, dy = y2 - y1; const k = 0.18; const mx = (x1 + x2) / 2 - dy * k, my = (y1 + y2) / 2 + dx * k; return `M${x1} ${y1}Q${mx} ${my} ${x2} ${y2}`; }
+function fit(list, pad = 50) {
+  const pts = list.filter(c => XY[c]).map(c => XY[c]);
+  if (!pts.length) { vb = { x: 0, y: 0, w: BASE.W, h: BASE.H }; return setVB(); }
+  let x0 = Math.min(...pts.map(p => p[0])) - pad, x1 = Math.max(...pts.map(p => p[0])) + pad, y0 = Math.min(...pts.map(p => p[1])) - pad, y1 = Math.max(...pts.map(p => p[1])) + pad;
+  const box = svg.getBoundingClientRect(); const ar = (box.width || BASE.W) / (box.height || BASE.H);
+  let w = Math.max(x1 - x0, 220), h = Math.max(y1 - y0, 160);
+  if (w / h > ar) h = w / ar; else w = h * ar;
+  vb = { x: (x0 + x1) / 2 - w / 2, y: (y0 + y1) / 2 - h / 2, w, h }; setVB();
+}
+
+const apG = {};
+function drawAirports() {
+  const g = $('#aps'); g.innerHTML = '';
+  const sorted = codes.slice().sort((a, b) => (deg[a] || 0) - (deg[b] || 0));
+  for (const c of sorted) {
+    const [x, y] = XY[c]; const n = deg[c] || 0;
+    const el = document.createElementNS(SVGNS, 'g'); el.setAttribute('class', 'ap'); el.dataset.x = x; el.dataset.y = y; el.dataset.c = c;
+    el.setAttribute('tabindex', '-1');
+    const r = n >= 20 ? 5 : n >= 8 ? 4 : 3;
+    el.innerHTML = `<circle r="${r}"></circle><text x="${r + 2}" y="3.5">${c}</text>`;
+    el.addEventListener('click', ev => { ev.stopPropagation(); onMapPick(c); });
+    g.appendChild(el); apG[c] = el;
+  }
+}
+function drawRoutes(list) {
+  const g = $('#routes'); g.innerHTML = '';
+  const seen = new Set();
+  for (const r of list) {
+    if (!XY[r.o] || !XY[r.d]) continue;
+    const key = [r.o, r.d].sort().join('-') + r.s; if (seen.has(key)) continue; seen.add(key);
+    const p = document.createElementNS(SVGNS, 'path'); p.setAttribute('class', 'r ' + r.s); p.setAttribute('d', curve(r.o, r.d));
+    p.dataset.w = r.w || 1.4; p.style.opacity = r.op ?? 1; g.appendChild(p);
+  }
+}
+
+// ---------- pan & zoom ----------
+let drag = null;
+svg.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY, vb: { ...vb }, moved: false }; svg.setPointerCapture(e.pointerId); svg.classList.add('drag'); });
+svg.addEventListener('pointermove', e => { if (!drag) return; const box = svg.getBoundingClientRect(); const s = vb.w / box.width; const dx = (e.clientX - drag.x), dy = (e.clientY - drag.y); if (Math.abs(dx) + Math.abs(dy) > 4) drag.moved = true; vb.x = drag.vb.x - dx * s; vb.y = drag.vb.y - dy * s; setVB(); });
+svg.addEventListener('pointerup', e => { svg.classList.remove('drag'); if (drag && !drag.moved) { const t = document.elementFromPoint(e.clientX, e.clientY)?.closest('.ap'); if (t) onMapPick(t.dataset.c); } drag = null; });
+function zoomBy(f, cx = vb.x + vb.w / 2, cy = vb.y + vb.h / 2) { const w = Math.min(BASE.W * 1.2, Math.max(80, vb.w * f)); const h = w * vb.h / vb.w; vb.x = cx - (cx - vb.x) * w / vb.w; vb.y = cy - (cy - vb.y) * h / vb.h; vb.w = w; vb.h = h; setVB(); }
+svg.addEventListener('wheel', e => { e.preventDefault(); const box = svg.getBoundingClientRect(); const cx = vb.x + (e.clientX - box.left) / box.width * vb.w, cy = vb.y + (e.clientY - box.top) / box.height * vb.h; zoomBy(e.deltaY > 0 ? 1.15 : 1 / 1.15, cx, cy); }, { passive: false });
+$('#zin').onclick = () => zoomBy(1 / 1.4); $('#zout').onclick = () => zoomBy(1.4); $('#zfit').onclick = () => refit();
+
+// ---------- state ----------
+let from = null, to = null;
+function readHash() { const h = location.hash.slice(1).toUpperCase(); const m = h.match(/^([A-Z]{3})(?:-?([A-Z]{3}))?$/); if (m) { from = A[m[1]] ? m[1] : null; to = m[2] && A[m[2]] ? m[2] : null; } }
+function writeHash() { const h = from ? (to ? from + '-' + to : from) : ''; try { history.replaceState(null, '', h ? '#' + h : location.pathname + location.search); } catch (e) {} }
+function onMapPick(c) { if (!from || (from && to)) { from = c; to = null; } else if (c === from) { to = null; } else { to = c; } render(true); }
+
+// ---------- airport search ----------
+const index = codes.map(c => ({ c, label: `${c} ${cityName(c)} ${A[c][3]}`.toLowerCase() }));
+const ALIASES = { 'bay area': ['OAK', 'SFO', 'SJC'], 'new york': ['LGA', 'JFK', 'EWR', 'ISP'], 'nyc': ['LGA', 'JFK', 'EWR', 'ISP'], 'los angeles': ['LAX', 'BUR', 'ONT', 'SNA', 'LGB'], 'la ': ['LAX', 'BUR', 'ONT', 'SNA', 'LGB'], 'washington': ['DCA', 'IAD', 'BWI'], 'dc': ['DCA', 'IAD', 'BWI'], 'chicago': ['ORD', 'MDW'], 'south florida': ['MIA', 'FLL', 'PBI'], 'houston': ['IAH', 'HOU'], 'dallas': ['DFW', 'DAL'] };
+function search(q) {
+  q = q.trim().toLowerCase(); if (!q) return codes.slice().sort((a, b) => (deg[b] || 0) - (deg[a] || 0)).slice(0, 12);
+  const hits = new Set();
+  for (const [k, v] of Object.entries(ALIASES)) if (k.trim().startsWith(q) || q.startsWith(k.trim())) v.forEach(c => A[c] && XY[c] && hits.add(c));
+  for (const x of index) if (x.c.toLowerCase() === q) hits.add(x.c);
+  for (const x of index) if (x.label.includes(q)) hits.add(x.c);
+  return [...hits].slice(0, 14);
+}
+function wireField(inp, list, x, which) {
+  let opts = [], hi = 0;
+  const show = () => { opts = search(inp.value); hi = 0; list.innerHTML = opts.map((c, i) => `<button type="button" data-c="${c}" class="${i === 0 ? 'on' : ''}"><b>${c}</b><span>${cityName(c)}${A[c][3] && A[c][3] !== 'US' ? ' · ' + A[c][3] : ''}</span></button>`).join('') || '<div class="empty" style="padding:8px">No Frontier airport matches.</div>'; list.hidden = false; };
+  const choose = c => { list.hidden = true; if (which === 'from') { from = c; if (to === c) to = null; } else { to = c; } render(true); inp.blur(); };
+  inp.addEventListener('focus', () => { inp.select(); show(); });
+  inp.addEventListener('input', show);
+  inp.addEventListener('keydown', e => { if (list.hidden) return; const b = list.querySelectorAll('button'); if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); hi = (hi + (e.key === 'ArrowDown' ? 1 : -1) + b.length) % b.length; b.forEach((el, i) => el.classList.toggle('on', i === hi)); } else if (e.key === 'Enter') { e.preventDefault(); if (opts[hi]) choose(opts[hi]); } else if (e.key === 'Escape') { list.hidden = true; inp.blur(); render(false); } });
+  list.addEventListener('mousedown', e => { const b = e.target.closest('button'); if (b) { e.preventDefault(); choose(b.dataset.c); } });
+  inp.addEventListener('blur', () => setTimeout(() => { list.hidden = true; syncInputs(); }, 120));
+  x.onclick = () => { if (which === 'from') { from = null; to = null; } else to = null; render(true); };
+}
+wireField($('#from'), $('#fromList'), $('#fromX'), 'from');
+wireField($('#to'), $('#toList'), $('#toX'), 'to');
+$('#swap').onclick = () => { if (!to) return; [from, to] = [to, from]; render(true); };
+function syncInputs() { $('#from').value = from ? `${from} · ${cityName(from)}` : ''; $('#to').value = to ? `${to} · ${cityName(to)}` : ''; $('#fromX').hidden = !from; $('#toX').hidden = !to; }
+
+// ---------- panel helpers ----------
+function tagFor(r) {
+  if (r.s === 'soon') return `<span class="tag soon">${r.resume ? 'Returns' : 'Starts'} ${fmtDate(r.start)}</span>`;
+  let t = '';
+  if (r.seas) t += `<span class="tag seas">Seasonal</span>`;
+  if (r.ends) t += `<span class="tag end">Ends ${fmtDate(r.ends)}</span>`;
+  if (r.s === 'july_only') t += `<span class="tag july">Flew in ${julyLabel}, not listed now</span>`;
+  return t;
+}
+const rowBtn = (c, right, extra = '') => `<button class="row" data-pick="${c}"><span class="c">${c}</span><span class="n">${cityName(c)}${extra}</span><span class="t">${right}</span></button>`;
+function legHTML(o) {
+  // o = [hub, f1, dep1, arr1, f2, dep2, arr2, ground, total, days]
+  const [h, f1, d1, a1, f2, d2, a2, g, tot, days, off1, off2, off3] = o;
+  return { h, f1, d1, a1, f2, d2, a2, g, tot, days, off1: off1 || 0, off2: off2 || 0, off3: off3 || 0 };
+}
+function tripCard(kind, a, b, o) {
+  const x = legHTML(o);
+  const title = { same: 'Short connection', long: 'Long layover, no overnight', over: 'Overnight layover required' }[kind];
+  const redeye = x.off3 > 0 && kind !== 'over' && +x.a2.slice(0, 2) < 9 ? ' <span class="tag end">Red-eye</span>' : '';
+  return `<div class="trip"><div class="k ${kind}">${title} · via ${x.h}${redeye}</div>
+    <div class="leg"><span>${x.f1}</span><span>${a} ${fmtT(x.d1)} → ${x.h} ${fmtT(x.a1)}${plus(x.off1)}</span></div>
+    <div class="gap ${kind === 'over' ? 'over' : ''}">${kind === 'over' ? 'Overnight in ' + cityName(x.h) + ' · ' : 'Layover in ' + cityName(x.h) + ' · '}${fmtDur(x.g)}</div>
+    <div class="leg"><span>${x.f2}</span><span>${x.h} ${fmtT(x.d2)}${plus(x.off2)} → ${b} ${fmtT(x.a2)}${plus(x.off3)}</span></div>
+    <div class="note">${fmtDur(x.tot)} door to door · works on ${x.days} of 7 weekdays in ${julyLabel} schedules</div></div>`;
+}
+function wireRows() { document.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => { const c = b.dataset.pick; if (b.dataset.pair) { const [o, d] = b.dataset.pair.split('-'); from = o; to = d; } else if (from) to = c; else from = c; render(true); }); document.querySelectorAll('.more').forEach(b => b.onclick = () => { b.previousElementSibling.querySelectorAll('[hidden]').forEach(e => e.hidden = false); b.remove(); }); }
+function capped(rows, n = 12) { if (rows.length <= n) return `<div class="rows">${rows.join('')}</div>`; return `<div class="rows">${rows.map((r, i) => i < n ? r : r.replace('<button class="row"', '<button hidden class="row"')).join('')}</div><button class="more">Show all ${rows.length}</button>`; }
+function setKey(items) { $('#key').innerHTML = items.map(([cls, label]) => `<span>${cls.startsWith('l:') ? `<svg width="22" height="8"><path class="r ${cls.slice(2)}" d="M1 4H21" style="stroke-width:2.2"></path></svg>` : `<i style="background:var(--${cls})"></i>`}${label}</span>`).join(''); }
+
+// ---------- views ----------
+function renderNetwork(refitMap) {
+  drawRoutes(R.filter(r => r.s !== 'july_only').map(r => ({ ...r, w: r.s === 'now' ? 0.6 : 0.9, op: r.s === 'now' ? 0.35 : 0.9 })));
+  for (const c in apG) apG[c].setAttribute('class', 'ap');
+  setKey([['l:now', 'Flying now'], ['l:seasonal', 'Seasonal'], ['l:soon', 'Coming soon']]);
+  const soon = R.filter(r => r.s === 'soon' && r.o < r.d || (r.s === 'soon' && !R.some(q => q.o === r.d && q.d === r.o && q.s === 'soon')));
+  const soonU = []; const seen = new Set();
+  for (const r of R.filter(r => r.s === 'soon').sort((a, b) => a.start.localeCompare(b.start))) { const k = [r.o, r.d].sort().join('-'); if (seen.has(k)) continue; seen.add(k); soonU.push(r); }
+  const ending = []; const seenE = new Set();
+  for (const r of R.filter(r => r.ends).sort((a, b) => a.ends.localeCompare(b.ends))) { const k = [r.o, r.d].sort().join('-'); if (seenE.has(k)) continue; seenE.add(k); ending.push(r); }
+  const pairs = new Set(R.filter(r => r.s === 'now' || r.s === 'seasonal').map(r => [r.o, r.d].sort().join('-')));
+  const hubs = Object.entries(deg).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  $('#panel').innerHTML = `
+    <div><h1>Where Frontier flies</h1><p class="lede">Pick an airport on the map or type one above. You'll see its nonstops, what's coming, and where you can get with one stop, including which trips need a night in a connecting city.</p></div>
+    <div class="stats"><span class="stat"><b>${codes.length}</b>airports</span><span class="stat"><b>${pairs.size}</b>nonstop routes</span><span class="stat"><b>${soonU.length}</b>coming soon</span></div>
+    <section><h2>Coming soon <em>${soonU.length}</em></h2>${soonU.length ? capped(soonU.map(r => `<button class="row" data-pick="${r.d}" data-pair="${r.o}-${r.d}"><span class="c">${r.o}</span><span class="n">to ${r.d} · ${cityName(r.d)}</span><span class="t">${r.resume ? 'back ' : ''}${fmtDate(r.start)}</span></button>`), 15) : '<p class="empty">No announced start dates found.</p>'}</section>
+    ${ending.length ? `<section><h2>Ending soon <em>${ending.length}</em></h2>${capped(ending.map(r => `<button class="row" data-pick="${r.d}" data-pair="${r.o}-${r.d}"><span class="c">${r.o}</span><span class="n">to ${r.d} · ${cityName(r.d)}</span><span class="t">${fmtDate(r.ends)}</span></button>`), 8)}</section>` : ''}
+    <section><h2>Biggest airports</h2><div class="rows">${hubs.map(([c, n]) => rowBtn(c, n + ' nonstops')).join('')}</div></section>
+    ${sourcesHTML()}`;
+  wireRows(); if (refitMap) fit(codes, 10);
+}
+function renderOrigin(refitMap) {
+  const mine = (out[from] || []).slice().sort((a, b) => statusRank[a.s] - statusRank[b.s] || (deg[b.d] || 0) - (deg[a.d] || 0));
+  const nonNow = mine.filter(r => r.s === 'now' || r.s === 'seasonal');
+  const soon = mine.filter(r => r.s === 'soon').sort((a, b) => a.start.localeCompare(b.start));
+  const julyOnly = mine.filter(r => r.s === 'july_only');
+  const cn = NET.conn[from] || {};
+  const nonSet = new Set(mine.map(r => r.d));
+  const same = [], long = [], over = [];
+  for (const [b, v] of Object.entries(cn)) { if (nonSet.has(b) || !XY[b]) continue; if (v.same) same.push([b, v.same]); else if (v.long) long.push([b, v.long]); else if (v.over) over.push([b, v.over]); }
+  same.sort((a, b) => a[1][8] - b[1][8]); long.sort((a, b) => a[1][8] - b[1][8]); over.sort((a, b) => a[1][8] - b[1][8]);
+  drawRoutes(mine.map(r => ({ ...r, w: 1.8 })));
+  for (const c in apG) apG[c].setAttribute('class', 'ap dim');
+  for (const [b] of same) apG[b]?.setAttribute('class', 'ap same');
+  for (const [b] of long) apG[b]?.setAttribute('class', 'ap long');
+  for (const [b] of over) apG[b]?.setAttribute('class', 'ap over');
+  for (const r of mine) apG[r.d]?.setAttribute('class', 'ap ' + (r.s === 'soon' ? 'nsoon' : r.s === 'seasonal' ? 'nseas' : r.s === 'july_only' ? '' : 'non'));
+  apG[from]?.setAttribute('class', 'ap org');
+  setKey([['now', 'Nonstop'], ['soon', 'Nonstop coming soon'], ['same', '1 stop, short layover'], ['long', '1 stop, 6h+ layover'], ['over', '1 stop, overnight'], ['l:seasonal', 'Seasonal']]);
+  const lineFor = (b, o) => { const x = legHTML(o); return `<button class="row" data-pick="${b}"><span class="c">${b}</span><span class="n">${cityName(b)} <span class="note">via ${x.h}</span></span><span class="t">${fmtDur(x.tot)}</span></button>`; };
+  $('#panel').innerHTML = `
+    <div><h1>${cityName(from)} (${from})</h1><p class="lede">${nonNow.length} nonstops${soon.length ? `, ${soon.length} coming soon` : ''}. ${same.length + long.length + over.length} more places with one stop. Pick a destination for flight times.</p></div>
+    <section><h2>Nonstop <em>${nonNow.length}</em></h2>${nonNow.length ? capped(nonNow.map(r => rowBtn(r.d, r.july ? `${Math.round(r.july / 31 * 7)}/wk in Jul` : '', tagFor(r))), 40) : '<p class="empty">No current nonstops listed.</p>'}</section>
+    ${soon.length ? `<section><h2>Coming soon <em>${soon.length}</em></h2>${capped(soon.map(r => rowBtn(r.d, fmtDate(r.start))))}</section>` : ''}
+    <section><h2>1 stop, no overnight <em>${same.length}</em></h2>${same.length ? capped(same.map(([b, o]) => lineFor(b, o))) : '<p class="empty">None found in the schedules.</p>'}</section>
+    ${long.length ? `<section><h2>1 stop, long layover <em>${long.length}</em></h2><p class="note">Same calendar day, but more than 6 hours on the ground.</p>${capped(long.map(([b, o]) => lineFor(b, o)))}</section>` : ''}
+    <section><h2>Needs an overnight <em>${over.length}</em></h2><p class="note">These only connect if you spend the night in the connecting city.</p>${over.length ? capped(over.map(([b, o]) => lineFor(b, o))) : '<p class="empty">None.</p>'}</section>
+    ${julyOnly.length ? `<details><summary>Flew in ${julyLabel} but not listed now (${julyOnly.length})</summary><div class="rows" style="margin-top:6px">${julyOnly.map(r => rowBtn(r.d, '')).join('')}</div></details>` : ''}
+    ${sourcesHTML()}`;
+  wireRows();
+  if (refitMap) fit([from, ...mine.map(r => r.d), ...same.map(x => x[0]), ...over.map(x => x[0])], 30);
+}
+function renderPair(refitMap) {
+  const direct = (out[from] || []).filter(r => r.d === to);
+  const v = (NET.conn[from] || {})[to] || {};
+  const lines = [...direct.map(r => ({ ...r, w: 2.6 }))];
+  const hubs = new Set(['same', 'long', 'over'].filter(k => v[k]).map(k => v[k][0]));
+  for (const h of hubs) { lines.push({ o: from, d: h, s: 'now', w: 1.8 }); lines.push({ o: h, d: to, s: 'now', w: 1.8 }); }
+  drawRoutes(lines);
+  for (const c in apG) apG[c].setAttribute('class', 'ap dim');
+  for (const h of hubs) apG[h]?.setAttribute('class', 'ap');
+  apG[from]?.setAttribute('class', 'ap org'); apG[to]?.setAttribute('class', 'ap dst');
+  setKey([['l:now', 'Flown leg'], ['l:soon', 'Coming soon'], ['l:seasonal', 'Seasonal']]);
+  let html = `<div><h1>${from} to ${to}</h1><p class="lede">${cityName(from)} to ${cityName(to)}</p></div>`;
+  if (direct.length) {
+    const r = direct.sort((a, b) => statusRank[a.s] - statusRank[b.s])[0];
+    const txt = r.s === 'soon' ? `Nonstop ${r.resume ? 'returns' : 'starts'} ${fmtDate(r.start)}` : r.s === 'july_only' ? `Nonstop flew in ${julyLabel}; not on the current list` : r.seas ? 'Seasonal nonstop' : 'Nonstop';
+    html += `<div class="trip"><div class="k ${r.s === 'soon' ? 'soon' : 'non'}">${txt}</div>${tagFor(r) ? `<div>${tagFor(r)}</div>` : ''}${r.july ? `<div class="note">${Math.round(r.july / 31 * 7)} flights a week in ${julyLabel}.</div>` : ''}</div>`;
+  }
+  if (v.same) html += tripCard('same', from, to, v.same);
+  if (v.long) html += tripCard('long', from, to, v.long);
+  if (v.over) html += tripCard('over', from, to, v.over);
+  if (!direct.length && !v.same && !v.long && !v.over) {
+    const fromSet = new Set((out[from] || []).filter(r => r.s !== 'july_only').map(r => r.d));
+    const via = (out[to] || []).filter(r => fromSet.has(r.d) && r.s !== 'july_only').map(r => r.d);
+    html += `<div class="trip"><div class="k">No timed connection found</div><p class="empty" style="margin:0">${via.length ? `Both airports are listed with service to ${via.slice(0, 5).join(', ')}, but those flights weren't in the ${julyLabel} schedules (new or seasonal routes). Check times on Frontier.` : `No single-stop path on Frontier's current listed network. This trip likely needs two stops or another airline.`}</p></div>`;
+  }
+  html += `<p class="note">Times are from ${julyLabel} schedules and show the pattern, not a specific date. Fall and winter times can differ. Confirm on flyfrontier.com before booking.</p>`;
+  html += sourcesHTML();
+  $('#panel').innerHTML = html; wireRows();
+  if (refitMap) fit([from, to, ...hubs], 60);
+}
+function sourcesHTML() {
+  const w = NET.sources.wikipedia.retrievedAt.slice(0, 10);
+  return `<details class="note"><summary>Where this comes from</summary><p>Nonstops and start dates: each airport's Wikipedia airline table, read ${fmtDate(w)}. These tables are kept current by editors and cite Frontier announcements, but can lag or be wrong.</p><p>Flight times and connections: every Frontier flight actually operated in ${julyLabel}, from the U.S. DOT on-time database (domestic and Puerto Rico only). Routes added since then show no times. International connections aren't timed.</p><p>Connections assume at least 50 minutes on the ground. "Overnight" means the onward flight leaves the next calendar day after more than 4 hours. Frontier connections may be sold as one ticket or not; check when booking.</p></details>`;
+}
+function render(refitMap) {
+  syncInputs(); writeHash();
+  if (from && to) renderPair(refitMap); else if (from) renderOrigin(refitMap); else renderNetwork(refitMap);
+  setVB();
+}
+function refit() { render(true); }
+drawAirports(); readHash();
+window.addEventListener('hashchange', () => { readHash(); render(true); });
+requestAnimationFrame(() => render(true));
+</script>
