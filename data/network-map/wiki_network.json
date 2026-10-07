@@ -1,0 +1,5752 @@
+{
+ "retrievedAt": "2026-10-07T08:55:41Z",
+ "source": "English Wikipedia airport articles, Airlines and destinations tables",
+ "nodes": {
+  "AUA": {
+   "title": "Queen Beatrix International Airport",
+   "coord": [
+    12.5014,
+    -70.0153
+   ],
+   "listNote": "\n| [[Aruba]] || [[Oranjestad, Aruba|Oranjestad]] || [[Queen Beatrix International Airport]] |||| align=center | "
+  },
+  "SJO": {
+   "title": "Juan Santamar\u00eda International Airport",
+   "coord": [
+    9.9939,
+    -84.2089
+   ],
+   "listNote": "\n|[[San Jos\u00e9, Costa Rica|San Jos\u00e9]] || [[Juan Santamar\u00eda International Airport]] || || align=center| "
+  },
+  "PUJ": {
+   "title": "Punta Cana International Airport",
+   "coord": [
+    18.5667,
+    -68.3519
+   ],
+   "listNote": "\n| [[Punta Cana]]|| [[Punta Cana International Airport]] || align=center| || align=center| "
+  },
+  "STI": {
+   "title": "Cibao International Airport",
+   "coord": [
+    19.4061,
+    -70.6047
+   ],
+   "listNote": "\n| [[Santiago de los Caballeros]] || [[Cibao International Airport]] |||| align=center| "
+  },
+  "SDQ": {
+   "title": "Las Am\u00e9ricas International Airport",
+   "coord": [
+    18.4294,
+    -69.6689
+   ],
+   "listNote": "\n|[[Santo Domingo]] || [[Las Am\u00e9ricas International Airport]] || align=center| || align=center|  "
+  },
+  "SAL": {
+   "title": "El Salvador International Airport",
+   "coord": [
+    13.4408,
+    -89.0556
+   ],
+   "listNote": "\n| [[El Salvador]] || [[San Salvador]] || [[El Salvador International Airport]] || align=center| || align=center| "
+  },
+  "GUA": {
+   "title": "La Aurora International Airport",
+   "coord": [
+    14.5817,
+    -90.5267
+   ],
+   "listNote": "\n| [[Guatemala]] || [[Guatemala City]] || [[La Aurora International Airport]] || align=center| || align=center| "
+  },
+  "SAP": {
+   "title": "Ram\u00f3n Villeda Morales International Airport",
+   "coord": [
+    15.4528,
+    -87.9236
+   ],
+   "listNote": "\n| [[Honduras]] || [[San Pedro Sula, Honduras|San Pedro Sula]] || [[Ram\u00f3n Villeda Morales International Airport]] ||||align=center| "
+  },
+  "MBJ": {
+   "title": "Sangster International Airport",
+   "coord": [
+    18.5036,
+    -77.9133
+   ],
+   "listNote": "\n| [[Montego Bay]] || [[Sangster International Airport]] || align=\"center\" | || align=\"center\" |"
+  },
+  "SJD": {
+   "title": "Los Cabos International Airport",
+   "coord": [
+    23.1517,
+    -109.7208
+   ],
+   "listNote": "\n| [[Mexico]] ([[Baja California Sur]]) || [[San Jos\u00e9 del Cabo]] || [[Los Cabos International Airport]] || || align=center| "
+  },
+  "PVR": {
+   "title": "Licenciado Gustavo D\u00edaz Ordaz International Airport",
+   "coord": [
+    20.68,
+    -105.2542
+   ],
+   "listNote": "\n|Mexico ([[Jalisco]]) || [[Puerto Vallarta]] || [[Licenciado Gustavo D\u00edaz Ordaz International Airport]] || align=\"center\" | || align=\"center\" |"
+  },
+  "CUN": {
+   "title": "Canc\u00fan International Airport",
+   "coord": [
+    21.0367,
+    -86.8769
+   ],
+   "listNote": "\n| rowspan=\"2\" | Mexico ([[Quintana Roo]]) || [[Canc\u00fan]]|| [[Canc\u00fan International Airport]] || align=center| || align=center| "
+  },
+  "BQN": {
+   "title": "Rafael Hern\u00e1ndez Airport",
+   "coord": [
+    18.495,
+    -67.1294
+   ],
+   "listNote": "\n| rowspan=\"3\" | [[Puerto Rico]] || [[Aguadilla, Puerto Rico|Aguadilla]]|| [[Rafael Hern\u00e1ndez Airport]] || align=center| || align=center| "
+  },
+  "PSE": {
+   "title": "Mercedita International Airport",
+   "coord": [
+    18.0083,
+    -66.5631
+   ],
+   "listNote": "\n| [[Ponce, Puerto Rico|Ponce]] || [[Mercedita International Airport]] || align=center| || align=center| "
+  },
+  "SJU": {
+   "title": "Luis Mu\u00f1oz Mar\u00edn International Airport",
+   "coord": [
+    18.4392,
+    -66.0019
+   ],
+   "listNote": "\n| [[San Juan, Puerto Rico|San Juan]] || [[Luis Mu\u00f1oz Mar\u00edn International Airport]] || {{airline hub|Base}} || align=center| "
+  },
+  "PHX": {
+   "title": "Phoenix Sky Harbor International Airport",
+   "coord": [
+    33.4342,
+    -112.0117
+   ],
+   "listNote": "\n| [[Phoenix Sky Harbor International Airport]] || {{airline hub|Base}} || align=center| "
+  },
+  "TUS": {
+   "title": "Tucson International Airport",
+   "coord": [
+    32.1161,
+    -110.9411
+   ],
+   "listNote": "\n| [[Tucson, Arizona|Tucson]] || [[Tucson International Airport]] ||||align=center| "
+  },
+  "XNA": {
+   "title": "Northwest Arkansas National Airport",
+   "coord": [
+    36.2817,
+    -94.3078
+   ],
+   "listNote": "\n| rowspan=\"2\"| United States ([[Arkansas]]) || [[Fayetteville, Arkansas|Fayetteville]]|| [[Northwest Arkansas Regional Airport|Northwest Arkansas National Airport]] || align=center| || align=center|  "
+  },
+  "LIT": {
+   "title": "Clinton National Airport",
+   "coord": [
+    34.73,
+    -92.22
+   ],
+   "listNote": "\n| [[Little Rock, Arkansas|Little Rock]] || [[Clinton National Airport]] || align=center| || align=center| "
+  },
+  "BUR": {
+   "title": "Hollywood Burbank Airport",
+   "coord": [
+    34.2006,
+    -118.3586
+   ],
+   "listNote": "\t\n| [[Burbank, California|Burbank]] || [[Hollywood Burbank Airport]] ||||align=center| "
+  },
+  "LAX": {
+   "title": "Los Angeles International Airport",
+   "coord": [
+    33.9425,
+    -118.4081
+   ],
+   "listNote": "\n| [[Los Angeles]] || [[Los Angeles International Airport]] || align=center| || align=center|  "
+  },
+  "OAK": {
+   "title": "Oakland San Francisco Bay Airport",
+   "coord": [
+    37.7214,
+    -122.2208
+   ],
+   "listNote": "\n| [[Oakland, California|Oakland]] || [[Oakland San Francisco Bay Airport]] || || align=center| "
+  },
+  "ONT": {
+   "title": "Ontario International Airport",
+   "coord": [
+    34.0561,
+    -117.6011
+   ],
+   "listNote": "\n| [[Ontario, California|Ontario]] || [[Ontario International Airport]] || align=center| || align=center|   "
+  },
+  "SMF": {
+   "title": "Sacramento International Airport",
+   "coord": [
+    38.6956,
+    -121.5908
+   ],
+   "listNote": "\n| [[Sacramento, California|Sacramento]] || [[Sacramento International Airport]] || align=center| || align=center|  "
+  },
+  "SAN": {
+   "title": "San Diego International Airport",
+   "coord": [
+    32.7336,
+    -117.1897
+   ],
+   "listNote": "\n| [[San Diego]] || [[San Diego International Airport]] || align=center| || align=center| "
+  },
+  "SFO": {
+   "title": "San Francisco International Airport",
+   "coord": [
+    37.6189,
+    -122.375
+   ],
+   "listNote": "\n| [[San Francisco]] || [[San Francisco International Airport]] || align=center| || align=center| "
+  },
+  "SJC": {
+   "title": "San Jose International Airport",
+   "coord": [
+    37.3631,
+    -121.9286
+   ],
+   "listNote": "\n| [[San Jose, California|San Jose]] || [[San Jose International Airport]] |||| align=center| "
+  },
+  "SNA": {
+   "title": "John Wayne Airport",
+   "coord": [
+    33.6756,
+    -117.8683
+   ],
+   "listNote": "\n| [[Santa Ana, California|Santa Ana]] || [[John Wayne Airport]] || align=center| || align=center| "
+  },
+  "DEN": {
+   "title": "Denver International Airport",
+   "coord": [
+    39.8617,
+    -104.6731
+   ],
+   "listNote": "\n| rowspan=\"2\" | [[Denver]] || [[Denver International Airport]] || {{airline hub|Base}} || align=center|"
+  },
+  "BDL": {
+   "title": "Bradley International Airport",
+   "coord": [
+    41.9392,
+    -72.6833
+   ],
+   "listNote": "\n| United States ([[Connecticut]]) || [[Hartford, Connecticut|Hartford]] || [[Bradley International Airport]] || align=center| || align=center| "
+  },
+  "IAD": {
+   "title": "Dulles International Airport",
+   "coord": [
+    38.9444,
+    -77.4558
+   ],
+   "listNote": "\n| rowspan=\"2\" | United States ([[District of Columbia]]) || rowspan=\"2\" |[[Washington, D.C.]]|| [[Dulles International Airport]] || || align=\"center\" |"
+  },
+  "DCA": {
+   "title": "Ronald Reagan Washington National Airport",
+   "coord": [
+    38.8522,
+    -77.0378
+   ],
+   "listNote": "\n| [[Ronald Reagan Washington National Airport]]|| align=\"center\" | || align=\"center\" |"
+  },
+  "FLL": {
+   "title": "Fort Lauderdale\u2013Hollywood International Airport",
+   "coord": [
+    26.0725,
+    -80.1528
+   ],
+   "listNote": "\n| rowspan=\"11\" | United States ([[Florida]]) || [[Fort Lauderdale, Florida|Fort Lauderdale]]|| [[Fort Lauderdale\u2013Hollywood International Airport]] || align=center| || align=center|  "
+  },
+  "RSW": {
+   "title": "Southwest Florida International Airport",
+   "coord": [
+    26.5361,
+    -81.7553
+   ],
+   "listNote": "\n| [[Fort Myers, Florida|Fort Myers]] || [[Southwest Florida International Airport]] || align=center| || align=center| "
+  },
+  "JAX": {
+   "title": "Jacksonville International Airport",
+   "coord": [
+    30.4942,
+    -81.6878
+   ],
+   "listNote": "\n| [[Jacksonville, Florida|Jacksonville]] || [[Jacksonville International Airport]] || align=center| || align=center| "
+  },
+  "MIA": {
+   "title": "Miami International Airport",
+   "coord": [
+    25.7933,
+    -80.2906
+   ],
+   "listNote": "\n| [[Miami]] || [[Miami International Airport]] || {{airline hub|Base}} || align=center|"
+  },
+  "MCO": {
+   "title": "Orlando International Airport",
+   "coord": [
+    28.4294,
+    -81.3089
+   ],
+   "listNote": "\n| [[Orlando, Florida|Orlando]] || [[Orlando International Airport]] || {{airline hub|Base}} || align=center| "
+  },
+  "PNS": {
+   "title": "Pensacola International Airport",
+   "coord": [
+    30.4733,
+    -87.1867
+   ],
+   "listNote": "\n| [[Pensacola]] || [[Pensacola International Airport]] || align=center| || align=center|  "
+  },
+  "SRQ": {
+   "title": "Sarasota\u2013Bradenton International Airport",
+   "coord": [
+    27.3956,
+    -82.5544
+   ],
+   "listNote": "\n| [[Sarasota, Florida|Sarasota]] || [[Sarasota\u2013Bradenton International Airport]] || || align=center|  "
+  },
+  "TPA": {
+   "title": "Tampa International Airport",
+   "coord": [
+    27.9797,
+    -82.5347
+   ],
+   "listNote": "\n| [[Tampa, Florida|Tampa]] || [[Tampa International Airport]] || {{airline hub|Base}} || align=center| "
+  },
+  "DJT": {
+   "title": "President Donald J. Trump International Airport",
+   "coord": [
+    26.6831,
+    -80.0956
+   ],
+   "listNote": "\n| [[West Palm Beach, Florida|West Palm Beach]] || [[Palm Beach International Airport]] || align=center| || align=center| "
+  },
+  "ATL": {
+   "title": "Hartsfield\u2013Jackson Atlanta International Airport",
+   "coord": [
+    33.6367,
+    -84.4281
+   ],
+   "listNote": "\n| rowspan=\"2\" | United States ([[Georgia (U.S. state)|Georgia]]) || [[Atlanta]] || [[Hartsfield\u2013Jackson Atlanta International Airport]] || {{airline hub|Base}} || align=center| "
+  },
+  "BOI": {
+   "title": "Boise Airport",
+   "coord": [
+    43.5644,
+    -116.2228
+   ],
+   "listNote": "\n| rowspan=\"2\" | United States ([[Idaho]]) || [[Boise, Idaho|Boise]] || [[Boise Airport]] |||| align=center| "
+  },
+  "MDW": {
+   "title": "Midway International Airport",
+   "coord": [
+    41.7861,
+    -87.7525
+   ],
+   "listNote": "\n| [[Midway International Airport]] || {{airline hub|Base}} || align=\"center\" | "
+  },
+  "ORD": {
+   "title": "O'Hare International Airport",
+   "coord": [
+    41.9786,
+    -87.9047
+   ],
+   "listNote": "\n| [[O'Hare International Airport]] || {{airline hub|Base}} || align=center| "
+  },
+  "IND": {
+   "title": "Indianapolis International Airport",
+   "coord": [
+    39.7172,
+    -86.2944
+   ],
+   "listNote": "\n| rowspan=\"2\" |United States ([[Indiana]]) || [[Indianapolis]]|| [[Indianapolis International Airport]] || align=\"center\" | || align=\"center\" |"
+  },
+  "CID": {
+   "title": "Eastern Iowa Airport",
+   "coord": [
+    41.8847,
+    -91.7108
+   ],
+   "listNote": "\n| rowspan=\"3\" | United States ([[Iowa]]) || [[Cedar Rapids, Iowa|Cedar Rapids]] || [[The Eastern Iowa Airport]] || align=center| || align=center| "
+  },
+  "DSM": {
+   "title": "Des Moines International Airport",
+   "coord": [
+    41.5339,
+    -93.6631
+   ],
+   "listNote": "\n| [[Des Moines]] || [[Des Moines International Airport]] || align=center| || align=center| "
+  },
+  "MSY": {
+   "title": "Louis Armstrong New Orleans International Airport",
+   "coord": [
+    29.9933,
+    -90.2581
+   ],
+   "listNote": "\n| [[New Orleans]] || [[Louis Armstrong New Orleans International Airport]] || align=center| || align=center|"
+  },
+  "BWI": {
+   "title": "Baltimore/Washington International Airport",
+   "coord": [
+    39.1753,
+    -76.6683
+   ],
+   "listNote": "\n| United States ([[Maryland]]) || [[Baltimore, Maryland|Baltimore]] || [[Baltimore/Washington International Airport]] || align=center| || align=center| "
+  },
+  "BOS": {
+   "title": "Logan International Airport",
+   "coord": [
+    42.3631,
+    -71.0064
+   ],
+   "listNote": " \n| United States ([[Massachusetts]]) || [[Boston, Massachusetts|Boston]] || [[Logan International Airport]] || align=center| || align=center| "
+  },
+  "DTW": {
+   "title": "Detroit Metropolitan Airport",
+   "coord": [
+    42.2125,
+    -83.3533
+   ],
+   "listNote": "\n| rowspan=\"2\" | United States ([[Michigan]]) || [[Detroit]] || [[Detroit Metropolitan Wayne County Airport]] || align=center| || align=center| "
+  },
+  "GRR": {
+   "title": "Gerald R. Ford International Airport",
+   "coord": [
+    42.8808,
+    -85.5228
+   ],
+   "listNote": "\n| [[Grand Rapids]] || [[Gerald R. Ford International Airport]] || align=center| || align=center| "
+  },
+  "MSP": {
+   "title": "Minneapolis\u2013Saint Paul International Airport",
+   "coord": [
+    44.8819,
+    -93.2217
+   ],
+   "listNote": "\n| United States ([[Minnesota]]) || [[Minneapolis]]/[[Saint Paul, Minnesota|Saint Paul]] || [[Minneapolis\u2013Saint Paul International Airport]] || align=center| || align=center| "
+  },
+  "MCI": {
+   "title": "Kansas City International Airport",
+   "coord": [
+    39.2975,
+    -94.7139
+   ],
+   "listNote": "\n| [[Kansas City, Missouri|Kansas City]] || [[Kansas City International Airport]] || align=center| || align=center|"
+  },
+  "STL": {
+   "title": "St. Louis Lambert International Airport",
+   "coord": [
+    38.7472,
+    -90.3614
+   ],
+   "listNote": "\n| [[St. Louis]] || [[St. Louis Lambert International Airport]] || align=center| || align=center| "
+  },
+  "OMA": {
+   "title": "Eppley Airfield",
+   "coord": null,
+   "listNote": "\n| United States ([[Nebraska]]) || [[Omaha, Nebraska|Omaha]] || [[Eppley Airfield]] || align=center| || align=center| "
+  },
+  "LAS": {
+   "title": "Harry Reid International Airport",
+   "coord": [
+    36.08,
+    -115.1522
+   ],
+   "listNote": "\n| rowspan=\"2\" | United States ([[Nevada]]) || [[Las Vegas, Nevada|Las Vegas]] || [[Harry Reid International Airport]] || {{airline hub|Base}} || align=center| "
+  },
+  "RNO": {
+   "title": "Reno\u2013Tahoe International Airport",
+   "coord": [
+    39.4992,
+    -119.7681
+   ],
+   "listNote": "\n| [[Reno, Nevada|Reno]] || [[Reno\u2013Tahoe International Airport]] || || align=center| "
+  },
+  "EWR": {
+   "title": "Newark Liberty International Airport",
+   "coord": [
+    40.6925,
+    -74.1686
+   ],
+   "listNote": "\n| rowspan=\"2\" | United States ([[New Jersey]]) || [[Newark, New Jersey|Newark]] || [[Newark Liberty International Airport]] |||| align=center| "
+  },
+  "TTN": {
+   "title": "Trenton\u2013Mercer Airport",
+   "coord": [
+    40.2767,
+    -74.8133
+   ],
+   "listNote": "\n| [[Trenton, New Jersey|Trenton]] || [[Trenton\u2013Mercer Airport]] || {{airline hub|Base}} || align=center| "
+  },
+  "BUF": {
+   "title": "Buffalo Niagara International Airport",
+   "coord": [
+    42.9406,
+    -78.7322
+   ],
+   "listNote": "\n| [[Buffalo, New York|Buffalo]] || [[Buffalo Niagara International Airport]] || align=\"center\" | || align=\"center\" |   "
+  },
+  "ISP": {
+   "title": "Long Island MacArthur Airport",
+   "coord": [
+    40.7953,
+    -73.1003
+   ],
+   "listNote": "\n| [[Islip, New York|Islip]] || [[Long Island MacArthur Airport]] || align=center| || align=center| "
+  },
+  "LGA": {
+   "title": "LaGuardia Airport",
+   "coord": [
+    40.775,
+    -73.875
+   ],
+   "listNote": "\n| [[LaGuardia Airport]] || align=center| || align=center| "
+  },
+  "SYR": {
+   "title": "Syracuse Hancock International Airport",
+   "coord": [
+    43.1111,
+    -76.1064
+   ],
+   "listNote": "\n| [[Syracuse, New York|Syracuse]] || [[Syracuse Hancock International Airport]] || align=center| || align=center| "
+  },
+  "CLT": {
+   "title": "Charlotte Douglas International Airport",
+   "coord": [
+    35.2139,
+    -80.9431
+   ],
+   "listNote": "\n| rowspan=\"3\" | United States ([[North Carolina]]) || [[Charlotte, North Carolina|Charlotte]] || [[Charlotte Douglas International Airport]] || align=center| || align=center|"
+  },
+  "RDU": {
+   "title": "Raleigh\u2013Durham International Airport",
+   "coord": [
+    35.8778,
+    -78.7875
+   ],
+   "listNote": "\n| [[Raleigh, North Carolina|Raleigh]]/[[Durham, North Carolina|Durham]] || [[Raleigh\u2013Durham International Airport]] || align=center| || align=center|"
+  },
+  "FAR": {
+   "title": "Hector International Airport",
+   "coord": [
+    46.9206,
+    -96.8156
+   ],
+   "listNote": "\n| [[Fargo, North Dakota|Fargo]] || [[Hector International Airport]] || align=\"center\" | || align=\"center\" |"
+  },
+  "CVG": {
+   "title": "Cincinnati/Northern Kentucky International Airport",
+   "coord": [
+    39.0489,
+    -84.6678
+   ],
+   "listNote": "\n| [[Cincinnati]]/[[Covington, Kentucky|Covington]] || [[Cincinnati/Northern Kentucky International Airport]] || {{airline hub|Base}} || align=\"center\" |"
+  },
+  "CLE": {
+   "title": "Cleveland Hopkins International Airport",
+   "coord": [
+    41.4117,
+    -81.8497
+   ],
+   "listNote": "\n| [[Cleveland]] || [[Cleveland Hopkins International Airport]] || {{airline hub|Base}} || align=center|"
+  },
+  "CMH": {
+   "title": "John Glenn Columbus International Airport",
+   "coord": [
+    39.9981,
+    -82.8919
+   ],
+   "listNote": "\n| [[Columbus, Ohio|Columbus]] || [[John Glenn Columbus International Airport]] || align=center| || align=center| "
+  },
+  "OKC": {
+   "title": "OKC Will Rogers International Airport",
+   "coord": [
+    35.3931,
+    -97.6008
+   ],
+   "listNote": "\n| rowspan=\"2\" | United States ([[Oklahoma]]) || [[Oklahoma City, Oklahoma|Oklahoma City]] || [[OKC Will Rogers International Airport]] || align=center| || align=center| "
+  },
+  "PDX": {
+   "title": "Portland International Airport",
+   "coord": [
+    45.5886,
+    -122.5975
+   ],
+   "listNote": "\n| [[Portland, Oregon|Portland]] || [[Portland International Airport]] || align=\"center\" | || align=\"center\" |"
+  },
+  "PHL": {
+   "title": "Philadelphia International Airport",
+   "coord": [
+    39.8719,
+    -75.2411
+   ],
+   "listNote": "\n| [[Philadelphia]] || [[Philadelphia International Airport]] || {{airline hub|Base}} || align=center| "
+  },
+  "PIT": {
+   "title": "Pittsburgh International Airport",
+   "coord": [
+    40.496,
+    -80.246
+   ],
+   "listNote": "\n| [[Pittsburgh]] || [[Pittsburgh International Airport]] || align=center| || align=center| "
+  },
+  "CHS": {
+   "title": "Charleston International Airport",
+   "coord": [
+    32.8986,
+    -80.0406
+   ],
+   "listNote": "\n| rowspan=\"3\" | United States ([[South Carolina]]) || [[Charleston, South Carolina|Charleston]]|| [[Charleston International Airport]]|| align=\"center\" | || align=\"center\" | "
+  },
+  "MYR": {
+   "title": "Myrtle Beach International Airport",
+   "coord": [
+    33.6797,
+    -78.9283
+   ],
+   "listNote": "\n| [[Myrtle Beach, South Carolina|Myrtle Beach]] || [[Myrtle Beach International Airport]] || align=center| || align=center|"
+  },
+  "FSD": {
+   "title": "Sioux Falls Regional Airport",
+   "coord": [
+    43.5819,
+    -96.7419
+   ],
+   "listNote": "\n| United States ([[South Dakota]]) || [[Sioux Falls, South Dakota|Sioux Falls]] || [[Sioux Falls Regional Airport]] || align=center| || align=center| "
+  },
+  "TYS": {
+   "title": "McGhee Tyson Airport",
+   "coord": [
+    35.8111,
+    -83.9939
+   ],
+   "listNote": "\n| rowspan=\"3\" | United States ([[Tennessee]]) || [[Knoxville, Tennessee|Knoxville]] || [[McGhee Tyson Airport]] || || align=center| "
+  },
+  "MEM": {
+   "title": "Memphis International Airport",
+   "coord": [
+    35.0425,
+    -89.9767
+   ],
+   "listNote": "\n| [[Memphis, Tennessee|Memphis]] || [[Memphis International Airport]] || align=center| || align=center| "
+  },
+  "BNA": {
+   "title": "Nashville International Airport",
+   "coord": [
+    36.1267,
+    -86.6819
+   ],
+   "listNote": "\n| [[Nashville, Tennessee|Nashville]] || [[Nashville International Airport]] || align=center| || align=center| "
+  },
+  "AUS": {
+   "title": "Austin\u2013Bergstrom International Airport",
+   "coord": [
+    30.1944,
+    -97.67
+   ],
+   "listNote": " \n| rowspan=\"9\" | United States ([[Texas]]) || [[Austin, Texas|Austin]] || [[Austin\u2013Bergstrom International Airport]] || align=center| || align=center|"
+  },
+  "CRP": {
+   "title": "Corpus Christi International Airport",
+   "coord": [
+    27.7703,
+    -97.5011
+   ],
+   "listNote": "\n| [[Corpus Christi, Texas|Corpus Christi]] || [[Corpus Christi International Airport]] ||||align=center|"
+  },
+  "DFW": {
+   "title": "Dallas Fort Worth International Airport",
+   "coord": [
+    32.8969,
+    -97.0381
+   ],
+   "listNote": "\n| [[Dallas]]/[[Fort Worth, Texas|Fort Worth]] || [[Dallas Fort Worth International Airport]] || {{airline hub|Base}} || align=center| "
+  },
+  "ELP": {
+   "title": "El Paso International Airport",
+   "coord": [
+    31.8072,
+    -106.3775
+   ],
+   "listNote": "\n| [[El Paso]] || [[El Paso International Airport]] || align=center| || align=center|  "
+  },
+  "IAH": {
+   "title": "George Bush Intercontinental Airport",
+   "coord": [
+    29.9844,
+    -95.3414
+   ],
+   "listNote": "\n| rowspan=\"2\" | [[Houston]] || [[George Bush Intercontinental Airport]] || align=center| || align=center| "
+  },
+  "HOU": {
+   "title": "William P. Hobby Airport",
+   "coord": [
+    29.6456,
+    -95.2789
+   ],
+   "listNote": "\n| [[William P. Hobby Airport]] || align=center| || align=center| "
+  },
+  "SAT": {
+   "title": "San Antonio International Airport",
+   "coord": [
+    29.5267,
+    -98.4719
+   ],
+   "listNote": "\n|[[San Antonio]] || [[San Antonio International Airport]] || align=center| || align=center| "
+  },
+  "SLC": {
+   "title": "Salt Lake City International Airport",
+   "coord": [
+    40.7883,
+    -111.9778
+   ],
+   "listNote": "\n| United States ([[Utah]]) || [[Salt Lake City]] || [[Salt Lake City International Airport]] || align=center| || align=center| "
+  },
+  "ORF": {
+   "title": "Norfolk International Airport",
+   "coord": [
+    36.8947,
+    -76.2011
+   ],
+   "listNote": "\n| [[Norfolk, Virginia|Norfolk]] || [[Norfolk International Airport]] || align=center| || align=center| "
+  },
+  "RIC": {
+   "title": "Richmond International Airport",
+   "coord": [
+    37.505,
+    -77.3194
+   ],
+   "listNote": "\n| [[Richmond, Virginia|Richmond]] || [[Richmond International Airport]] ||||align=center|"
+  },
+  "SEA": {
+   "title": "Seattle\u2013Tacoma International Airport",
+   "coord": [
+    47.4489,
+    -122.3094
+   ],
+   "listNote": "\n| [[Seattle]]/[[Tacoma, Washington|Tacoma]] || [[Seattle\u2013Tacoma International Airport]] || align=center| || align=center|"
+  },
+  "GEG": {
+   "title": "Spokane International Airport",
+   "coord": [
+    47.62,
+    -117.5339
+   ],
+   "listNote": "\n| [[Spokane, Washington|Spokane]] || [[Spokane International Airport]] |||| align=center| "
+  },
+  "MSN": {
+   "title": "Dane County Regional Airport",
+   "coord": [
+    43.14,
+    -89.3375
+   ],
+   "listNote": "\n| [[Madison, Wisconsin|Madison]] || [[Dane County Regional Airport]] || align=\"center\" | || align=\"center\" |"
+  },
+  "MKE": {
+   "title": "Milwaukee Mitchell International Airport",
+   "coord": [
+    42.9429,
+    -87.9144
+   ],
+   "listNote": "\n| [[Milwaukee]] || [[Milwaukee Mitchell International Airport]] || align=center| || align=center|"
+  },
+  "BOG": {
+   "title": "El Dorado International Airport",
+   "coord": [
+    4.7014,
+    -74.1469
+   ],
+   "listNote": "not in Frontier list page"
+  },
+  "MDE": {
+   "title": "Jos\u00e9 Mar\u00eda C\u00f3rdova International Airport",
+   "coord": [
+    6.1672,
+    -75.4267
+   ],
+   "listNote": "not in Frontier list page"
+  },
+  "NAS": {
+   "title": "Lynden Pindling International Airport",
+   "coord": [
+    25.0389,
+    -77.4661
+   ],
+   "listNote": "not in Frontier list page"
+  },
+  "SXM": {
+   "title": "Princess Juliana International Airport",
+   "coord": [
+    18.0408,
+    -63.1094
+   ],
+   "listNote": "not in Frontier list page"
+  },
+  "CTG": {
+   "title": "Rafael N\u00fa\u00f1ez International Airport",
+   "coord": [
+    10.4425,
+    -75.5131
+   ],
+   "listNote": "not in Frontier list page"
+  },
+  "TUL": {
+   "title": "Tulsa International Airport",
+   "coord": [
+    36.1983,
+    -95.8881
+   ],
+   "listNote": "not in Frontier list page"
+  }
+ },
+ "routes": [
+  {
+   "o": "SJO",
+   "d": "ATL",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "SJO",
+   "d": "MCO",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "PUJ",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PUJ",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PUJ",
+   "d": "CVG",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PUJ",
+   "d": "CLE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PUJ",
+   "d": "STL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "STI",
+   "d": "PHL",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "SDQ",
+   "d": "SJU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SDQ",
+   "d": "PHL",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "SDQ",
+   "d": "TPA",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "SAL",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SAL",
+   "d": "IAH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SAL",
+   "d": "DFW",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "SAL",
+   "d": "MIA",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "SAL",
+   "d": "MCO",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "SAL",
+   "d": "IAD",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "GUA",
+   "d": "ATL",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "GUA",
+   "d": "DFW",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "GUA",
+   "d": "IAH",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "GUA",
+   "d": "MCO",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MBJ",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MBJ",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MBJ",
+   "d": "PHL",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MBJ",
+   "d": "STL",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "SJD",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJD",
+   "d": "LAS",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "PVR",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PVR",
+   "d": "DEN",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "BWI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "CLT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "MDW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "CVG",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "CLE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "DTW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "RDU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "STL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "DFW",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "IAH",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "CUN",
+   "d": "MIA",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "BQN",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PSE",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "BWI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "BOS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "CLT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "FLL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "BDL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "IAH",
+   "seasonal": false,
+   "note": "begins December 17, 2026"
+  },
+  {
+   "o": "SJU",
+   "d": "JAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "MIA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "EWR",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "PUJ",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "RDU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "SDQ",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "IAD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJU",
+   "d": "CLE",
+   "seasonal": true,
+   "note": "resumes December 17, 2026"
+  },
+  {
+   "o": "SJU",
+   "d": "LGA",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "AUS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "MDW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "CVG",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "CLE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "DTW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "IAH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "LAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "MSP",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "SNA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "PDX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "RNO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "SLC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "SAT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "SAN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "SFO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "SJD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "SEA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "DSM",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "IND",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "MEM",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "MKE",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "BNA",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "OMA",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "PHX",
+   "d": "MCO",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "XNA",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LIT",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BUR",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAX",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAX",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAX",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAX",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAX",
+   "d": "DTW",
+   "seasonal": false,
+   "note": "begins November 20, 2026"
+  },
+  {
+   "o": "LAX",
+   "d": "IAH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAX",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAX",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAX",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAX",
+   "d": "PDX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAX",
+   "d": "SMF",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAX",
+   "d": "SLC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAX",
+   "d": "SFO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAX",
+   "d": "SJC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAX",
+   "d": "SEA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "OAK",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ONT",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ONT",
+   "d": "IAH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ONT",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ONT",
+   "d": "SFO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ONT",
+   "d": "SEA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ONT",
+   "d": "DFW",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "SMF",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SMF",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SMF",
+   "d": "LAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SAN",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SAN",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SAN",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SAN",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SAN",
+   "d": "SFO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SFO",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SFO",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SFO",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SFO",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SFO",
+   "d": "LAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SFO",
+   "d": "ONT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SFO",
+   "d": "SNA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SFO",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SFO",
+   "d": "SLC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SFO",
+   "d": "SAN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJC",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SJC",
+   "d": "LAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SNA",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SNA",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SNA",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SNA",
+   "d": "SLC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SNA",
+   "d": "SFO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "AUS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "BOI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "CUN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "CID",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "CLT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "MDW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "CVG",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "CLE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "DSM",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "DTW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "ELP",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "FAR",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "XNA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "FLL",
+   "seasonal": false,
+   "note": "begins November 20, 2026"
+  },
+  {
+   "o": "DEN",
+   "d": "HOU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "IAH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "IND",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "MCI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "TYS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "LIT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "LAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "MSN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "MEM",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "MIA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "MKE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "MSP",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "BNA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "MSY",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "OKC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "OMA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "ONT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "SNA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "PNS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "PDX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "RDU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "RNO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "SMF",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "SLC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "SAT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "SAN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "SFO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "SEA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "FSD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "STL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "TUS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "TUL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "DCA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "BWI",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "BUF",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "CMH",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "RSW",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "JAX",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "PIT",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "PVR",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "DEN",
+   "d": "SJD",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "BDL",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BDL",
+   "d": "MIA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BDL",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BDL",
+   "d": "SJU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAD",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAD",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAD",
+   "d": "FLL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAD",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAD",
+   "d": "MIA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAD",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAD",
+   "d": "SJU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAD",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAD",
+   "d": "SAL",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "DCA",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "FLL",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "FLL",
+   "d": "BWI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "FLL",
+   "d": "CLT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "FLL",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "FLL",
+   "d": "CVG",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "FLL",
+   "d": "CLE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "FLL",
+   "d": "CMH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "FLL",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "FLL",
+   "d": "DEN",
+   "seasonal": false,
+   "note": "begins November 20, 2026"
+  },
+  {
+   "o": "FLL",
+   "d": "DTW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "FLL",
+   "d": "IND",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "FLL",
+   "d": "IAH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "FLL",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "FLL",
+   "d": "RDU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "FLL",
+   "d": "SJU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "FLL",
+   "d": "IAD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "FLL",
+   "d": "STL",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "RSW",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RSW",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RSW",
+   "d": "CVG",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RSW",
+   "d": "CLE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RSW",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RSW",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RSW",
+   "d": "BUF",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "RSW",
+   "d": "DTW",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "RSW",
+   "d": "GRR",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "RSW",
+   "d": "IND",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "RSW",
+   "d": "ISP",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "RSW",
+   "d": "MSP",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "RSW",
+   "d": "TTN",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "JAX",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "JAX",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "JAX",
+   "d": "SJU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "BQN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "AUS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "BWI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "BOS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "CLT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "MDW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "CVG",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "DTW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "GUA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "BDL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "IAH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "LGA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "RDU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "SJU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "IAD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "CLE",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "PUJ",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "SAP",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MIA",
+   "d": "SAL",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "BQN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "AUS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "BWI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "BOG",
+   "seasonal": false,
+   "note": "begins December 14, 2026"
+  },
+  {
+   "o": "MCO",
+   "d": "BUF",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "CUN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "CTG",
+   "seasonal": false,
+   "note": "begins December 19, 2026"
+  },
+  {
+   "o": "MCO",
+   "d": "CID",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "CLT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "MDW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "CVG",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "CLE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "CMH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "DTW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "GRR",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "BDL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "IAH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "IND",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "ISP",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "LAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "MDE",
+   "seasonal": false,
+   "note": "begins December 10, 2026"
+  },
+  {
+   "o": "MCO",
+   "d": "MKE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "MBJ",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "BNA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "LGA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "EWR",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "ORF",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "OKC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "PNS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "PSE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "RDU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "RIC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "STL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "SLC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "SAT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "SJU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "TTN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "IAD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "DSM",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "FAR",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "GUA",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "MSP",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "OMA",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "PIT",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "SJO",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "SAP",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MCO",
+   "d": "SAL",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "PNS",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PNS",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "BWI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "BUF",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "CUN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "CVG",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "CLE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "DTW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "RDU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "SJU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "TTN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "IAD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "GRR",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "IAH",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "ISP",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "MKE",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "ORF",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "PHX",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "PUJ",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "TPA",
+   "d": "SDQ",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "DJT",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DJT",
+   "d": "CVG",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DJT",
+   "d": "CLE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DJT",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DJT",
+   "d": "ISP",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "DJT",
+   "d": "TTN",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "AUS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "BWI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "BOS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "BUF",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "CUN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "MDW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "CVG",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "CLE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "CMH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "DTW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "FLL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "RSW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "GUA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "BDL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "IAH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "IND",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "JAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "MCI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "LAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "MIA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "MSP",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "MBJ",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "NAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "LGA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "EWR",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "ORF",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "OMA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "PVR",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "RDU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "RIC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "STL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "SXM",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "SAT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "SFO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "SJO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "SJD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "SJU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "SAP",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "SAL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "IAD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "DJT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "GRR",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "ATL",
+   "d": "PUJ",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "BOI",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BOI",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MDW",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MDW",
+   "d": "BWI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MDW",
+   "d": "CUN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MDW",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MDW",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MDW",
+   "d": "IAH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MDW",
+   "d": "MIA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MDW",
+   "d": "EWR",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MDW",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MDW",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "AUS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "CUN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "CLT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "FLL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "RSW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "IAH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "LAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "MIA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "MSP",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "BNA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "PUJ",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "SLC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "SAN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "SRQ",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORD",
+   "d": "BWI",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "IND",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IND",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IND",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IND",
+   "d": "FLL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IND",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IND",
+   "d": "RSW",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "IND",
+   "d": "LAS",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "IND",
+   "d": "PHX",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "CID",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CID",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DSM",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DSM",
+   "d": "MCO",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "DSM",
+   "d": "PHX",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MSY",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MSY",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MSY",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MSY",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MSY",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BWI",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BWI",
+   "d": "CUN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BWI",
+   "d": "CLT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BWI",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BWI",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BWI",
+   "d": "DTW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BWI",
+   "d": "FLL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BWI",
+   "d": "IAH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BWI",
+   "d": "MIA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BWI",
+   "d": "MSY",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BWI",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BWI",
+   "d": "SJU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BWI",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BWI",
+   "d": "DEN",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "BOS",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BOS",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BOS",
+   "d": "RDU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BOS",
+   "d": "SJU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BOS",
+   "d": "MIA",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "BOS",
+   "d": "TPA",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "DTW",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DTW",
+   "d": "BWI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DTW",
+   "d": "CUN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DTW",
+   "d": "CLT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DTW",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DTW",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DTW",
+   "d": "FLL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DTW",
+   "d": "IAH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DTW",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DTW",
+   "d": "LAX",
+   "seasonal": false,
+   "note": "begins November 20, 2026"
+  },
+  {
+   "o": "DTW",
+   "d": "MIA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DTW",
+   "d": "MSY",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DTW",
+   "d": "LGA",
+   "seasonal": false,
+   "note": "begins November 20, 2026"
+  },
+  {
+   "o": "DTW",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DTW",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DTW",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DTW",
+   "d": "RDU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "GRR",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "GRR",
+   "d": "ATL",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "GRR",
+   "d": "DEN",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "GRR",
+   "d": "RSW",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MSP",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MSP",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MSP",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MSP",
+   "d": "ATL",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MSP",
+   "d": "RSW",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MSP",
+   "d": "LAS",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MSP",
+   "d": "MCO",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MSP",
+   "d": "PHX",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MCI",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCI",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCI",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCI",
+   "d": "MCO",
+   "seasonal": false,
+   "note": "begins November 20, 2026"
+  },
+  {
+   "o": "MCI",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MCI",
+   "d": "PHX",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "STL",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "STL",
+   "d": "CUN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "STL",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "STL",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "STL",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "STL",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "STL",
+   "d": "FLL",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "STL",
+   "d": "PHX",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "STL",
+   "d": "PUJ",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "OMA",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "OMA",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "OMA",
+   "d": "MCO",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "OMA",
+   "d": "PHX",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "AUS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "BOI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "BUR",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "CVG",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "CLE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "DTW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "ELP",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "IAH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "MCI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "LAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "MEM",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "MSP",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "OAK",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "OKC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "ONT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "SNA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "PDX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "RDU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "RNO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "SMF",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "STL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "SLC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "SAT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "SAN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "SFO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "SJC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "SEA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "TUS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "IAD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "IND",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "MKE",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "PHL",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "LAS",
+   "d": "SJD",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "RNO",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RNO",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RNO",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "EWR",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "EWR",
+   "d": "MDW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "EWR",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "EWR",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "EWR",
+   "d": "SJU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TTN",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TTN",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "TTN",
+   "d": "RSW",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "TTN",
+   "d": "MYR",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "TTN",
+   "d": "DJT",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "BUF",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BUF",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BUF",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BUF",
+   "d": "DEN",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "BUF",
+   "d": "RSW",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "BUF",
+   "d": "RDU",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "ISP",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ISP",
+   "d": "RSW",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "ISP",
+   "d": "MYR",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "ISP",
+   "d": "TPA",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "ISP",
+   "d": "DJT",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "LGA",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LGA",
+   "d": "CLT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LGA",
+   "d": "CLE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LGA",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LGA",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LGA",
+   "d": "DTW",
+   "seasonal": false,
+   "note": "begins November 20, 2026"
+  },
+  {
+   "o": "LGA",
+   "d": "MIA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LGA",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LGA",
+   "d": "RDU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "LGA",
+   "d": "SJU",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "CLT",
+   "d": "BWI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLT",
+   "d": "CUN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLT",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLT",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLT",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLT",
+   "d": "DTW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLT",
+   "d": "FLL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLT",
+   "d": "IAH",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLT",
+   "d": "MIA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLT",
+   "d": "LGA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLT",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLT",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLT",
+   "d": "SJU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLT",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "BOS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "CLE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "DTW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "FLL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "MIA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "LGA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "SJU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "BUF",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "CUN",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "RDU",
+   "d": "IAH",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "FAR",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CVG",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CVG",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CVG",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CVG",
+   "d": "FLL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CVG",
+   "d": "RSW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CVG",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CVG",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CVG",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CVG",
+   "d": "CUN",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "CVG",
+   "d": "MIA",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "CVG",
+   "d": "PHX",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "CLE",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLE",
+   "d": "CUN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLE",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLE",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLE",
+   "d": "FLL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLE",
+   "d": "RSW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLE",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLE",
+   "d": "MIA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLE",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLE",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLE",
+   "d": "PUJ",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLE",
+   "d": "RDU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLE",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CLE",
+   "d": "MYR",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "CLE",
+   "d": "SJU",
+   "seasonal": true,
+   "note": "resumes December 17, 2026"
+  },
+  {
+   "o": "CMH",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "CMH",
+   "d": "DEN",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "CMH",
+   "d": "FLL",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "CMH",
+   "d": "MCO",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "OKC",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "OKC",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "OKC",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PDX",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PDX",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PDX",
+   "d": "LAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PDX",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "CUN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "CLT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "DTW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "FLL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "RSW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "JAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "MIA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "BNA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "PUJ",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "RDU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "SJU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "DJT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "PIT",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "PHL",
+   "d": "STI",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "PIT",
+   "d": "DEN",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "PIT",
+   "d": "MCO",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MYR",
+   "d": "CLE",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MYR",
+   "d": "ISP",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MYR",
+   "d": "PHL",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MYR",
+   "d": "TTN",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "FSD",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MEM",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MEM",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BNA",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BNA",
+   "d": "CLE",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BNA",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BNA",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BNA",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BNA",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "BNA",
+   "d": "PHX",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "AUS",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "AUS",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "AUS",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "AUS",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "AUS",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "AUS",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "AUS",
+   "d": "SAN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "BWI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "CVG",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "CLT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "MDW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "DTW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "FLL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "RSW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "GUA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "IND",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "LAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "MIA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "MSP",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "BNA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "MSY",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "EWR",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "LGA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "SNA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "RDU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "SLC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "SAN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "SFO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "SAL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "TUS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "IAD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "CUN",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "CLE",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "DFW",
+   "d": "ONT",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "ELP",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ELP",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ELP",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "BWI",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "CLT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "MDW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "CVG",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "DTW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "FLL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "GUA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "LAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "MIA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "MSY",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "ONT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "PHL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "RDU",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "SJU",
+   "seasonal": false,
+   "note": "begins December 17, 2026"
+  },
+  {
+   "o": "IAH",
+   "d": "SAP",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "SAL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "TPA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "IAH",
+   "d": "CUN",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "SAT",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SAT",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SAT",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SAT",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SLC",
+   "d": "ORD",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SLC",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SLC",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SLC",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SLC",
+   "d": "LAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SLC",
+   "d": "SNA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SLC",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SLC",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SLC",
+   "d": "PDX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SLC",
+   "d": "SAN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SLC",
+   "d": "SFO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SLC",
+   "d": "SEA",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SLC",
+   "d": "TUS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORF",
+   "d": "ATL",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORF",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORF",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "ORF",
+   "d": "TPA",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "RIC",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SEA",
+   "d": "DFW",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SEA",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SEA",
+   "d": "LAS",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SEA",
+   "d": "LAX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SEA",
+   "d": "ONT",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SEA",
+   "d": "PHX",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "SEA",
+   "d": "SLC",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MSN",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MKE",
+   "d": "DEN",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MKE",
+   "d": "MCO",
+   "seasonal": false,
+   "note": ""
+  },
+  {
+   "o": "MKE",
+   "d": "LAS",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MKE",
+   "d": "PHX",
+   "seasonal": true,
+   "note": ""
+  },
+  {
+   "o": "MKE",
+   "d": "TPA",
+   "seasonal": true,
+   "note": ""
+  }
+ ],
+ "noFrontierRow": [
+  "AUA",
+  "SAP",
+  "TUS",
+  "SRQ",
+  "SYR",
+  "CHS",
+  "TYS",
+  "CRP",
+  "HOU",
+  "GEG"
+ ],
+ "unresolved": []
+}
